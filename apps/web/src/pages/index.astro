@@ -3,6 +3,7 @@ import Base from "../layouts/Base.astro";
 import ApiRequest from "../components/ApiRequest.astro";
 import JsonDrawer from "../components/JsonDrawer.astro";
 import Demo from "../components/Demo.astro";
+import VideoDesk from "../components/VideoDesk.astro";
 import FightPoster from "../components/FightPoster.astro";
 import FighterPreview from "../components/FighterPreview.astro";
 import FightDnaPreview from "../components/FightDnaPreview.astro";
@@ -37,6 +38,7 @@ const rec = show.provenance;
    scripts/refresh-showcase.mjs, so no slug is hard-coded here and a deep link is only rendered when
    that page exists; otherwise it falls back to the consumer site's section index. */
 const links = show.product_links;
+const videos = (show as any).videos ?? null;
 const pbeFighter = links.fighter || links.fighters_index;
 const pbeMatchup = links.matchup || links.fight_week;
 const pbeEvent = links.fight_week;
@@ -263,6 +265,35 @@ const jsonLd = [
       <p class="small muted" style="margin-top:18px">Built on the same UFC intelligence layer. PropBetEdge UFC is a PropTechUSA network product; surfaces shown here are its own application features, not a claim that every element is served by the commercial API.</p>
     </div>
   </section>
+
+  <!-- 5c. FIGHT WEEK VIDEO -->
+  {videos?.featured && (
+  <section class="section" id="video">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow gold">Fight week video</p>
+          <h2>The week, <span class="gold-em">on camera.</span></h2>
+          <p class="lede">Official fight-week video metadata surfaced through the UFC Intelligence API. Clips are selected by the same policy the consumer product uses: current-event relevance first, then English, embeddable, official channel tier, freshness and clip type. The lead slot shifts through the week from preview to media day to weigh-in to post-fight.</p>
+        </div>
+        <a class="btn secondary" href="/workspace?tool=videos">Open in Workspace →</a>
+      </div>
+      <VideoDesk videos={videos} productLink={links.fight_week} />
+      <div class="powered" style="margin-top:18px">
+        <p class="eyebrow">Powered by</p>
+        <ul>
+          <li><span class="m">GET</span><span>/v1/ufc/videos?event_id={"{id}"}</span><span class="chip plan-developer">Developer+</span></li>
+          <li><span class="m">GET</span><span>/v1/ufc/events/{"{id}"}/videos</span><span class="chip plan-developer">Developer+</span></li>
+          <li><span class="m">GET</span><span>/v1/ufc/fighters/{"{id}"}/videos</span><span class="chip plan-developer">Developer+</span></li>
+        </ul>
+        <div class="actions-row">
+          <a class="btn secondary" href="/docs#videos">Video API docs →</a>
+          <JsonDrawer json={videos.raw} path={videos.path} title="Videos response" note="subset: 2 of the returned rows" label="View JSON →" />
+        </div>
+      </div>
+    </div>
+  </section>
+  )}
 
   <!-- 6. FIGHT DNA -->
   <section class="section band-deep" id="fight-dna">

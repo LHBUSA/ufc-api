@@ -32,6 +32,7 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "WebApplication", n
       <button data-tool="fighter">Fighters</button>
       <button data-tool="events">Events</button>
       <button data-tool="rankings">Rankings</button>
+      <button data-tool="videos">Videos</button>
       <h5>Intelligence</h5>
       <button data-tool="dna">Fight DNA</button>
       <button data-tool="matchup">Matchup DNA</button>
@@ -48,7 +49,7 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "WebApplication", n
         <p class="small muted" id="ws-note" hidden style="flex:1 1 100%;margin:4px 0 0"></p>
       </div>
       <select class="ws-rail-select" id="rail-select" aria-label="Workspace tool">
-        <option value="home">Workspace home</option><option value="card">Current Fight Week</option><option value="fighter">Fighters</option><option value="events">Events</option><option value="rankings">Rankings</option><option value="dna">Fight DNA</option><option value="matchup">Matchup DNA</option><option value="custom">Request builder</option>
+        <option value="home">Workspace home</option><option value="card">Current Fight Week</option><option value="fighter">Fighters</option><option value="events">Events</option><option value="rankings">Rankings</option><option value="videos">Videos</option><option value="dna">Fight DNA</option><option value="matchup">Matchup DNA</option><option value="custom">Request builder</option>
       </select>
       <div class="ws-tool" id="ws-tool"></div>
       <div class="ws-result" id="ws-result" hidden>
@@ -70,7 +71,10 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "WebApplication", n
     /* The Workspace renders fighters client-side, so it needs the same media policy the server uses.
        Importing the module here means there is one implementation, not a second copy in this file. */
     import { resolveFighterMedia, SILHOUETTE } from "../lib/media-policy.mjs";
+    import { rankVideos, videoLanguage, typeLabel, embedUrl, thumbnailUrl, LANG_SHORT } from "../lib/video-policy.mjs";
     window.__ufcMedia = { resolveFighterMedia, SILHOUETTE };
+    /* same ranking and labelling the server uses, so the Workspace preview matches the site */
+    window.__ufcVideo = { rankVideos, videoLanguage, typeLabel, embedUrl, thumbnailUrl, LANG_SHORT };
   </script>
 
   <script define:vars={{ PLAN_NAMES: Object.fromEntries(Object.entries(plans).map(([k, v]) => [k, (v as any).name])), ART: art, PRODUCT }}>
@@ -155,7 +159,7 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "WebApplication", n
       if (!el) return;
       const d = l && l.body && l.body.data;
       let href = null, label = "View live product →";
-      if (tool === "card" || tool === "events") { href = PRODUCT.fight_week; label = "View Fight Week →"; }
+      if (tool === "card" || tool === "events" || tool === "videos") { href = PRODUCT.fight_week; label = "View Fight Week →"; }
       else if (tool === "rankings") { href = PRODUCT.rankings; label = "View rankings →"; }
       else if (tool === "fighter" || tool === "dna") {
         const f = d && (d.fighter || d);
@@ -244,6 +248,42 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "WebApplication", n
 
     /* ---------- tools ---------- */
     async function fighterById(id) { if (cache["f:" + id]) return cache["f:" + id]; const l = await api(`/v1/ufc/fighters/${encodeURIComponent(id)}?include=ranking,next`); if (l.body?.ok) cache["f:" + id] = l.body.data; return l.body?.ok ? l.body.data : null; }
+    /* Video preview: poster-first, provider player only on request, link-out when not embeddable. */
+    function videosView(rows) {
+      const V = window.__ufcVideo;
+      const list = Array.isArray(rows) ? rows : [];
+      if (!list.length) return `<div class="ws-empty">No published videos match this filter.</div>`;
+      const ranked = V ? V.rankVideos(list, "en") : list;
+      const when = (iso) => { if (!iso) return "—"; const h = Math.max(0, Math.round((Date.now() - Date.parse(iso)) / 3600000)); return h < 1 ? "just now" : h < 24 ? h + " h ago" : Math.round(h / 24) + " d ago"; };
+      const card = (v) => {
+        const lang = V ? V.LANG_SHORT[V.videoLanguage(v)] : "—";
+        const label = esc(v.video_type_label || (V ? V.typeLabel(v.video_type) : "Official video"));
+        const thumb = V ? V.thumbnailUrl(v) : v.thumbnail_url;
+        const emb = v.embeddable === true && (V ? V.embedUrl(v) : v.embed_url);
+        const poster = thumb ? `<img src="${esc(thumb)}" alt="" width="480" height="270" loading="lazy" referrerpolicy="no-referrer">` : "";
+        const media = emb
+          ? `<div class="vplayer" data-embed="${esc(emb)}" data-title="${esc(v.title || "")}"><button type="button" class="vplay" aria-label="Play ${esc(v.title || "")}">${poster}<span class="vplay-btn" aria-hidden="true"><svg viewBox="0 0 24 24" width="26" height="26"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></span></button></div>`
+          : `<a class="vplayer vplayer-link" href="${esc(v.url)}" rel="noopener nofollow">${poster}<span class="vplay-hint">Not embeddable · Watch on YouTube →</span></a>`;
+        return `<li class="vcard">${media}<div class="vcard-body" style="margin-top:8px"><span class="vchips small"><span class="chip gold">${label}</span><span class="chip">${esc(lang)}</span>${v.embeddable === true ? "" : `<span class="chip">Link only</span>`}</span><b>${esc(v.title || "")}</b><span class="small muted">${esc(v.channel?.name || v.attribution || "")} · ${when(v.published_at)}</span><a class="vwatch" href="${esc(v.url)}" rel="noopener nofollow">Watch on YouTube →</a></div></li>`;
+      };
+      const html = `<div class="eyebrow">Official video metadata <span class="chip link">Third-party link</span></div><ul class="vgrid" style="margin-top:12px">${ranked.slice(0, 12).map(card).join("")}</ul><p class="small muted" style="margin-top:12px">Metadata and links only · ranked English-first, embeddable, official tier, freshness · nothing is rehosted.</p>`;
+      setTimeout(() => {
+        document.querySelectorAll("#ws-preview .vplayer[data-embed]").forEach((el) => {
+          const btn = el.querySelector(".vplay"); if (!btn) return;
+          btn.addEventListener("click", () => {
+            const src = el.getAttribute("data-embed"); if (!src) return;
+            const f = document.createElement("iframe");
+            f.src = src + (src.includes("?") ? "&" : "?") + "autoplay=1&rel=0";
+            f.title = el.getAttribute("data-title") || "Official video";
+            f.allow = "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture";
+            f.referrerPolicy = "strict-origin-when-cross-origin";
+            f.setAttribute("allowfullscreen", "");
+            el.replaceChildren(f); el.classList.add("playing");
+          });
+        });
+      }, 0);
+      return html;
+    }
     const tools = {
       home: { title: "Workspace home", render(root) {
         const card = (tool, title, sub, arts, plan) => `<button class="ws-card" data-go="${tool}"><div class="art${arts.length > 1 ? " two" : ""}">${arts.map((a) => a ? `<img src="${esc(a)}" alt="" loading="lazy">` : `<img src="${SIL}" alt="" loading="lazy">`).join("")}</div><div class="body"><b>${esc(title)}</b><span>${esc(sub)}</span>${plan ? chip(plan) : ""}</div></button>`;
@@ -304,6 +344,30 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "WebApplication", n
         root.innerHTML = `<h3>Rankings</h3><div class="ws-form"><div class="ws-two"><select id="r-div"><option value="">All divisions</option>${divs.map((d) => `<option value="${d}">${tc(d)}</option>`).join("")}</select><select id="r-w"><option value="">Men + women</option><option value="false">Men</option><option value="true">Women</option></select></div><div class="actions-row"><button class="btn primary" id="run-r" type="button">Load rankings</button></div></div>`;
         $("run-r").addEventListener("click", async () => { const q = []; if ($("r-div").value) q.push("division=" + $("r-div").value); if ($("r-w").value) q.push("womens=" + $("r-w").value); const l = await api(`/v1/ufc/rankings${q.length ? "?" + q.join("&") : ""}`); out(handle(l, rankingsView)); $("ws-preview").querySelectorAll("[data-open-fighter]").forEach((a) => a.addEventListener("click", (e) => { e.preventDefault(); location.href = `/workspace?tool=fighter&id=${a.dataset.openFighter}`; })); });
         const d = new URLSearchParams(location.search).get("division"); if (d) { $("r-div").value = d; if (KEY) setTimeout(() => $("run-r").click(), 300); }
+      } },
+      videos: { title: "Videos", render(root) {
+        const types = ["", "embedded_episode", "countdown", "press_conference", "weigh_in", "faceoff", "media_day", "fight_preview", "interview", "highlights", "analysis", "post_fight", "full_fight", "other"];
+        root.innerHTML = `<h3>Videos ${chip("developer")}</h3><p class="small muted">Official video <b>metadata</b> from allowlisted channels. Links and embed information only — nothing is rehosted, and API access conveys no rights to the footage.</p><div class="ws-form"><div id="v-search"></div><div id="v-pick"></div><div class="ws-two"><select id="v-type">${types.map((t) => `<option value="${t}">${t ? esc(tc(t)) : "Any type"}</option>`).join("")}</select><input type="text" id="v-limit" value="12" aria-label="limit"></div><div class="actions-row"><button class="btn primary" id="run-v" type="button">Latest videos</button><button class="btn secondary" id="run-v-event" type="button">Current card only</button></div></div>`;
+        let fighterId = null, eventId = null;
+        $("v-search").appendChild(searchBox("v", "Filter by fighter (optional)", (f) => { fighterId = f.id; $("v-pick").innerHTML = pickHtml(f); }));
+        const run = async (useEvent) => {
+          const q = [`limit=${encodeURIComponent($("v-limit").value || 12)}`];
+          if ($("v-type").value) q.push("type=" + $("v-type").value);
+          if (fighterId) q.push("fighter_id=" + fighterId);
+          if (useEvent) {
+            if (!eventId) {
+              const ev = await api("/v1/ufc/events?status=upcoming&limit=6");
+              const row = (ev.body.data || []).find((e) => !/contender series|road to ufc|dwcs/i.test(e.name)) || (ev.body.data || [])[0];
+              eventId = row ? row.id : null;
+            }
+            if (eventId) q.push("event_id=" + eventId);
+          }
+          const l = await api(`/v1/ufc/videos?${q.join("&")}`);
+          out(handle(l, videosView));
+        };
+        $("run-v").addEventListener("click", () => run(false));
+        $("run-v-event").addEventListener("click", () => run(true));
+        if (KEY) setTimeout(() => $("run-v").click(), 300);
       } },
       custom: { title: "Request builder", render(root) {
         root.innerHTML = `<h3>Request builder</h3><p class="small muted">Any GET path under /v1/ufc. Try <code>/v1/ufc</code> for the index or <code>/v1/ufc/counts</code>.</p><div class="ws-form"><input type="text" id="c-path" value="/v1/ufc/events?status=upcoming&limit=3" aria-label="path"><div class="actions-row"><button class="btn primary" id="run-c" type="button">Send</button></div></div>`;

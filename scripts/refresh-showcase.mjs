@@ -20,6 +20,8 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 const ROOT = join(fileURLToPath(new URL(".", import.meta.url)), "..");
 /* the SAME media policy the site renders with; imported, never re-implemented */
 const { resolveFighterMedia, mediaCoverage, ESPN_HEADSHOT } = await import(pathToFileURL(join(ROOT, "apps", "web", "src", "lib", "media-policy.mjs")).href);
+/* the ported consumer video policy; ranking and language rules live there, not here */
+const { selectFightWeekVideos } = await import(pathToFileURL(join(ROOT, "apps", "web", "src", "lib", "video-policy.mjs")).href);
 const args = process.argv.slice(2);
 const opt = (n, d) => { const i = args.indexOf(n); return i >= 0 ? args[i + 1] : d; };
 const DRY = args.includes("--dry-run");
@@ -379,6 +381,32 @@ const product_links = {
 };
 note(`product links (${probes} liveness probes): ` + Object.entries(product_links).filter(([k]) => !['captured_at','site','sitemap_status'].includes(k)).map(([k, v]) => `${k}=${v ? 'yes' : 'no'}`).join(' '));
 
+/* ---------- 7.6 fight-week video desk ----------
+   Metadata only, from the canonical /v1/ufc/videos feed. Nothing is downloaded or rehosted; the embed
+   URL is the provider's own privacy-enhanced player. Current-event clips rank first, then the shared
+   policy order (English-first, embeddable, official tier, freshness, relevance) with a fight-week phase
+   bonus so the lead clip shifts from countdown to weigh-in to post-fight as the week runs. If the feed
+   is unavailable this stays null and the previous snapshot's videos are carried forward below. */
+let videos = null;
+try {
+  const evVideos = await get(`/v1/ufc/videos?event_id=${card.data.event.id}&limit=40`);
+  const latest = await get("/v1/ufc/videos?limit=60");
+  const pool = [...(evVideos.data || []), ...(latest.data || [])];
+  const picked = selectFightWeekVideos(pool, { eventId: card.data.event.id, eventDate: card.data.event.event_date, max: 7, now: new Date(captured_at) });
+  videos = {
+    captured_at,
+    upstream_base: BASE,
+    path: `/v1/ufc/videos?event_id=${card.data.event.id}`,
+    event_id: card.data.event.id,
+    event_name: card.data.event.name,
+    ...picked,
+    raw: trimBody("videos", { ok: true, data: (evVideos.data || []).slice(0, 2), meta: evVideos.meta }),
+  };
+  note(`videos: ${picked.selected.length} selected of ${picked.counts.total} (${picked.counts.current_event} on the current card) · phase ${picked.phase} · lead ${picked.featured ? picked.featured.video_type : "none"}`);
+} catch (e) {
+  note(`videos: feed unavailable (${String(e.message).slice(0, 60)}); the previous snapshot's videos are kept`);
+}
+
 const showcase = {
   $note: "GENERATED PUBLIC SHOWCASE SNAPSHOT — do not hand-edit. Written by scripts/refresh-showcase.mjs from the canonical API. Test fixtures live in upstream/fixtures/ and are a separate, deterministic set.",
   generated_at: captured_at,
@@ -443,6 +471,7 @@ const showcase = {
     rankings: womensRank.ok && womensRank.data.divisions?.[0] ? (() => { const dv = womensRank.data.divisions[0]; const map = womensMedia?.ok ? womensMedia.data.media || {} : {}; return { ...wrap(womensRank), source: womensRank.data.source, source_url: womensRank.data.source_url, snapshot_date: womensRank.data.snapshot_date, division: { key: dv.key, label: dv.label, is_womens: dv.is_womens, champion: dv.champion ? { name: dv.champion.name, fighter_id: dv.champion.fighter_id, slug_id: dv.champion.fighter?.slug_id ?? null, primary_image: compactImage(map[dv.champion.fighter_id] || null) } : null, entries: dv.entries.map((e) => ({ rank: e.rank, name: e.name, fighter_id: e.fighter_id, slug_id: e.fighter?.slug_id ?? null, change: e.change, is_new: e.is_new, primary_image: compactImage(map[e.fighter_id] || null) })) } }; })() : null,
   },
   product_links,
+  videos,
   provenance: prov ? { ...prov, captured_at, upstream_base: BASE } : null,
   registry: { definition_version: reg.data.definition_version, origin_labels: reg.data.origin_labels, confidence_tiers: reg.data.confidence_tiers, as_of_semantics: reg.data.as_of_semantics, families: Object.fromEntries(Object.entries(reg.data.families || {}).map(([k, v]) => [k, v.map((m) => ({ metric_key: m.metric_key, display_name: m.display_name, description: m.description, unit: m.unit, formula: m.formula, min_bouts: m.min_bouts, min_rounds: m.min_rounds, min_seconds: m.min_seconds }))])) },
   upstream_calls: calls,
@@ -472,6 +501,11 @@ note(`media: ${showcase.media_coverage.stored} stored · ${showcase.media_covera
 /* ---------- 8. validate, fail closed ---------- */
 const prev = existsSync(OUT) ? JSON.parse(readFileSync(OUT, "utf8")) : null;
 const c = showcase.counts;
+/* Never publish an empty video desk because one refresh failed: keep the last good block and let the
+   captured_at on it show its age. */
+if (!showcase.videos && prev?.videos) { showcase.videos = { ...prev.videos, carried_forward_from: prev.videos.captured_at }; note("videos: carried the previous snapshot forward"); }
+
+
 for (const k of ["fighters", "events", "bouts", "results", "round_stat_rows"]) {
   if (typeof c[k] !== "number" || c[k] < 0) problems.push(`counts.${k} is not a non-negative number (${c[k]})`);
 }

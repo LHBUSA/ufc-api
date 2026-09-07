@@ -738,3 +738,40 @@ img.media-none,
   opacity: .55;
   background: #0a0806;
 }
+
+/* ===== fight-week video desk =====
+   Poster-first: nothing loads from the video provider until the viewer presses play. */
+.vdesk { display: grid; gap: clamp(14px, 1.8vw, 22px); }
+.vdesk-lead { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: clamp(14px, 1.8vw, 24px); align-items: start; }
+.vplayer { position: relative; display: block; width: 100%; aspect-ratio: 16/9; border-radius: var(--r-lg); overflow: hidden; border: 1px solid var(--line-strong); background: #0a0806; min-width: 0; }
+.vplayer img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.vplayer iframe { width: 100%; height: 100%; border: 0; display: block; }
+.vplay { position: absolute; inset: 0; width: 100%; height: 100%; padding: 0; border: 0; background: transparent; cursor: pointer; color: var(--ink); display: block; }
+.vplay::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,8,6,.05), rgba(10,8,6,.55)); }
+.vplay-btn { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 2; width: 62px; height: 62px; border-radius: 50%; background: var(--gold); color: #14110d; display: grid; place-items: center; box-shadow: 0 8px 26px rgba(0,0,0,.5); transition: transform .16s ease; }
+.vplay:hover .vplay-btn { transform: translate(-50%, -50%) scale(1.07); }
+.vplay-hint, .vplayer-link .vplay-hint { position: absolute; left: 12px; bottom: 10px; z-index: 2; font-family: var(--font-data); font-size: var(--fs-micro); letter-spacing: .05em; text-transform: uppercase; color: var(--paper-2); }
+.vplayer-link { display: block; }
+.vplayer-link::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,8,6,.05), rgba(10,8,6,.6)); }
+.vlead-meta { min-width: 0; }
+.vlead-meta h3 { font-family: var(--font-display); font-size: clamp(19px, 2.1vw, 26px); line-height: 1.22; margin: 10px 0 6px; color: var(--paper); }
+.vchips { display: flex; flex-wrap: wrap; gap: 6px; }
+.vwatch { display: inline-block; margin-top: 12px; font-size: var(--fs-sm); color: var(--gold); border-bottom: 1px solid rgba(212,175,55,.4); }
+.vwatch:hover { border-bottom-color: var(--gold); }
+.vgrid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(10px, 1.3vw, 16px); }
+.vcard { min-width: 0; }
+.vcard > a { display: grid; gap: 9px; color: inherit; min-width: 0; }
+.vthumb { position: relative; display: block; aspect-ratio: 16/9; border-radius: var(--r-md); overflow: hidden; border: 1px solid var(--line); background: #0a0806; }
+.vthumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .2s ease; }
+.vcard > a:hover .vthumb img { transform: scale(1.035); }
+.vdur { position: absolute; right: 6px; bottom: 6px; font-family: var(--font-data); font-size: 10px; padding: 2px 5px; border-radius: 4px; background: rgba(10,8,6,.86); color: var(--paper-2); }
+.vdur.vlink { left: 6px; right: auto; color: var(--gold); }
+.vcard-body { display: grid; gap: 4px; min-width: 0; }
+.vcard-body b { font-size: var(--fs-sm); line-height: 1.32; color: var(--paper); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.vnote { margin: 0; max-width: 92ch; }
+@media (max-width: 1000px) { .vdesk-lead { grid-template-columns: minmax(0, 1fr); } .vgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 620px) { .vgrid { grid-template-columns: minmax(0, 1fr); } }
+.vdocs-list { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 9px; }
+.vdocs-list li { padding-bottom: 8px; border-bottom: 1px dashed var(--line-faint); font-size: var(--fs-sm); }
+.vdocs-list li b { color: var(--paper); }
+.docs-body .vdocs-list li b { color: var(--paper); }

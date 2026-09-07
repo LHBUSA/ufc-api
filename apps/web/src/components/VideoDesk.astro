@@ -1,0 +1,107 @@
+---
+/* Fight-week video desk: one lead clip plus a supporting grid, mirroring the consumer product's "desk"
+ * variant. Metadata and links only — the footage is not ours and is not rehosted. The lead is
+ * poster-first: nothing is requested from the video provider until the viewer presses play, so the page
+ * neither ships a third-party player to everyone nor renders an iframe that might refuse to load.
+ * A clip that is not embeddable never gets a player at all; it gets a link out. */
+import { typeLabel } from "../lib/video-policy.mjs";
+import { freshness } from "../lib/freshness";
+export interface Props { videos: any; productLink?: string | null; }
+const { videos: v, productLink } = Astro.props;
+const featured = v?.featured ?? null;
+const rest = (v?.selected ?? []).filter((x: any) => !featured || x.id !== featured.id).slice(0, 6);
+const fresh = v?.captured_at ? freshness(v.captured_at) : null;
+const when = (iso: string | null) => {
+  if (!iso) return "—";
+  const h = Math.max(0, Math.round((Date.now() - Date.parse(iso)) / 3600000));
+  if (h < 1) return "just now";
+  if (h < 24) return `${h} h ago`;
+  const d = Math.round(h / 24);
+  return d === 1 ? "yesterday" : `${d} d ago`;
+};
+const dur = (s: number | null) => (s ? `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}` : null);
+---
+{featured && (
+<div class="vdesk">
+  <div class="vdesk-lead">
+    {featured.embeddable && featured.embed_url ? (
+      <div class="vplayer" data-embed={featured.embed_url} data-title={featured.title}>
+        <button type="button" class="vplay" aria-label={`Play: ${featured.title}`}>
+          {featured.thumbnail_url && <img src={featured.thumbnail_url} alt="" width="1280" height="720" loading="lazy" decoding="async" referrerpolicy="no-referrer" />}
+          <span class="vplay-btn" aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30"><path d="M8 5v14l11-7z" fill="currentColor" /></svg></span>
+          <span class="vplay-hint">Play on the provider's privacy-enhanced player</span>
+        </button>
+      </div>
+    ) : (
+      <a class="vplayer vplayer-link" href={featured.url} rel="noopener nofollow">
+        {featured.thumbnail_url && <img src={featured.thumbnail_url} alt="" width="1280" height="720" loading="lazy" decoding="async" referrerpolicy="no-referrer" />}
+        <span class="vplay-hint">Not embeddable · Watch on YouTube →</span>
+      </a>
+    )}
+    <div class="vlead-meta">
+      <div class="vchips">
+        <span class="chip gold">{featured.video_type_label || typeLabel(featured.video_type)}</span>
+        <span class="chip">{featured.language_short}</span>
+        {featured.channel?.name && <span class="chip">{featured.channel.name}</span>}
+        {dur(featured.duration_sec) && <span class="chip">{dur(featured.duration_sec)}</span>}
+      </div>
+      <h3>{featured.title}</h3>
+      <p class="small muted">{when(featured.published_at)} · {featured.attribution}{v.event_name ? ` · ${v.event_name}` : ""}</p>
+      <a class="vwatch" href={featured.url} rel="noopener nofollow">Watch on YouTube →</a>
+    </div>
+  </div>
+
+  {rest.length > 0 && (
+    <ul class="vgrid">
+      {rest.map((x: any) => (
+        <li class="vcard">
+          <a href={x.url} rel="noopener nofollow">
+            <span class="vthumb">
+              {x.thumbnail_url && <img src={x.thumbnail_url} alt="" width="480" height="270" loading="lazy" decoding="async" referrerpolicy="no-referrer" />}
+              {dur(x.duration_sec) && <span class="vdur">{dur(x.duration_sec)}</span>}
+              {!x.embeddable && <span class="vdur vlink">Link only</span>}
+            </span>
+            <span class="vcard-body">
+              <span class="vchips small">
+                <span class="chip gold">{x.video_type_label || typeLabel(x.video_type)}</span>
+                <span class="chip">{x.language_short}</span>
+              </span>
+              <b>{x.title}</b>
+              <span class="small muted">{x.channel?.name} · {when(x.published_at)}</span>
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  )}
+
+  <p class="vnote small muted">
+    Metadata and links only. Video is served by the publisher's official channel and is not hosted,
+    rehosted or redistributed by PropTechUSA, and API access conveys no rights to the footage.
+    {v.counts && <> Corpus: {v.counts.total} published clips, {v.counts.current_event} on the current card · {v.counts.en} EN · {v.counts.es} ES · {v.counts.pt} PT · {v.counts.embeddable} embeddable.</>}
+    {fresh && <> Captured {fresh.label}{v.carried_forward_from ? " (carried forward: the last refresh could not reach the feed)" : ""}.</>}
+  </p>
+  {productLink && <a class="pbe-link" href={productLink} rel="noopener"><span class="m">PropBetEdge UFC</span> See the full Fight Week experience →</a>}
+</div>
+)}
+
+<script>
+  /* Click-to-play: swap the poster for the provider's privacy-enhanced iframe only on request. */
+  document.querySelectorAll(".vplayer[data-embed]").forEach((el) => {
+    const btn = el.querySelector(".vplay");
+    if (!btn) return;
+    btn.addEventListener("click", () => {
+      const src = el.getAttribute("data-embed");
+      if (!src) return;
+      const f = document.createElement("iframe");
+      f.src = src + (src.includes("?") ? "&" : "?") + "autoplay=1&rel=0";
+      f.title = el.getAttribute("data-title") || "Official video";
+      f.allow = "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture";
+      f.referrerPolicy = "strict-origin-when-cross-origin";
+      f.setAttribute("allowfullscreen", "");
+      f.loading = "eager";
+      el.replaceChildren(f);
+      el.classList.add("playing");
+    });
+  });
+</script>

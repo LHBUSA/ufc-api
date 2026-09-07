@@ -21,6 +21,7 @@ const contract = gen.contract;
 const matrix = gen.matrix;
 /* Cross-links to the production application; resolved and liveness-checked at refresh time. */
 const links = show.product_links;
+const vids = (show as any).videos ?? null;
 const reg = ex.dna_registry;
 const sc = ex.showcase;
 const S = sc.hero.fighter.id, FIOROT = sc.fiorot.fighter.id, GRASSO = sc.grasso.fighter.id, EVENT = sc.event.event.id;
@@ -36,7 +37,7 @@ const cardExcerpt = { ok: true, data: { event: ex.noche_card.body.data.event, bo
 const rankExcerpt = ex.rankings_featherweight.body;
 const nav = [
   ["Get started", [["quickstart", "Quickstart"], ["authentication", "Authentication"], ["api-keys", "API keys"], ["plans", "Plans & limits"], ["errors", "Errors"]]],
-  ["Core data", [["events", "Events"], ["cards", "Cards"], ["fighters", "Fighters"], ["bouts", "Bouts & round stats"], ["results", "Results"], ["rankings", "Rankings"], ["media", "Media"]]],
+  ["Core data", [["events", "Events"], ["cards", "Cards"], ["fighters", "Fighters"], ["bouts", "Bouts & round stats"], ["results", "Results"], ["rankings", "Rankings"], ["media", "Media"], ["videos", "Video API"]]],
   ["Intelligence", [["fight-dna", "Fight DNA"], ["matchup-dna", "Matchup DNA"], ["as-of", "As-of snapshots"], ["confidence", "Confidence"], ["provenance", "Provenance"]]],
   ["Build guides", [["guide-fighter", "Build a fighter profile"], ["guide-card", "Build a fight card"], ["guide-compare", "Compare two fighters"], ["guide-rankings", "Build a rankings screen"], ["guide-fight-week", "Build a Fight Week app"]]],
   ["Reference", [["endpoints", "Endpoint reference"], ["origin-labels", "Origin labels"], ["schemas", "Schemas & OpenAPI"]]],
@@ -156,7 +157,34 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "TechArticle", head
       <section id="media">
         <h2>Media <span class="chip plan-developer">Developer+</span> <span class="chip media">Media</span></h2>
         <p>Fighter rows carry <code>primary_image</code> (<code>image_url</code>, <code>card_url</code> 800×1000, <code>thumb_url</code> 320×400) with <code>author</code>, <code>license</code>, <code>source_url</code>, <code>kind</code>, <code>attribution_text</code> and <code>rights_label</code>; fighter detail adds <code>images[]</code>; <code>GET /v1/ufc/fighters/media?ids=…</code> maps up to 150 ids. <b>Render the credit wherever the image is shown; the file's license governs reuse.</b> Official video metadata (<code>/videos</code>, <code>/fighters/{`{id}`}/videos</code>, <code>/events/{`{id}`}/videos</code>) returns ids, official URLs, <code>embed_url</code> and <code>attribution</code>; play through the provider, never rehost.</p>
-        <Code json={sc.fiorot.fighter.primary_image} title="primary_image (live)" />
+        <Code json={sc.fiorot.fighter.primary_image} title="primary_image" />
+      </section>
+
+      <section id="videos">
+        <h2>Video API <span class="chip plan-developer">Developer+</span> <span class="chip link">Third-party link</span></h2>
+        <p><code>GET /v1/ufc/videos</code> returns published official video metadata newest first, filterable by <code>event_id</code>, <code>fighter_id</code>, <code>bout_id</code>, <code>type</code> and <code>limit</code>. Per-entity feeds are <code>/v1/ufc/events/{`{id}`}/videos</code>, <code>/v1/ufc/fighters/{`{id}`}/videos</code> and <code>/v1/ufc/bouts/{`{id}`}/videos</code>.</p>
+        <ul>
+          <li><b>Metadata only.</b> Rows carry the provider, the provider video id, the official URL, <code>embed_url</code> on the provider's privacy-enhanced domain, thumbnail, title, channel, <code>published_at</code>, <code>duration_sec</code>, <code>video_type</code> and <code>links</code> to event, bout and fighters. The footage is not hosted, rehosted or redistributed, and API access conveys no rights to it.</li>
+          <li><b>Link status.</b> Only <code>link_status = published</code> rows are ever returned; rows in review or rejected never leave the database, so anything you receive is cleared to link.</li>
+          <li><b>Embed availability varies.</b> Check <code>embeddable</code> before building a player. When it is false, link out to <code>url</code> instead — never render an iframe you were not told would load.</li>
+          <li><b>Language is not a field.</b> The canonical feed does not carry one, so a content language must be inferred from the channel and title if you need it. The channels in the corpus today are UFC and ESPN MMA (English), UFC Espanol (Spanish) and UFC Brasil (Portuguese).</li>
+          <li><b>Availability.</b> <code>503 videos_not_available</code> while the video store is not present.</li>
+        </ul>
+        {vids?.featured && (
+          <>
+            <ApiPreview path={`/v1/ufc/videos?event_id=${vids.event_id}&limit=20`} plan="developer" json={vids.raw} captured={fmtDate(vids.captured_at)} title="Response → the fight-week desk" note="subset: 2 of the returned rows" hideRequest={false}>
+              <div class="vdocs">
+                <p class="small muted">Selected for <b>{vids.event_name}</b> · fight-week phase <b>{vids.phase}</b> · {vids.counts.total} published clips, {vids.counts.current_event} on this card · {vids.counts.en} EN · {vids.counts.es} ES · {vids.counts.pt} PT · {vids.counts.embeddable} embeddable</p>
+                <ol class="vdocs-list">
+                  {vids.selected.slice(0, 5).map((x: any) => (
+                    <li><span class="chip gold">{x.video_type_label}</span> <span class="chip">{x.language_short}</span> <b>{x.title}</b><br /><span class="small muted">{x.channel?.name} · {x.published_at?.slice(0, 10)} · {x.embeddable ? "embeddable" : "link only"}</span></li>
+                  ))}
+                </ol>
+              </div>
+            </ApiPreview>
+            <ProductionExample href={links.fight_week} surface="Fight Week" note="The production application renders the same feed as its fight-week video desk, with the same selection policy." />
+          </>
+        )}
       </section>
 
       <section id="fight-dna">
