@@ -1,0 +1,32 @@
+---
+/* "View JSON →" button + <dialog> drawer with the pretty-printed payload (secondary to the rendered preview). */
+import { hlJson } from "../lib/hl";
+export interface Props { json: unknown; title?: string; label?: string; path?: string; note?: string; }
+const { json, title = "Response", label = "View JSON →", path, note } = Astro.props;
+const id = "j" + Math.random().toString(36).slice(2, 8);
+const raw = JSON.stringify(json, null, 2);
+---
+<button type="button" class="btn ghost json-open" data-open={id}>{label}</button>
+<dialog id={id} class="json-drawer" aria-label={title}>
+  <div class="json-head">
+    <div><div class="eyebrow" style="margin:0">{title}</div>{path && <div class="mono small muted" style="margin-top:4px;word-break:break-all">GET {path}</div>}{note && <div class="small muted" style="margin-top:4px">{note}</div>}</div>
+    <div class="actions-row"><button type="button" class="btn secondary" data-copy-json>Copy JSON</button><button type="button" class="btn secondary" data-close>Close</button></div>
+  </div>
+  <pre class="json-body"><code set:html={hlJson(raw)} /></pre>
+  <textarea class="sr-only" aria-hidden="true" tabindex="-1" data-raw>{raw}</textarea>
+</dialog>
+<script>
+  if (!(window as any).__jsonDrawerInit) {
+    (window as any).__jsonDrawerInit = true;
+    document.addEventListener("click", async (e) => {
+      const t = e.target as HTMLElement;
+      const open = t.closest("[data-open]") as HTMLElement | null;
+      if (open) { const d = document.getElementById(open.getAttribute("data-open")!) as HTMLDialogElement; d?.showModal(); return; }
+      const d = t.closest("dialog.json-drawer") as HTMLDialogElement | null;
+      if (!d) return;
+      if (t.closest("[data-close]")) d.close();
+      if (t.closest("[data-copy-json]")) { const raw = (d.querySelector("[data-raw]") as HTMLTextAreaElement).value; try { await navigator.clipboard.writeText(raw); (t as HTMLElement).textContent = "Copied"; setTimeout(() => ((t as HTMLElement).textContent = "Copy JSON"), 1200); } catch {} }
+      if (e.target === d) d.close();
+    });
+  }
+</script>

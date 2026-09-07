@@ -1,0 +1,17 @@
+---
+/* Rendered rankings division from /rankings?division=. */
+export interface Props { rankings: any; limit?: number; }
+const { rankings: r, limit = 8 } = Astro.props;
+const d = r.division;
+---
+<div class="rank-preview">
+  <div class="event-head">
+    <div><div class="eyebrow" style="margin:0">{d.label}{d.is_womens ? " (W)" : ""} · snapshot {r.snapshot_date}</div><h3 style="margin:4px 0 0">{d.champion ? d.champion.name : "Vacant"} <span class="chip plan-scale" style="vertical-align:middle">Champion</span></h3></div>
+    <div class="small muted"><a href={r.source_url} rel="noopener">{r.source}</a> <span class="chip source">Source</span></div>
+  </div>
+  <ol class="rank-list">
+    {d.entries.slice(0, limit).map((e: any) => (
+      <li><span class="rank-n">{e.rank}</span><span class="rank-name">{e.name}{e.is_new && <span class="chip" style="margin-left:6px">new</span>}</span><span class:list={["rank-move", e.change > 0 ? "up" : e.change < 0 ? "down" : ""]}>{e.change > 0 ? `▲ ${e.change}` : e.change < 0 ? `▼ ${Math.abs(e.change)}` : "–"}</span></li>
+    ))}
+  </ol>
+</div>

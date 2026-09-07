@@ -28,6 +28,10 @@ mkdirSync(FIX, { recursive: true });
 /* Real, stable public fighters used for fixtures (UUIDs from the canonical API). */
 const STRICKLAND = "ec94d296-2db3-4e0d-be6a-46de4f480672";
 const DU_PLESSIS = "9a3b2a15-27d8-4554-9217-42ef2dd5d25c";
+/* Noche UFC (2026-09-12) main event, used for the portal showcases: Jean Silva (public-domain portrait) vs Jose Miguel Delgado. */
+const NOCHE_EVENT = "1d0b22df-81e7-4e5b-8fa5-8e5d03c24c52";
+const SILVA = "eed368a5-484b-412f-9d2c-a4fd6d24d019";
+const DELGADO = "55ef67ad-88fe-4f7a-b4cb-dc9a10c12feb";
 
 const FIXTURES = {
   index: "/v1/ufc",
@@ -54,6 +58,20 @@ const FIXTURES = {
   matchup_dna: `/v1/ufc/matchups/${STRICKLAND}/${DU_PLESSIS}/dna`,
   unknown_fighter_404: "/v1/ufc/fighters/00000000-0000-0000-0000-000000000000/dna",
   unknown_route_404: "/v1/ufc/does-not-exist",
+  noche_card: `/v1/ufc/events/${NOCHE_EVENT}/card`,
+  noche_event: `/v1/ufc/events/${NOCHE_EVENT}`,
+  rankings_featherweight: "/v1/ufc/rankings?division=FEATHERWEIGHT",
+  rankings_flyweight: "/v1/ufc/rankings?division=FLYWEIGHT",
+  ...(SILVA ? {
+    silva_detail: `/v1/ufc/fighters/${SILVA}?include=ranking,next,history&history_limit=5`,
+    silva_stats: `/v1/ufc/fighters/${SILVA}/stats`,
+    silva_dna: `/v1/ufc/fighters/${SILVA}/dna`,
+    silva_splits: `/v1/ufc/fighters/${SILVA}/splits`,
+    silva_round_profile: `/v1/ufc/fighters/${SILVA}/round-profile`,
+    silva_finish_profile: `/v1/ufc/fighters/${SILVA}/finish-profile`,
+    silva_videos: `/v1/ufc/fighters/${SILVA}/videos?limit=3`,
+  } : {}),
+  ...(SILVA && DELGADO ? { delgado_detail: `/v1/ufc/fighters/${DELGADO}?include=ranking`, delgado_dna: `/v1/ufc/fighters/${DELGADO}/dna`, matchup_noche: `/v1/ufc/matchups/${SILVA}/${DELGADO}/dna` } : {}),
 };
 
 async function get(path) {

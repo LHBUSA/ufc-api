@@ -1,0 +1,40 @@
+---
+/* Rendered fighter card from the /fighters/{id} response (compact projection). Portrait only when rights-cleared. */
+import { marketingImage, fmtRecord, fmtHeight, fmtInches, titleCase } from "../lib/media";
+export interface Props { fighter: any; size?: "hero" | "card" | "mini"; showCareer?: boolean; nextBout?: boolean; }
+const { fighter: f, size = "card", showCareer = false, nextBout = true } = Astro.props;
+const img = marketingImage(f.primary_image, f.name);
+const pos = (f.ranking?.positions || []).filter((p: any) => !p.is_p4p)[0] || (f.ranking?.positions || [])[0] || null;
+const rankLabel = pos ? (pos.is_champion || pos.rank === 0 ? "Champion" : `#${pos.rank}`) : null;
+const division = pos ? pos.label : null;
+const career = f.career || {};
+---
+<article class:list={["fighter", `fighter-${size}`]}>
+  <figure class="fighter-figure">
+    <img src={img.src} srcset={img.srcset} sizes={size === "hero" ? "(max-width: 640px) 60vw, 320px" : "160px"} width={img.width} height={img.height} alt={img.alt} loading={size === "hero" ? "eager" : "lazy"} decoding="async" />
+    {img.credit ? <figcaption class="credit">{img.source_url ? <a href={img.source_url} rel="noopener">{img.credit}</a> : img.credit}</figcaption> : <figcaption class="credit">No rights-cleared portrait · silhouette</figcaption>}
+  </figure>
+  <div class="fighter-body">
+    <div class="fighter-name">{f.name}{f.nickname && <span class="fighter-nick">“{f.nickname}”</span>}</div>
+    <div class="fighter-sub">{division ? titleCase(division) : "—"}{rankLabel && <span class="rank"> · {rankLabel}</span>}{f.is_active === false && <span> · inactive</span>}</div>
+    <dl class="facts">
+      <div><dt>Record</dt><dd>{fmtRecord(f)}</dd></div>
+      <div><dt>Height</dt><dd>{fmtHeight(f.height_in)}</dd></div>
+      <div><dt>Reach</dt><dd>{fmtInches(f.reach_in)}</dd></div>
+      <div><dt>Stance</dt><dd>{titleCase(f.stance)}</dd></div>
+      {size !== "mini" && <div><dt>Weight</dt><dd>{f.weight_lbs ? `${f.weight_lbs} lb` : "—"}</dd></div>}
+      {size !== "mini" && <div><dt>Fights</dt><dd>{f.fight_history_count ?? "—"}</dd></div>}
+    </dl>
+    {showCareer && (career.slpm !== null && career.slpm !== undefined) && (
+      <div class="career">
+        <div class="eyebrow" style="margin:0 0 6px;font-size:.64rem">Career stats <span class="chip source" style="margin-left:6px">Source</span></div>
+        <div class="career-grid">
+          <div><b>{career.slpm}</b><span>SLpM</span></div><div><b>{career.str_acc}%</b><span>Str. acc</span></div><div><b>{career.sapm}</b><span>SApM</span></div><div><b>{career.str_def}%</b><span>Str. def</span></div>
+          <div><b>{career.td_avg}</b><span>TD avg</span></div><div><b>{career.td_acc}%</b><span>TD acc</span></div><div><b>{career.td_def}%</b><span>TD def</span></div><div><b>{career.sub_avg}</b><span>Sub avg</span></div>
+        </div>
+        <div class="small muted" style="margin-top:6px">Career averages are display-only source facts, not as-of Fight DNA features.</div>
+      </div>
+    )}
+    {nextBout && f.next_bout?.event && <div class="next small"><span class="muted">Next:</span> {f.next_bout.event.name} · {f.next_bout.event.event_date}{f.next_bout.opponent && <span> · vs {f.next_bout.opponent.name}</span>}</div>}
+  </div>
+</article>

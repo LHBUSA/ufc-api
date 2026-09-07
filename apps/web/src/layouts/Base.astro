@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import "../styles/v2.css";
 import gen from "../generated/entitlements.json";
 
 export interface Props {
@@ -8,22 +9,26 @@ export interface Props {
   path?: string;
   ogType?: string;
   jsonLd?: unknown[];
+  breadcrumbs?: { name: string; path: string }[];
   wide?: boolean;
 }
-const { title, description, path = "/", ogType = "website", jsonLd = [] } = Astro.props;
+const { title, description, path = "/", ogType = "website", jsonLd = [], breadcrumbs = [] } = Astro.props;
 const site = "https://ufc.proptechusa.ai";
 const canonical = site + (path === "/" ? "/" : path);
 const contract = gen.contract;
 const nav = [
   { href: "/docs", label: "Docs" },
+  { href: "/workspace", label: "Workspace" },
   { href: "/pricing", label: "Pricing" },
   { href: "/learn/fight-dna", label: "Fight DNA" },
   { href: "/dashboard", label: "Dashboard" },
 ];
 const current = (href: string) => (path === href || (href !== "/" && path.startsWith(href + "/")) ? "page" : undefined);
+const crumbs = [{ name: "Home", path: "/" }, ...breadcrumbs];
 const baseLd = [
-  { "@context": "https://schema.org", "@type": "Organization", name: "PropTechUSA", url: "https://proptechusa.ai", sameAs: ["https://propbetedge.ai"] },
-  { "@context": "https://schema.org", "@type": "WebSite", name: "PropTechUSA UFC Intelligence API", url: site },
+  { "@context": "https://schema.org", "@type": "Organization", "@id": "https://proptechusa.ai/#organization", name: "PropTechUSA", url: "https://proptechusa.ai", logo: site + "/brand/ufc-api-mark.svg", sameAs: ["https://propbetedge.ai"], contactPoint: { "@type": "ContactPoint", contactType: "sales", email: "sales@proptechusa.ai" } },
+  { "@context": "https://schema.org", "@type": "WebSite", "@id": site + "/#website", name: "PropTechUSA UFC Intelligence API", url: site, publisher: { "@id": "https://proptechusa.ai/#organization" } },
+  ...(breadcrumbs.length ? [{ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: crumbs.map((c, i) => ({ "@type": "ListItem", position: i + 1, name: c.name, item: site + (c.path === "/" ? "/" : c.path) })) }] : []),
   ...jsonLd,
 ];
 ---
@@ -42,12 +47,18 @@ const baseLd = [
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={site + "/og.png"} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="PropTechUSA UFC Intelligence API — Fight DNA, Matchup DNA, events, fighters, round stats" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={site + "/og.png"} />
-    <meta name="theme-color" content="#fbfaf6" />
+    <meta name="theme-color" content="#0e6639" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
@@ -59,13 +70,13 @@ const baseLd = [
     <header class="site-header">
       <div class="wrap">
         <a class="brand" href="/" aria-label="PropTechUSA UFC Intelligence API home">
-          <span class="mark" aria-hidden="true">P</span>
+          <img src="/brand/ufc-api-mark.svg" width="34" height="34" alt="" />
           <span class="name"><b>PROPTECHUSA</b><span>UFC Intelligence API</span></span>
         </a>
         <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="site-nav"><span></span><span></span><span></span></button>
         <nav class="nav" id="site-nav" aria-label="Primary">
           {nav.map((n) => <a href={n.href} aria-current={current(n.href)}>{n.label}</a>)}
-          <a class="btn primary" href="/pricing#access">Get API access</a>
+          <a class="btn primary" href="/pricing">Get API access</a>
         </nav>
       </div>
     </header>
@@ -76,14 +87,15 @@ const baseLd = [
       <div class="wrap">
         <div class="cols">
           <div>
-            <h4>PropTechUSA UFC Intelligence API</h4>
+            <img src="/brand/ufc-api-logo-wide.svg" width="420" height="54" alt="PropTechUSA UFC Intelligence API, powered by PropBetEdge Fight DNA" style="max-width:100%;height:auto;margin-bottom:10px" loading="lazy" />
             <p>UFC data built for developers. Normalized events, fighters, cards, results and round-level statistics, plus proprietary PropBetEdge Fight DNA. PropTechUSA operates the infrastructure; PropBetEdge demonstrates what can be built with it.</p>
-            <p class="small mono">Contract {contract.api_version} · Fight DNA definitions v{contract.fight_dna_definition_version} · gateway {gen.plans ? "" : ""}<a href="/openapi.json">openapi.json</a></p>
+            <p class="small mono">Contract {contract.api_version} · Fight DNA definitions v{contract.fight_dna_definition_version} · <a href="/openapi.json">openapi.json</a></p>
           </div>
           <div>
             <h4>Product</h4>
             <ul>
               <li><a href="/docs">Documentation</a></li>
+              <li><a href="/workspace">Workspace</a></li>
               <li><a href="/docs/reference">API reference</a></li>
               <li><a href="/pricing">Pricing</a></li>
               <li><a href="/learn/fight-dna">Fight DNA methodology</a></li>

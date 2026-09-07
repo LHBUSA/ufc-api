@@ -1,0 +1,14 @@
+{
+  "name": "PropTechUSA UFC Intelligence API",
+  "short_name": "UFC API",
+  "description": "UFC data built for developers, plus proprietary PropBetEdge Fight DNA.",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#fbfaf6",
+  "theme_color": "#0e6639",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

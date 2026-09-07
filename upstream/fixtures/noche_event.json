@@ -1,0 +1,31 @@
+{
+  "captured_at": "2026-09-07T13:38:00.478Z",
+  "base": "https://ufc-api.propbetedge.ai",
+  "path": "/v1/ufc/events/1d0b22df-81e7-4e5b-8fa5-8e5d03c24c52",
+  "status": 200,
+  "api_version": "2026-09-06.3",
+  "body": {
+    "ok": true,
+    "data": {
+      "id": "1d0b22df-81e7-4e5b-8fa5-8e5d03c24c52",
+      "ufcstats_id": "638cfec7ec559d6e",
+      "espn_event_id": "600060772",
+      "name": "Noche UFC: Silva vs. Delgado",
+      "event_date": "2026-09-12",
+      "venue": "Desert Diamond Arena",
+      "city": "Glendale",
+      "region": "AZ",
+      "country": "USA",
+      "commission": null,
+      "is_ppv": null,
+      "card_status": "announced",
+      "updated_at": "2026-09-07T06:03:41.716+00:00"
+    },
+    "meta": {
+      "api": "PropSports UFC",
+      "version": "2026-09-06.3",
+      "request_id": "d07e7913-d556-45c5-8b52-0f1f60a35760",
+      "access_tier": "public"
+    }
+  }
+}

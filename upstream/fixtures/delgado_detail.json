@@ -1,0 +1,56 @@
+{
+  "captured_at": "2026-09-07T13:38:00.478Z",
+  "base": "https://ufc-api.propbetedge.ai",
+  "path": "/v1/ufc/fighters/55ef67ad-88fe-4f7a-b4cb-dc9a10c12feb?include=ranking",
+  "status": 200,
+  "api_version": "2026-09-06.3",
+  "body": {
+    "ok": true,
+    "data": {
+      "id": "55ef67ad-88fe-4f7a-b4cb-dc9a10c12feb",
+      "ufcstats_id": "7d6ceff6747f2de2",
+      "espn_athlete_id": "5223435",
+      "name": "Jose Miguel Delgado",
+      "nickname": null,
+      "dob": "1998-04-21",
+      "height_in": 71,
+      "reach_in": 73,
+      "weight_lbs": 146,
+      "stance": "SWITCH",
+      "record_w": 12,
+      "record_l": 2,
+      "record_d": 0,
+      "record_nc": 0,
+      "is_active": true,
+      "career_slpm": 6.07,
+      "career_str_acc": 53,
+      "career_sapm": 4.18,
+      "career_str_def": 52,
+      "career_td_avg": 1.37,
+      "career_td_acc": 38,
+      "career_td_def": 63,
+      "career_sub_avg": 0,
+      "fight_history_count": 6,
+      "updated_at": "2026-09-06T16:39:00.08819+00:00",
+      "slug_id": "5223435",
+      "images": [],
+      "primary_image": null,
+      "ranking": {
+        "source": "ufc.com official rankings",
+        "source_url": "https://www.ufc.com/rankings",
+        "snapshot_date": "2026-09-06",
+        "captured_at": "2026-09-06T16:10:07.916+00:00",
+        "positions": []
+      }
+    },
+    "meta": {
+      "api": "PropSports UFC",
+      "version": "2026-09-06.3",
+      "request_id": "e43536cb-3383-40e6-b36d-d5290cf14d8a",
+      "include": [
+        "ranking"
+      ],
+      "access_tier": "public"
+    }
+  }
+}

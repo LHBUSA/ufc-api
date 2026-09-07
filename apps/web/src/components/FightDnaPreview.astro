@@ -1,0 +1,44 @@
+---
+/* Fight DNA metric panel from a snapshot view. Null values render as "—" with the confidence tier; nothing is invented. */
+import { fmtNumber } from "../lib/hl";
+export interface Props { snapshot: any; title?: string; compact?: boolean; keys?: string[]; }
+const { snapshot: s, title = "Fight DNA", compact = false, keys } = Astro.props;
+const DEFAULT = ["sig_landed_per_min", "sig_accuracy", "sig_defense", "td_attempts_per_15", "td_accuracy", "finish_rate", "pace_retention_r3_vs_r1", "control_share"];
+const LABEL: Record<string, [string, string]> = {
+  sig_landed_per_min: ["Sig. strikes landed", "/min"], sig_absorbed_per_min: ["Sig. strikes absorbed", "/min"], sig_accuracy: ["Strike accuracy", "%"], sig_defense: ["Strike defense", "%"],
+  td_attempts_per_15: ["Takedown attempts", "/15"], td_landed_per_15: ["Takedowns landed", "/15"], td_accuracy: ["Takedown accuracy", "%"], control_share: ["Control share", "%"],
+  sub_attempts_per_15: ["Submission attempts", "/15"], knockdowns_per_15: ["Knockdowns", "/15"], finish_rate: ["Finish rate (wins)", "%"], ko_finish_rate: ["KO/TKO finish rate", "%"], submission_finish_rate: ["Submission finish rate", "%"],
+  pace_retention_r2_vs_r1: ["Pace retention R2/R1", "×"], pace_retention_r3_vs_r1: ["Pace retention R3/R1", "×"], head_attack_share: ["Head target share", "%"], body_attack_share: ["Body target share", "%"], leg_attack_share: ["Leg target share", "%"],
+  distance_attack_share: ["Distance share", "%"], clinch_attack_share: ["Clinch share", "%"], ground_attack_share: ["Ground share", "%"],
+};
+const list = (keys || DEFAULT).map((k) => ({ key: k, m: s?.metrics?.[k] || null, label: LABEL[k]?.[0] || k, unit: LABEL[k]?.[1] || "" }));
+const val = (m: any, unit: string) => { if (!m || m.value === null || m.value === undefined) return "—"; if (unit === "%") return `${fmtNumber(m.value * 100, 0)}%`; if (unit === "×") return `${fmtNumber(m.value, 2)}×`; return `${fmtNumber(m.value, 2)}${unit}`; };
+const minutes = s?.sample_seconds ? fmtNumber(s.sample_seconds / 60, 0) : "0";
+const covered = s && s.sample_rounds > 0;
+---
+<div class:list={["dna-panel", { compact }]}>
+  <div class="dna-head">
+    <div class="eyebrow gold" style="margin:0">{title} <span class="chip derived">PBE derived</span></div>
+    {s && <div class="mono small muted">as of {s.as_of_date} · def v{s.definition_version}</div>}
+  </div>
+  {s ? (
+    <>
+      <div class="dna-metrics">
+        {list.map(({ key, m, label, unit }) => (
+          <div class:list={["dna-metric", { none: !m || m.value === null }]}>
+            <b>{val(m, unit)}</b>
+            <span>{label}</span>
+            <small class={`conf conf-${m?.confidence || "insufficient"}`}>{m?.confidence || "insufficient"}</small>
+          </div>
+        ))}
+      </div>
+      <div class="dna-sample">
+        <span><b>Confidence</b> {covered ? s.coverage_status : "insufficient"}</span>
+        <span>{s.sample_bouts} bouts · {s.sample_rounds} rounds · {minutes} min observed</span>
+        {!covered && <span class="muted">No stat-covered rounds in scope yet: rate metrics are truthfully <code>null</code>; result-based metrics use {s.sample_completed_bouts ?? s.sample_bouts} completed bouts.</span>}
+      </div>
+    </>
+  ) : (
+    <div class="dna-sample"><span class="muted">No Fight DNA snapshot exists for this fighter yet (404 dna_not_available). Nothing is synthesized.</span></div>
+  )}
+</div>

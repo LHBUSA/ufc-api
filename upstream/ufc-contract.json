@@ -2,7 +2,7 @@
   "repository": "LHBUSA/UFC",
   "branch": "ufc-fight-dna-v1",
   "commit": "1f43e64658b22eaaff576a365d62a37dedc374ce",
-  "captured_at": "2026-09-07T12:18:42.990Z",
+  "captured_at": "2026-09-07T13:38:00.478Z",
   "upstream_base_url": "https://ufc-api.propbetedge.ai",
   "api_version": "2026-09-06.3",
   "api_name": "PropSports UFC API",
@@ -327,7 +327,5 @@
     "IMPORTANT: the deployed canonical Worker (api_version 2026-09-06.3: Fight DNA, ledger, intelligence and video routes; 2802-line workers/ufc-api/src/index.js) is NOT committed on any remote branch of LHBUSA/UFC. At the pinned commit, workers/ufc-api/src/index.js is the 2026-09-06.2 build with no DNA routes. The 2026-09-06.3 source, its tests, docs/fight_dna_api.md and the extended docs/openapi.ufc-v1.yaml exist only as uncommitted changes in a local clone (C:/Workers/ufc-propbetedge). upstream/openapi.ufc-v1.yaml in this repo is a copy of that deployed contract, captured for the drift guard.",
     "Fixtures under upstream/fixtures are verbatim live responses from the canonical host; nothing is fabricated. Re-run `node scripts/snapshot-upstream.mjs --sha <sha>` to refresh.",
     "The commercial gateway consumes the canonical API over HTTPS. It does not read Supabase and does not recompute Fight DNA."
-  ],
-  "upstream_worker_source_committed": false,
-  "upstream_openapi_snapshot": "upstream/openapi.ufc-v1.yaml"
+  ]
 }

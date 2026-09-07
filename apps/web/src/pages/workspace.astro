@@ -1,0 +1,234 @@
+---
+import Base from "../layouts/Base.astro";
+import gen from "../generated/entitlements.json";
+const plans = gen.plans.plans;
+const jsonLd = [{ "@context": "https://schema.org", "@type": "WebApplication", name: "UFC Intelligence API Workspace", url: "https://ufc.proptechusa.ai/workspace", applicationCategory: "DeveloperApplication", operatingSystem: "Any", isPartOf: { "@id": "https://ufc.proptechusa.ai/#website" }, description: "In-browser developer workspace: search fighters, run Fight DNA and Matchup DNA, render cards and rankings, inspect requests and copy code." }];
+---
+<Base title="Workspace | PropTechUSA UFC Intelligence API" description="Test the UFC Intelligence API in your browser: fighter explorer, Matchup DNA builder, current card, rankings, Fight DNA, request inspector with copyable cURL, JavaScript and Python." path="/workspace" jsonLd={jsonLd} breadcrumbs={[{ name: "Workspace", path: "/workspace" }]}>
+  <div class="wrap ws">
+    <aside class="ws-rail" aria-label="Workspace tools" id="rail">
+      <h5>Start</h5>
+      <button data-tool="card">Current card</button>
+      <h5>Explore</h5>
+      <button data-tool="fighter">Fighters</button>
+      <button data-tool="events">Events</button>
+      <button data-tool="rankings">Rankings</button>
+      <h5>Intelligence</h5>
+      <button data-tool="dna">Fight DNA</button>
+      <button data-tool="matchup">Matchup DNA</button>
+      <h5>Any endpoint</h5>
+      <button data-tool="custom">Request builder</button>
+    </aside>
+    <div class="ws-main">
+      <div class="ws-conn">
+        <img src="/brand/ufc-api-mark.svg" width="28" height="28" alt="" />
+        <input id="ws-key" type="password" autocomplete="off" spellcheck="false" placeholder="Paste your API key (pt_ufc_live_…)" aria-label="API key" />
+        <button class="btn primary" id="ws-connect" type="button">Connect</button>
+        <span class="ws-status" id="ws-status">Not connected</span>
+        <a class="small" href="/pricing" id="ws-getkey">Need a key?</a>
+      </div>
+      <select class="ws-rail-select" id="rail-select" aria-label="Workspace tool">
+        <option value="card">Current card</option><option value="fighter">Fighters</option><option value="events">Events</option><option value="rankings">Rankings</option><option value="dna">Fight DNA</option><option value="matchup">Matchup DNA</option><option value="custom">Request builder</option>
+      </select>
+      <div class="ws-tool" id="ws-tool"></div>
+      <div class="ws-result" id="ws-result" hidden>
+        <div class="ws-tabs" role="tablist"><button role="tab" aria-selected="true" data-view="preview">Preview</button><button role="tab" aria-selected="false" data-view="json">JSON</button><span style="margin-left:auto" class="actions-row"><button class="btn ghost" id="ws-copy-json" type="button">Copy JSON</button><button class="btn ghost" id="ws-dl-json" type="button">Download</button></span></div>
+        <div class="ws-out" id="ws-preview"></div>
+        <pre class="ws-json" id="ws-jsonpre" hidden></pre>
+        <div class="card flat" style="padding:14px">
+          <p class="eyebrow" style="margin:0 0 8px">Request inspector</p>
+          <div class="ws-inspect">
+            <div><small>Request</small><b id="i-path">—</b></div><div><small>Status</small><b id="i-status">—</b></div><div><small>Latency</small><b id="i-latency">—</b></div><div><small>Plan</small><b id="i-plan">—</b></div><div><small>Rate limit</small><b id="i-rate">—</b></div><div><small>Request id</small><b id="i-rid">—</b></div>
+          </div>
+          <div class="actions-row" style="margin-top:10px"><button class="btn secondary" type="button" data-snip="curl">Copy cURL</button><button class="btn secondary" type="button" data-snip="js">Copy JS</button><button class="btn secondary" type="button" data-snip="py">Copy Python</button><span class="status-line" id="i-msg"></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script define:vars={{ PLAN_NAMES: Object.fromEntries(Object.entries(plans).map(([k, v]) => [k, (v as any).name])) }}>
+    /* ===== UFC Workspace (client) — the key is stored in localStorage only and sent solely to this origin's /v1 and /dashboard/api routes. Never logged. ===== */
+    const $ = (id) => document.getElementById(id);
+    const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+    const SIL = "/brand/fighter-silhouette.svg";
+    const ORIGIN = location.origin;
+    let KEY = ""; try { KEY = localStorage.getItem("ufc_ws_key") || ""; } catch {}
+    let planKey = null; let last = null; let tool = "card"; let pick = { a: null, b: null, f: null, d: null }; let cache = {};
+    const num = (v, d = 2) => (v === null || v === undefined ? "—" : Number(v).toLocaleString("en-US", { maximumFractionDigits: d }));
+    const pct = (v) => (v === null || v === undefined ? "—" : Math.round(v * 100) + "%");
+    const inch = (v) => (v === null || v === undefined ? "—" : v + '"');
+    const rec = (f) => (f && f.record_w !== null && f.record_w !== undefined ? `${f.record_w}-${f.record_l ?? 0}-${f.record_d ?? 0}${f.record_nc ? ` (${f.record_nc} NC)` : ""}` : "—");
+    const tc = (s) => (s ? String(s).toLowerCase().replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()) : "—");
+    const img = (f) => f?.primary_image?.card_url || f?.primary_image?.thumb_url || SIL;
+    const credit = (f) => (f?.primary_image?.attribution_text ? `<div class="credit">${esc(f.primary_image.attribution_text)}</div>` : f?.primary_image ? "" : `<div class="credit">no portrait · silhouette</div>`);
+    const rankOf = (f) => { const p = (f?.ranking?.positions || []).filter((x) => !x.is_p4p)[0]; return p ? (p.rank === 0 || p.is_champion ? "Champion" : `#${p.rank} ${tc(p.label)}`) : null; };
+    const chip = (plan) => `<span class="chip plan-${plan}">${esc(PLAN_NAMES[plan] || plan)}+</span>`;
+
+    function setStatus(text, cls) { const s = $("ws-status"); s.textContent = text; s.className = "ws-status" + (cls ? " " + cls : ""); }
+    async function connect() {
+      KEY = $("ws-key").value.trim();
+      if (!KEY) return setStatus("Paste a key", "bad");
+      setStatus("Connecting…");
+      try {
+        const r = await fetch("/dashboard/api/me", { headers: { authorization: `Bearer ${KEY}` } });
+        const b = await r.json();
+        if (!b.ok) { planKey = null; setStatus("Invalid key", "bad"); return; }
+        planKey = b.data.plan.key; try { localStorage.setItem("ufc_ws_key", KEY); } catch {}
+        setStatus(`Connected · ${b.data.plan.name} plan`, "ok"); $("ws-getkey").hidden = true;
+      } catch { setStatus("Connection failed", "bad"); }
+    }
+    $("ws-connect").addEventListener("click", connect);
+    $("ws-key").addEventListener("keydown", (e) => { if (e.key === "Enter") connect(); });
+    if (KEY) { $("ws-key").value = KEY; connect(); }
+
+    async function api(path) {
+      if (!KEY) { setStatus("Connect a key first", "bad"); throw new Error("no_key"); }
+      const t0 = performance.now();
+      const r = await fetch(ORIGIN + path, { headers: { authorization: `Bearer ${KEY}`, accept: "application/json" } });
+      const ms = Math.round(performance.now() - t0);
+      const body = await r.json().catch(() => ({ ok: false, error: { code: "invalid_json", message: "Non-JSON response" } }));
+      last = { path, status: r.status, ms, body, plan: r.headers.get("x-plan"), rl: r.headers.get("x-ratelimit-remaining"), rlMax: r.headers.get("x-ratelimit-limit"), q: r.headers.get("x-quota-remaining"), qMax: r.headers.get("x-quota-limit"), rid: r.headers.get("x-request-id") };
+      inspect(last);
+      return last;
+    }
+    function inspect(l) {
+      $("ws-result").hidden = false;
+      $("i-path").textContent = "GET " + l.path; $("i-status").textContent = String(l.status); $("i-latency").textContent = l.ms + " ms"; $("i-plan").textContent = l.plan || "—";
+      $("i-rate").textContent = l.q && l.qMax ? `${Number(l.q).toLocaleString("en-US")} / ${l.qMax === "unlimited" ? "∞" : Number(l.qMax).toLocaleString("en-US")}` : l.rl ? `${l.rl}/${l.rlMax} per min` : "—";
+      $("i-rid").textContent = l.rid || "—";
+      $("ws-jsonpre").textContent = JSON.stringify(l.body, null, 2);
+      showView("preview");
+    }
+    function showView(v) { document.querySelectorAll("[data-view]").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.view === v))); $("ws-preview").hidden = v !== "preview"; $("ws-jsonpre").hidden = v !== "json"; }
+    document.querySelectorAll("[data-view]").forEach((b) => b.addEventListener("click", () => showView(b.dataset.view)));
+    $("ws-copy-json").addEventListener("click", async () => { try { await navigator.clipboard.writeText($("ws-jsonpre").textContent); $("i-msg").textContent = "JSON copied"; } catch {} });
+    $("ws-dl-json").addEventListener("click", () => { const blob = new Blob([$("ws-jsonpre").textContent], { type: "application/json" }); const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "ufc-api-response.json"; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000); });
+    document.querySelectorAll("[data-snip]").forEach((b) => b.addEventListener("click", async () => {
+      if (!last) return; const url = ORIGIN + last.path; const k = b.dataset.snip;
+      const s = k === "curl" ? `curl -H "Authorization: Bearer $UFC_API_KEY" "${url}"` : k === "js" ? `const res = await fetch("${url}", { headers: { Authorization: \`Bearer \${process.env.UFC_API_KEY}\` } });\nconst { ok, data, meta } = await res.json();` : `import os, requests\nres = requests.get("${url}", headers={"Authorization": f"Bearer {os.environ['UFC_API_KEY']}"})\nbody = res.json()`;
+      try { await navigator.clipboard.writeText(s); $("i-msg").textContent = "Snippet copied (uses $UFC_API_KEY, never your literal key)"; } catch {}
+    }));
+
+    /* ---------- renderers (mirror the portal's preview components) ---------- */
+    function gate(body) { const d = body?.error?.detail || {}; return `<div class="ws-gate"><b>${esc((d.required_plan || "higher").toUpperCase())} REQUIRED</b><div>${esc(body?.error?.message || "")}</div><div class="small muted">Your plan: ${esc(d.current_plan || planKey || "—")}. ${d.parameter ? `Parameter <code>${esc(d.parameter.name)}=${esc(d.parameter.value)}</code> is gated.` : ""}</div><div><a class="btn gold" href="${esc(d.upgrade_url || "/pricing")}">Upgrade →</a></div></div>`; }
+    function errBox(body, status) { return `<div class="ws-err"><b>${status} ${esc(body?.error?.code || "error")}</b> — ${esc(body?.error?.message || "")}${body?.error?.detail ? `<div class="small mono" style="margin-top:4px">${esc(JSON.stringify(body.error.detail)).slice(0, 300)}</div>` : ""}</div>`; }
+    function handle(l, render) { if (l.status === 403 && l.body?.error?.code === "plan_required") return gate(l.body); if (!l.body?.ok) return errBox(l.body, l.status); return render(l.body.data, l.body.meta); }
+    function fighterCard(f, size = "card", extra = "") {
+      const r = rankOf(f); const div = (f.ranking?.positions || []).filter((x) => !x.is_p4p)[0]?.label;
+      return `<article class="fighter fighter-${size}"><figure class="fighter-figure"><img src="${esc(img(f))}" alt="${esc(f.name)}" width="800" height="1000" loading="lazy">${credit(f)}</figure><div class="fighter-body"><div class="fighter-name">${esc(f.name)}${f.nickname ? `<span class="fighter-nick">“${esc(f.nickname)}”</span>` : ""}</div><div class="fighter-sub">${div ? esc(tc(div)) : "—"}${r ? ` · <span class="rank">${esc(r)}</span>` : ""}</div><dl class="facts"><div><dt>Record</dt><dd>${rec(f)}</dd></div><div><dt>Height</dt><dd>${f.height_in ? `${Math.floor(f.height_in / 12)}'${f.height_in % 12}"` : "—"}</dd></div><div><dt>Reach</dt><dd>${inch(f.reach_in)}</dd></div><div><dt>Stance</dt><dd>${esc(tc(f.stance))}</dd></div><div><dt>Weight</dt><dd>${f.weight_lbs ? f.weight_lbs + " lb" : "—"}</dd></div><div><dt>Fights</dt><dd>${f.fight_history_count ?? "—"}</dd></div></dl>${f.next_bout?.event ? `<div class="next small"><span class="muted">Next:</span> ${esc(f.next_bout.event.name)} · ${esc(f.next_bout.event.event_date)}${f.next_bout.opponent ? ` · vs ${esc(f.next_bout.opponent.name)}` : ""}</div>` : ""}${extra}</div></article>`;
+    }
+    const DNA_LABELS = { sig_landed_per_min: ["Sig. strikes landed", "n", "/min"], sig_absorbed_per_min: ["Sig. strikes absorbed", "n", "/min"], sig_accuracy: ["Strike accuracy", "%"], sig_defense: ["Strike defense", "%"], td_attempts_per_15: ["TD attempts", "n", "/15"], td_landed_per_15: ["TD landed", "n", "/15"], td_accuracy: ["TD accuracy", "%"], control_share: ["Control share", "%"], sub_attempts_per_15: ["Sub attempts", "n", "/15"], knockdowns_per_15: ["Knockdowns", "n", "/15"], finish_rate: ["Finish rate", "%"], ko_finish_rate: ["KO finish rate", "%"], submission_finish_rate: ["Sub finish rate", "%"], pace_retention_r2_vs_r1: ["Pace R2/R1", "x"], pace_retention_r3_vs_r1: ["Pace R3/R1", "x"], head_attack_share: ["Head share", "%"], body_attack_share: ["Body share", "%"], leg_attack_share: ["Leg share", "%"], distance_attack_share: ["Distance share", "%"], clinch_attack_share: ["Clinch share", "%"], ground_attack_share: ["Ground share", "%"] };
+    function mval(m, u, suffix = "") { if (!m || m.value === null || m.value === undefined) return "—"; return u === "%" ? pct(m.value) : u === "x" ? num(m.value, 2) + "×" : num(m.value, 2) + suffix; }
+    function dnaPanel(s, keys) {
+      if (!s) return `<div class="dna-panel"><div class="ws-empty">No snapshot.</div></div>`;
+      keys = keys || ["sig_landed_per_min", "sig_accuracy", "sig_defense", "td_attempts_per_15", "td_accuracy", "finish_rate", "pace_retention_r3_vs_r1", "control_share", "knockdowns_per_15", "head_attack_share", "distance_attack_share", "sub_attempts_per_15"];
+      const covered = s.sample_rounds > 0;
+      return `<div class="dna-panel"><div class="dna-head"><div class="eyebrow gold" style="margin:0">Fight DNA <span class="chip derived">PBE derived</span></div><div class="mono small muted">as of ${esc(s.as_of_date)} · def v${s.definition_version}</div></div><div class="dna-metrics">${keys.map((k) => { const m = s.metrics?.[k]; const L = DNA_LABELS[k] || [k, "n"]; return `<div class="dna-metric${!m || m.value === null ? " none" : ""}"><b>${mval(m, L[1], L[2] || "")}</b><span>${esc(L[0])}</span><small class="conf conf-${m?.confidence || "insufficient"}">${esc(m?.confidence || "insufficient")}</small></div>`; }).join("")}</div><div class="dna-sample"><span><b>Coverage</b> ${esc(covered ? s.coverage_status : "insufficient")}</span><span>${s.sample_bouts} bouts · ${s.sample_rounds} rounds · ${num(s.sample_seconds / 60, 0)} min observed</span>${covered ? "" : `<span class="muted">No stat-covered rounds in scope: rate metrics are truthfully null.</span>`}</div></div>`;
+    }
+    function tape(m) {
+      const [A, B] = m.fighters; const cmp = Object.fromEntries(m.comparisons.map((c) => [c.key, c]));
+      const rows = [["sig_landed_per_min", "Pace (sig. landed/min)", "n"], ["sig_accuracy", "Strike accuracy", "%"], ["sig_defense", "Strike defense", "%"], ["distance_attack_share", "Distance share", "%"], ["td_attempts_per_15", "TD attempts /15", "n"], ["td_accuracy", "TD accuracy", "%"], ["control_seconds_per_td", "Control s / TD", "n"], ["pace_retention_r3_vs_r1", "Pace R3/R1", "x"], ["finish_rate", "Finish rate", "%"]];
+      const side = (f, right) => `<div class="vs-fighter${right ? " right" : ""}"><figure class="fighter-figure"><img src="${esc(img(f))}" alt="${esc(f.name)}" width="800" height="1000" loading="lazy">${credit(f)}</figure><div><div class="fighter-name">${esc(f.name)}</div><div class="fighter-sub">${rec(f)} · ${esc(rankOf(f) || "Unranked")}</div></div></div>`;
+      const show = (s, u) => mval(s, u);
+      return `<div class="vs"><div class="vs-head">${side(A, false)}<div class="vs-badge">VS</div>${side(B, true)}</div><table class="tape"><tbody><tr><td>${inch(A.reach_in)}</td><th>Reach</th><td>${inch(B.reach_in)}</td></tr><tr><td>${esc(tc(A.stance))}</td><th>Stance</th><td>${esc(tc(B.stance))}</td></tr>${rows.map(([k, l, u]) => { const c = cmp[k]; return `<tr><td class="${c?.direction === "a" ? "win" : ""}">${show(c?.a, u)}</td><th>${esc(l)}<small class="muted">${esc(c?.a?.confidence || "—")} / ${esc(c?.b?.confidence || "—")}</small></th><td class="${c?.direction === "b" ? "win" : ""}">${show(c?.b, u)}</td></tr>`; }).join("")}</tbody></table><div class="vs-meta small muted">Stance context: <b>${esc(m.stance_context?.context?.replace(/_/g, " "))}</b>. “—” = no stat-covered rounds for that fighter. Reach, stance and rank composed from <code>/fighters/{id}</code>.</div>${m.insights?.length ? `<div class="reads"><div class="eyebrow gold" style="margin:0 0 6px">Matchup read <span class="chip derived">PBE derived</span></div><ul>${m.insights.map((i) => `<li><b>${esc(i.label)}.</b> ${esc(i.explanation)} <span class="conf conf-${esc(i.confidence)}">${esc(i.confidence)}</span></li>`).join("")}</ul></div>` : ""}${m.warnings?.length ? `<details class="small muted" style="margin-top:8px"><summary>${m.warnings.length} thresholds not met (warnings[])</summary><ul>${m.warnings.map((w) => `<li>${esc(w)}</li>`).join("")}</ul></details>` : ""}<div class="small muted" style="margin-top:8px">${esc(m.note || "")}</div></div>`;
+    }
+    function eventCard(d) {
+      const bouts = [...d.bouts].sort((a, b) => b.bout_order - a.bout_order); const main = bouts[0];
+      const sideM = (f, right) => `<div class="main-side${right ? " right" : ""}"><img src="${esc(img(f))}" alt="${esc(f.name)}" width="64" height="80" loading="lazy"><div><div class="fighter-name">${esc(f.name)}</div><div class="fighter-sub">${rec(f)} · ${esc(tc(f.stance))}</div>${credit(f)}</div></div>`;
+      const group = (pos) => bouts.filter((b) => b !== main && (b.card_position || "main") === pos);
+      const list = (title, arr) => arr.length ? `<div class="eyebrow" style="margin:14px 0 6px">${title}</div><ol class="bout-list">${arr.map((b) => `<li><span class="mono small muted">${b.is_title ? "Title · " : ""}${b.scheduled_rounds}R</span><span class="bout-names">${esc(b.fighter_a.name)} <em>vs</em> ${esc(b.fighter_b.name)}</span><span class="small muted">${esc(tc(b.weight_class))}${b.is_womens ? " (W)" : ""}${b.result ? ` · ${esc(b.result.method || "result")}` : ""}</span></li>`).join("")}</ol>` : "";
+      const positions = [...new Set(bouts.map((b) => b.card_position || "main"))];
+      return `<div class="card-preview"><div class="event-head"><div><div class="eyebrow" style="margin:0">${esc(d.event.event_date)} · ${esc(d.event.venue || "")}${d.event.city ? ", " + esc(d.event.city) : ""}</div><h3 style="margin:4px 0 0">${esc(d.event.name)}</h3></div><div class="event-meta mono small"><span class="chip">${esc(d.event.card_status || "")}</span><span>${d.bouts.length} bouts</span></div></div>${main ? `<div class="main-event"><div class="eyebrow gold" style="margin:0 0 8px">Main event · ${esc(tc(main.weight_class))}${main.is_title ? " · Title" : ""} · ${main.scheduled_rounds} rounds</div><div class="main-row">${sideM(main.fighter_a, false)}<div class="vs-badge">VS</div>${sideM(main.fighter_b, true)}</div></div>` : ""}${positions.map((p) => list(tc(p) + (p === "main" ? " card" : ""), group(p))).join("")}</div>`;
+    }
+    function rankingsView(d) {
+      return d.divisions.map((dv) => `<div class="rank-preview"><div class="event-head"><div><div class="eyebrow" style="margin:0">${esc(dv.label)}${dv.is_womens ? " (W)" : ""} · snapshot ${esc(d.snapshot_date)}</div><h3 style="margin:4px 0 0">${dv.champion ? esc(dv.champion.name) : (dv.is_p4p ? "Pound-for-pound" : "Vacant")} ${dv.champion ? '<span class="chip plan-scale">Champion</span>' : ""}</h3></div><div class="small muted"><a href="${esc(d.source_url)}" rel="noopener">${esc(d.source)}</a> <span class="chip source">Source</span></div></div><ol class="rank-list">${dv.entries.map((e) => `<li><span class="rank-n">${e.rank}</span><span class="rank-name">${e.fighter ? `<a href="#" data-open-fighter="${esc(e.fighter.id)}">${esc(e.name)}</a>` : esc(e.name)}${e.is_new ? ' <span class="chip">new</span>' : ""}</span><span class="rank-move ${e.change > 0 ? "up" : e.change < 0 ? "down" : ""}">${e.change > 0 ? "▲ " + e.change : e.change < 0 ? "▼ " + Math.abs(e.change) : "–"}</span></li>`).join("")}</ol></div>`).join("<div style='height:16px'></div>");
+    }
+    function historyView(d) { const rows = d.bouts || d.history || []; return rows.length ? `<ul class="hist-list">${rows.map((h) => `<li><span class="outcome ${esc(h.outcome || "none")}">${esc(h.outcome || "—")}</span><span><b>${esc(h.opponent?.name || "TBA")}</b><br><span class="small muted">${esc(h.event?.name || "")} · ${esc(h.event?.event_date || "")} · ${esc(tc(h.weight_class))}</span></span><span class="small muted">${esc(h.result?.method || (h.outcome ? "" : "scheduled"))}${h.result?.round ? ` · R${h.result.round} ${esc(h.result.time || "")}` : ""}</span></li>`).join("")}</ul>` : `<div class="ws-empty">No bouts.</div>`; }
+    function statsView(d) {
+      const cr = d.computed?.career_rates || {}; const p = d.computed?.provenance || {};
+      const items = [["sig_str_landed_per_min", "Sig. landed /min", "n"], ["sig_str_accuracy", "Sig. accuracy", "%"], ["td_per_15min", "TD /15", "n"], ["td_accuracy", "TD accuracy", "%"], ["kd_per_15min", "KD /15", "n"], ["ctrl_share", "Control share", "%"], ["head_share", "Head share", "%"], ["distance_share", "Distance share", "%"]];
+      return `<div class="dna-panel" style="background:var(--surface);border-color:var(--line)"><div class="dna-head"><div class="eyebrow" style="margin:0">Computed career rates <span class="chip derived">PBE derived</span></div><div class="mono small muted">${p.bouts_with_stats ?? 0} bouts with stats · ${p.rounds ?? 0} rounds</div></div><div class="dna-metrics">${items.map(([k, l, u]) => `<div class="dna-metric${cr[k] === null || cr[k] === undefined ? " none" : ""}"><b>${cr[k] === null || cr[k] === undefined ? "—" : u === "%" ? pct(cr[k]) : num(cr[k], 2)}</b><span>${esc(l)}</span></div>`).join("")}</div><div class="dna-sample"><span class="muted">${esc(p.coverage_note || d.warning || "")}</span></div></div>${d.career_snapshot ? `<div class="career" style="margin-top:12px"><div class="eyebrow" style="margin:0 0 6px;font-size:.64rem">Career snapshot (display) <span class="chip source">Source</span></div><div class="career-grid">${Object.entries(d.career_snapshot).map(([k, v]) => `<div><b>${v ?? "—"}</b><span>${esc(k.replace(/_/g, " "))}</span></div>`).join("")}</div></div>` : ""}<div class="small muted" style="margin-top:10px">${(d.round_stats || []).length} round rows in <code>round_stats[]</code> (see JSON).</div>`;
+    }
+    function mediaView(f, vids) {
+      const imgs = f.images || (f.primary_image ? [f.primary_image] : []);
+      return `<div class="eyebrow">Images <span class="chip media">Media</span></div>${imgs.length ? `<div class="media-grid">${imgs.map((i) => `<figure><img src="${esc(i.card_url || i.image_url)}" alt="${esc(f.name)}" width="800" height="1000" loading="lazy"><figcaption class="credit">${esc(i.attribution_text || [i.author, i.license].filter(Boolean).join(", "))}${i.source_url ? ` · <a href="${esc(i.source_url)}" rel="noopener">source</a>` : ""}</figcaption></figure>`).join("")}</div>` : `<div class="ws-empty">No rights-cleared images for this fighter.</div>`}<div class="eyebrow" style="margin-top:16px">Official videos <span class="chip link">Third-party link</span></div>${vids?.length ? `<ul class="video-list">${vids.map((v) => `<li><img src="${esc(v.thumbnail_url || "")}" alt="" width="96" height="54" loading="lazy"><div><a href="${esc(v.url)}" rel="noopener">${esc(v.title)}</a><div class="small muted">${esc(v.attribution)} · ${esc(v.video_type_label || v.video_type || "")} · ${esc((v.published_at || "").slice(0, 10))}</div></div></li>`).join("")}</ul>` : `<div class="ws-empty">No published videos linked.</div>`}`;
+    }
+    function generic(data) {
+      if (Array.isArray(data)) { if (!data.length) return `<div class="ws-empty">Empty array.</div>`; const cols = [...new Set(data.flatMap((r) => Object.keys(r || {})))].filter((c) => data.some((r) => typeof r[c] !== "object" || r[c] === null)).slice(0, 8); return `<div class="table-wrap"><table class="ws-table"><thead><tr>${cols.map((c) => `<th>${esc(c)}</th>`).join("")}</tr></thead><tbody>${data.slice(0, 50).map((r) => `<tr>${cols.map((c) => `<td>${esc(typeof r[c] === "object" && r[c] !== null ? JSON.stringify(r[c]).slice(0, 60) : r[c])}</td>`).join("")}</tr>`).join("")}</tbody></table></div>${data.length > 50 ? `<div class="small muted">Showing 50 of ${data.length} rows.</div>` : ""}`; }
+      if (data && typeof data === "object") return `<dl class="ws-kv">${Object.entries(data).map(([k, v]) => `<dt>${esc(k)}</dt><dd>${typeof v === "object" && v !== null ? `<code>${esc(JSON.stringify(v)).slice(0, 160)}${JSON.stringify(v).length > 160 ? "…" : ""}</code>` : esc(String(v))}</dd>`).join("")}</dl>`;
+      return `<pre class="ws-json">${esc(JSON.stringify(data, null, 2))}</pre>`;
+    }
+    const out = (html) => { $("ws-preview").innerHTML = html; showView("preview"); };
+
+    /* ---------- fighter search ---------- */
+    function searchBox(id, placeholder, onPick) {
+      const wrap = document.createElement("div"); wrap.className = "ws-search";
+      wrap.innerHTML = `<input type="text" autocomplete="off" placeholder="${esc(placeholder)}" aria-label="${esc(placeholder)}"><div class="ws-ac" hidden></div>`;
+      const inp = wrap.querySelector("input"), ac = wrap.querySelector(".ws-ac"); let t;
+      inp.addEventListener("input", () => { clearTimeout(t); const q = inp.value.trim(); if (q.length < 2) { ac.hidden = true; return; } t = setTimeout(async () => { try { const r = await fetch(ORIGIN + `/v1/ufc/fighters?q=${encodeURIComponent(q)}&limit=8`, { headers: { authorization: `Bearer ${KEY}` } }); const b = await r.json(); if (!b.ok) { ac.innerHTML = `<button type="button" disabled>${esc(b.error?.message || "Search failed")}</button>`; ac.hidden = false; return; } const rows = b.data || []; ac.innerHTML = rows.length ? rows.map((f) => `<button type="button" data-id="${esc(f.id)}"><img src="${esc(img(f))}" alt=""><span><b>${esc(f.name)}</b><small>${rec(f)} · ${esc(tc(f.stance))} · ${f.is_active === false ? "inactive" : "active"}</small></span></button>`).join("") : `<button type="button" disabled>No fighters match “${esc(q)}”</button>`; ac.hidden = false; ac.querySelectorAll("button[data-id]").forEach((btn) => btn.addEventListener("click", () => { const f = rows.find((x) => x.id === btn.dataset.id); ac.hidden = true; inp.value = f.name; onPick(f); })); } catch { ac.hidden = true; } }, 220); });
+      document.addEventListener("click", (e) => { if (!wrap.contains(e.target)) ac.hidden = true; });
+      return wrap;
+    }
+    const pickHtml = (f) => (f ? `<div class="ws-pick"><img src="${esc(img(f))}" alt=""><b>${esc(f.name)}</b><span class="small muted">${rec(f)}</span></div>` : "");
+
+    /* ---------- tools ---------- */
+    async function fighterById(id) { if (cache["f:" + id]) return cache["f:" + id]; const l = await api(`/v1/ufc/fighters/${encodeURIComponent(id)}?include=ranking,next`); if (l.body?.ok) cache["f:" + id] = l.body.data; return l.body?.ok ? l.body.data : null; }
+    const tools = {
+      card: { title: "Current card", desc: "Zero-configuration first test: the next upcoming event and its full card.", render(root) {
+        root.innerHTML = `<h3>Current card</h3><p class="small muted">GET /v1/ufc/events?status=upcoming&limit=1 → GET /v1/ufc/events/{id}/card</p><div class="actions-row"><button class="btn primary" id="run-card" type="button">Run current card</button></div>`;
+        $("run-card").addEventListener("click", async () => { const e = await api("/v1/ufc/events?status=upcoming&limit=1"); if (!e.body?.ok || !e.body.data?.length) return out(handle(e, () => `<div class="ws-empty">No upcoming events.</div>`)); const id = e.body.data[0].id; const c = await api(`/v1/ufc/events/${id}/card?include=media,results`); out(handle(c, eventCard)); });
+        if (new URLSearchParams(location.search).get("tool") === "card") setTimeout(() => KEY && $("run-card").click(), 300);
+      } },
+      events: { title: "Events", render(root) {
+        root.innerHTML = `<h3>Events</h3><div class="ws-form"><div class="ws-two"><select id="ev-status"><option value="upcoming">Upcoming</option><option value="recent">Recent</option><option value="all">All</option></select><input type="text" id="ev-limit" value="10" aria-label="limit"></div><div class="actions-row"><button class="btn primary" id="run-ev" type="button">List events</button></div><div id="ev-list"></div></div>`;
+        $("run-ev").addEventListener("click", async () => { const l = await api(`/v1/ufc/events?status=${$("ev-status").value}&limit=${encodeURIComponent($("ev-limit").value || 10)}`); out(handle(l, (d) => `<div class="table-wrap"><table class="ws-table"><thead><tr><th>Date</th><th>Event</th><th>Venue</th><th>Status</th><th></th></tr></thead><tbody>${d.map((e) => `<tr><td class="mono small">${esc(e.event_date)}</td><td><b>${esc(e.name)}</b></td><td class="small">${esc(e.venue || "")}${e.city ? ", " + esc(e.city) : ""}</td><td><span class="chip">${esc(e.card_status || "")}</span></td><td><button class="btn ghost" type="button" data-card="${esc(e.id)}">Card →</button></td></tr>`).join("")}</tbody></table></div>`)); $("ws-preview").querySelectorAll("[data-card]").forEach((b) => b.addEventListener("click", async () => { const c = await api(`/v1/ufc/events/${b.dataset.card}/card?include=media,results`); out(handle(c, eventCard)); })); });
+      } },
+      fighter: { title: "Fighters", render(root) {
+        root.innerHTML = `<h3>Fighter explorer</h3><p class="small muted">Search by name; no UUIDs needed. Tabs run the relevant endpoint.</p><div class="ws-form"><div id="f-search"></div><div id="f-pick"></div><div class="ws-tabs" id="f-tabs" hidden><button data-ft="overview" aria-selected="true">Overview</button><button data-ft="history">History</button><button data-ft="stats">Stats ${chip("pro")}</button><button data-ft="dna">Fight DNA ${chip("pro")}</button><button data-ft="media">Media</button></div></div>`;
+        const run = async (ft) => { const f = pick.f; if (!f) return; $("f-tabs").querySelectorAll("[data-ft]").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.ft === ft)));
+          if (ft === "overview") { const l = await api(`/v1/ufc/fighters/${f.id}?include=ranking,next`); out(handle(l, (d) => fighterCard(d, "hero", d.career_slpm !== null && d.career_slpm !== undefined ? `<div class="career"><div class="eyebrow" style="margin:0 0 6px;font-size:.64rem">Career stats <span class="chip source">Source</span></div><div class="career-grid"><div><b>${d.career_slpm}</b><span>SLpM</span></div><div><b>${d.career_str_acc}%</b><span>Str acc</span></div><div><b>${d.career_sapm}</b><span>SApM</span></div><div><b>${d.career_str_def}%</b><span>Str def</span></div><div><b>${d.career_td_avg}</b><span>TD avg</span></div><div><b>${d.career_td_acc}%</b><span>TD acc</span></div><div><b>${d.career_td_def}%</b><span>TD def</span></div><div><b>${d.career_sub_avg}</b><span>Sub avg</span></div></div></div>` : ""))); }
+          if (ft === "history") { const l = await api(`/v1/ufc/fighters/${f.id}/history?limit=25`); out(handle(l, historyView)); }
+          if (ft === "stats") { const l = await api(`/v1/ufc/fighters/${f.id}/stats`); out(handle(l, statsView)); }
+          if (ft === "dna") { const l = await api(`/v1/ufc/fighters/${f.id}/dna`); out(handle(l, (d) => `${fighterCard(d.fighter, "mini")}<div style="height:12px"></div>${dnaPanel(d.snapshot)}`)); }
+          if (ft === "media") { const l = await api(`/v1/ufc/fighters/${f.id}?include=media,videos`); let vids = l.body?.data?.videos; if (l.body?.ok && vids === undefined) { const v = await api(`/v1/ufc/fighters/${f.id}/videos?limit=6`); vids = v.body?.ok ? v.body.data.videos : []; inspect(l); } out(handle(l, (d) => mediaView(d, vids))); } };
+        $("f-search").appendChild(searchBox("f", "Search fighters, e.g. Jean Silva", (f) => { pick.f = f; $("f-pick").innerHTML = pickHtml(f); $("f-tabs").hidden = false; run("overview"); }));
+        $("f-tabs").querySelectorAll("[data-ft]").forEach((b) => b.addEventListener("click", () => run(b.dataset.ft)));
+        const id = new URLSearchParams(location.search).get("id"); if (id && KEY) fighterById(id).then((f) => { if (f) { pick.f = f; $("f-pick").innerHTML = pickHtml(f); $("f-tabs").hidden = false; run("overview"); } });
+      } },
+      dna: { title: "Fight DNA", render(root) {
+        root.innerHTML = `<h3>Fight DNA ${chip("pro")}</h3><p class="small muted">Snapshot, stance splits, round profile and finish profile. Add an as-of date to reconstruct history.</p><div class="ws-form"><div id="d-search"></div><div id="d-pick"></div><div class="ws-two"><input type="text" id="d-asof" placeholder="as_of (YYYY-MM-DD, optional)" aria-label="as of"><select id="d-fam"><option value="dna">Snapshot</option><option value="splits">Stance splits</option><option value="round-profile">Round profile</option><option value="finish-profile">Finish profile</option><option value="position-profile">Position profile</option></select></div><div class="actions-row"><button class="btn primary" id="run-dna" type="button">Run</button></div></div>`;
+        $("d-search").appendChild(searchBox("d", "Search fighters", (f) => { pick.d = f; $("d-pick").innerHTML = pickHtml(f); }));
+        $("run-dna").addEventListener("click", async () => { const f = pick.d; if (!f) return; const fam = $("d-fam").value; const asof = $("d-asof").value.trim(); const q = asof ? `?as_of=${encodeURIComponent(asof)}` : ""; const l = await api(`/v1/ufc/fighters/${f.id}/${fam}${q}`);
+          out(handle(l, (d, meta) => fam === "dna" ? `${fighterCard(d.fighter, "mini")}<div class="small muted" style="margin:8px 0">requested_as_of ${esc(meta?.requested_as_of || "—")} → resolved ${esc(meta?.resolved_as_of || "—")}</div>${dnaPanel(d.snapshot)}` : fam === "splits" ? `<div class="table-wrap"><table class="ws-table"><thead><tr><th>Opponent stance</th><th>Record</th><th>Finish</th><th>KO</th><th>Sub</th><th>Sig diff/min</th><th>Conf</th></tr></thead><tbody>${(d.splits || (d.split ? [d.split] : [])).map((s) => `<tr><td>${esc(tc(s.opponent_stance))}</td><td>${s.record ? `${s.record.w}-${s.record.l}-${s.record.d}` : "—"}</td><td>${mval(s.metrics?.finish_rate, "%")}</td><td>${mval(s.metrics?.ko_rate, "%")}</td><td>${mval(s.metrics?.sub_rate, "%")}</td><td>${mval(s.metrics?.sig_diff_per_min, "n")}</td><td class="conf conf-${esc(s.confidence || "insufficient")}">${esc(s.confidence || "—")}</td></tr>`).join("")}</tbody></table></div>` : `${fighterCard(d.fighter, "mini")}<div class="small muted" style="margin:8px 0">status <b>${esc(d.status)}</b> · available ${d.available} · ${esc(d.note || "")}</div>${d[fam.replace("-", "_")] ? generic(d[fam.replace("-", "_")]) : `<div class="ws-empty">Family is null (${esc(d.status)}).</div>`}`)); });
+        const id = new URLSearchParams(location.search).get("id"); if (id && KEY) fighterById(id).then((f) => { if (f) { pick.d = f; $("d-pick").innerHTML = pickHtml(f); $("run-dna").click(); } });
+      } },
+      matchup: { title: "Matchup DNA", render(root) {
+        root.innerHTML = `<h3>Compare fighters ${chip("ultra")}</h3><p class="small muted">GET /v1/ufc/matchups/{a}/{b}/dna — paired metrics, stance context, threshold-gated insights.</p><div class="ws-form"><div class="ws-two"><div><div id="m-a"></div><div id="m-a-pick"></div></div><div><div id="m-b"></div><div id="m-b-pick"></div></div></div><div class="ws-two"><input type="text" id="m-asof" placeholder="as_of (optional)" aria-label="as of"><button class="btn gold" id="run-m" type="button">Run Matchup DNA</button></div></div>`;
+        $("m-a").appendChild(searchBox("ma", "Fighter A, e.g. Jean Silva", (f) => { pick.a = f; $("m-a-pick").innerHTML = pickHtml(f); }));
+        $("m-b").appendChild(searchBox("mb", "Fighter B, e.g. Jose Miguel Delgado", (f) => { pick.b = f; $("m-b-pick").innerHTML = pickHtml(f); }));
+        $("run-m").addEventListener("click", async () => { if (!pick.a || !pick.b) return; const asof = $("m-asof").value.trim();
+          /* compose like a real product: identity from /fighters/{id} (reach, height, ranking), metrics from the matchup */
+          const [da, db] = await Promise.all([fighterById(pick.a.id), fighterById(pick.b.id)]);
+          const l = await api(`/v1/ufc/matchups/${pick.a.id}/${pick.b.id}/dna${asof ? `?as_of=${encodeURIComponent(asof)}` : ""}`);
+          const detail = { [pick.a.id]: da, [pick.b.id]: db };
+          out(handle(l, (d) => tape({ ...d, fighters: d.fighters.map((f) => ({ ...f, ...(detail[f.id] ? { height_in: detail[f.id].height_in, reach_in: detail[f.id].reach_in, weight_lbs: detail[f.id].weight_lbs, ranking: detail[f.id].ranking } : {}) })) })));
+        });
+        const p = new URLSearchParams(location.search); if (p.get("a") && p.get("b") && KEY) Promise.all([fighterById(p.get("a")), fighterById(p.get("b"))]).then(([a, b]) => { if (a && b) { pick.a = a; pick.b = b; $("m-a-pick").innerHTML = pickHtml(a); $("m-b-pick").innerHTML = pickHtml(b); $("run-m").click(); } });
+      } },
+      rankings: { title: "Rankings", render(root) {
+        const divs = ["P4P", "FLYWEIGHT", "BANTAMWEIGHT", "FEATHERWEIGHT", "LIGHTWEIGHT", "WELTERWEIGHT", "MIDDLEWEIGHT", "LIGHT_HEAVYWEIGHT", "HEAVYWEIGHT"];
+        root.innerHTML = `<h3>Rankings</h3><div class="ws-form"><div class="ws-two"><select id="r-div"><option value="">All divisions</option>${divs.map((d) => `<option value="${d}">${tc(d)}</option>`).join("")}</select><select id="r-w"><option value="">Men + women</option><option value="false">Men</option><option value="true">Women</option></select></div><div class="actions-row"><button class="btn primary" id="run-r" type="button">Load rankings</button></div></div>`;
+        $("run-r").addEventListener("click", async () => { const q = []; if ($("r-div").value) q.push("division=" + $("r-div").value); if ($("r-w").value) q.push("womens=" + $("r-w").value); const l = await api(`/v1/ufc/rankings${q.length ? "?" + q.join("&") : ""}`); out(handle(l, rankingsView)); $("ws-preview").querySelectorAll("[data-open-fighter]").forEach((a) => a.addEventListener("click", (e) => { e.preventDefault(); location.href = `/workspace?tool=fighter&id=${a.dataset.openFighter}`; })); });
+        const d = new URLSearchParams(location.search).get("division"); if (d) { $("r-div").value = d; if (KEY) setTimeout(() => $("run-r").click(), 300); }
+      } },
+      custom: { title: "Request builder", render(root) {
+        root.innerHTML = `<h3>Request builder</h3><p class="small muted">Any GET path under /v1/ufc. Try <code>/v1/ufc</code> for the index or <code>/v1/ufc/counts</code>.</p><div class="ws-form"><input type="text" id="c-path" value="/v1/ufc/events?status=upcoming&limit=3" aria-label="path"><div class="actions-row"><button class="btn primary" id="run-c" type="button">Send</button></div></div>`;
+        $("run-c").addEventListener("click", async () => { let p = $("c-path").value.trim(); if (!p.startsWith("/v1/")) p = "/v1/ufc" + (p.startsWith("/") ? p : "/" + p); const l = await api(p); out(handle(l, (d) => generic(d))); });
+      } },
+    };
+    function open(name) { tool = tools[name] ? name : "card"; document.querySelectorAll("#rail [data-tool]").forEach((b) => b.setAttribute("aria-current", String(b.dataset.tool === tool))); $("rail-select").value = tool; tools[tool].render($("ws-tool")); }
+    document.querySelectorAll("#rail [data-tool]").forEach((b) => b.addEventListener("click", () => { history.replaceState(null, "", `/workspace?tool=${b.dataset.tool}`); open(b.dataset.tool); }));
+    $("rail-select").addEventListener("change", (e) => { history.replaceState(null, "", `/workspace?tool=${e.target.value}`); open(e.target.value); });
+    open(new URLSearchParams(location.search).get("tool") || "card");
+  </script>
+</Base>

@@ -28,7 +28,7 @@ const groups = [
 ];
 const jsonLd = [{ "@context": "https://schema.org", "@type": "Product", name: "PropTechUSA UFC Intelligence API", description: "Developer-ready UFC data with proprietary PropBetEdge Fight DNA.", brand: { "@type": "Brand", name: "PropTechUSA" }, offers: order.filter((k) => plans[k as keyof typeof plans].price_usd_month !== null).map((k) => ({ "@type": "Offer", name: plans[k as keyof typeof plans].name, price: plans[k as keyof typeof plans].price_usd_month, priceCurrency: "USD", availability: "https://schema.org/InStock", url: "https://ufc.proptechusa.ai/pricing" })) }];
 ---
-<Base title="UFC Intelligence API Pricing | PropTechUSA.ai" description="Developer $79, Pro $199, Ultra $499, Scale $1,499, Enterprise custom. Every plan starts with normalized UFC fight records; Pro and above unlock PropBetEdge Fight DNA." path="/pricing" jsonLd={jsonLd}>
+<Base title="UFC Intelligence API Pricing | PropTechUSA.ai" description="Developer $79, Pro $199, Ultra $499, Scale $1,499, Enterprise custom. Every plan starts with normalized UFC fight records; Pro and above unlock PropBetEdge Fight DNA." path="/pricing" jsonLd={jsonLd} breadcrumbs={[{ name: "Pricing", path: "/pricing" }]}>
   <section class="section">
     <div class="wrap">
       <p class="eyebrow">Pricing</p>

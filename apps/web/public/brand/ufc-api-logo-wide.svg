@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 72" width="560" height="72" role="img" aria-label="PropTechUSA UFC Intelligence API, powered by PropBetEdge Fight DNA">
+  <title>PropTechUSA UFC Intelligence API</title>
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#12874a"/><stop offset="1" stop-color="#0b5330"/></linearGradient>
+  </defs>
+  <g transform="translate(4 4) scale(0.6667)">
+    <path d="M30 4h36l26 26v36L66 92H30L4 66V30z" fill="url(#g)"/>
+    <path d="M33 11h30l22 22v30L63 85H33L11 63V33z" fill="none" stroke="#fbfaf6" stroke-opacity="0.22" stroke-width="1.5"/>
+    <g stroke="#fbfaf6" stroke-opacity="0.35" stroke-width="1.2" fill="none"><path d="M24 48h48M48 24v48"/><path d="M31 31l34 34M65 31L31 65"/></g>
+    <g fill="#fbfaf6"><circle cx="48" cy="24" r="3.2"/><circle cx="48" cy="72" r="3.2"/><circle cx="24" cy="48" r="3.2"/><circle cx="72" cy="48" r="3.2"/><circle cx="31" cy="31" r="2.4"/><circle cx="65" cy="65" r="2.4"/><circle cx="65" cy="31" r="2.4"/><circle cx="31" cy="65" r="2.4"/></g>
+    <circle cx="48" cy="48" r="10.5" fill="#101613"/><circle cx="48" cy="48" r="10.5" fill="none" stroke="#d4a648" stroke-width="1.5" stroke-dasharray="4 3"/><circle cx="48" cy="48" r="5" fill="#d4a648"/>
+  </g>
+  <text x="84" y="32" font-family="'JetBrains Mono', ui-monospace, Menlo, monospace" font-size="16" font-weight="700" letter-spacing="3" fill="#18170f">PROPTECHUSA</text>
+  <text x="84" y="53" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="500" fill="#625f53">UFC Intelligence API</text>
+  <line x1="290" y1="18" x2="290" y2="54" stroke="#d9d5c9" stroke-width="1"/>
+  <text x="306" y="32" font-family="'JetBrains Mono', ui-monospace, Menlo, monospace" font-size="10" letter-spacing="2" fill="#a87a1c">POWERED BY</text>
+  <text x="306" y="53" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600" fill="#18170f">PropBetEdge Fight DNA</text>
+</svg>

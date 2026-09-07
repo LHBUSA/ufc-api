@@ -1,0 +1,148 @@
+{
+  "captured_at": "2026-09-07T13:38:00.478Z",
+  "base": "https://ufc-api.propbetedge.ai",
+  "path": "/v1/ufc/fighters/eed368a5-484b-412f-9d2c-a4fd6d24d019/videos?limit=3",
+  "status": 200,
+  "api_version": "2026-09-06.3",
+  "body": {
+    "ok": true,
+    "data": {
+      "fighter": {
+        "id": "eed368a5-484b-412f-9d2c-a4fd6d24d019",
+        "name": "Jean Silva",
+        "nickname": "Lord",
+        "ufcstats_id": "52ef95b5860fb28c",
+        "espn_athlete_id": "5145766",
+        "slug_id": "5145766",
+        "record_w": 17,
+        "record_l": 3,
+        "record_d": 0,
+        "record_nc": null,
+        "primary_image": {
+          "id": "776d6a0a-e701-4756-b789-912addfd276d",
+          "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/eed368a5-484b-412f-9d2c-a4fd6d24d019/portrait.jpg",
+          "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/eed368a5-484b-412f-9d2c-a4fd6d24d019/card.jpg",
+          "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/eed368a5-484b-412f-9d2c-a4fd6d24d019/thumb.jpg",
+          "author": "The White House",
+          "license": "Public domain",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Jean_Silva_(54451587575).jpg",
+          "kind": "wikimedia",
+          "attribution_text": "The White House (U.S. Government work), Public domain, via Wikimedia Commons",
+          "rights_label": "Public domain"
+        }
+      },
+      "videos": [
+        {
+          "id": "c7e07888-bd3e-4391-ada6-a5960050bf13",
+          "provider": "youtube",
+          "provider_video_id": "cs-T1Qgb-sk",
+          "url": "https://www.youtube.com/watch?v=cs-T1Qgb-sk",
+          "embed_url": "https://www.youtube-nocookie.com/embed/cs-T1Qgb-sk",
+          "thumbnail_url": "https://i4.ytimg.com/vi/cs-T1Qgb-sk/hqdefault.jpg",
+          "title": "Noche UFC: Silva vs Delgado - September 12th | Fight Promo",
+          "published_at": "2026-09-06T17:30:29+00:00",
+          "duration_sec": null,
+          "embeddable": true,
+          "live_broadcast_state": null,
+          "video_type": "fight_preview",
+          "video_type_label": "Fight preview",
+          "channel": {
+            "id": "UCvgfXK4nTYKudb0rFR6noLA",
+            "name": "UFC",
+            "verified": true
+          },
+          "links": {
+            "event_id": "1d0b22df-81e7-4e5b-8fa5-8e5d03c24c52",
+            "bout_id": null,
+            "article_id": null,
+            "fighter_ids": [
+              "55ef67ad-88fe-4f7a-b4cb-dc9a10c12feb",
+              "eed368a5-484b-412f-9d2c-a4fd6d24d019"
+            ]
+          },
+          "resolver_confidence": "medium",
+          "attribution": "YouTube · UFC",
+          "captured_at": "2026-09-07T01:29:49.112112+00:00",
+          "updated_at": "2026-09-07T01:29:46.802+00:00"
+        },
+        {
+          "id": "6414a679-4331-463a-a5dd-7a02920e0fc4",
+          "provider": "youtube",
+          "provider_video_id": "tOlqX0v8BX4",
+          "url": "https://www.youtube.com/watch?v=tOlqX0v8BX4",
+          "embed_url": "https://www.youtube-nocookie.com/embed/tOlqX0v8BX4",
+          "thumbnail_url": "https://i1.ytimg.com/vi/tOlqX0v8BX4/hqdefault.jpg",
+          "title": "#NocheUFC Maratón: Silva vs Delgado",
+          "published_at": "2026-09-06T15:00:06+00:00",
+          "duration_sec": null,
+          "embeddable": true,
+          "live_broadcast_state": null,
+          "video_type": "full_fight",
+          "video_type_label": "Full fight",
+          "channel": {
+            "id": "UCYXJFtx4SUkrb2p_8mhLPzQ",
+            "name": "UFC Espanol",
+            "verified": true
+          },
+          "links": {
+            "event_id": "1d0b22df-81e7-4e5b-8fa5-8e5d03c24c52",
+            "bout_id": "89e38074-f431-4bc3-b51e-fe42058e60d0",
+            "article_id": "b10fc93a-680a-42be-9be1-e70b8d62c01b",
+            "fighter_ids": [
+              "55ef67ad-88fe-4f7a-b4cb-dc9a10c12feb",
+              "eed368a5-484b-412f-9d2c-a4fd6d24d019"
+            ]
+          },
+          "resolver_confidence": "high",
+          "attribution": "YouTube · UFC Espanol",
+          "captured_at": "2026-09-06T16:50:23.798101+00:00",
+          "updated_at": "2026-09-06T16:50:37.39+00:00"
+        },
+        {
+          "id": "c9f7e55f-01e6-4ec1-8d84-e2409a9e75a2",
+          "provider": "youtube",
+          "provider_video_id": "cr-yfqITLE8",
+          "url": "https://www.youtube.com/watch?v=cr-yfqITLE8",
+          "embed_url": "https://www.youtube-nocookie.com/embed/cr-yfqITLE8",
+          "thumbnail_url": "https://i4.ytimg.com/vi/cr-yfqITLE8/hqdefault.jpg",
+          "title": "Noche UFC: Silva x Delgado | 12 de Setembro | Só no Paramount+",
+          "published_at": "2026-09-06T13:00:16+00:00",
+          "duration_sec": null,
+          "embeddable": true,
+          "live_broadcast_state": null,
+          "video_type": "other",
+          "video_type_label": "Other",
+          "channel": {
+            "id": "UCk8XGxi7fsTqQQRVq9LSraw",
+            "name": "UFC Brasil",
+            "verified": true
+          },
+          "links": {
+            "event_id": "1d0b22df-81e7-4e5b-8fa5-8e5d03c24c52",
+            "bout_id": "89e38074-f431-4bc3-b51e-fe42058e60d0",
+            "article_id": "b10fc93a-680a-42be-9be1-e70b8d62c01b",
+            "fighter_ids": [
+              "55ef67ad-88fe-4f7a-b4cb-dc9a10c12feb",
+              "eed368a5-484b-412f-9d2c-a4fd6d24d019"
+            ]
+          },
+          "resolver_confidence": "high",
+          "attribution": "YouTube · UFC Brasil",
+          "captured_at": "2026-09-06T16:50:20.370285+00:00",
+          "updated_at": "2026-09-06T16:50:37.39+00:00"
+        }
+      ]
+    },
+    "meta": {
+      "api": "PropSports UFC",
+      "version": "2026-09-06.3",
+      "request_id": "3fb60f0f-0b07-414e-99c2-f610122eca0e",
+      "count": 3,
+      "total": 4,
+      "limit": 3,
+      "type": null,
+      "published_only": true,
+      "access_tier": "public"
+    }
+  }
+}

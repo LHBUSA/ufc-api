@@ -1,5 +1,5 @@
 {
-  "captured_at": "2026-09-07T12:18:42.990Z",
+  "captured_at": "2026-09-07T13:38:00.478Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/health",
   "status": 200,
@@ -15,7 +15,7 @@
     "meta": {
       "api": "PropSports UFC",
       "version": "2026-09-06.3",
-      "request_id": "4c2e9848-9ee1-40c6-92b9-5a0cf9e4172d"
+      "request_id": "2e96459b-bbdf-4ac5-a4b7-d963fafc55c9"
     }
   }
 }

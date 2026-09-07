@@ -1,5 +1,5 @@
 {
-  "captured_at": "2026-09-07T12:18:42.990Z",
+  "captured_at": "2026-09-07T13:38:00.478Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/dna/metrics",
   "status": 200,
@@ -2346,7 +2346,7 @@
     "meta": {
       "api": "PropSports UFC",
       "version": "2026-09-06.3",
-      "request_id": "004bd991-f9ae-4f5c-bf8f-4eb4e49cd688",
+      "request_id": "74323e59-f2e0-4083-9791-b3d78542a20f",
       "count": 60,
       "families": 6,
       "definition_version": 1,

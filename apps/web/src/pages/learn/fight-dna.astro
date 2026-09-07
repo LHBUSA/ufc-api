@@ -11,6 +11,10 @@ const rec = ex.receipts;
 const mm = ex.matchup_meta;
 const S = "ec94d296-2db3-4e0d-be6a-46de4f480672";
 const fam = (k: string) => reg?.families?.[k] || [];
+const jsonLd = [
+  { "@context": "https://schema.org", "@type": "TechArticle", headline: "PropBetEdge Fight DNA: methodology for developers", url: "https://ufc.proptechusa.ai/learn/fight-dna", about: { "@id": "https://ufc.proptechusa.ai/#app" }, publisher: { "@id": "https://proptechusa.ai/#organization" }, dateModified: reg?.captured_at, description: "How PropBetEdge Fight DNA turns normalized UFC fight history into versioned, as-of, sample-aware fighter and matchup intelligence." },
+  { "@context": "https://schema.org", "@type": "DefinedTermSet", "@id": "https://ufc.proptechusa.ai/learn/fight-dna#registry", name: `Fight DNA metric registry v${reg?.definition_version ?? contract.fight_dna_definition_version}`, hasDefinedTerm: Object.entries(reg?.families || {}).flatMap(([fam, list]: any) => list.map((m: any) => ({ "@type": "DefinedTerm", name: m.display_name, termCode: m.metric_key, description: m.description, inDefinedTermSet: "https://ufc.proptechusa.ai/learn/fight-dna#registry" }))) },
+];
 const famBlocks = [
   { id: "stance-dna", t: "Stance DNA", k: "stance", p: "How a fighter performs against southpaws, orthodox fighters and switch hitters. Record, finish, KO and submission rates, and significant-strike differential are grouped by the opponent's listed stance; open-stance and same-stance contexts are reported separately. Result counts reconcile exactly to canonical bout results." },
   { id: "striking-dna", t: "Striking DNA", k: "striking", p: "Pace, accuracy and defense normalized per observed minute, target shares (head, body, leg) and phase shares (distance, clinch, ground) from UFC Stats round rows. Denominators are actual observed seconds, not scheduled time." },
@@ -20,7 +24,7 @@ const famBlocks = [
   { id: "context-dna", t: "Context DNA", k: "context", p: "Records under specific conditions: short notice, three-round and five-round bouts, title fights and main events. Each split carries its own appearances and confidence." },
 ];
 ---
-<Base title="PropBetEdge Fight DNA API — Proprietary MMA Analytics" description="How PropBetEdge Fight DNA turns normalized UFC fight history into versioned, as-of, sample-aware fighter and matchup intelligence: definitions, confidence, provenance and what it cannot tell you." path="/learn/fight-dna">
+<Base title="PropBetEdge Fight DNA API — Proprietary MMA Analytics" description="How PropBetEdge Fight DNA turns normalized UFC fight history into versioned, as-of, sample-aware fighter and matchup intelligence: definitions, confidence, provenance and what it cannot tell you." path="/learn/fight-dna" jsonLd={jsonLd} breadcrumbs={[{ name: "Fight DNA", path: "/learn/fight-dna" }]}>
   <section class="section" style="background:linear-gradient(180deg,var(--paper) 0%,#fdf9ee 100%)">
     <div class="wrap">
       <p class="eyebrow gold">Methodology</p>

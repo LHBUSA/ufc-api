@@ -58,6 +58,7 @@ const billing = gen.billing;
             <button class="btn secondary" id="copy2" type="button">Copy key</button>
             <button class="btn secondary" id="rotate" type="button">Rotate key</button>
             <a class="btn secondary" href="/docs">View docs</a>
+            <a class="btn primary" id="open-ws" href="/workspace">Open UFC Workspace →</a>
             <button class="btn gold" id="portal" type="button" hidden>Manage subscription</button>
             <a class="btn gold" id="choose-plan" href="/pricing" hidden>Choose a plan →</a>
           </div>
@@ -86,6 +87,13 @@ const billing = gen.billing;
           <h3 style="font-family:var(--font-body);font-size:1rem;margin-top:18px">Entitlements</h3>
           <div id="p-features" class="network"></div>
         </div>
+      </div>
+      <div class="card flat" style="margin-top:14px">
+        <h3 style="font-family:var(--font-body);font-size:1rem">Quick test</h3>
+        <p class="small muted" style="margin:0 0 10px">Run <code>GET /v1/ufc</code> with this key right here, or open the Workspace to run the current card, fighters, Fight DNA and Matchup DNA with rendered previews.</p>
+        <div class="actions-row"><button class="btn secondary" id="quick-run" type="button">Run GET /v1/ufc</button><a class="btn gold" href="/workspace?tool=card">Run current card in Workspace →</a></div>
+        <pre class="ws-json" id="quick-out" hidden style="margin-top:10px;max-height:320px"></pre>
+        <p class="status-line" id="quick-status"></p>
       </div>
       <div class="card flat" style="margin-top:14px">
         <h3 style="font-family:var(--font-body);font-size:1rem">Recent requests</h3>
@@ -169,6 +177,14 @@ const billing = gen.billing;
       catch (e: any) { status(e.message, true); }
     });
     $("copy-new").addEventListener("click", () => copy($("new-key").textContent || "", "New key copied."));
+    $("quick-run").addEventListener("click", async () => {
+      const qs = $("quick-status"); qs.textContent = "Running…"; qs.classList.remove("err");
+      try { const t0 = performance.now(); const res = await fetch("/v1/ufc", { headers: { authorization: `Bearer ${currentKey}` } }); const body = await res.json(); const out = $("quick-out"); out.textContent = JSON.stringify(body, null, 2); out.hidden = false; qs.textContent = `${res.status} in ${Math.round(performance.now() - t0)} ms · plan ${res.headers.get("x-plan") || "—"} · quota remaining ${res.headers.get("x-quota-remaining") || "—"} · request ${res.headers.get("x-request-id") || ""}`; try { localStorage.setItem("ufc_ws_key", currentKey); } catch {} }
+      catch (e: any) { qs.textContent = e.message; qs.classList.add("err"); }
+    });
+    /* hand the key to the Workspace (same origin, localStorage only) */
+    const wsLinks = () => { try { if (currentKey) localStorage.setItem("ufc_ws_key", currentKey); } catch {} };
+    $("open-ws").addEventListener("click", wsLinks);
     $("portal").addEventListener("click", async () => {
       const ps = $("portal-status"); ps.textContent = "Opening Stripe customer portal…"; ps.classList.remove("err");
       try { const d = await api("/dashboard/api/portal", "POST"); window.location.href = d.url; } catch (e: any) { ps.textContent = e.message; ps.classList.add("err"); }

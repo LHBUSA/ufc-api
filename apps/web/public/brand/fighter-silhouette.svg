@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 400" width="320" height="400" role="img" aria-label="Fighter silhouette placeholder">
+  <title>Fighter silhouette (original PropTechUSA graphic used when no rights-cleared portrait is available)</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c2721"/><stop offset="1" stop-color="#101613"/></linearGradient>
+    <linearGradient id="fg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3b4a42"/><stop offset="1" stop-color="#233029"/></linearGradient>
+  </defs>
+  <rect width="320" height="400" fill="url(#bg)"/>
+  <g stroke="#fbfaf6" stroke-opacity="0.06" stroke-width="1" fill="none">
+    <path d="M0 100h320M0 200h320M0 300h320M80 0v400M160 0v400M240 0v400"/>
+    <path d="M100 60h120l60 60v120l-60 60H100l-60-60V120z"/>
+  </g>
+  <!-- head, shoulders, guard-up torso: abstract, original geometry -->
+  <g fill="url(#fg)">
+    <ellipse cx="160" cy="118" rx="42" ry="50"/>
+    <path d="M160 168c-30 0-52 10-72 26-22 18-34 46-40 82v124h224V276c-6-36-18-64-40-82-20-16-42-26-72-26z"/>
+    <path d="M78 246c-14 10-22 26-26 44l24 10c6-16 14-30 26-40z"/>
+    <path d="M242 246c14 10 22 26 26 44l-24 10c-6-16-14-30-26-40z"/>
+  </g>
+  <circle cx="160" cy="118" r="50" fill="none" stroke="#d4a648" stroke-opacity="0.35" stroke-width="1.5" stroke-dasharray="4 4"/>
+</svg>

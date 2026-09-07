@@ -1,5 +1,5 @@
 {
-  "captured_at": "2026-09-07T12:18:42.990Z",
+  "captured_at": "2026-09-07T13:38:00.478Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/rankings?division=MIDDLEWEIGHT",
   "status": 200,
@@ -230,7 +230,7 @@
     "meta": {
       "api": "PropSports UFC",
       "version": "2026-09-06.3",
-      "request_id": "eaf8f415-92cf-49de-9a28-2b88fd03e9e1",
+      "request_id": "05ac5d73-6b60-4e4c-98f8-a024a4ff628a",
       "store": "table",
       "divisions": 1,
       "division": "MIDDLEWEIGHT",

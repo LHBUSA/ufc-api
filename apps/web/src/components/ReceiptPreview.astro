@@ -1,0 +1,23 @@
+---
+/* "Every number has receipts": one MetricObject rendered as evidence. */
+import { fmtDate, fmtNumber } from "../lib/hl";
+export interface Props { fighter: string; metric: any; label?: string; unitLabel?: string; }
+const { fighter, metric: m, label = "significant strikes landed per observed minute", unitLabel = "/min" } = Astro.props;
+---
+<div class="receipt-card">
+  <div class="who">{fighter} · {m.metric_key}</div>
+  <div class="big">{m.value}<span style="font-size:1.4rem;color:#b9b3a2">{unitLabel}</span></div>
+  <div class="who">{label}</div>
+  <dl>
+    <div><dt>Value</dt><dd>{m.value} {m.unit}</dd></div>
+    <div><dt>Sample</dt><dd>{m.sample_bouts} bouts</dd></div>
+    <div><dt>Rounds</dt><dd>{m.sample_rounds}</dd></div>
+    <div><dt>Observed</dt><dd>{fmtNumber(m.sample_seconds / 60, 1)} minutes</dd></div>
+    <div><dt>Numerator / denominator</dt><dd>{m.numerator} / {m.denominator}</dd></div>
+    <div><dt>Confidence</dt><dd style="text-transform:capitalize">{m.confidence}</dd></div>
+    <div><dt>Coverage</dt><dd style="text-transform:capitalize">{m.coverage_status}</dd></div>
+    <div><dt>As of</dt><dd>{fmtDate(m.as_of_date)}</dd></div>
+    <div><dt>Definition</dt><dd>v{m.definition_version}</dd></div>
+    <div><dt>Origin</dt><dd>PBE derived · {m.source_families.join(", ")}</dd></div>
+  </dl>
+</div>

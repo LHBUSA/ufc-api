@@ -1,0 +1,14 @@
+---
+/* Wrapper: endpoint request (compact) + rendered preview (slot) + JSON drawer. The API → product-UI mapping in one block. */
+import ApiRequest from "./ApiRequest.astro";
+import JsonDrawer from "./JsonDrawer.astro";
+export interface Props { path: string; plan?: string | null; json?: unknown; title?: string; note?: string; captured?: string; hideRequest?: boolean; }
+const { path, plan = null, json, title = "Rendered from the response", note, captured, hideRequest = false } = Astro.props;
+---
+<div class="api-preview">
+  {!hideRequest && <ApiRequest path={path} plan={plan} compact />}
+  <div class="api-preview-body">
+    <div class="api-preview-bar"><span class="eyebrow" style="margin:0">{title}</span>{captured && <span class="mono small muted">live · captured {captured}</span>}{json !== undefined && <JsonDrawer json={json} path={path} title="Response JSON" note={note} />}</div>
+    <slot />
+  </div>
+</div>

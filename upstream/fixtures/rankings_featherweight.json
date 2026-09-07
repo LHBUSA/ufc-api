@@ -1,0 +1,241 @@
+{
+  "captured_at": "2026-09-07T13:38:00.478Z",
+  "base": "https://ufc-api.propbetedge.ai",
+  "path": "/v1/ufc/rankings?division=FEATHERWEIGHT",
+  "status": 200,
+  "api_version": "2026-09-06.3",
+  "body": {
+    "ok": true,
+    "data": {
+      "source": "ufc.com official rankings",
+      "source_url": "https://www.ufc.com/rankings",
+      "snapshot_date": "2026-09-06",
+      "captured_at": "2026-09-06T16:10:07.916+00:00",
+      "divisions": [
+        {
+          "key": "FEATHERWEIGHT",
+          "label": "Featherweight",
+          "is_womens": false,
+          "is_p4p": false,
+          "champion": {
+            "name": "Alexander Volkanovski",
+            "ufc_slug": "alexander-volkanovski",
+            "fighter_id": "a312eb8b-7d22-4e20-92fe-3e8cdcba0fe7",
+            "fighter": {
+              "id": "a312eb8b-7d22-4e20-92fe-3e8cdcba0fe7",
+              "name": "Alexander Volkanovski",
+              "slug_id": "3949584"
+            }
+          },
+          "entries": [
+            {
+              "rank": 1,
+              "name": "Movsar Evloev",
+              "ufc_slug": "movsar-evloev",
+              "fighter_id": "6959f9f0-bcc1-439b-bdb1-7bfc13a12f2a",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "6959f9f0-bcc1-439b-bdb1-7bfc13a12f2a",
+                "name": "Movsar Evloev",
+                "slug_id": "4029275"
+              }
+            },
+            {
+              "rank": 2,
+              "name": "Diego Lopes",
+              "ufc_slug": "diego-lopes",
+              "fighter_id": "803fdd5d-02ce-4064-80f4-12a38e1a8593",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "803fdd5d-02ce-4064-80f4-12a38e1a8593",
+                "name": "Diego Lopes",
+                "slug_id": "4881999"
+              }
+            },
+            {
+              "rank": 3,
+              "name": "Lerone Murphy",
+              "ufc_slug": "lerone-murphy",
+              "fighter_id": "6e9b0c00-cda3-4214-9505-bfd84303fb9c",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "6e9b0c00-cda3-4214-9505-bfd84303fb9c",
+                "name": "Lerone Murphy",
+                "slug_id": "4576101"
+              }
+            },
+            {
+              "rank": 4,
+              "name": "Aljamain Sterling",
+              "ufc_slug": "aljamain-sterling",
+              "fighter_id": "8f77f719-c331-47df-8aa3-73bf00a2aba5",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "8f77f719-c331-47df-8aa3-73bf00a2aba5",
+                "name": "Aljamain Sterling",
+                "slug_id": "3031559"
+              }
+            },
+            {
+              "rank": 5,
+              "name": "Yair Rodriguez",
+              "ufc_slug": "yair-rodriguez",
+              "fighter_id": "6d6398b3-4276-47e1-8430-6df94365feb9",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "6d6398b3-4276-47e1-8430-6df94365feb9",
+                "name": "Yair Rodriguez",
+                "slug_id": "3155420"
+              }
+            },
+            {
+              "rank": 6,
+              "name": "Jean Silva",
+              "ufc_slug": "jean-silva",
+              "fighter_id": "eed368a5-484b-412f-9d2c-a4fd6d24d019",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "eed368a5-484b-412f-9d2c-a4fd6d24d019",
+                "name": "Jean Silva",
+                "slug_id": "5145766"
+              }
+            },
+            {
+              "rank": 7,
+              "name": "Arnold Allen",
+              "ufc_slug": "arnold-allen",
+              "fighter_id": "27c2b8ab-ae84-43dc-a98d-7dfa707b3b9d",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "27c2b8ab-ae84-43dc-a98d-7dfa707b3b9d",
+                "name": "Arnold Allen",
+                "slug_id": "3902098"
+              }
+            },
+            {
+              "rank": 8,
+              "name": "Youssef Zalal",
+              "ufc_slug": "youssef-zalal",
+              "fighter_id": "737585e7-656f-422b-bbe3-b2e944cb28e6",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "737585e7-656f-422b-bbe3-b2e944cb28e6",
+                "name": "Youssef Zalal",
+                "slug_id": "4351319"
+              }
+            },
+            {
+              "rank": 9,
+              "name": "Kevin Vallejos",
+              "ufc_slug": "kevin-vallejos",
+              "fighter_id": "f3a73e34-6846-4af2-a8cd-262562e5af8c",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "f3a73e34-6846-4af2-a8cd-262562e5af8c",
+                "name": "Kevin Vallejos",
+                "slug_id": "5145681"
+              }
+            },
+            {
+              "rank": 10,
+              "name": "Steve Garcia",
+              "ufc_slug": "steve-garcia",
+              "fighter_id": "9a0088b3-904c-45e4-b9f9-5e18fe29a479",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "9a0088b3-904c-45e4-b9f9-5e18fe29a479",
+                "name": "Steve Garcia",
+                "slug_id": "3023804"
+              }
+            },
+            {
+              "rank": 11,
+              "name": "Brian Ortega",
+              "ufc_slug": "brian-ortega",
+              "fighter_id": "54730520-fccd-4a6d-b4f6-c90497d6c351",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "54730520-fccd-4a6d-b4f6-c90497d6c351",
+                "name": "Brian Ortega",
+                "slug_id": "3045737"
+              }
+            },
+            {
+              "rank": 12,
+              "name": "Aaron Pico",
+              "ufc_slug": "aaron-pico",
+              "fighter_id": "1750b099-5036-4bb3-a55f-241c3a6e745a",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "1750b099-5036-4bb3-a55f-241c3a6e745a",
+                "name": "Aaron Pico",
+                "slug_id": "4199009"
+              }
+            },
+            {
+              "rank": 13,
+              "name": "Melquizael Costa",
+              "ufc_slug": "melquizael-costa",
+              "fighter_id": "1b3e03fa-4d2c-41aa-ad61-2c5796497665",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "1b3e03fa-4d2c-41aa-ad61-2c5796497665",
+                "name": "Melquizael Costa",
+                "slug_id": "4425763"
+              }
+            },
+            {
+              "rank": 14,
+              "name": "David Onama",
+              "ufc_slug": "david-onama",
+              "fighter_id": "6d9190f2-1b4b-40ec-ad03-d7b6a3cda4a9",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "6d9190f2-1b4b-40ec-ad03-d7b6a3cda4a9",
+                "name": "David Onama",
+                "slug_id": "4897850"
+              }
+            },
+            {
+              "rank": 15,
+              "name": "Patricio Pitbull",
+              "ufc_slug": "patricio-freire",
+              "fighter_id": "c2a8d884-9b5b-48a0-aa17-89ddd838d012",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "c2a8d884-9b5b-48a0-aa17-89ddd838d012",
+                "name": "Patricio Pitbull",
+                "slug_id": "2532870"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "meta": {
+      "api": "PropSports UFC",
+      "version": "2026-09-06.3",
+      "request_id": "52333012-e47a-4b0b-8ae4-3ef9aaba05da",
+      "store": "table",
+      "divisions": 1,
+      "division": "FEATHERWEIGHT",
+      "womens": null,
+      "access_tier": "public"
+    }
+  }
+}

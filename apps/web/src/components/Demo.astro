@@ -1,0 +1,33 @@
+---
+/* PropBetEdge-style dark demo surface inside the PropTechUSA shell: rendered product + "Powered by" endpoints + links. */
+import JsonDrawer from "./JsonDrawer.astro";
+export interface Props {
+  eyebrow: string; title: string; intro?: string;
+  endpoints: { path: string; plan: string; label?: string }[];
+  workspace?: string; json?: unknown; jsonPath?: string; jsonNote?: string; captured?: string;
+  pbe?: string; pbeLabel?: string; single?: boolean; id?: string;
+}
+const { eyebrow, title, intro, endpoints, workspace, json, jsonPath, jsonNote, captured, pbe = "https://ufc.propbetedge.ai", pbeLabel = "See the live PropBetEdge implementation →", single = false, id } = Astro.props;
+const planLabel = (p: string) => (p === "first_party" ? "First-party" : p.charAt(0).toUpperCase() + p.slice(1) + (p === "enterprise" ? "" : "+"));
+---
+<div class="demo" id={id}>
+  <div class="demo-head">
+    <div><p class="eyebrow">{eyebrow}</p><h3>{title}</h3>{intro && <p class="muted" style="margin:6px 0 0;max-width:60ch">{intro}</p>}</div>
+    {captured && <div class="mono small muted">live response · captured {captured}</div>}
+  </div>
+  <div class:list={["demo-body", { single }]}>
+    <div style="min-width:0"><slot /></div>
+    <div style="min-width:0;display:grid;gap:12px">
+      <slot name="aside" />
+      <div class="powered">
+        <p class="eyebrow">Powered by</p>
+        <ul>{endpoints.map((e) => <li><span class="m">GET</span><span>{e.path}</span><span class:list={["chip", `plan-${e.plan}`]}>{planLabel(e.plan)}</span></li>)}</ul>
+        <div class="actions-row">
+          {workspace && <a class="btn secondary" href={workspace}>Open in Workspace →</a>}
+          {json !== undefined && <JsonDrawer json={json} path={jsonPath} title="Response JSON" note={jsonNote} label="View JSON →" />}
+        </div>
+        <a class="pbe-link" href={pbe} rel="noopener"><span class="m">PropBetEdge UFC</span> {pbeLabel}</a>
+      </div>
+    </div>
+  </div>
+</div>

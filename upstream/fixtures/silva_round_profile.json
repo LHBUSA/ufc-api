@@ -1,0 +1,143 @@
+{
+  "captured_at": "2026-09-07T13:38:00.478Z",
+  "base": "https://ufc-api.propbetedge.ai",
+  "path": "/v1/ufc/fighters/eed368a5-484b-412f-9d2c-a4fd6d24d019/round-profile",
+  "status": 200,
+  "api_version": "2026-09-06.3",
+  "body": {
+    "ok": true,
+    "data": {
+      "fighter": {
+        "id": "eed368a5-484b-412f-9d2c-a4fd6d24d019",
+        "name": "Jean Silva",
+        "nickname": "Lord",
+        "ufcstats_id": "52ef95b5860fb28c",
+        "espn_athlete_id": "5145766",
+        "slug_id": "5145766",
+        "record_w": 17,
+        "record_l": 3,
+        "record_d": 0,
+        "record_nc": null,
+        "primary_image": {
+          "id": "776d6a0a-e701-4756-b789-912addfd276d",
+          "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/eed368a5-484b-412f-9d2c-a4fd6d24d019/portrait.jpg",
+          "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/eed368a5-484b-412f-9d2c-a4fd6d24d019/card.jpg",
+          "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/eed368a5-484b-412f-9d2c-a4fd6d24d019/thumb.jpg",
+          "author": "The White House",
+          "license": "Public domain",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Jean_Silva_(54451587575).jpg",
+          "kind": "wikimedia",
+          "attribution_text": "The White House (U.S. Government work), Public domain, via Wikimedia Commons",
+          "rights_label": "Public domain"
+        },
+        "stance": "ORTHODOX",
+        "is_active": true
+      },
+      "as_of_date": "2026-09-06",
+      "definition_version": 1,
+      "origin": "pbe_derived",
+      "sample": {
+        "sample_bouts": 4,
+        "sample_completed_bouts": 4,
+        "sample_stat_bouts": 0,
+        "sample_rounds": 0,
+        "sample_seconds": 0,
+        "sample_minutes": 0,
+        "coverage_status": "insufficient"
+      },
+      "available": false,
+      "status": "insufficient_coverage",
+      "round_profile": {
+        "rounds": {},
+        "pace_retention_r2_vs_r1": {
+          "unit": "ratio",
+          "value": null,
+          "origin": "pbe_derived",
+          "numerator": null,
+          "as_of_date": "2026-09-06",
+          "confidence": "insufficient",
+          "metric_key": "pace_retention_r2_vs_r1",
+          "denominator": null,
+          "sample_bouts": 0,
+          "sample_rounds": 0,
+          "sample_seconds": 0,
+          "coverage_status": "insufficient",
+          "source_families": [
+            "ufcstats"
+          ],
+          "definition_version": 1
+        },
+        "pace_retention_r3_vs_r1": {
+          "unit": "ratio",
+          "value": null,
+          "origin": "pbe_derived",
+          "numerator": null,
+          "as_of_date": "2026-09-06",
+          "confidence": "insufficient",
+          "metric_key": "pace_retention_r3_vs_r1",
+          "denominator": null,
+          "sample_bouts": 0,
+          "sample_rounds": 0,
+          "sample_seconds": 0,
+          "coverage_status": "insufficient",
+          "source_families": [
+            "ufcstats"
+          ],
+          "definition_version": 1
+        },
+        "championship_round_delta": {
+          "unit": "per_min",
+          "value": null,
+          "origin": "pbe_derived",
+          "numerator": null,
+          "as_of_date": "2026-09-06",
+          "confidence": "insufficient",
+          "metric_key": "championship_round_delta",
+          "denominator": null,
+          "sample_bouts": 0,
+          "sample_rounds": 0,
+          "sample_seconds": 0,
+          "coverage_status": "insufficient",
+          "source_families": [
+            "ufcstats"
+          ],
+          "definition_version": 1
+        },
+        "defensive_drift_r3_vs_r1": {
+          "unit": "per_min",
+          "value": null,
+          "origin": "pbe_derived",
+          "numerator": null,
+          "as_of_date": "2026-09-06",
+          "confidence": "insufficient",
+          "metric_key": "defensive_drift_r3_vs_r1",
+          "denominator": null,
+          "sample_bouts": 0,
+          "sample_rounds": 0,
+          "sample_seconds": 0,
+          "coverage_status": "insufficient",
+          "source_families": [
+            "ufcstats"
+          ],
+          "definition_version": 1
+        }
+      },
+      "note": "No round profile metric has a value for this snapshot: 0 stat-covered bouts across 4 bouts. Nothing is synthesized."
+    },
+    "meta": {
+      "api": "PropSports UFC",
+      "version": "2026-09-06.3",
+      "request_id": "77be0222-385d-47f6-9888-361432f218bb",
+      "requested_as_of": null,
+      "resolved_as_of": "2026-09-06",
+      "definition_version": 1,
+      "as_of_semantics": "as_of_date is exclusive: the snapshot dated D contains bouts with event_date < D, so a bout fought on D is excluded by the snapshot dated D. ?as_of=D resolves to the latest stored snapshot with as_of_date <= D, which therefore never contains a bout fought on or after D.",
+      "origin": "pbe_derived",
+      "origin_label": "PBE DERIVED",
+      "family": "round_profile",
+      "available": false,
+      "status": "insufficient_coverage",
+      "access_tier": "public"
+    }
+  }
+}

@@ -1,0 +1,48 @@
+---
+/* Compact request panel: GET path, plan badge, concise cURL / JavaScript / Python tabs (4-6 lines, wrapped, copy button). */
+import { hlShell } from "../lib/hl";
+export interface Props { path: string; plan?: string | null; host?: string; note?: string; compact?: boolean; }
+const { path, plan = null, host = "https://ufc.proptechusa.ai", note, compact = false } = Astro.props;
+const url = host + path;
+const id = "r" + Math.random().toString(36).slice(2, 8);
+const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+const tabs = [
+  { label: "cURL", html: hlShell(`curl \\\n  -H "Authorization: Bearer $UFC_API_KEY" \\\n  ${url}`), raw: `curl -H "Authorization: Bearer $UFC_API_KEY" "${url}"` },
+  { label: "JavaScript", html: esc(`const res = await fetch("${url}", {\n  headers: { Authorization: \`Bearer \${UFC_API_KEY}\` },\n});\nconst { ok, data, meta } = await res.json();`), raw: `const res = await fetch("${url}", { headers: { Authorization: \`Bearer \${UFC_API_KEY}\` } });\nconst { ok, data, meta } = await res.json();` },
+  { label: "Python", html: esc(`res = requests.get("${url}",\n    headers={"Authorization": f"Bearer {UFC_API_KEY}"})\nbody = res.json()  # {"ok", "data", "meta"}`), raw: `import requests\nres = requests.get("${url}", headers={"Authorization": f"Bearer {UFC_API_KEY}"})\nbody = res.json()` },
+];
+---
+<div class:list={["req", { compact }]} data-req={id}>
+  <div class="req-bar">
+    <span class="req-method">GET</span>
+    <span class="req-path" title={path}>{path}</span>
+    {plan && <span class:list={["chip", `plan-${plan}`]}>{plan === "first_party" ? "First-party" : plan.charAt(0).toUpperCase() + plan.slice(1)}{plan !== "enterprise" && plan !== "first_party" ? "+" : ""}</span>}
+    {note && <span class="req-note">{note}</span>}
+    <div class="req-tabs" role="tablist">
+      {tabs.map((t, i) => <button type="button" role="tab" aria-selected={i === 0 ? "true" : "false"} data-tab={i}>{t.label}</button>)}
+      <button type="button" class="req-copy" data-copy aria-label="Copy snippet">Copy</button>
+    </div>
+  </div>
+  {tabs.map((t, i) => <pre class="req-code" data-panel={i} data-raw={t.raw} hidden={i !== 0}><code set:html={t.html} /></pre>)}
+</div>
+<script>
+  if (!(window as any).__reqInit) {
+    (window as any).__reqInit = true;
+    document.addEventListener("click", async (e) => {
+      const t = e.target as HTMLElement;
+      const root = t.closest("[data-req]");
+      if (!root) return;
+      if (t.matches("[data-tab]")) {
+        root.querySelectorAll("[role=tab]").forEach((b) => b.setAttribute("aria-selected", "false"));
+        root.querySelectorAll("[data-panel]").forEach((p) => ((p as HTMLElement).hidden = true));
+        t.setAttribute("aria-selected", "true");
+        const p = root.querySelector(`[data-panel="${t.getAttribute("data-tab")}"]`) as HTMLElement;
+        if (p) p.hidden = false;
+      }
+      if (t.matches("[data-copy]")) {
+        const p = root.querySelector("[data-panel]:not([hidden])") as HTMLElement;
+        try { await navigator.clipboard.writeText(p?.getAttribute("data-raw") || ""); t.textContent = "Copied"; setTimeout(() => (t.textContent = "Copy"), 1200); } catch { t.textContent = "Select & copy"; }
+      }
+    });
+  }
+</script>

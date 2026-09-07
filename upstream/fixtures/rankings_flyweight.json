@@ -1,0 +1,454 @@
+{
+  "captured_at": "2026-09-07T13:38:00.478Z",
+  "base": "https://ufc-api.propbetedge.ai",
+  "path": "/v1/ufc/rankings?division=FLYWEIGHT",
+  "status": 200,
+  "api_version": "2026-09-06.3",
+  "body": {
+    "ok": true,
+    "data": {
+      "source": "ufc.com official rankings",
+      "source_url": "https://www.ufc.com/rankings",
+      "snapshot_date": "2026-09-06",
+      "captured_at": "2026-09-06T16:10:07.916+00:00",
+      "divisions": [
+        {
+          "key": "FLYWEIGHT",
+          "label": "Flyweight",
+          "is_womens": false,
+          "is_p4p": false,
+          "champion": {
+            "name": "Joshua Van",
+            "ufc_slug": "joshua-van",
+            "fighter_id": "e204408f-aee9-4987-83ca-8a43e8802e3f",
+            "fighter": {
+              "id": "e204408f-aee9-4987-83ca-8a43e8802e3f",
+              "name": "Joshua Van",
+              "slug_id": "5120301"
+            }
+          },
+          "entries": [
+            {
+              "rank": 1,
+              "name": "Alexandre Pantoja",
+              "ufc_slug": "alexandre-pantoja",
+              "fighter_id": "13eebfea-dbd0-4110-a41a-200b8a73051d",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "13eebfea-dbd0-4110-a41a-200b8a73051d",
+                "name": "Alexandre Pantoja",
+                "slug_id": "2560746"
+              }
+            },
+            {
+              "rank": 2,
+              "name": "Manel Kape",
+              "ufc_slug": "manel-kape",
+              "fighter_id": "12f748ce-9380-4672-81b9-8755a54e4e12",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "12f748ce-9380-4672-81b9-8755a54e4e12",
+                "name": "Manel Kape",
+                "slug_id": "4236504"
+              }
+            },
+            {
+              "rank": 3,
+              "name": "Brandon Royval",
+              "ufc_slug": "brandon-royval",
+              "fighter_id": "abdccf66-41ce-43a1-9ded-dce665b07400",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "abdccf66-41ce-43a1-9ded-dce665b07400",
+                "name": "Brandon Royval",
+                "slug_id": "4239928"
+              }
+            },
+            {
+              "rank": 4,
+              "name": "Tatsuro Taira",
+              "ufc_slug": "tatsuro-taira",
+              "fighter_id": "826104d2-9067-466a-9d1c-303813781395",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "826104d2-9067-466a-9d1c-303813781395",
+                "name": "Tatsuro Taira",
+                "slug_id": "4917772"
+              }
+            },
+            {
+              "rank": 5,
+              "name": "Kyoji Horiguchi",
+              "ufc_slug": "kyoji-horiguchi",
+              "fighter_id": "50c787a8-a624-4361-8d9b-d0491ff9ee6b",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "50c787a8-a624-4361-8d9b-d0491ff9ee6b",
+                "name": "Kyoji Horiguchi",
+                "slug_id": "2613374"
+              }
+            },
+            {
+              "rank": 6,
+              "name": "Lone’er Kavanagh",
+              "ufc_slug": "loneer-kavanagh",
+              "fighter_id": "2bf52767-0491-4602-9133-508eea617d8e",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "2bf52767-0491-4602-9133-508eea617d8e",
+                "name": "Lone'er Kavanagh",
+                "slug_id": "5147737"
+              }
+            },
+            {
+              "rank": 7,
+              "name": "Asu Almabayev",
+              "ufc_slug": "asu-almabayev",
+              "fighter_id": "c3d524fb-3774-4c1d-ad33-5c5b72ae4be0",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "c3d524fb-3774-4c1d-ad33-5c5b72ae4be0",
+                "name": "Asu Almabayev",
+                "slug_id": "4294926"
+              }
+            },
+            {
+              "rank": 8,
+              "name": "Brandon Moreno",
+              "ufc_slug": "brandon-moreno",
+              "fighter_id": "1fa71f4b-3f7d-4705-ba00-1f6bcf397b9a",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "1fa71f4b-3f7d-4705-ba00-1f6bcf397b9a",
+                "name": "Brandon Moreno",
+                "slug_id": "3027545"
+              }
+            },
+            {
+              "rank": 9,
+              "name": "Amir Albazi",
+              "ufc_slug": "amir-albazi",
+              "fighter_id": "69363dfc-ac02-45fb-b2af-a1ae442baea6",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "69363dfc-ac02-45fb-b2af-a1ae442baea6",
+                "name": "Amir Albazi",
+                "slug_id": "4684848"
+              }
+            },
+            {
+              "rank": 10,
+              "name": "Ramazan Temirov",
+              "ufc_slug": "ramazan-temirov",
+              "fighter_id": "6bdf15b3-2209-4641-aabc-dada806dfa98",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "6bdf15b3-2209-4641-aabc-dada806dfa98",
+                "name": "Ramazan Temirov",
+                "slug_id": "4895691"
+              }
+            },
+            {
+              "rank": 11,
+              "name": "Steve Erceg",
+              "ufc_slug": "steve-erceg",
+              "fighter_id": "7ba7cfd2-7a83-4f1e-b848-268d9b5bf675",
+              "change": 1,
+              "is_new": false,
+              "fighter": {
+                "id": "7ba7cfd2-7a83-4f1e-b848-268d9b5bf675",
+                "name": "Steve Erceg",
+                "slug_id": "4997217"
+              }
+            },
+            {
+              "rank": 12,
+              "name": "Tim Elliott",
+              "ufc_slug": "tim-elliott",
+              "fighter_id": "cbdc3e19-b826-44c5-83ac-3f48f4047b46",
+              "change": 1,
+              "is_new": false,
+              "fighter": {
+                "id": "cbdc3e19-b826-44c5-83ac-3f48f4047b46",
+                "name": "Tim Elliott",
+                "slug_id": "2614020"
+              }
+            },
+            {
+              "rank": 13,
+              "name": "Sumudaerji",
+              "ufc_slug": "su-mudaerji",
+              "fighter_id": "bac15cd8-ebdd-429b-b0a4-cb409961d0a0",
+              "change": null,
+              "is_new": true,
+              "fighter": {
+                "id": "bac15cd8-ebdd-429b-b0a4-cb409961d0a0",
+                "name": "Sumudaerji",
+                "slug_id": "4405109"
+              }
+            },
+            {
+              "rank": 14,
+              "name": "Tagir Ulanbekov",
+              "ufc_slug": "tagir-ulanbekov",
+              "fighter_id": "5490415b-bb93-4ce5-9bb1-1456c6b86e5c",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "5490415b-bb93-4ce5-9bb1-1456c6b86e5c",
+                "name": "Tagir Ulanbekov",
+                "slug_id": "4294924"
+              }
+            },
+            {
+              "rank": 15,
+              "name": "Alex Perez",
+              "ufc_slug": "alex-perez",
+              "fighter_id": "fa5664e7-1b78-4a2f-b681-da030858c484",
+              "change": -4,
+              "is_new": false,
+              "fighter": {
+                "id": "fa5664e7-1b78-4a2f-b681-da030858c484",
+                "name": "Alex Perez",
+                "slug_id": "3155425"
+              }
+            }
+          ]
+        },
+        {
+          "key": "FLYWEIGHT",
+          "label": "Women's Flyweight",
+          "is_womens": true,
+          "is_p4p": false,
+          "champion": {
+            "name": "Valentina Shevchenko",
+            "ufc_slug": "valentina-shevchenko",
+            "fighter_id": "4008721e-66c0-429e-b904-51d0d0a7e0d0",
+            "fighter": {
+              "id": "4008721e-66c0-429e-b904-51d0d0a7e0d0",
+              "name": "Valentina Shevchenko",
+              "slug_id": "2554705"
+            }
+          },
+          "entries": [
+            {
+              "rank": 1,
+              "name": "Natalia Silva",
+              "ufc_slug": "natalia-silva",
+              "fighter_id": "56d860de-6ba5-4e97-a889-2129951e52cf",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "56d860de-6ba5-4e97-a889-2129951e52cf",
+                "name": "Natalia Silva",
+                "slug_id": "4054605"
+              }
+            },
+            {
+              "rank": 2,
+              "name": "Manon Fiorot",
+              "ufc_slug": "manon-fiorot",
+              "fighter_id": "2c9c2a88-aec1-4bf0-9b16-3ce58adf6fd6",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "2c9c2a88-aec1-4bf0-9b16-3ce58adf6fd6",
+                "name": "Manon Fiorot",
+                "slug_id": "4608674"
+              }
+            },
+            {
+              "rank": 3,
+              "name": "Alexa Grasso",
+              "ufc_slug": "alexa-grasso",
+              "fighter_id": "1d296292-4969-43a8-9948-cd0a76a642ce",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "1d296292-4969-43a8-9948-cd0a76a642ce",
+                "name": "Alexa Grasso",
+                "slug_id": "3136287"
+              }
+            },
+            {
+              "rank": 4,
+              "name": "Erin Blanchfield",
+              "ufc_slug": "erin-blanchfield",
+              "fighter_id": "6c613851-d11b-4ee6-97d2-bdde0a467d32",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "6c613851-d11b-4ee6-97d2-bdde0a467d32",
+                "name": "Erin Blanchfield",
+                "slug_id": "4350796"
+              }
+            },
+            {
+              "rank": 5,
+              "name": "Rose Namajunas",
+              "ufc_slug": "rose-namajunas",
+              "fighter_id": "fc84c7be-0db5-44a6-88da-c4f74af0e86c",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "fc84c7be-0db5-44a6-88da-c4f74af0e86c",
+                "name": "Rose Namajunas",
+                "slug_id": "3032973"
+              }
+            },
+            {
+              "rank": 6,
+              "name": "Maycee Barber",
+              "ufc_slug": "maycee-barber",
+              "fighter_id": "2a139533-8a7d-4d6a-802e-b49660209bc6",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "2a139533-8a7d-4d6a-802e-b49660209bc6",
+                "name": "Maycee Barber",
+                "slug_id": "4246307"
+              }
+            },
+            {
+              "rank": 7,
+              "name": "Jasmine Jasudavicius",
+              "ufc_slug": "jasmine-jasudavicius",
+              "fighter_id": "51fbc8ad-d3cf-4c14-9f58-df8ac1838323",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "51fbc8ad-d3cf-4c14-9f58-df8ac1838323",
+                "name": "Jasmine Jasudavicius",
+                "slug_id": "4835135"
+              }
+            },
+            {
+              "rank": 8,
+              "name": "Wang Cong",
+              "ufc_slug": "wang-cong",
+              "fighter_id": "c66c4189-2a2e-4a64-a688-d2b77e7ee01c",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "c66c4189-2a2e-4a64-a688-d2b77e7ee01c",
+                "name": "Wang Cong",
+                "slug_id": "4215200"
+              }
+            },
+            {
+              "rank": 9,
+              "name": "Tracy Cortez",
+              "ufc_slug": "tracy-cortez",
+              "fighter_id": "7757ac44-3ded-4440-b444-01cdad3bf7d1",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "7757ac44-3ded-4440-b444-01cdad3bf7d1",
+                "name": "Tracy Cortez",
+                "slug_id": "4243624"
+              }
+            },
+            {
+              "rank": 10,
+              "name": "Miranda Maverick",
+              "ufc_slug": "miranda-maverick",
+              "fighter_id": "580ce473-c18c-4e53-941e-1fbf91576653",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "580ce473-c18c-4e53-941e-1fbf91576653",
+                "name": "Miranda Maverick",
+                "slug_id": "4065598"
+              }
+            },
+            {
+              "rank": 11,
+              "name": "Karine Silva",
+              "ufc_slug": "karine-silva",
+              "fighter_id": "38ea7e9b-b88c-4a18-9ae8-feaa0672b5b4",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "38ea7e9b-b88c-4a18-9ae8-feaa0672b5b4",
+                "name": "Karine Silva",
+                "slug_id": "3309918"
+              }
+            },
+            {
+              "rank": 12,
+              "name": "Casey O'Neill",
+              "ufc_slug": "casey-oneill",
+              "fighter_id": "26f1a938-4948-4ceb-8bd3-7c4f4339ba13",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "26f1a938-4948-4ceb-8bd3-7c4f4339ba13",
+                "name": "Casey O'Neill",
+                "slug_id": "4699589"
+              }
+            },
+            {
+              "rank": 13,
+              "name": "Eduarda Moura",
+              "ufc_slug": "eduarda-moura",
+              "fighter_id": "21ee70b8-ce4e-43a0-8113-628b3a626753",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "21ee70b8-ce4e-43a0-8113-628b3a626753",
+                "name": "Eduarda Moura",
+                "slug_id": "5143888"
+              }
+            },
+            {
+              "rank": 14,
+              "name": "Gabriella Fernandes",
+              "ufc_slug": "gabriella-fernandes",
+              "fighter_id": "0f713e85-1b6e-47fc-9926-04cfd392be4e",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "0f713e85-1b6e-47fc-9926-04cfd392be4e",
+                "name": "Gabriella Fernandes",
+                "slug_id": "4871203"
+              }
+            },
+            {
+              "rank": 15,
+              "name": "JJ Aldrich",
+              "ufc_slug": "jj-aldrich",
+              "fighter_id": "a4aa5dd9-7392-4275-ae6b-4e26d858195a",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "a4aa5dd9-7392-4275-ae6b-4e26d858195a",
+                "name": "JJ Aldrich",
+                "slug_id": "3136289"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "meta": {
+      "api": "PropSports UFC",
+      "version": "2026-09-06.3",
+      "request_id": "447cf399-fb04-4d66-b6e6-0c2fd95af5b9",
+      "store": "table",
+      "divisions": 2,
+      "division": "FLYWEIGHT",
+      "womens": null,
+      "access_tier": "public"
+    }
+  }
+}
