@@ -34,6 +34,7 @@ export async function authenticateDirect(request, env) {
   if (!constantTimeEqual(hash, record.secret_hash)) throw new GatewayError(401, "invalid_api_key", "The API key is invalid.");
   const status = keyStatus(record);
   if (status === "expired") throw new GatewayError(401, "api_key_expired", "The API key has expired.", { expires_at: record.expires_at });
+  if (status === "suspended") throw new GatewayError(401, "api_key_suspended", "The API key is suspended because its subscription is not active. Manage your subscription in the dashboard.", { billing_state: record.billing?.billing_state || null });
   if (status !== "active") throw new GatewayError(401, "api_key_revoked", "The API key has been revoked.");
   if (!PLANS.plans[record.plan]) throw new GatewayError(403, "plan_required", "The key's plan is not recognised.", { plan: record.plan });
   const limits = effectiveLimits(record);

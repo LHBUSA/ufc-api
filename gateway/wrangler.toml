@@ -21,7 +21,7 @@ directory = "../apps/web/dist"
 binding = "ASSETS"
 not_found_handling = "404-page"
 html_handling = "auto-trailing-slash"
-run_worker_first = ["/v1/*", "/health", "/dashboard/api/*", "/admin/*"]
+run_worker_first = ["/v1/*", "/health", "/dashboard/api/*", "/admin/*", "/webhooks/*"]
 
 [vars]
 GATEWAY_ENV = "preview"
@@ -31,6 +31,8 @@ PUBLIC_HOST = "https://proptechusa-ufc-api.sales-fd3.workers.dev"
 #   npx wrangler secret put ADMIN_TOKEN              admin key-issuance API + scripts/issue-key.mjs
 #   npx wrangler secret put RAPIDAPI_PROXY_SECRET    value from the RapidAPI provider console (Settings → Proxy secret)
 #   npx wrangler secret put UPSTREAM_API_KEY         optional; forwarded as X-API-Key once the canonical host enables REQUIRE_API_KEY
+#   npx wrangler secret put STRIPE_WEBHOOK_SECRET     signing secret of the Stripe webhook endpoint for /webhooks/stripe
+#   npx wrangler secret put STRIPE_SECRET_KEY         restricted key: read subscriptions + create billing-portal sessions
 
 [[kv_namespaces]]
 binding = "API_KEYS"

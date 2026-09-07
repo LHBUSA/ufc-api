@@ -1,0 +1,50 @@
+{
+  "$note": "Single source of truth for direct (Stripe) billing. Stripe price ids and Payment Link URLs are public identifiers. Secrets (STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET) are Wrangler secrets, never in this file. RapidAPI, enterprise and first-party channels are NOT billed through Stripe.",
+  "provider": "stripe",
+  "product_name": "PropTechUSA UFC Intelligence API",
+  "self_serve_checkout": true,
+  "checkout_mode": "payment_links",
+  "success_url": "https://ufc.proptechusa.ai/dashboard?checkout=success&session_id={CHECKOUT_SESSION_ID}",
+  "plans": {
+    "developer": { "display_price": "$79/month", "price": 79, "stripe_price_id": "price_1UD2VSF3CaVzg4ORNqjkxSDS", "payment_link": "https://buy.stripe.com/8x2dR95IabuCg8d6wr7wA0t", "entitlement_plan": "developer", "cta": "Start building" },
+    "pro": { "display_price": "$199/month", "price": 199, "stripe_price_id": "price_1UD2VaF3CaVzg4ORHLQsfjNT", "payment_link": "https://buy.stripe.com/8x2bJ16Me8iq6xD8Ez7wA0u", "entitlement_plan": "pro", "cta": "Unlock Fight DNA" },
+    "ultra": { "display_price": "$499/month", "price": 499, "stripe_price_id": "price_1UD2VhF3CaVzg4OR1UK7Dckp", "payment_link": "https://buy.stripe.com/bJebJ13A2eGO2hnbQL7wA0v", "entitlement_plan": "ultra", "cta": "Build with Matchup DNA" },
+    "scale": { "display_price": "$1,499/month", "price": 1499, "stripe_price_id": "price_1UD2VqF3CaVzg4ORxXKNbBIC", "payment_link": "https://buy.stripe.com/cNi00j4E6buC3lr6wr7wA0w", "entitlement_plan": "scale", "cta": "Go to Scale" },
+    "enterprise": { "display_price": "Let's talk", "price": null, "stripe_price_id": null, "payment_link": null, "entitlement_plan": "enterprise", "cta": "Talk to us", "contact": "mailto:sales@proptechusa.ai?subject=UFC%20Intelligence%20API%20%E2%80%94%20Enterprise" }
+  },
+  "price_to_plan": {
+    "price_1UD2VSF3CaVzg4ORNqjkxSDS": "developer",
+    "price_1UD2VaF3CaVzg4ORHLQsfjNT": "pro",
+    "price_1UD2VhF3CaVzg4OR1UK7Dckp": "ultra",
+    "price_1UD2VqF3CaVzg4ORxXKNbBIC": "scale"
+  },
+  "metadata_plan_whitelist": ["developer", "pro", "ultra", "scale"],
+  "webhook": {
+    "path": "/webhooks/stripe",
+    "tolerance_seconds": 300,
+    "events": [
+      "checkout.session.completed",
+      "checkout.session.async_payment_succeeded",
+      "customer.subscription.created",
+      "customer.subscription.updated",
+      "customer.subscription.deleted",
+      "invoice.paid",
+      "invoice.payment_failed"
+    ],
+    "processed_event_ttl_seconds": 2592000,
+    "pending_key_ttl_seconds": 604800
+  },
+  "status_policy": {
+    "$note": "Stripe subscription.status → key entitlement. Keys are never deleted by billing; they are suspended and re-activated. past_due keeps access while Stripe retries.",
+    "active": { "key_status": "active", "billing_state": "active" },
+    "trialing": { "key_status": "active", "billing_state": "trialing" },
+    "past_due": { "key_status": "active", "billing_state": "past_due" },
+    "incomplete": { "key_status": null, "billing_state": "incomplete" },
+    "incomplete_expired": { "key_status": "suspended", "billing_state": "incomplete_expired" },
+    "unpaid": { "key_status": "suspended", "billing_state": "unpaid" },
+    "canceled": { "key_status": "suspended", "billing_state": "canceled" },
+    "paused": { "key_status": "suspended", "billing_state": "paused" }
+  },
+  "customer_portal": { "enabled": true, "return_path": "/dashboard" },
+  "tax": { "automatic_tax": false, "tax_id_collection": true, "note": "Automatic Stripe Tax is deliberately OFF on the live Payment Links until registrations are reviewed. Do not enable silently." }
+}

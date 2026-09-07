@@ -4,6 +4,7 @@
  *   /health              liveness (no auth)
  *   /dashboard/api/*     key-scoped dashboard API (same origin)
  *   /admin/*             key issuance (ADMIN_TOKEN)
+ *   /webhooks/stripe     signature-verified Stripe webhook → provisioning (stripe.js)
  *   everything else      static portal assets (apps/web/dist)
  *
  * The gateway never computes UFC intelligence. Bodies pass through unchanged.
@@ -17,6 +18,8 @@ import { usageStub } from "./usage.js";
 import { writeUsage } from "./telemetry.js";
 import { adminRouter } from "./admin.js";
 import { dashboardRouter } from "./dashboard.js";
+import { stripeWebhook } from "./stripe.js";
+import billing from "../../config/billing.json" with { type: "json" };
 import upstreamContract from "../../upstream/ufc-contract.json" with { type: "json" };
 
 export { UsageCounter } from "./usage.js";
@@ -85,12 +88,17 @@ export default {
     const isApi = path === "/v1" || path.startsWith("/v1/");
     const isDashboardApi = path.startsWith("/dashboard/api");
     const isAdmin = path === "/admin" || path.startsWith("/admin/");
+    const isStripeWebhook = path === billing.webhook.path;
 
     if (request.method === "OPTIONS" && isApi) return new Response(null, { status: 204, headers: { ...corsHeaders("public"), "X-Request-Id": ctx.requestId } });
 
     try {
       if (path === "/health") {
         return ok(ctx, { status: "ok", service: GATEWAY.product_name, gateway_version: GATEWAY.gateway_version, env: env.GATEWAY_ENV || "unknown", upstream: env.UPSTREAM_BASE_URL || GATEWAY.upstream_base_url, api_version_target: upstreamContract.api_version, fight_dna_definition_version: upstreamContract.fight_dna_definition_version }, {}, {}, "private");
+      }
+      if (isStripeWebhook) {
+        if (request.method !== "POST") return fail(ctx, 405, "method_not_allowed", "Only POST is supported.", undefined, {}, "private");
+        return await stripeWebhook(request, env, ctx);
       }
       if (isAdmin) return await adminRouter(request, env, ctx, url);
       if (isDashboardApi) {

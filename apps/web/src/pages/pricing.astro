@@ -16,7 +16,9 @@ const cards: Record<string, { head: string; items: string[] }> = {
   scale: { head: "Production infrastructure", items: ["Everything in Ultra", "Very high usage", "Higher concurrency", "Priority support", "Direct integration support", "Commercial production terms", "Bulk/custom options where rights permit"] },
   enterprise: { head: "Custom", items: ["Dedicated infrastructure", "Custom endpoints", "Large datasets", "Special delivery", "SLAs", "Custom licensing", "Partnerships"] },
 };
-const mailto = (plan: string) => `mailto:sales@proptechusa.ai?subject=${encodeURIComponent(`UFC Intelligence API — ${plans[plan as keyof typeof plans].name} plan access`)}&body=${encodeURIComponent(`Hi PropTechUSA,\n\nI'd like API access on the ${plans[plan as keyof typeof plans].name} plan.\n\nCompany / project:\nUse case:\nExpected monthly requests:\n\nThanks`)}`;
+const billing = gen.billing;
+/* Self-serve plans go to Stripe-hosted Checkout (Payment Links from config/billing.json); Enterprise never does. */
+const mailto = (plan: string) => { const b = billing.plans[plan as keyof typeof billing.plans] as any; return billing.self_serve_checkout && b?.payment_link ? b.payment_link : (b?.contact || `mailto:sales@proptechusa.ai?subject=${encodeURIComponent(`UFC Intelligence API — ${plans[plan as keyof typeof plans].name} plan access`)}`); };
 const groups = [
   { t: "Core data", keys: ["index", "events", "event", "event_card", "fighters", "fighter", "fighter_history", "bout", "bout_stats", "results", "rankings", "search", "counts"] },
   { t: "Media + video metadata", keys: ["fighters_media", "videos", "fighter_videos", "event_videos", "bout_videos"] },
@@ -42,7 +44,7 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "Product", name: "P
             <div class="pos">{c.head}</div>
             <ul>{c.items.map((i) => <li>{i}</li>)}</ul>
             <div class="limits">{fmtNumber(p.included_requests)} requests / month<br />{p.rate_limit_per_min} requests / minute<br />{p.limit_mode === "soft" ? "soft limit, reviewed" : "hard limit"}</div>
-            <a class:list={["btn cta", p.recommended ? "gold" : "secondary"]} href={mailto(k)}>{p.cta}</a>
+            <a class:list={["btn cta", p.recommended ? "gold" : "secondary"]} href={mailto(k)} rel="noopener" data-checkout={k}>{p.cta}</a>
           </div>
         ); })}
       </div>
@@ -51,7 +53,7 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "Product", name: "P
         <ul style="grid-template-columns:repeat(2,minmax(0,1fr))">{cards.enterprise.items.map((i) => <li>{i}</li>)}</ul>
         <a class="btn gold cta" href={mailto("enterprise")}>Talk to us</a>
       </div>
-      <p class="small muted" style="margin-top:14px">Prices in USD per month. Quotas and per-minute limits are initial values and are configured per plan; direct customers can be granted per-key overrides. Overage billing is not enabled on any plan.</p>
+      <p class="small muted" style="margin-top:14px">Prices in USD per month, billed by Stripe through hosted checkout; cancel any time from the dashboard. Quotas and per-minute limits are initial values and are configured per plan; direct customers can be granted per-key overrides. Overage billing is not enabled on any plan.</p>
     </div>
   </section>
 
@@ -60,8 +62,8 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "Product", name: "P
       <div class="split">
         <div>
           <p class="eyebrow">Get API access</p>
-          <h2>Keys are issued by PropTechUSA.</h2>
-          <p>Choose a plan above and email <a href="mailto:sales@proptechusa.ai">sales@proptechusa.ai</a> with your project and expected volume. You receive a key in the <code>pt_ufc_live_…</code> format, shown once; manage it in the <a href="/dashboard">dashboard</a>. Self-serve checkout is being prepared on Stripe; until it is live, invoicing is handled directly.</p>
+          <h2>Buy a plan, get a key, start building.</h2>
+          <p>Pick a plan above. Checkout is hosted by Stripe under the name <em>{billing.product_name}</em>. When payment completes you land on the <a href="/dashboard">dashboard</a>, your key (<code>pt_ufc_live_…</code>) is provisioned automatically and shown once, and your subscription is managed through the Stripe customer portal. Enterprise and custom contracts: <a href="mailto:sales@proptechusa.ai">sales@proptechusa.ai</a>.</p>
           <p>Prefer a marketplace? The same API and the same plan ladder are being packaged for RapidAPI. Direct plans carry higher included request counts than the marketplace plans.</p>
         </div>
         <div class="card flat">

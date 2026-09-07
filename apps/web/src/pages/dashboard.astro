@@ -1,12 +1,24 @@
 ---
 import Base from "../layouts/Base.astro";
 import gen from "../generated/entitlements.json";
+const billing = gen.billing;
 ---
-<Base title="API Dashboard | PropTechUSA UFC Intelligence API" description="Plan, usage, quota, rate limit and recent requests for your UFC Intelligence API key. Copy, rotate and manage your key." path="/dashboard">
+<Base title="API Dashboard | PropTechUSA UFC Intelligence API" description="Plan, subscription status, renewal, usage, quota, rate limit and your API key for the UFC Intelligence API. Copy, rotate and manage your subscription." path="/dashboard">
   <section class="dash wrap">
+    <div id="checkout-banner" hidden class="card" style="border-color:var(--gold-2);background:linear-gradient(180deg,#fffdf7,#fbf3df);margin-bottom:20px">
+      <p class="eyebrow gold" style="margin-bottom:6px">Subscription active</p>
+      <h2 style="font-size:1.6rem;margin-bottom:6px">Your UFC Intelligence API access is being provisioned.</h2>
+      <p id="checkout-msg" class="muted" style="margin:0">Your API access is being activated. Refresh in a moment.</p>
+      <div id="checkout-key" hidden style="margin-top:14px">
+        <strong>Your API key (shown once). Store it now.</strong>
+        <div class="keybox" id="checkout-key-value" style="margin-top:8px"></div>
+        <div class="actions-row" style="margin-top:10px"><button class="btn primary" id="checkout-copy" type="button">Copy key</button><button class="btn secondary" id="checkout-use" type="button">Load dashboard with this key</button></div>
+      </div>
+    </div>
+
     <p class="eyebrow">Dashboard</p>
     <h1 style="font-size:clamp(2rem,4vw,2.8rem)">Your key, your usage.</h1>
-    <p class="lede">Paste your API key to load plan, usage and recent requests. The key stays in this browser tab only and is never stored.</p>
+    <p class="lede">Paste your API key to load plan, subscription, usage and recent requests. The key stays in this browser tab only and is never stored server-side by this page.</p>
     <div class="card" style="margin-top:20px">
       <label for="key" class="eyebrow" style="display:block">API key</label>
       <div class="field">
@@ -20,31 +32,38 @@ import gen from "../generated/entitlements.json";
     <div id="panel" hidden>
       <div class="row" style="margin-top:20px">
         <div class="stat"><div class="l">Plan</div><div class="v" id="p-plan">—</div><div class="s" id="p-price"></div></div>
-        <div class="stat"><div class="l">Month usage</div><div class="v" id="p-used">—</div><div class="s" id="p-quota"></div><div class="bar-track"><div class="bar-fill" id="p-bar"></div></div></div>
+        <div class="stat"><div class="l">Status</div><div class="v" id="p-status-v" style="text-transform:capitalize">—</div><div class="s" id="p-status-s"></div></div>
+        <div class="stat"><div class="l">Usage</div><div class="v" id="p-used">—</div><div class="s" id="p-quota"></div><div class="bar-track"><div class="bar-fill" id="p-bar"></div></div></div>
+        <div class="stat"><div class="l">Renews</div><div class="v" id="p-renews" style="font-size:1.3rem">—</div><div class="s" id="p-renews-s"></div></div>
+      </div>
+      <div class="row" style="margin-top:14px">
         <div class="stat"><div class="l">Rate limit</div><div class="v" id="p-rpm">—</div><div class="s">requests / minute</div></div>
         <div class="stat"><div class="l">API version</div><div class="v mono" style="font-size:1.05rem" id="p-version">—</div><div class="s" id="p-gw"></div></div>
+        <div class="stat"><div class="l">Denied this month</div><div class="v" id="p-denied" style="font-size:1.05rem">—</div><div class="s">401 / 403 / 429 do not consume quota</div></div>
+        <div class="stat"><div class="l">Last used</div><div class="v" id="p-last" style="font-size:1.05rem">—</div><div class="s" id="p-months"></div></div>
       </div>
       <div class="grid cols-2" style="margin-top:14px">
         <div class="card flat">
-          <h3 style="font-family:var(--font-body);font-size:1rem">Key</h3>
+          <h3 style="font-family:var(--font-body);font-size:1rem">API key</h3>
           <div class="keybox" id="p-display">—</div>
           <dl class="small" style="display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:14px 0 0">
             <dt class="muted">Key id</dt><dd class="mono" id="p-id"></dd>
             <dt class="muted">Label</dt><dd id="p-label"></dd>
             <dt class="muted">Channel</dt><dd id="p-channel"></dd>
-            <dt class="muted">Status</dt><dd id="p-status"></dd>
             <dt class="muted">Created</dt><dd id="p-created"></dd>
             <dt class="muted">Expires</dt><dd id="p-expires"></dd>
-            <dt class="muted">Last used</dt><dd id="p-last"></dd>
             <dt class="muted">Customer</dt><dd id="p-customer"></dd>
           </dl>
           <div class="actions-row" style="margin-top:16px">
+            <button class="btn secondary" id="copy2" type="button">Copy key</button>
             <button class="btn secondary" id="rotate" type="button">Rotate key</button>
             <a class="btn secondary" href="/docs">View docs</a>
-            <a class="btn gold" href="/pricing">Upgrade</a>
+            <button class="btn gold" id="portal" type="button" hidden>Manage subscription</button>
+            <a class="btn gold" id="choose-plan" href="/pricing" hidden>Choose a plan →</a>
           </div>
+          <p class="status-line" id="portal-status"></p>
           <div id="rotate-confirm" hidden style="margin-top:14px" class="callout red">
-            <strong>Rotate now?</strong> A new key is issued and shown once. The current key stops working immediately.
+            <strong>Rotate now?</strong> A new key is issued and shown once. The current key stops working immediately. Your subscription stays attached to the new key.
             <div class="actions-row" style="margin-top:10px"><button class="btn primary" id="rotate-yes" type="button">Yes, rotate</button><button class="btn secondary" id="rotate-no" type="button">Cancel</button></div>
           </div>
           <div id="rotated" hidden style="margin-top:14px" class="callout gold">
@@ -54,13 +73,18 @@ import gen from "../generated/entitlements.json";
           </div>
         </div>
         <div class="card flat">
-          <h3 style="font-family:var(--font-body);font-size:1rem">Entitlements</h3>
-          <p class="small muted">Features on this plan. Endpoints for each are listed on the <a href="/pricing#matrix">pricing page</a>.</p>
+          <h3 style="font-family:var(--font-body);font-size:1rem">Subscription</h3>
+          <dl class="small" style="display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:0">
+            <dt class="muted">Billing</dt><dd id="b-provider">—</dd>
+            <dt class="muted">Subscription</dt><dd id="b-status">—</dd>
+            <dt class="muted">Billing state</dt><dd id="b-state">—</dd>
+            <dt class="muted">Current period ends</dt><dd id="b-period">—</dd>
+            <dt class="muted">Cancels at period end</dt><dd id="b-cancel">—</dd>
+            <dt class="muted">Last payment</dt><dd id="b-paid">—</dd>
+          </dl>
+          <p class="small muted" id="b-note" style="margin:12px 0 0"></p>
+          <h3 style="font-family:var(--font-body);font-size:1rem;margin-top:18px">Entitlements</h3>
           <div id="p-features" class="network"></div>
-          <h3 style="font-family:var(--font-body);font-size:1rem;margin-top:18px">Denied this month</h3>
-          <div id="p-denied" class="small muted">—</div>
-          <h3 style="font-family:var(--font-body);font-size:1rem;margin-top:18px">Previous months</h3>
-          <div id="p-months" class="small mono muted">—</div>
         </div>
       </div>
       <div class="card flat" style="margin-top:14px">
@@ -70,7 +94,7 @@ import gen from "../generated/entitlements.json";
     </div>
 
     <div class="callout" style="margin-top:28px" id="no-key-help">
-      <strong>No key yet?</strong> Keys are issued per plan by PropTechUSA. <a href="/pricing#access">Get API access →</a>
+      <strong>No key yet?</strong> Keys are provisioned automatically when you subscribe. <a href="/pricing">Choose a plan →</a>
     </div>
   </section>
 
@@ -79,6 +103,8 @@ import gen from "../generated/entitlements.json";
     const status = (msg: string, err = false) => { const s = $("status"); s.textContent = msg; s.classList.toggle("err", err); };
     const fmt = (n: number | null) => (n === null || n === undefined ? "unlimited" : n.toLocaleString("en-US"));
     const when = (iso: string | null) => (iso ? new Date(iso).toISOString().replace("T", " ").slice(0, 19) + "Z" : "—");
+    const day = (iso: string | null) => (iso ? new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" }) : "—");
+    const escapeHtml = (s: string) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c] as string));
     let currentKey = "";
     try { currentKey = sessionStorage.getItem("ufc_api_key") || ""; } catch {}
     const input = $("key") as HTMLInputElement;
@@ -90,26 +116,39 @@ import gen from "../generated/entitlements.json";
       if (!body.ok) throw new Error(`${body.error?.code}: ${body.error?.message}`);
       return body.data;
     }
+    const copy = async (text: string, okMsg: string) => { try { await navigator.clipboard.writeText(text); status(okMsg); } catch { status("Clipboard unavailable; copy manually.", true); } };
 
     function render(d: any) {
       $("panel").hidden = false; $("no-key-help").hidden = true;
+      const b = d.billing;
       $("p-plan").textContent = d.plan.name;
       $("p-price").textContent = d.plan.price_usd_month === null ? d.plan.tagline : `$${d.plan.price_usd_month}/mo · ${d.plan.tagline}`;
+      const st = b ? (b.subscription_status === "active" && b.cancel_at_period_end ? "Active (cancels)" : b.subscription_status.replace(/_/g, " ")) : d.key.status;
+      $("p-status-v").textContent = st;
+      $("p-status-s").textContent = b ? (b.billing_state === "past_due" ? "payment past due — Stripe is retrying" : b.cancel_at_period_end ? `access ends ${day(b.current_period_end)}` : `billing ${b.billing_state}`) : `${d.key.channel} key`;
       $("p-used").textContent = fmt(d.usage.used);
-      $("p-quota").textContent = d.usage.quota === null ? "unlimited · resets " + when(new Date(d.usage.month_reset * 1000).toISOString()) : `of ${fmt(d.usage.quota)} · resets ${new Date(d.usage.month_reset * 1000).toISOString().slice(0, 10)}`;
+      $("p-quota").textContent = d.usage.quota === null ? "unlimited" : `of ${fmt(d.usage.quota)} this month`;
       const pct = d.usage.quota ? Math.min(100, (100 * d.usage.used) / d.usage.quota) : 0;
       const bar = $("p-bar"); bar.style.width = pct + "%"; bar.className = "bar-fill" + (pct >= 100 ? " over" : pct >= 80 ? " warn" : "");
+      $("p-renews").textContent = b && b.current_period_end ? day(b.current_period_end) : new Date(d.usage.month_reset * 1000).toISOString().slice(0, 10);
+      $("p-renews-s").textContent = b && b.current_period_end ? (b.cancel_at_period_end ? "subscription ends, not renewing" : "next billing period") : "quota resets (no subscription)";
       $("p-rpm").textContent = fmt(d.plan.limits.rate_limit_per_min);
       $("p-version").textContent = d.api.version; $("p-gw").textContent = `gateway ${d.api.gateway_version} · Fight DNA v${d.api.fight_dna_definition_version}`;
-      $("p-display").textContent = d.key.display; $("p-id").textContent = d.key.id; $("p-label").textContent = d.key.label || "—"; $("p-channel").textContent = d.key.channel; $("p-status").textContent = d.key.status;
-      $("p-created").textContent = when(d.key.created_at); $("p-expires").textContent = d.key.expires_at ? when(d.key.expires_at) : "never"; $("p-last").textContent = when(d.key.last_used_at); $("p-customer").textContent = d.customer ? `${d.customer.name} (${d.customer.keys} key${d.customer.keys === 1 ? "" : "s"})` : "—";
-      $("p-features").innerHTML = d.plan.features.map((f: string) => `<span class="chip">${f === "*" ? "everything" : f.replace(/_/g, " ")}</span>`).join(" ");
       $("p-denied").textContent = d.usage.denied.length ? d.usage.denied.map((x: any) => `${x.reason}: ${x.count}`).join(" · ") : "none";
-      $("p-months").textContent = d.usage.months.length ? d.usage.months.map((m: any) => `${m.month}: ${fmt(m.requests)}`).join(" · ") : "—";
+      $("p-last").textContent = d.key.last_used_at ? when(d.key.last_used_at) : "never";
+      $("p-months").textContent = d.usage.months.length ? d.usage.months.map((m: any) => `${m.month}: ${fmt(m.requests)}`).join(" · ") : "";
+      $("p-display").textContent = d.key.display; $("p-id").textContent = d.key.id; $("p-label").textContent = d.key.label || "—"; $("p-channel").textContent = d.key.channel;
+      $("p-created").textContent = when(d.key.created_at); $("p-expires").textContent = d.key.expires_at ? when(d.key.expires_at) : "never"; $("p-customer").textContent = d.customer ? `${d.customer.name} (${d.customer.keys} key${d.customer.keys === 1 ? "" : "s"})` : "—";
+      $("p-features").innerHTML = d.plan.features.map((f: string) => `<span class="chip">${f === "*" ? "everything" : f.replace(/_/g, " ")}</span>`).join(" ");
+      $("b-provider").textContent = b ? "Stripe (direct)" : d.key.channel === "rapidapi" ? "RapidAPI" : d.key.channel === "direct" ? "invoiced / manual" : d.key.channel;
+      $("b-status").textContent = b ? b.subscription_status : "—"; $("b-state").textContent = b ? b.billing_state : "—";
+      $("b-period").textContent = b ? day(b.current_period_end) : "—"; $("b-cancel").textContent = b ? (b.cancel_at_period_end ? "yes" : "no") : "—"; $("b-paid").textContent = b && b.last_paid_at ? day(b.last_paid_at) : "—";
+      $("b-note").textContent = b ? (b.billing_state === "past_due" ? "Your last payment failed. Update your payment method in Manage subscription; access continues while Stripe retries." : b.cancel_at_period_end ? "Your subscription is set to cancel. You keep full access until the end of the paid period." : "Update payment method, view invoices, change or cancel your plan in the Stripe customer portal.") : "This key is not billed through Stripe.";
+      ($("portal") as HTMLElement).hidden = !(b && b.manage_available);
+      ($("choose-plan") as HTMLElement).hidden = !!b;
       const tb = $("p-recent").querySelector("tbody")!;
       tb.innerHTML = d.recent_requests.length ? d.recent_requests.map((r: any) => `<tr><td class="mono small">${when(r.ts)}</td><td><code>${r.status}</code></td><td class="mono small" style="word-break:break-all">${escapeHtml(r.path)}</td><td class="small">${r.route_key || ""}</td><td class="small">${r.latency_ms == null ? "" : Math.round(r.latency_ms) + " ms"}</td><td class="mono small">${r.request_id}</td></tr>`).join("") : `<tr><td colspan="6" class="muted">No requests yet.</td></tr>`;
     }
-    const escapeHtml = (s: string) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c] as string));
 
     async function load() {
       currentKey = input.value.trim();
@@ -120,7 +159,8 @@ import gen from "../generated/entitlements.json";
     }
     $("load").addEventListener("click", load);
     input.addEventListener("keydown", (e) => { if (e.key === "Enter") load(); });
-    $("copy").addEventListener("click", async () => { try { await navigator.clipboard.writeText(input.value.trim()); status("Key copied to clipboard."); } catch { status("Clipboard unavailable; copy manually.", true); } });
+    $("copy").addEventListener("click", () => copy(input.value.trim(), "Key copied to clipboard."));
+    $("copy2").addEventListener("click", () => copy(currentKey, "Key copied to clipboard."));
     $("rotate").addEventListener("click", () => { $("rotate-confirm").hidden = false; });
     $("rotate-no").addEventListener("click", () => { $("rotate-confirm").hidden = true; });
     $("rotate-yes").addEventListener("click", async () => {
@@ -128,7 +168,39 @@ import gen from "../generated/entitlements.json";
       try { const d = await api("/dashboard/api/rotate", "POST"); $("new-key").textContent = d.key; $("rotated").hidden = false; currentKey = d.key; input.value = d.key; try { sessionStorage.setItem("ufc_api_key", d.key); } catch {} status("Rotated. The old key is revoked."); await load(); }
       catch (e: any) { status(e.message, true); }
     });
-    $("copy-new").addEventListener("click", async () => { try { await navigator.clipboard.writeText($("new-key").textContent || ""); status("New key copied."); } catch { status("Clipboard unavailable; copy manually.", true); } });
-    if (currentKey) load();
+    $("copy-new").addEventListener("click", () => copy($("new-key").textContent || "", "New key copied."));
+    $("portal").addEventListener("click", async () => {
+      const ps = $("portal-status"); ps.textContent = "Opening Stripe customer portal…"; ps.classList.remove("err");
+      try { const d = await api("/dashboard/api/portal", "POST"); window.location.href = d.url; } catch (e: any) { ps.textContent = e.message; ps.classList.add("err"); }
+    });
+
+    /* Post-checkout success state (Stripe redirects here with ?checkout=success&session_id=cs_…). Polls provisioning; reveals the key once. */
+    const params = new URLSearchParams(location.search);
+    if (params.get("checkout") === "success") {
+      $("checkout-banner").hidden = false;
+      const sid = params.get("session_id") || "";
+      let tries = 0;
+      const poll = async () => {
+        tries++;
+        try {
+          const res = await fetch(`/dashboard/api/checkout?session_id=${encodeURIComponent(sid)}`);
+          const body = await res.json();
+          const d = body.ok ? body.data : null;
+          if (!d) { $("checkout-msg").textContent = body.error?.message || "Your API access is being activated. Refresh in a moment."; return; }
+          if (d.status === "active") {
+            $("checkout-msg").textContent = d.key ? `${d.plan_name} plan is active${d.email ? ` for ${d.email}` : ""}.` : `${d.plan_name} plan is active. Your key was already revealed once; paste it above to load your dashboard.`;
+            if (d.key) { $("checkout-key").hidden = false; $("checkout-key-value").textContent = d.key; }
+            return;
+          }
+          if (d.status === "review_required") { $("checkout-msg").textContent = d.message; return; }
+          $("checkout-msg").textContent = d.message || "Your API access is being activated. Refresh in a moment.";
+          if (tries < 10) setTimeout(poll, 3000);
+        } catch { if (tries < 10) setTimeout(poll, 3000); }
+      };
+      poll();
+      $("checkout-copy").addEventListener("click", () => copy($("checkout-key-value").textContent || "", "Key copied. Store it somewhere safe."));
+      $("checkout-use").addEventListener("click", () => { input.value = $("checkout-key-value").textContent || ""; load(); });
+      history.replaceState(null, "", "/dashboard?checkout=success");
+    } else if (currentKey) load();
   </script>
 </Base>

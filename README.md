@@ -80,6 +80,8 @@ Worker bindings (`gateway/wrangler.toml`): `API_KEYS` (KV), `USAGE_COUNTER` (Dur
 | `ADMIN_TOKEN` | secret | admin key-issuance API (`/admin/*`) and `scripts/issue-key.mjs` |
 | `RAPIDAPI_PROXY_SECRET` | secret | value from the RapidAPI provider console; enables the RapidAPI channel |
 | `UPSTREAM_API_KEY` | secret (optional) | forwarded as `X-API-Key` once the canonical host enables `REQUIRE_API_KEY` |
+| `STRIPE_WEBHOOK_SECRET` | secret | signing secret for `POST /webhooks/stripe` (every event is signature-verified) |
+| `STRIPE_SECRET_KEY` | secret | restricted key: read subscriptions, create Customer Portal sessions |
 
 Local development reads `gateway/.dev.vars` (gitignored). No Supabase credentials exist anywhere in this repo.
 
