@@ -1,0 +1,99 @@
+{
+  "captured_at": "2026-09-07T12:18:42.990Z",
+  "base": "https://ufc-api.propbetedge.ai",
+  "path": "/v1/ufc/search?q=strickland&limit=3",
+  "status": 200,
+  "api_version": "2026-09-06.3",
+  "body": {
+    "ok": true,
+    "data": {
+      "q": "strickland",
+      "fighters": [
+        {
+          "id": "ec94d296-2db3-4e0d-be6a-46de4f480672",
+          "ufcstats_id": "0d8011111be000b2",
+          "espn_athlete_id": "3093653",
+          "name": "Sean Strickland",
+          "nickname": null,
+          "dob": "1991-02-27",
+          "height_in": 73,
+          "reach_in": 76,
+          "weight_lbs": 185,
+          "stance": "ORTHODOX",
+          "record_w": 31,
+          "record_l": 7,
+          "record_d": 0,
+          "record_nc": 0,
+          "is_active": true,
+          "primary_image": {
+            "id": "006e6554-f441-4892-8a49-30409d01e52e",
+            "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/ec94d296-2db3-4e0d-be6a-46de4f480672/portrait.jpg",
+            "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/ec94d296-2db3-4e0d-be6a-46de4f480672/card.jpg",
+            "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/ec94d296-2db3-4e0d-be6a-46de4f480672/thumb.jpg",
+            "author": "MMAnytt",
+            "license": "CC BY-SA 4.0",
+            "source_url": "https://commons.wikimedia.org/wiki/File:Sean_Strickland_at_UFN_200.png",
+            "kind": "wikimedia",
+            "attribution_text": "MMAnytt, CC BY-SA 4.0, via Wikimedia Commons",
+            "rights_label": "CC BY-SA 4.0"
+          },
+          "slug_id": "3093653"
+        }
+      ],
+      "events": [
+        {
+          "id": "de5d4510-50c9-4989-b6e6-4c7ca52f0ede",
+          "ufcstats_id": "9eedac48b497de5a",
+          "espn_event_id": "600058947",
+          "name": "UFC 328: Chimaev vs. Strickland",
+          "event_date": "2026-05-09",
+          "venue": "Prudential Center",
+          "city": "Newark",
+          "region": "NJ",
+          "country": "USA",
+          "commission": null,
+          "is_ppv": null,
+          "card_status": "complete",
+          "updated_at": "2026-09-07T06:01:34.903+00:00"
+        },
+        {
+          "id": "ce387df8-d8fc-4a1f-b644-3628e803cb16",
+          "ufcstats_id": "79ab17db3b40831a",
+          "espn_event_id": "600057329",
+          "name": "UFC Fight Night: Strickland vs. Hernandez",
+          "event_date": "2026-02-21",
+          "venue": "Toyota Center (Houston)",
+          "city": "Houston",
+          "region": "TX",
+          "country": "USA",
+          "commission": null,
+          "is_ppv": null,
+          "card_status": "complete",
+          "updated_at": "2026-09-07T06:01:12.886+00:00"
+        },
+        {
+          "id": "4da5492f-1192-402d-9760-0647a385d392",
+          "ufcstats_id": "e6015889f50075d2",
+          "espn_event_id": "600050481",
+          "name": "UFC 312: Du Plessis vs. Strickland 2",
+          "event_date": "2025-02-08",
+          "venue": "Qudos Bank Arena",
+          "city": "Sydney",
+          "region": "New South Wales",
+          "country": "Australia",
+          "commission": null,
+          "is_ppv": null,
+          "card_status": "complete",
+          "updated_at": "2026-09-06T13:54:46.369281+00:00"
+        }
+      ],
+      "articles": []
+    },
+    "meta": {
+      "api": "PropSports UFC",
+      "version": "2026-09-06.3",
+      "request_id": "64033681-6772-4118-ab57-4a397b6be527",
+      "access_tier": "public"
+    }
+  }
+}

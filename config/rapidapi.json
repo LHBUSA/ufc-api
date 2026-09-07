@@ -1,0 +1,23 @@
+{
+  "$note": "RapidAPI is a distribution CHANNEL for the same API. Requests arrive from the RapidAPI proxy carrying X-RapidAPI-Proxy-Secret (validated against the RAPIDAPI_PROXY_SECRET Worker secret; never trusted from a customer directly), X-RapidAPI-User and X-RapidAPI-Subscription. The subscription name maps to the canonical internal plan below. RapidAPI enforces its own monthly quota and billing; the gateway attributes usage to the rapidapi channel and applies the per-minute rate limit as a backstop.",
+  "enabled": true,
+  "required_headers": ["x-rapidapi-proxy-secret", "x-rapidapi-user", "x-rapidapi-subscription"],
+  "optional_headers": ["x-rapidapi-host", "x-rapidapi-version", "x-rapidapi-identity-key"],
+  "subscription_to_plan": {
+    "DEVELOPER": "developer",
+    "PRO": "pro",
+    "ULTRA": "ultra",
+    "SCALE": "scale",
+    "BASIC": "developer",
+    "MEGA": "scale"
+  },
+  "enforce_monthly_quota_at_gateway": false,
+  "enforce_rate_limit_at_gateway": true,
+  "marketplace_plans": {
+    "developer": { "name": "Developer", "price_usd_month": 79, "requests_per_month": 20000, "rate_limit_per_min": 60 },
+    "pro": { "name": "Pro", "price_usd_month": 199, "requests_per_month": 80000, "rate_limit_per_min": 180 },
+    "ultra": { "name": "Ultra", "price_usd_month": 499, "requests_per_month": 400000, "rate_limit_per_min": 600 },
+    "scale": { "name": "Scale", "price_usd_month": 1499, "requests_per_month": 1500000, "rate_limit_per_min": 1200 }
+  },
+  "overage": { "enabled": false, "note": "Marketplace overage, if ever enabled, is configured per plan in the RapidAPI console. The gateway never bills." }
+}

@@ -1,0 +1,161 @@
+{
+  "captured_at": "2026-09-07T12:18:42.990Z",
+  "base": "https://ufc-api.propbetedge.ai",
+  "path": "/v1/ufc/dna/query?metric=sig_landed_per_min&min_confidence=medium&limit=3",
+  "status": 200,
+  "api_version": "2026-09-06.3",
+  "body": {
+    "ok": true,
+    "data": [
+      {
+        "fighter": {
+          "id": "b5bceb9a-635e-4b9f-8426-ca8ea0339ddf",
+          "name": "Tommy McMillen",
+          "nickname": "Gun",
+          "slug_id": "5212849",
+          "stance": "ORTHODOX",
+          "is_active": true
+        },
+        "as_of_date": "2026-09-06",
+        "metric_key": "sig_landed_per_min",
+        "metric": {
+          "unit": "per_min",
+          "value": 18.6998,
+          "origin": "pbe_derived",
+          "numerator": 326,
+          "as_of_date": "2026-09-06",
+          "confidence": "medium",
+          "metric_key": "sig_landed_per_min",
+          "denominator": 1046,
+          "sample_bouts": 2,
+          "sample_rounds": 4,
+          "sample_seconds": 1046,
+          "coverage_status": "low",
+          "source_families": [
+            "ufcstats"
+          ],
+          "definition_version": 1
+        },
+        "origin": "pbe_derived",
+        "sample": {
+          "sample_bouts": 3,
+          "sample_completed_bouts": 3,
+          "sample_stat_bouts": 2,
+          "sample_rounds": 4,
+          "sample_seconds": 1046,
+          "coverage_status": "low"
+        }
+      },
+      {
+        "fighter": {
+          "id": "8e9fb2a2-f378-48c5-88a1-88fa791c59ba",
+          "name": "Ty Miller",
+          "nickname": "Thriller",
+          "slug_id": "5290957",
+          "stance": "ORTHODOX",
+          "is_active": true
+        },
+        "as_of_date": "2026-09-06",
+        "metric_key": "sig_landed_per_min",
+        "metric": {
+          "unit": "per_min",
+          "value": 12.6039,
+          "origin": "pbe_derived",
+          "numerator": 192,
+          "as_of_date": "2026-09-06",
+          "confidence": "medium",
+          "metric_key": "sig_landed_per_min",
+          "denominator": 914,
+          "sample_bouts": 2,
+          "sample_rounds": 4,
+          "sample_seconds": 914,
+          "coverage_status": "low",
+          "source_families": [
+            "ufcstats"
+          ],
+          "definition_version": 1
+        },
+        "origin": "pbe_derived",
+        "sample": {
+          "sample_bouts": 3,
+          "sample_completed_bouts": 3,
+          "sample_stat_bouts": 2,
+          "sample_rounds": 4,
+          "sample_seconds": 914,
+          "coverage_status": "low"
+        }
+      },
+      {
+        "fighter": {
+          "id": "d917e808-4a1e-4c3d-8957-aa2effba265a",
+          "name": "Brando Peričić",
+          "nickname": "The Balkan Bear",
+          "slug_id": "5293988",
+          "stance": "ORTHODOX",
+          "is_active": true
+        },
+        "as_of_date": "2026-09-06",
+        "metric_key": "sig_landed_per_min",
+        "metric": {
+          "unit": "per_min",
+          "value": 11.004,
+          "origin": "pbe_derived",
+          "numerator": 137,
+          "as_of_date": "2026-09-06",
+          "confidence": "medium",
+          "metric_key": "sig_landed_per_min",
+          "denominator": 747,
+          "sample_bouts": 3,
+          "sample_rounds": 4,
+          "sample_seconds": 747,
+          "coverage_status": "low",
+          "source_families": [
+            "ufcstats"
+          ],
+          "definition_version": 1
+        },
+        "origin": "pbe_derived",
+        "sample": {
+          "sample_bouts": 3,
+          "sample_completed_bouts": 3,
+          "sample_stat_bouts": 3,
+          "sample_rounds": 4,
+          "sample_seconds": 747,
+          "coverage_status": "low"
+        }
+      }
+    ],
+    "meta": {
+      "api": "PropSports UFC",
+      "version": "2026-09-06.3",
+      "request_id": "d8e8bfc5-fb6a-4cec-a24f-12315425ef84",
+      "mode": "snapshot",
+      "metric": "sig_landed_per_min",
+      "metric_requested": "sig_landed_per_min",
+      "stance": null,
+      "min": null,
+      "max": null,
+      "min_confidence": "medium",
+      "min_appearances": null,
+      "active": null,
+      "order": "desc",
+      "requested_as_of": null,
+      "definition_version": 1,
+      "candidates": 289,
+      "candidates_total": 289,
+      "truncated": false,
+      "matched": 285,
+      "count": 3,
+      "limit": 3,
+      "filter": {
+        "table": "ufc_fighter_dna_snapshots",
+        "value": [],
+        "confidence": "metrics->sig_landed_per_min->>confidence=in.(medium,high)"
+      },
+      "note": "Filters run in PostgREST on the stored MetricObject (jsonb ordering on ->value, text match on ->>confidence). Only each fighter's latest snapshot qualifies. The candidate scan is capped at 1000 rows; when truncated is true the result set is incomplete. Active filtering happens after the scan.",
+      "as_of_semantics": "as_of_date is exclusive: the snapshot dated D contains bouts with event_date < D, so a bout fought on D is excluded by the snapshot dated D. ?as_of=D resolves to the latest stored snapshot with as_of_date <= D, which therefore never contains a bout fought on or after D.",
+      "origin": "pbe_derived",
+      "access_tier": "public"
+    }
+  }
+}

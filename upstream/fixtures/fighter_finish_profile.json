@@ -1,0 +1,205 @@
+{
+  "captured_at": "2026-09-07T12:18:42.990Z",
+  "base": "https://ufc-api.propbetedge.ai",
+  "path": "/v1/ufc/fighters/ec94d296-2db3-4e0d-be6a-46de4f480672/finish-profile",
+  "status": 200,
+  "api_version": "2026-09-06.3",
+  "body": {
+    "ok": true,
+    "data": {
+      "fighter": {
+        "id": "ec94d296-2db3-4e0d-be6a-46de4f480672",
+        "name": "Sean Strickland",
+        "nickname": null,
+        "ufcstats_id": "0d8011111be000b2",
+        "espn_athlete_id": "3093653",
+        "slug_id": "3093653",
+        "record_w": 31,
+        "record_l": 7,
+        "record_d": 0,
+        "record_nc": 0,
+        "primary_image": {
+          "id": "006e6554-f441-4892-8a49-30409d01e52e",
+          "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/ec94d296-2db3-4e0d-be6a-46de4f480672/portrait.jpg",
+          "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/ec94d296-2db3-4e0d-be6a-46de4f480672/card.jpg",
+          "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/ec94d296-2db3-4e0d-be6a-46de4f480672/thumb.jpg",
+          "author": "MMAnytt",
+          "license": "CC BY-SA 4.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Sean_Strickland_at_UFN_200.png",
+          "kind": "wikimedia",
+          "attribution_text": "MMAnytt, CC BY-SA 4.0, via Wikimedia Commons",
+          "rights_label": "CC BY-SA 4.0"
+        },
+        "stance": "ORTHODOX",
+        "is_active": true
+      },
+      "as_of_date": "2026-09-06",
+      "definition_version": 1,
+      "origin": "pbe_derived",
+      "sample": {
+        "sample_bouts": 3,
+        "sample_completed_bouts": 3,
+        "sample_stat_bouts": 2,
+        "sample_rounds": 8,
+        "sample_seconds": 2243,
+        "sample_minutes": 37.4,
+        "coverage_status": "low"
+      },
+      "available": true,
+      "status": "ok",
+      "finish_profile": {
+        "finish_rate": {
+          "unit": "ratio",
+          "value": 0.5,
+          "origin": "pbe_derived",
+          "numerator": 1,
+          "as_of_date": "2026-09-06",
+          "confidence": "low",
+          "metric_key": "finish_rate",
+          "denominator": 2,
+          "sample_bouts": 2,
+          "sample_rounds": 8,
+          "sample_seconds": 2243,
+          "coverage_status": "high",
+          "source_families": [
+            "espn",
+            "ufcstats"
+          ],
+          "definition_version": 1
+        },
+        "finished_by": {
+          "ko_tko": 0,
+          "submission": 0
+        },
+        "ko_finish_rate": {
+          "unit": "ratio",
+          "value": 0.5,
+          "origin": "pbe_derived",
+          "numerator": 1,
+          "as_of_date": "2026-09-06",
+          "confidence": "low",
+          "metric_key": "ko_finish_rate",
+          "denominator": 2,
+          "sample_bouts": 2,
+          "sample_rounds": 8,
+          "sample_seconds": 2243,
+          "coverage_status": "high",
+          "source_families": [
+            "espn",
+            "ufcstats"
+          ],
+          "definition_version": 1
+        },
+        "finish_time_median_sec": {
+          "unit": "seconds",
+          "value": 743,
+          "origin": "pbe_derived",
+          "numerator": null,
+          "as_of_date": "2026-09-06",
+          "confidence": "low",
+          "metric_key": "finish_time_median_sec",
+          "denominator": null,
+          "sample_bouts": 1,
+          "sample_rounds": 8,
+          "sample_seconds": 2243,
+          "coverage_status": "high",
+          "source_families": [
+            "espn",
+            "ufcstats"
+          ],
+          "definition_version": 1
+        },
+        "submission_finish_rate": {
+          "unit": "ratio",
+          "value": 0,
+          "origin": "pbe_derived",
+          "numerator": 0,
+          "as_of_date": "2026-09-06",
+          "confidence": "low",
+          "metric_key": "submission_finish_rate",
+          "denominator": 2,
+          "sample_bouts": 2,
+          "sample_rounds": 8,
+          "sample_seconds": 2243,
+          "coverage_status": "high",
+          "source_families": [
+            "espn",
+            "ufcstats"
+          ],
+          "definition_version": 1
+        },
+        "finish_round_distribution": {
+          "unit": "distribution",
+          "value": {
+            "total": 1,
+            "buckets": {
+              "1": 0,
+              "2": 0,
+              "3": 1,
+              "4": 0,
+              "5": 0
+            }
+          },
+          "origin": "pbe_derived",
+          "numerator": 1,
+          "as_of_date": "2026-09-06",
+          "confidence": "low",
+          "metric_key": "finish_round_distribution",
+          "denominator": 2,
+          "sample_bouts": 1,
+          "sample_rounds": 8,
+          "sample_seconds": 2243,
+          "coverage_status": "high",
+          "source_families": [
+            "espn",
+            "ufcstats"
+          ],
+          "definition_version": 1
+        },
+        "finished_by_round_distribution": {
+          "unit": "distribution",
+          "value": {
+            "total": 0,
+            "buckets": {
+              "1": 0,
+              "2": 0,
+              "3": 0,
+              "4": 0,
+              "5": 0
+            }
+          },
+          "origin": "pbe_derived",
+          "numerator": 0,
+          "as_of_date": "2026-09-06",
+          "confidence": "insufficient",
+          "metric_key": "finished_by_round_distribution",
+          "denominator": 1,
+          "sample_bouts": 0,
+          "sample_rounds": 8,
+          "sample_seconds": 2243,
+          "coverage_status": "insufficient",
+          "source_families": [
+            "espn",
+            "ufcstats"
+          ],
+          "definition_version": 1
+        }
+      }
+    },
+    "meta": {
+      "api": "PropSports UFC",
+      "version": "2026-09-06.3",
+      "request_id": "856adc0b-e6c3-4874-8b29-673343b8e768",
+      "requested_as_of": null,
+      "resolved_as_of": "2026-09-06",
+      "definition_version": 1,
+      "as_of_semantics": "as_of_date is exclusive: the snapshot dated D contains bouts with event_date < D, so a bout fought on D is excluded by the snapshot dated D. ?as_of=D resolves to the latest stored snapshot with as_of_date <= D, which therefore never contains a bout fought on or after D.",
+      "origin": "pbe_derived",
+      "origin_label": "PBE DERIVED",
+      "family": "finish_profile",
+      "available": true,
+      "status": "ok",
+      "access_tier": "public"
+    }
+  }
+}

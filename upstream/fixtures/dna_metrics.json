@@ -1,0 +1,2356 @@
+{
+  "captured_at": "2026-09-07T12:18:42.990Z",
+  "base": "https://ufc-api.propbetedge.ai",
+  "path": "/v1/ufc/dna/metrics",
+  "status": 200,
+  "api_version": "2026-09-06.3",
+  "body": {
+    "ok": true,
+    "data": {
+      "definition_version": 1,
+      "origin": "pbe_derived",
+      "origin_labels": {
+        "pbe_derived": "PBE DERIVED",
+        "source": "SOURCE",
+        "licensed": "LICENSED",
+        "model": "MODEL"
+      },
+      "confidence_tiers": {
+        "insufficient": "sample below the metric's registry minimum (min_bouts / min_rounds / min_seconds); value is null when there is no denominator",
+        "low": "minimum met but sample_bouts < 3 (result metrics) or sample_seconds < 1800 (rate metrics)",
+        "medium": "sample_bouts < 8 (result metrics) or sample_seconds < 5400 (rate metrics)",
+        "high": "sample_bouts >= 8 (result metrics) or sample_seconds >= 5400 (rate metrics)"
+      },
+      "as_of_semantics": "as_of_date is exclusive: the snapshot dated D contains bouts with event_date < D, so a bout fought on D is excluded by the snapshot dated D. ?as_of=D resolves to the latest stored snapshot with as_of_date <= D, which therefore never contains a bout fought on or after D.",
+      "families": {
+        "stance": [
+          {
+            "metric_key": "open_stance_record",
+            "definition_version": 1,
+            "family": "stance",
+            "display_name": "Open-Stance Record",
+            "description": "W/L/D/NC when one fighter is listed orthodox and the other southpaw.",
+            "unit": "record",
+            "formula": "aggregate outcomes where stance_context = open",
+            "source_families": [
+              "espn",
+              "ufcstats"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 0,
+            "min_seconds": 0,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:27:00.088767+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "same_stance_record",
+            "definition_version": 1,
+            "family": "stance",
+            "display_name": "Same-Stance Record",
+            "description": "W/L/D/NC when both listed stances are the same.",
+            "unit": "record",
+            "formula": "aggregate outcomes where stance_context = same",
+            "source_families": [
+              "espn",
+              "ufcstats"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 0,
+            "min_seconds": 0,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:27:00.088767+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "stance_finish_rate",
+            "definition_version": 1,
+            "family": "stance",
+            "display_name": "Finish Rate vs Stance",
+            "description": "KO/TKO plus submission wins divided by wins against a listed opponent stance.",
+            "unit": "ratio",
+            "formula": "(ko_tko_wins + submission_wins) / wins_vs_stance",
+            "source_families": [
+              "espn",
+              "ufcstats"
+            ],
+            "min_bouts": 2,
+            "min_rounds": 0,
+            "min_seconds": 0,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:09:45.846533+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "stance_kd_rate_15",
+            "definition_version": 1,
+            "family": "stance",
+            "display_name": "Knockdowns / 15 vs Stance",
+            "description": "Knockdowns created per 15 observed minutes, grouped by opponent stance.",
+            "unit": "per_15",
+            "formula": "kd * 900 / observed_seconds",
+            "source_families": [
+              "ufcstats"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 2,
+            "min_seconds": 300,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:27:00.088767+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "stance_ko_rate",
+            "definition_version": 1,
+            "family": "stance",
+            "display_name": "KO/TKO Rate vs Stance",
+            "description": "KO/TKO wins divided by completed appearances against a listed opponent stance.",
+            "unit": "ratio",
+            "formula": "ko_tko_wins / completed_appearances_vs_stance",
+            "source_families": [
+              "espn",
+              "ufcstats"
+            ],
+            "min_bouts": 2,
+            "min_rounds": 0,
+            "min_seconds": 0,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:09:45.846533+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "stance_record",
+            "definition_version": 1,
+            "family": "stance",
+            "display_name": "Record vs Stance",
+            "description": "W/L/D/NC by opponent listed stance.",
+            "unit": "record",
+            "formula": "aggregate outcomes grouped by opponent_stance",
+            "source_families": [
+              "espn",
+              "ufcstats"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 0,
+            "min_seconds": 0,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:27:00.088767+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "stance_sig_diff_per_min",
+            "definition_version": 1,
+            "family": "stance",
+            "display_name": "Sig. Strike Differential / Min vs Stance",
+            "description": "Fighter significant strikes landed minus opponent landed, per observed minute, grouped by opponent stance.",
+            "unit": "per_min",
+            "formula": "(sig_str_landed - opponent_sig_str_landed) / observed_minutes",
+            "source_families": [
+              "ufcstats"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 2,
+            "min_seconds": 300,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:27:00.088767+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "stance_sub_rate",
+            "definition_version": 1,
+            "family": "stance",
+            "display_name": "Submission Rate vs Stance",
+            "description": "Submission wins divided by completed appearances against a listed opponent stance.",
+            "unit": "ratio",
+            "formula": "submission_wins / completed_appearances_vs_stance",
+            "source_families": [
+              "espn",
+              "ufcstats"
+            ],
+            "min_bouts": 2,
+            "min_rounds": 0,
+            "min_seconds": 0,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:27:00.088767+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "stance_td_rate_15",
+            "definition_version": 1,
+            "family": "stance",
+            "display_name": "Takedowns Landed / 15 vs Stance",
+            "description": "Takedowns landed per 15 observed minutes, grouped by opponent stance.",
+            "unit": "per_15",
+            "formula": "td_landed * 900 / observed_seconds",
+            "source_families": [
+              "ufcstats"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 2,
+            "min_seconds": 300,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:27:00.088767+00:00",
+            "origin": "pbe_derived"
+          }
+        ],
+        "striking": [
+          {
+            "metric_key": "body_attack_share",
+            "definition_version": 1,
+            "family": "striking",
+            "display_name": "Body Attack Share",
+            "description": "Body significant-strike attempts divided by all significant-strike attempts.",
+            "unit": "ratio",
+            "formula": "body_att / sig_str_att",
+            "source_families": [
+              "ufcstats"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 2,
+            "min_seconds": 300,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:09:45.846533+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "clinch_attack_share",
+            "definition_version": 1,
+            "family": "striking",
+            "display_name": "Clinch Attack Share",
+            "description": "Clinch significant-strike attempts divided by all significant-strike attempts.",
+            "unit": "ratio",
+            "formula": "clinch_att / sig_str_att",
+            "source_families": [
+              "ufcstats"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 2,
+            "min_seconds": 300,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:09:45.846533+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "distance_attack_share",
+            "definition_version": 1,
+            "family": "striking",
+            "display_name": "Distance Attack Share",
+            "description": "Distance significant-strike attempts divided by all significant-strike attempts.",
+            "unit": "ratio",
+            "formula": "distance_att / sig_str_att",
+            "source_families": [
+              "ufcstats"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 2,
+            "min_seconds": 300,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:09:45.846533+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "ground_attack_share",
+            "definition_version": 1,
+            "family": "striking",
+            "display_name": "Ground Attack Share",
+            "description": "Ground significant-strike attempts divided by all significant-strike attempts.",
+            "unit": "ratio",
+            "formula": "ground_att / sig_str_att",
+            "source_families": [
+              "ufcstats"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 2,
+            "min_seconds": 300,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:09:45.846533+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "head_attack_share",
+            "definition_version": 1,
+            "family": "striking",
+            "display_name": "Head Attack Share",
+            "description": "Head significant-strike attempts divided by all significant-strike attempts.",
+            "unit": "ratio",
+            "formula": "head_att / sig_str_att",
+            "source_families": [
+              "ufcstats"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 2,
+            "min_seconds": 300,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:09:45.846533+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "knockdowns_absorbed_per_15",
+            "definition_version": 1,
+            "family": "striking",
+            "display_name": "Knockdowns Absorbed / 15",
+            "description": "Opponent knockdowns per 15 stat-covered minutes.",
+            "unit": "per_15",
+            "formula": "opponent_kd * 900 / observed_seconds",
+            "source_families": [
+              "ufcstats"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 2,
+            "min_seconds": 300,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:27:00.088767+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "knockdowns_per_15",
+            "definition_version": 1,
+            "family": "striking",
+            "display_name": "Knockdowns / 15",
+            "description": "Knockdowns created per 15 stat-covered minutes.",
+            "unit": "per_15",
+            "formula": "kd * 900 / observed_seconds",
+            "source_families": [
+              "ufcstats"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 2,
+            "min_seconds": 300,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:09:45.846533+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "leg_attack_share",
+            "definition_version": 1,
+            "family": "striking",
+            "display_name": "Leg Attack Share",
+            "description": "Leg significant-strike attempts divided by all significant-strike attempts.",
+            "unit": "ratio",
+            "formula": "leg_att / sig_str_att",
+            "source_families": [
+              "ufcstats"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 2,
+            "min_seconds": 300,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:09:45.846533+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "sig_absorbed_per_min",
+            "definition_version": 1,
+            "family": "striking",
+            "display_name": "Sig. Strikes Absorbed / Min",
+            "description": "Opponent significant strikes landed divided by observed stat-covered minutes.",
+            "unit": "per_min",
+            "formula": "opponent_sig_str_landed / observed_minutes",
+            "source_families": [
+              "ufcstats"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 2,
+            "min_seconds": 300,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:09:45.846533+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "sig_accuracy",
+            "definition_version": 1,
+            "family": "striking",
+            "display_name": "Sig. Strike Accuracy",
+            "description": "Significant strikes landed divided by significant strikes attempted.",
+            "unit": "ratio",
+            "formula": "sig_str_landed / sig_str_att",
+            "source_families": [
+              "ufcstats"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 2,
+            "min_seconds": 300,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:27:00.088767+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "sig_defense",
+            "definition_version": 1,
+            "family": "striking",
+            "display_name": "Sig. Strike Defense",
+            "description": "One minus opponent significant strikes landed divided by opponent attempts.",
+            "unit": "ratio",
+            "formula": "1 - opponent_sig_str_landed / opponent_sig_str_att",
+            "source_families": [
+              "ufcstats"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 2,
+            "min_seconds": 300,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:27:00.088767+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "sig_diff_per_min",
+            "definition_version": 1,
+            "family": "striking",
+            "display_name": "Sig. Strike Differential / Min",
+            "description": "Significant strikes landed minus absorbed, per observed minute.",
+            "unit": "per_min",
+            "formula": "(sig_str_landed - opponent_sig_str_landed) / observed_minutes",
+            "source_families": [
+              "ufcstats"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 2,
+            "min_seconds": 300,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:27:00.088767+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "sig_landed_per_min",
+            "definition_version": 1,
+            "family": "striking",
+            "display_name": "Sig. Strikes Landed / Min",
+            "description": "Significant strikes landed divided by observed stat-covered minutes.",
+            "unit": "per_min",
+            "formula": "sig_str_landed / observed_minutes",
+            "source_families": [
+              "ufcstats"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 2,
+            "min_seconds": 300,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:09:45.846533+00:00",
+            "origin": "pbe_derived"
+          }
+        ],
+        "pace": [
+          {
+            "metric_key": "championship_round_delta",
+            "definition_version": 1,
+            "family": "pace",
+            "display_name": "Championship-Round Pace Delta",
+            "description": "Rounds 4-5 significant-attempt pace minus rounds 1-3 pace, over bouts that reached round 4.",
+            "unit": "per_min",
+            "formula": "late_round_sig_att_per_min - early_round_sig_att_per_min",
+            "source_families": [
+              "ufcstats"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 4,
+            "min_seconds": 1200,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:27:00.088767+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "defensive_drift_r3_vs_r1",
+            "definition_version": 1,
+            "family": "pace",
+            "display_name": "Defensive Drift R3 vs R1",
+            "description": "Round-three significant strikes absorbed per minute minus the round-one rate, over bouts with both rounds covered.",
+            "unit": "per_min",
+            "formula": "r3_absorbed_per_min - r1_absorbed_per_min",
+            "source_families": [
+              "ufcstats"
+            ],
+            "min_bouts": 2,
+            "min_rounds": 6,
+            "min_seconds": 900,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:27:00.088767+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "late_round_sig_attempts_per_min",
+            "definition_version": 1,
+            "family": "pace",
+            "display_name": "Championship-Round Sig. Attempts / Min",
+            "description": "Rounds 4-5 significant-strike attempts per observed rounds 4-5 minute.",
+            "unit": "per_min",
+            "formula": "(r4_sig_str_att + r5_sig_str_att) / (r4_observed_minutes + r5_observed_minutes)",
+            "source_families": [
+              "ufcstats"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 1,
+            "min_seconds": 60,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:27:00.088767+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "pace_retention_r2_vs_r1",
+            "definition_version": 1,
+            "family": "pace",
+            "display_name": "R2 Pace Retention",
+            "description": "Round-two significant-strike attempt pace divided by round-one pace.",
+            "unit": "ratio",
+            "formula": "r2_sig_att_per_min / r1_sig_att_per_min",
+            "source_families": [
+              "ufcstats"
+            ],
+            "min_bouts": 2,
+            "min_rounds": 4,
+            "min_seconds": 600,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:09:45.846533+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "pace_retention_r3_vs_r1",
+            "definition_version": 1,
+            "family": "pace",
+            "display_name": "R3 Pace Retention",
+            "description": "Round-three significant-strike attempt pace divided by round-one pace.",
+            "unit": "ratio",
+            "formula": "r3_sig_att_per_min / r1_sig_att_per_min",
+            "source_families": [
+              "ufcstats"
+            ],
+            "min_bouts": 2,
+            "min_rounds": 6,
+            "min_seconds": 900,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:09:45.846533+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "r1_sig_absorbed_per_min",
+            "definition_version": 1,
+            "family": "pace",
+            "display_name": "R1 Sig. Absorbed / Min",
+            "description": "Round-1 opponent significant strikes landed per observed round-1 minute.",
+            "unit": "per_min",
+            "formula": "r1_opponent_sig_str_landed / r1_observed_minutes",
+            "source_families": [
+              "ufcstats"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 1,
+            "min_seconds": 60,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:27:00.088767+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "r1_sig_attempts_per_min",
+            "definition_version": 1,
+            "family": "pace",
+            "display_name": "R1 Sig. Attempts / Min",
+            "description": "Round-one significant-strike attempts per observed round-one minute.",
+            "unit": "per_min",
+            "formula": "r1_sig_str_att / r1_observed_minutes",
+            "source_families": [
+              "ufcstats"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 1,
+            "min_seconds": 60,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:27:00.088767+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "r1_sig_landed_per_min",
+            "definition_version": 1,
+            "family": "pace",
+            "display_name": "R1 Sig. Landed / Min",
+            "description": "Round-1 significant strikes landed per observed round-1 minute.",
+            "unit": "per_min",
+            "formula": "r1_sig_str_landed / r1_observed_minutes",
+            "source_families": [
+              "ufcstats"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 1,
+            "min_seconds": 60,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:27:00.088767+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "r2_sig_absorbed_per_min",
+            "definition_version": 1,
+            "family": "pace",
+            "display_name": "R2 Sig. Absorbed / Min",
+            "description": "Round-2 opponent significant strikes landed per observed round-2 minute.",
+            "unit": "per_min",
+            "formula": "r2_opponent_sig_str_landed / r2_observed_minutes",
+            "source_families": [
+              "ufcstats"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 1,
+            "min_seconds": 60,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:27:00.088767+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "r2_sig_attempts_per_min",
+            "definition_version": 1,
+            "family": "pace",
+            "display_name": "R2 Sig. Attempts / Min",
+            "description": "Round-two significant-strike attempts per observed round-two minute.",
+            "unit": "per_min",
+            "formula": "r2_sig_str_att / r2_observed_minutes",
+            "source_families": [
+              "ufcstats"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 1,
+            "min_seconds": 60,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:27:00.088767+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "r2_sig_landed_per_min",
+            "definition_version": 1,
+            "family": "pace",
+            "display_name": "R2 Sig. Landed / Min",
+            "description": "Round-2 significant strikes landed per observed round-2 minute.",
+            "unit": "per_min",
+            "formula": "r2_sig_str_landed / r2_observed_minutes",
+            "source_families": [
+              "ufcstats"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 1,
+            "min_seconds": 60,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:27:00.088767+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "r3_sig_absorbed_per_min",
+            "definition_version": 1,
+            "family": "pace",
+            "display_name": "R3 Sig. Absorbed / Min",
+            "description": "Round-3 opponent significant strikes landed per observed round-3 minute.",
+            "unit": "per_min",
+            "formula": "r3_opponent_sig_str_landed / r3_observed_minutes",
+            "source_families": [
+              "ufcstats"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 1,
+            "min_seconds": 60,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:27:00.088767+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "r3_sig_attempts_per_min",
+            "definition_version": 1,
+            "family": "pace",
+            "display_name": "R3 Sig. Attempts / Min",
+            "description": "Round-three significant-strike attempts per observed round-three minute.",
+            "unit": "per_min",
+            "formula": "r3_sig_str_att / r3_observed_minutes",
+            "source_families": [
+              "ufcstats"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 1,
+            "min_seconds": 60,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:27:00.088767+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "r3_sig_landed_per_min",
+            "definition_version": 1,
+            "family": "pace",
+            "display_name": "R3 Sig. Landed / Min",
+            "description": "Round-3 significant strikes landed per observed round-3 minute.",
+            "unit": "per_min",
+            "formula": "r3_sig_str_landed / r3_observed_minutes",
+            "source_families": [
+              "ufcstats"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 1,
+            "min_seconds": 60,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:27:00.088767+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "r4_sig_absorbed_per_min",
+            "definition_version": 1,
+            "family": "pace",
+            "display_name": "R4 Sig. Absorbed / Min",
+            "description": "Round-4 opponent significant strikes landed per observed round-4 minute.",
+            "unit": "per_min",
+            "formula": "r4_opponent_sig_str_landed / r4_observed_minutes",
+            "source_families": [
+              "ufcstats"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 1,
+            "min_seconds": 60,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:27:00.088767+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "r4_sig_attempts_per_min",
+            "definition_version": 1,
+            "family": "pace",
+            "display_name": "R4 Sig. Attempts / Min",
+            "description": "Round-4 significant-strike attempts per observed round-4 minute.",
+            "unit": "per_min",
+            "formula": "r4_sig_str_att / r4_observed_minutes",
+            "source_families": [
+              "ufcstats"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 1,
+            "min_seconds": 60,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:27:00.088767+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "r4_sig_landed_per_min",
+            "definition_version": 1,
+            "family": "pace",
+            "display_name": "R4 Sig. Landed / Min",
+            "description": "Round-4 significant strikes landed per observed round-4 minute.",
+            "unit": "per_min",
+            "formula": "r4_sig_str_landed / r4_observed_minutes",
+            "source_families": [
+              "ufcstats"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 1,
+            "min_seconds": 60,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:27:00.088767+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "r5_sig_absorbed_per_min",
+            "definition_version": 1,
+            "family": "pace",
+            "display_name": "R5 Sig. Absorbed / Min",
+            "description": "Round-5 opponent significant strikes landed per observed round-5 minute.",
+            "unit": "per_min",
+            "formula": "r5_opponent_sig_str_landed / r5_observed_minutes",
+            "source_families": [
+              "ufcstats"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 1,
+            "min_seconds": 60,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:27:00.088767+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "r5_sig_attempts_per_min",
+            "definition_version": 1,
+            "family": "pace",
+            "display_name": "R5 Sig. Attempts / Min",
+            "description": "Round-5 significant-strike attempts per observed round-5 minute.",
+            "unit": "per_min",
+            "formula": "r5_sig_str_att / r5_observed_minutes",
+            "source_families": [
+              "ufcstats"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 1,
+            "min_seconds": 60,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:27:00.088767+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "r5_sig_landed_per_min",
+            "definition_version": 1,
+            "family": "pace",
+            "display_name": "R5 Sig. Landed / Min",
+            "description": "Round-5 significant strikes landed per observed round-5 minute.",
+            "unit": "per_min",
+            "formula": "r5_sig_str_landed / r5_observed_minutes",
+            "source_families": [
+              "ufcstats"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 1,
+            "min_seconds": 60,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:27:00.088767+00:00",
+            "origin": "pbe_derived"
+          }
+        ],
+        "grappling": [
+          {
+            "metric_key": "control_seconds_per_td",
+            "definition_version": 1,
+            "family": "grappling",
+            "display_name": "Control Seconds / Takedown",
+            "description": "Recorded control seconds divided by takedowns landed.",
+            "unit": "seconds_per_td",
+            "formula": "ctrl_sec / td_landed",
+            "source_families": [
+              "ufcstats"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 2,
+            "min_seconds": 300,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:09:45.846533+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "control_share",
+            "definition_version": 1,
+            "family": "grappling",
+            "display_name": "Control Share",
+            "description": "Recorded control seconds divided by observed stat-covered seconds.",
+            "unit": "ratio",
+            "formula": "ctrl_sec / observed_seconds",
+            "source_families": [
+              "ufcstats"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 2,
+            "min_seconds": 300,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:27:00.088767+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "reversals_per_15",
+            "definition_version": 1,
+            "family": "grappling",
+            "display_name": "Reversals / 15",
+            "description": "Reversals per 15 stat-covered minutes.",
+            "unit": "per_15",
+            "formula": "rev * 900 / observed_seconds",
+            "source_families": [
+              "ufcstats"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 2,
+            "min_seconds": 300,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:27:00.088767+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "sub_attempts_per_15",
+            "definition_version": 1,
+            "family": "grappling",
+            "display_name": "Submission Attempts / 15",
+            "description": "Submission attempts per 15 stat-covered minutes.",
+            "unit": "per_15",
+            "formula": "sub_att * 900 / observed_seconds",
+            "source_families": [
+              "ufcstats"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 2,
+            "min_seconds": 300,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:09:45.846533+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "td_accuracy",
+            "definition_version": 1,
+            "family": "grappling",
+            "display_name": "Takedown Accuracy",
+            "description": "Takedowns landed divided by takedowns attempted.",
+            "unit": "ratio",
+            "formula": "td_landed / td_att",
+            "source_families": [
+              "ufcstats"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 2,
+            "min_seconds": 300,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:09:45.846533+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "td_attempts_per_15",
+            "definition_version": 1,
+            "family": "grappling",
+            "display_name": "Takedown Attempts / 15",
+            "description": "Takedown attempts per 15 stat-covered minutes.",
+            "unit": "per_15",
+            "formula": "td_att * 900 / observed_seconds",
+            "source_families": [
+              "ufcstats"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 2,
+            "min_seconds": 300,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:09:45.846533+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "td_landed_per_15",
+            "definition_version": 1,
+            "family": "grappling",
+            "display_name": "Takedowns Landed / 15",
+            "description": "Takedowns landed per 15 stat-covered minutes.",
+            "unit": "per_15",
+            "formula": "td_landed * 900 / observed_seconds",
+            "source_families": [
+              "ufcstats"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 2,
+            "min_seconds": 300,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:27:00.088767+00:00",
+            "origin": "pbe_derived"
+          }
+        ],
+        "finish": [
+          {
+            "metric_key": "finish_rate",
+            "definition_version": 1,
+            "family": "finish",
+            "display_name": "Finish Rate",
+            "description": "KO/TKO plus submission wins divided by wins.",
+            "unit": "ratio",
+            "formula": "(ko_tko_wins + submission_wins) / wins",
+            "source_families": [
+              "espn",
+              "ufcstats"
+            ],
+            "min_bouts": 2,
+            "min_rounds": 0,
+            "min_seconds": 0,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:09:45.846533+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "finish_round_distribution",
+            "definition_version": 1,
+            "family": "finish",
+            "display_name": "Finish Round Distribution",
+            "description": "Finish wins grouped by ending round.",
+            "unit": "distribution",
+            "formula": "count finish wins by round",
+            "source_families": [
+              "espn",
+              "ufcstats"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 0,
+            "min_seconds": 0,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:27:00.088767+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "finish_time_median_sec",
+            "definition_version": 1,
+            "family": "finish",
+            "display_name": "Median Finish Time",
+            "description": "Median elapsed fight seconds of finish wins with a standard time format.",
+            "unit": "seconds",
+            "formula": "median((round - 1) * 300 + time_sec) over finish wins",
+            "source_families": [
+              "espn",
+              "ufcstats"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 0,
+            "min_seconds": 0,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:27:00.088767+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "finished_by_round_distribution",
+            "definition_version": 1,
+            "family": "finish",
+            "display_name": "Finished-By Round Distribution",
+            "description": "Losses by KO/TKO or submission grouped by ending round.",
+            "unit": "distribution",
+            "formula": "count finish losses by round",
+            "source_families": [
+              "espn",
+              "ufcstats"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 0,
+            "min_seconds": 0,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:27:00.088767+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "ko_finish_rate",
+            "definition_version": 1,
+            "family": "finish",
+            "display_name": "KO/TKO Finish Rate",
+            "description": "KO/TKO wins divided by wins.",
+            "unit": "ratio",
+            "formula": "ko_tko_wins / wins",
+            "source_families": [
+              "espn",
+              "ufcstats"
+            ],
+            "min_bouts": 2,
+            "min_rounds": 0,
+            "min_seconds": 0,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:27:00.088767+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "submission_finish_rate",
+            "definition_version": 1,
+            "family": "finish",
+            "display_name": "Submission Finish Rate",
+            "description": "Submission wins divided by wins.",
+            "unit": "ratio",
+            "formula": "submission_wins / wins",
+            "source_families": [
+              "espn",
+              "ufcstats"
+            ],
+            "min_bouts": 2,
+            "min_rounds": 0,
+            "min_seconds": 0,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:27:00.088767+00:00",
+            "origin": "pbe_derived"
+          }
+        ],
+        "context": [
+          {
+            "metric_key": "five_round_record",
+            "definition_version": 1,
+            "family": "context",
+            "display_name": "Five-Round Record",
+            "description": "W/L/D/NC in bouts scheduled for 5 rounds.",
+            "unit": "record",
+            "formula": "aggregate outcomes where scheduled_rounds = 5",
+            "source_families": [
+              "espn"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 0,
+            "min_seconds": 0,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:27:00.088767+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "main_event_record",
+            "definition_version": 1,
+            "family": "context",
+            "display_name": "Main Event Record",
+            "description": "W/L/D/NC when the bout carried the highest bout_order on its event.",
+            "unit": "record",
+            "formula": "aggregate outcomes where is_main_event",
+            "source_families": [
+              "espn"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 0,
+            "min_seconds": 0,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:27:00.088767+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "short_notice_record",
+            "definition_version": 1,
+            "family": "context",
+            "display_name": "Short-Notice Record",
+            "description": "W/L/D/NC in bouts carrying a verified short_notice_days value.",
+            "unit": "record",
+            "formula": "aggregate outcomes where short_notice_days is not null",
+            "source_families": [
+              "espn"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 0,
+            "min_seconds": 0,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:09:45.846533+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "three_round_record",
+            "definition_version": 1,
+            "family": "context",
+            "display_name": "Three-Round Record",
+            "description": "W/L/D/NC in bouts scheduled for 3 rounds.",
+            "unit": "record",
+            "formula": "aggregate outcomes where scheduled_rounds = 3",
+            "source_families": [
+              "espn"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 0,
+            "min_seconds": 0,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:27:00.088767+00:00",
+            "origin": "pbe_derived"
+          },
+          {
+            "metric_key": "title_bout_record",
+            "definition_version": 1,
+            "family": "context",
+            "display_name": "Title Bout Record",
+            "description": "W/L/D/NC in title bouts.",
+            "unit": "record",
+            "formula": "aggregate outcomes where is_title",
+            "source_families": [
+              "espn"
+            ],
+            "min_bouts": 1,
+            "min_rounds": 0,
+            "min_seconds": 0,
+            "public": true,
+            "active": true,
+            "updated_at": "2026-09-06T16:27:00.088767+00:00",
+            "origin": "pbe_derived"
+          }
+        ]
+      },
+      "metrics": [
+        {
+          "metric_key": "open_stance_record",
+          "definition_version": 1,
+          "family": "stance",
+          "display_name": "Open-Stance Record",
+          "description": "W/L/D/NC when one fighter is listed orthodox and the other southpaw.",
+          "unit": "record",
+          "formula": "aggregate outcomes where stance_context = open",
+          "source_families": [
+            "espn",
+            "ufcstats"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 0,
+          "min_seconds": 0,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:27:00.088767+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "same_stance_record",
+          "definition_version": 1,
+          "family": "stance",
+          "display_name": "Same-Stance Record",
+          "description": "W/L/D/NC when both listed stances are the same.",
+          "unit": "record",
+          "formula": "aggregate outcomes where stance_context = same",
+          "source_families": [
+            "espn",
+            "ufcstats"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 0,
+          "min_seconds": 0,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:27:00.088767+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "stance_finish_rate",
+          "definition_version": 1,
+          "family": "stance",
+          "display_name": "Finish Rate vs Stance",
+          "description": "KO/TKO plus submission wins divided by wins against a listed opponent stance.",
+          "unit": "ratio",
+          "formula": "(ko_tko_wins + submission_wins) / wins_vs_stance",
+          "source_families": [
+            "espn",
+            "ufcstats"
+          ],
+          "min_bouts": 2,
+          "min_rounds": 0,
+          "min_seconds": 0,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:09:45.846533+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "stance_kd_rate_15",
+          "definition_version": 1,
+          "family": "stance",
+          "display_name": "Knockdowns / 15 vs Stance",
+          "description": "Knockdowns created per 15 observed minutes, grouped by opponent stance.",
+          "unit": "per_15",
+          "formula": "kd * 900 / observed_seconds",
+          "source_families": [
+            "ufcstats"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 2,
+          "min_seconds": 300,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:27:00.088767+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "stance_ko_rate",
+          "definition_version": 1,
+          "family": "stance",
+          "display_name": "KO/TKO Rate vs Stance",
+          "description": "KO/TKO wins divided by completed appearances against a listed opponent stance.",
+          "unit": "ratio",
+          "formula": "ko_tko_wins / completed_appearances_vs_stance",
+          "source_families": [
+            "espn",
+            "ufcstats"
+          ],
+          "min_bouts": 2,
+          "min_rounds": 0,
+          "min_seconds": 0,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:09:45.846533+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "stance_record",
+          "definition_version": 1,
+          "family": "stance",
+          "display_name": "Record vs Stance",
+          "description": "W/L/D/NC by opponent listed stance.",
+          "unit": "record",
+          "formula": "aggregate outcomes grouped by opponent_stance",
+          "source_families": [
+            "espn",
+            "ufcstats"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 0,
+          "min_seconds": 0,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:27:00.088767+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "stance_sig_diff_per_min",
+          "definition_version": 1,
+          "family": "stance",
+          "display_name": "Sig. Strike Differential / Min vs Stance",
+          "description": "Fighter significant strikes landed minus opponent landed, per observed minute, grouped by opponent stance.",
+          "unit": "per_min",
+          "formula": "(sig_str_landed - opponent_sig_str_landed) / observed_minutes",
+          "source_families": [
+            "ufcstats"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 2,
+          "min_seconds": 300,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:27:00.088767+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "stance_sub_rate",
+          "definition_version": 1,
+          "family": "stance",
+          "display_name": "Submission Rate vs Stance",
+          "description": "Submission wins divided by completed appearances against a listed opponent stance.",
+          "unit": "ratio",
+          "formula": "submission_wins / completed_appearances_vs_stance",
+          "source_families": [
+            "espn",
+            "ufcstats"
+          ],
+          "min_bouts": 2,
+          "min_rounds": 0,
+          "min_seconds": 0,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:27:00.088767+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "stance_td_rate_15",
+          "definition_version": 1,
+          "family": "stance",
+          "display_name": "Takedowns Landed / 15 vs Stance",
+          "description": "Takedowns landed per 15 observed minutes, grouped by opponent stance.",
+          "unit": "per_15",
+          "formula": "td_landed * 900 / observed_seconds",
+          "source_families": [
+            "ufcstats"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 2,
+          "min_seconds": 300,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:27:00.088767+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "body_attack_share",
+          "definition_version": 1,
+          "family": "striking",
+          "display_name": "Body Attack Share",
+          "description": "Body significant-strike attempts divided by all significant-strike attempts.",
+          "unit": "ratio",
+          "formula": "body_att / sig_str_att",
+          "source_families": [
+            "ufcstats"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 2,
+          "min_seconds": 300,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:09:45.846533+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "clinch_attack_share",
+          "definition_version": 1,
+          "family": "striking",
+          "display_name": "Clinch Attack Share",
+          "description": "Clinch significant-strike attempts divided by all significant-strike attempts.",
+          "unit": "ratio",
+          "formula": "clinch_att / sig_str_att",
+          "source_families": [
+            "ufcstats"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 2,
+          "min_seconds": 300,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:09:45.846533+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "distance_attack_share",
+          "definition_version": 1,
+          "family": "striking",
+          "display_name": "Distance Attack Share",
+          "description": "Distance significant-strike attempts divided by all significant-strike attempts.",
+          "unit": "ratio",
+          "formula": "distance_att / sig_str_att",
+          "source_families": [
+            "ufcstats"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 2,
+          "min_seconds": 300,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:09:45.846533+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "ground_attack_share",
+          "definition_version": 1,
+          "family": "striking",
+          "display_name": "Ground Attack Share",
+          "description": "Ground significant-strike attempts divided by all significant-strike attempts.",
+          "unit": "ratio",
+          "formula": "ground_att / sig_str_att",
+          "source_families": [
+            "ufcstats"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 2,
+          "min_seconds": 300,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:09:45.846533+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "head_attack_share",
+          "definition_version": 1,
+          "family": "striking",
+          "display_name": "Head Attack Share",
+          "description": "Head significant-strike attempts divided by all significant-strike attempts.",
+          "unit": "ratio",
+          "formula": "head_att / sig_str_att",
+          "source_families": [
+            "ufcstats"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 2,
+          "min_seconds": 300,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:09:45.846533+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "knockdowns_absorbed_per_15",
+          "definition_version": 1,
+          "family": "striking",
+          "display_name": "Knockdowns Absorbed / 15",
+          "description": "Opponent knockdowns per 15 stat-covered minutes.",
+          "unit": "per_15",
+          "formula": "opponent_kd * 900 / observed_seconds",
+          "source_families": [
+            "ufcstats"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 2,
+          "min_seconds": 300,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:27:00.088767+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "knockdowns_per_15",
+          "definition_version": 1,
+          "family": "striking",
+          "display_name": "Knockdowns / 15",
+          "description": "Knockdowns created per 15 stat-covered minutes.",
+          "unit": "per_15",
+          "formula": "kd * 900 / observed_seconds",
+          "source_families": [
+            "ufcstats"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 2,
+          "min_seconds": 300,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:09:45.846533+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "leg_attack_share",
+          "definition_version": 1,
+          "family": "striking",
+          "display_name": "Leg Attack Share",
+          "description": "Leg significant-strike attempts divided by all significant-strike attempts.",
+          "unit": "ratio",
+          "formula": "leg_att / sig_str_att",
+          "source_families": [
+            "ufcstats"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 2,
+          "min_seconds": 300,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:09:45.846533+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "sig_absorbed_per_min",
+          "definition_version": 1,
+          "family": "striking",
+          "display_name": "Sig. Strikes Absorbed / Min",
+          "description": "Opponent significant strikes landed divided by observed stat-covered minutes.",
+          "unit": "per_min",
+          "formula": "opponent_sig_str_landed / observed_minutes",
+          "source_families": [
+            "ufcstats"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 2,
+          "min_seconds": 300,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:09:45.846533+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "sig_accuracy",
+          "definition_version": 1,
+          "family": "striking",
+          "display_name": "Sig. Strike Accuracy",
+          "description": "Significant strikes landed divided by significant strikes attempted.",
+          "unit": "ratio",
+          "formula": "sig_str_landed / sig_str_att",
+          "source_families": [
+            "ufcstats"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 2,
+          "min_seconds": 300,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:27:00.088767+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "sig_defense",
+          "definition_version": 1,
+          "family": "striking",
+          "display_name": "Sig. Strike Defense",
+          "description": "One minus opponent significant strikes landed divided by opponent attempts.",
+          "unit": "ratio",
+          "formula": "1 - opponent_sig_str_landed / opponent_sig_str_att",
+          "source_families": [
+            "ufcstats"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 2,
+          "min_seconds": 300,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:27:00.088767+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "sig_diff_per_min",
+          "definition_version": 1,
+          "family": "striking",
+          "display_name": "Sig. Strike Differential / Min",
+          "description": "Significant strikes landed minus absorbed, per observed minute.",
+          "unit": "per_min",
+          "formula": "(sig_str_landed - opponent_sig_str_landed) / observed_minutes",
+          "source_families": [
+            "ufcstats"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 2,
+          "min_seconds": 300,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:27:00.088767+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "sig_landed_per_min",
+          "definition_version": 1,
+          "family": "striking",
+          "display_name": "Sig. Strikes Landed / Min",
+          "description": "Significant strikes landed divided by observed stat-covered minutes.",
+          "unit": "per_min",
+          "formula": "sig_str_landed / observed_minutes",
+          "source_families": [
+            "ufcstats"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 2,
+          "min_seconds": 300,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:09:45.846533+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "championship_round_delta",
+          "definition_version": 1,
+          "family": "pace",
+          "display_name": "Championship-Round Pace Delta",
+          "description": "Rounds 4-5 significant-attempt pace minus rounds 1-3 pace, over bouts that reached round 4.",
+          "unit": "per_min",
+          "formula": "late_round_sig_att_per_min - early_round_sig_att_per_min",
+          "source_families": [
+            "ufcstats"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 4,
+          "min_seconds": 1200,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:27:00.088767+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "defensive_drift_r3_vs_r1",
+          "definition_version": 1,
+          "family": "pace",
+          "display_name": "Defensive Drift R3 vs R1",
+          "description": "Round-three significant strikes absorbed per minute minus the round-one rate, over bouts with both rounds covered.",
+          "unit": "per_min",
+          "formula": "r3_absorbed_per_min - r1_absorbed_per_min",
+          "source_families": [
+            "ufcstats"
+          ],
+          "min_bouts": 2,
+          "min_rounds": 6,
+          "min_seconds": 900,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:27:00.088767+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "late_round_sig_attempts_per_min",
+          "definition_version": 1,
+          "family": "pace",
+          "display_name": "Championship-Round Sig. Attempts / Min",
+          "description": "Rounds 4-5 significant-strike attempts per observed rounds 4-5 minute.",
+          "unit": "per_min",
+          "formula": "(r4_sig_str_att + r5_sig_str_att) / (r4_observed_minutes + r5_observed_minutes)",
+          "source_families": [
+            "ufcstats"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 1,
+          "min_seconds": 60,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:27:00.088767+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "pace_retention_r2_vs_r1",
+          "definition_version": 1,
+          "family": "pace",
+          "display_name": "R2 Pace Retention",
+          "description": "Round-two significant-strike attempt pace divided by round-one pace.",
+          "unit": "ratio",
+          "formula": "r2_sig_att_per_min / r1_sig_att_per_min",
+          "source_families": [
+            "ufcstats"
+          ],
+          "min_bouts": 2,
+          "min_rounds": 4,
+          "min_seconds": 600,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:09:45.846533+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "pace_retention_r3_vs_r1",
+          "definition_version": 1,
+          "family": "pace",
+          "display_name": "R3 Pace Retention",
+          "description": "Round-three significant-strike attempt pace divided by round-one pace.",
+          "unit": "ratio",
+          "formula": "r3_sig_att_per_min / r1_sig_att_per_min",
+          "source_families": [
+            "ufcstats"
+          ],
+          "min_bouts": 2,
+          "min_rounds": 6,
+          "min_seconds": 900,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:09:45.846533+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "r1_sig_absorbed_per_min",
+          "definition_version": 1,
+          "family": "pace",
+          "display_name": "R1 Sig. Absorbed / Min",
+          "description": "Round-1 opponent significant strikes landed per observed round-1 minute.",
+          "unit": "per_min",
+          "formula": "r1_opponent_sig_str_landed / r1_observed_minutes",
+          "source_families": [
+            "ufcstats"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 1,
+          "min_seconds": 60,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:27:00.088767+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "r1_sig_attempts_per_min",
+          "definition_version": 1,
+          "family": "pace",
+          "display_name": "R1 Sig. Attempts / Min",
+          "description": "Round-one significant-strike attempts per observed round-one minute.",
+          "unit": "per_min",
+          "formula": "r1_sig_str_att / r1_observed_minutes",
+          "source_families": [
+            "ufcstats"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 1,
+          "min_seconds": 60,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:27:00.088767+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "r1_sig_landed_per_min",
+          "definition_version": 1,
+          "family": "pace",
+          "display_name": "R1 Sig. Landed / Min",
+          "description": "Round-1 significant strikes landed per observed round-1 minute.",
+          "unit": "per_min",
+          "formula": "r1_sig_str_landed / r1_observed_minutes",
+          "source_families": [
+            "ufcstats"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 1,
+          "min_seconds": 60,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:27:00.088767+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "r2_sig_absorbed_per_min",
+          "definition_version": 1,
+          "family": "pace",
+          "display_name": "R2 Sig. Absorbed / Min",
+          "description": "Round-2 opponent significant strikes landed per observed round-2 minute.",
+          "unit": "per_min",
+          "formula": "r2_opponent_sig_str_landed / r2_observed_minutes",
+          "source_families": [
+            "ufcstats"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 1,
+          "min_seconds": 60,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:27:00.088767+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "r2_sig_attempts_per_min",
+          "definition_version": 1,
+          "family": "pace",
+          "display_name": "R2 Sig. Attempts / Min",
+          "description": "Round-two significant-strike attempts per observed round-two minute.",
+          "unit": "per_min",
+          "formula": "r2_sig_str_att / r2_observed_minutes",
+          "source_families": [
+            "ufcstats"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 1,
+          "min_seconds": 60,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:27:00.088767+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "r2_sig_landed_per_min",
+          "definition_version": 1,
+          "family": "pace",
+          "display_name": "R2 Sig. Landed / Min",
+          "description": "Round-2 significant strikes landed per observed round-2 minute.",
+          "unit": "per_min",
+          "formula": "r2_sig_str_landed / r2_observed_minutes",
+          "source_families": [
+            "ufcstats"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 1,
+          "min_seconds": 60,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:27:00.088767+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "r3_sig_absorbed_per_min",
+          "definition_version": 1,
+          "family": "pace",
+          "display_name": "R3 Sig. Absorbed / Min",
+          "description": "Round-3 opponent significant strikes landed per observed round-3 minute.",
+          "unit": "per_min",
+          "formula": "r3_opponent_sig_str_landed / r3_observed_minutes",
+          "source_families": [
+            "ufcstats"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 1,
+          "min_seconds": 60,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:27:00.088767+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "r3_sig_attempts_per_min",
+          "definition_version": 1,
+          "family": "pace",
+          "display_name": "R3 Sig. Attempts / Min",
+          "description": "Round-three significant-strike attempts per observed round-three minute.",
+          "unit": "per_min",
+          "formula": "r3_sig_str_att / r3_observed_minutes",
+          "source_families": [
+            "ufcstats"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 1,
+          "min_seconds": 60,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:27:00.088767+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "r3_sig_landed_per_min",
+          "definition_version": 1,
+          "family": "pace",
+          "display_name": "R3 Sig. Landed / Min",
+          "description": "Round-3 significant strikes landed per observed round-3 minute.",
+          "unit": "per_min",
+          "formula": "r3_sig_str_landed / r3_observed_minutes",
+          "source_families": [
+            "ufcstats"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 1,
+          "min_seconds": 60,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:27:00.088767+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "r4_sig_absorbed_per_min",
+          "definition_version": 1,
+          "family": "pace",
+          "display_name": "R4 Sig. Absorbed / Min",
+          "description": "Round-4 opponent significant strikes landed per observed round-4 minute.",
+          "unit": "per_min",
+          "formula": "r4_opponent_sig_str_landed / r4_observed_minutes",
+          "source_families": [
+            "ufcstats"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 1,
+          "min_seconds": 60,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:27:00.088767+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "r4_sig_attempts_per_min",
+          "definition_version": 1,
+          "family": "pace",
+          "display_name": "R4 Sig. Attempts / Min",
+          "description": "Round-4 significant-strike attempts per observed round-4 minute.",
+          "unit": "per_min",
+          "formula": "r4_sig_str_att / r4_observed_minutes",
+          "source_families": [
+            "ufcstats"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 1,
+          "min_seconds": 60,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:27:00.088767+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "r4_sig_landed_per_min",
+          "definition_version": 1,
+          "family": "pace",
+          "display_name": "R4 Sig. Landed / Min",
+          "description": "Round-4 significant strikes landed per observed round-4 minute.",
+          "unit": "per_min",
+          "formula": "r4_sig_str_landed / r4_observed_minutes",
+          "source_families": [
+            "ufcstats"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 1,
+          "min_seconds": 60,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:27:00.088767+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "r5_sig_absorbed_per_min",
+          "definition_version": 1,
+          "family": "pace",
+          "display_name": "R5 Sig. Absorbed / Min",
+          "description": "Round-5 opponent significant strikes landed per observed round-5 minute.",
+          "unit": "per_min",
+          "formula": "r5_opponent_sig_str_landed / r5_observed_minutes",
+          "source_families": [
+            "ufcstats"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 1,
+          "min_seconds": 60,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:27:00.088767+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "r5_sig_attempts_per_min",
+          "definition_version": 1,
+          "family": "pace",
+          "display_name": "R5 Sig. Attempts / Min",
+          "description": "Round-5 significant-strike attempts per observed round-5 minute.",
+          "unit": "per_min",
+          "formula": "r5_sig_str_att / r5_observed_minutes",
+          "source_families": [
+            "ufcstats"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 1,
+          "min_seconds": 60,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:27:00.088767+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "r5_sig_landed_per_min",
+          "definition_version": 1,
+          "family": "pace",
+          "display_name": "R5 Sig. Landed / Min",
+          "description": "Round-5 significant strikes landed per observed round-5 minute.",
+          "unit": "per_min",
+          "formula": "r5_sig_str_landed / r5_observed_minutes",
+          "source_families": [
+            "ufcstats"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 1,
+          "min_seconds": 60,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:27:00.088767+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "control_seconds_per_td",
+          "definition_version": 1,
+          "family": "grappling",
+          "display_name": "Control Seconds / Takedown",
+          "description": "Recorded control seconds divided by takedowns landed.",
+          "unit": "seconds_per_td",
+          "formula": "ctrl_sec / td_landed",
+          "source_families": [
+            "ufcstats"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 2,
+          "min_seconds": 300,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:09:45.846533+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "control_share",
+          "definition_version": 1,
+          "family": "grappling",
+          "display_name": "Control Share",
+          "description": "Recorded control seconds divided by observed stat-covered seconds.",
+          "unit": "ratio",
+          "formula": "ctrl_sec / observed_seconds",
+          "source_families": [
+            "ufcstats"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 2,
+          "min_seconds": 300,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:27:00.088767+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "reversals_per_15",
+          "definition_version": 1,
+          "family": "grappling",
+          "display_name": "Reversals / 15",
+          "description": "Reversals per 15 stat-covered minutes.",
+          "unit": "per_15",
+          "formula": "rev * 900 / observed_seconds",
+          "source_families": [
+            "ufcstats"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 2,
+          "min_seconds": 300,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:27:00.088767+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "sub_attempts_per_15",
+          "definition_version": 1,
+          "family": "grappling",
+          "display_name": "Submission Attempts / 15",
+          "description": "Submission attempts per 15 stat-covered minutes.",
+          "unit": "per_15",
+          "formula": "sub_att * 900 / observed_seconds",
+          "source_families": [
+            "ufcstats"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 2,
+          "min_seconds": 300,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:09:45.846533+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "td_accuracy",
+          "definition_version": 1,
+          "family": "grappling",
+          "display_name": "Takedown Accuracy",
+          "description": "Takedowns landed divided by takedowns attempted.",
+          "unit": "ratio",
+          "formula": "td_landed / td_att",
+          "source_families": [
+            "ufcstats"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 2,
+          "min_seconds": 300,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:09:45.846533+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "td_attempts_per_15",
+          "definition_version": 1,
+          "family": "grappling",
+          "display_name": "Takedown Attempts / 15",
+          "description": "Takedown attempts per 15 stat-covered minutes.",
+          "unit": "per_15",
+          "formula": "td_att * 900 / observed_seconds",
+          "source_families": [
+            "ufcstats"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 2,
+          "min_seconds": 300,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:09:45.846533+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "td_landed_per_15",
+          "definition_version": 1,
+          "family": "grappling",
+          "display_name": "Takedowns Landed / 15",
+          "description": "Takedowns landed per 15 stat-covered minutes.",
+          "unit": "per_15",
+          "formula": "td_landed * 900 / observed_seconds",
+          "source_families": [
+            "ufcstats"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 2,
+          "min_seconds": 300,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:27:00.088767+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "finish_rate",
+          "definition_version": 1,
+          "family": "finish",
+          "display_name": "Finish Rate",
+          "description": "KO/TKO plus submission wins divided by wins.",
+          "unit": "ratio",
+          "formula": "(ko_tko_wins + submission_wins) / wins",
+          "source_families": [
+            "espn",
+            "ufcstats"
+          ],
+          "min_bouts": 2,
+          "min_rounds": 0,
+          "min_seconds": 0,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:09:45.846533+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "finish_round_distribution",
+          "definition_version": 1,
+          "family": "finish",
+          "display_name": "Finish Round Distribution",
+          "description": "Finish wins grouped by ending round.",
+          "unit": "distribution",
+          "formula": "count finish wins by round",
+          "source_families": [
+            "espn",
+            "ufcstats"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 0,
+          "min_seconds": 0,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:27:00.088767+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "finish_time_median_sec",
+          "definition_version": 1,
+          "family": "finish",
+          "display_name": "Median Finish Time",
+          "description": "Median elapsed fight seconds of finish wins with a standard time format.",
+          "unit": "seconds",
+          "formula": "median((round - 1) * 300 + time_sec) over finish wins",
+          "source_families": [
+            "espn",
+            "ufcstats"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 0,
+          "min_seconds": 0,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:27:00.088767+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "finished_by_round_distribution",
+          "definition_version": 1,
+          "family": "finish",
+          "display_name": "Finished-By Round Distribution",
+          "description": "Losses by KO/TKO or submission grouped by ending round.",
+          "unit": "distribution",
+          "formula": "count finish losses by round",
+          "source_families": [
+            "espn",
+            "ufcstats"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 0,
+          "min_seconds": 0,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:27:00.088767+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "ko_finish_rate",
+          "definition_version": 1,
+          "family": "finish",
+          "display_name": "KO/TKO Finish Rate",
+          "description": "KO/TKO wins divided by wins.",
+          "unit": "ratio",
+          "formula": "ko_tko_wins / wins",
+          "source_families": [
+            "espn",
+            "ufcstats"
+          ],
+          "min_bouts": 2,
+          "min_rounds": 0,
+          "min_seconds": 0,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:27:00.088767+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "submission_finish_rate",
+          "definition_version": 1,
+          "family": "finish",
+          "display_name": "Submission Finish Rate",
+          "description": "Submission wins divided by wins.",
+          "unit": "ratio",
+          "formula": "submission_wins / wins",
+          "source_families": [
+            "espn",
+            "ufcstats"
+          ],
+          "min_bouts": 2,
+          "min_rounds": 0,
+          "min_seconds": 0,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:27:00.088767+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "five_round_record",
+          "definition_version": 1,
+          "family": "context",
+          "display_name": "Five-Round Record",
+          "description": "W/L/D/NC in bouts scheduled for 5 rounds.",
+          "unit": "record",
+          "formula": "aggregate outcomes where scheduled_rounds = 5",
+          "source_families": [
+            "espn"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 0,
+          "min_seconds": 0,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:27:00.088767+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "main_event_record",
+          "definition_version": 1,
+          "family": "context",
+          "display_name": "Main Event Record",
+          "description": "W/L/D/NC when the bout carried the highest bout_order on its event.",
+          "unit": "record",
+          "formula": "aggregate outcomes where is_main_event",
+          "source_families": [
+            "espn"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 0,
+          "min_seconds": 0,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:27:00.088767+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "short_notice_record",
+          "definition_version": 1,
+          "family": "context",
+          "display_name": "Short-Notice Record",
+          "description": "W/L/D/NC in bouts carrying a verified short_notice_days value.",
+          "unit": "record",
+          "formula": "aggregate outcomes where short_notice_days is not null",
+          "source_families": [
+            "espn"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 0,
+          "min_seconds": 0,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:09:45.846533+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "three_round_record",
+          "definition_version": 1,
+          "family": "context",
+          "display_name": "Three-Round Record",
+          "description": "W/L/D/NC in bouts scheduled for 3 rounds.",
+          "unit": "record",
+          "formula": "aggregate outcomes where scheduled_rounds = 3",
+          "source_families": [
+            "espn"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 0,
+          "min_seconds": 0,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:27:00.088767+00:00",
+          "origin": "pbe_derived"
+        },
+        {
+          "metric_key": "title_bout_record",
+          "definition_version": 1,
+          "family": "context",
+          "display_name": "Title Bout Record",
+          "description": "W/L/D/NC in title bouts.",
+          "unit": "record",
+          "formula": "aggregate outcomes where is_title",
+          "source_families": [
+            "espn"
+          ],
+          "min_bouts": 1,
+          "min_rounds": 0,
+          "min_seconds": 0,
+          "public": true,
+          "active": true,
+          "updated_at": "2026-09-06T16:27:00.088767+00:00",
+          "origin": "pbe_derived"
+        }
+      ]
+    },
+    "meta": {
+      "api": "PropSports UFC",
+      "version": "2026-09-06.3",
+      "request_id": "004bd991-f9ae-4f5c-bf8f-4eb4e49cd688",
+      "count": 60,
+      "families": 6,
+      "definition_version": 1,
+      "access_tier": "public"
+    }
+  }
+}

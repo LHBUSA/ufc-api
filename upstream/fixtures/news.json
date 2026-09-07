@@ -1,0 +1,121 @@
+{
+  "captured_at": "2026-09-07T12:18:42.990Z",
+  "base": "https://ufc-api.propbetedge.ai",
+  "path": "/v1/ufc/news?limit=2",
+  "status": 200,
+  "api_version": "2026-09-06.3",
+  "body": {
+    "ok": true,
+    "data": [
+      {
+        "id": "7ed289ab-c2d5-4230-9036-e420ffd15131",
+        "slug": "mma-divisional-rankings-upset-ko-boosts-song-yadong-at-bantamweight",
+        "headline": "Song Yadong’s Aug. 29 KO win is the evidence behind ESPN MMA’s bantamweight rankings update",
+        "dek": "ESPN MMA’s rankings item names Song Yadong and Tatsuro Taira; PropBetEdge records show Yadong coming off a second-round KO/TKO win over Umar Nurmagomedov, while Taira’s latest listed result is a fifth-round KO/TKO loss to Joshua Van.",
+        "story_type": "external",
+        "status": "published",
+        "hero_image_ref": null,
+        "hero_credit": null,
+        "fighter_ids": [
+          "a9a7e9fd-e128-4b7e-949a-4d75b2e00331",
+          "826104d2-9067-466a-9d1c-303813781395"
+        ],
+        "bout_id": null,
+        "event_id": null,
+        "published_at": "2026-09-06T13:47:35.532+00:00",
+        "updated_at": "2026-09-07T00:33:36.444+00:00",
+        "hero_image_url": null,
+        "hero_image": null,
+        "analysis_summary": null
+      },
+      {
+        "id": "aa42bad3-1904-479f-97f0-a8cd48055e15",
+        "slug": "ufc-fight-night-hooker-vs-parnasse-2026-09-05-results",
+        "headline": "UFC Fight Night: Hooker vs. Parnasse results: Salahdine Parnasse stops Dan Hooker in round 1",
+        "dek": "Salahdine Parnasse finished Dan Hooker with punches at 2:35 of round 1 in Paris. The result adds a finish to Parnasse’s UFC archive, extends Hooker’s recent losing run and reshapes how distance, method and round markets should be read next time.",
+        "story_type": "results",
+        "status": "published",
+        "hero_image_ref": "8d8dfedd-cce5-4e34-aa31-a4d346616dec",
+        "hero_credit": {
+          "author": "ZACK",
+          "license": "CC BY 3.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:ParnasseMMA2023.png"
+        },
+        "fighter_ids": [
+          "5c8d6aaf-28fb-49ad-8ffd-4f161c508728",
+          "ebc1b218-f1fb-4f18-bd29-a1690910499f",
+          "14a47802-4922-4156-ad28-6d3e35666485",
+          "b338d8f1-d9c0-4652-a6bd-de75704ffcee",
+          "940796ad-7733-4992-95c0-91031101fef7",
+          "5e4ce93e-f8c5-464c-9100-6ba20484af9f",
+          "45866b70-3f63-4996-8ec4-416e40b4c6b6",
+          "1859d7c4-45a8-4cd5-9988-f9c867a9774f",
+          "65a8e288-aa40-402b-b15c-377bb93ddbc1",
+          "6d412d00-13c6-4d7b-b1c7-7b7f03323452",
+          "ca7c0b28-56b6-4980-9a21-f81b35d5c134",
+          "b85dbabc-1300-485e-9171-8d54389608dd",
+          "7f0ff8e2-104c-43f5-a7df-f44af76a0b58",
+          "5c8b7384-316f-48e9-b5b8-12d932f24ac1",
+          "bc6d359a-c6e7-40f3-8398-8ec723105090",
+          "7752c8fc-23f6-4d72-9a46-8ff1b8d149cf",
+          "27ef465b-564f-40eb-83fd-ef37679cd087",
+          "a9ba404e-8fbb-40cc-a23b-0a30a2cb7ba3",
+          "d5f8d991-996f-463f-acee-618863d29c84",
+          "53b2b5aa-e831-40a8-b5e9-efb211312c5c",
+          "1a857166-616a-43aa-a30e-3a425d926115",
+          "a54eb74e-2ef5-42e3-a3f8-5fb910bcb98c",
+          "5cd8d0d8-8769-4a59-8851-798523aeaff5",
+          "1d8d7841-1ece-4716-90fa-ab3cf821fb1d",
+          "230dff12-4ef9-4070-8a66-2b10b0bc8e42",
+          "cec1b908-aa6d-4e47-8f77-5c98dc0c10f9",
+          "a223c4bc-17b9-4d57-9d8e-7f54dbd668a8",
+          "56a92061-ab60-49b8-9852-c6420caf5ad0"
+        ],
+        "bout_id": "cd8c325b-d342-4606-9269-94f4cce877a2",
+        "event_id": "0edba201-82f9-4525-85e4-3034b7bc09f7",
+        "published_at": "2026-09-06T13:47:35.039+00:00",
+        "updated_at": "2026-09-07T00:24:24.961+00:00",
+        "hero_image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/ebc1b218-f1fb-4f18-bd29-a1690910499f/portrait.jpg",
+        "hero_image": {
+          "id": "8d8dfedd-cce5-4e34-aa31-a4d346616dec",
+          "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/ebc1b218-f1fb-4f18-bd29-a1690910499f/portrait.jpg",
+          "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/ebc1b218-f1fb-4f18-bd29-a1690910499f/card.jpg",
+          "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/ebc1b218-f1fb-4f18-bd29-a1690910499f/thumb.jpg",
+          "author": "ZACK",
+          "license": "CC BY 3.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:ParnasseMMA2023.png",
+          "kind": "wikimedia",
+          "attribution_text": "ZACK, CC BY 3.0, via Wikimedia Commons",
+          "rights_label": "CC BY 3.0",
+          "fighter_id": "ebc1b218-f1fb-4f18-bd29-a1690910499f",
+          "ref": "8d8dfedd-cce5-4e34-aa31-a4d346616dec"
+        },
+        "analysis_summary": {
+          "impact_score": 4,
+          "markets": [
+            "fight_goes_distance",
+            "total_rounds",
+            "method_of_victory",
+            "round_betting"
+          ],
+          "odds_status": "unavailable",
+          "model_status": "unavailable",
+          "story_class": "results"
+        }
+      }
+    ],
+    "meta": {
+      "api": "PropSports UFC",
+      "version": "2026-09-06.3",
+      "request_id": "a67555df-b481-48b5-964a-27a9d1b2ddf6",
+      "count": 2,
+      "total": 28,
+      "offset": 0,
+      "story_type": null,
+      "story_class": null,
+      "with_hero": 1,
+      "with_analysis": 1,
+      "access_tier": "public"
+    }
+  }
+}

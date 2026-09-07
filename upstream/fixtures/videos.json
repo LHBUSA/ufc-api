@@ -1,0 +1,92 @@
+{
+  "captured_at": "2026-09-07T12:18:42.990Z",
+  "base": "https://ufc-api.propbetedge.ai",
+  "path": "/v1/ufc/videos?limit=2",
+  "status": 200,
+  "api_version": "2026-09-06.3",
+  "body": {
+    "ok": true,
+    "data": [
+      {
+        "id": "c098d596-2111-48da-b1e2-e7b459a4da11",
+        "provider": "youtube",
+        "provider_video_id": "IulA4gBPp5M",
+        "url": "https://www.youtube.com/watch?v=IulA4gBPp5M",
+        "embed_url": "https://www.youtube-nocookie.com/embed/IulA4gBPp5M",
+        "thumbnail_url": "https://i2.ytimg.com/vi/IulA4gBPp5M/hqdefault.jpg",
+        "title": "Rafael Fiziev x Mauricio Ruffy | LUTA COMPLETA | Crypto.com UFC 331",
+        "published_at": "2026-09-06T21:00:09+00:00",
+        "duration_sec": null,
+        "embeddable": true,
+        "live_broadcast_state": null,
+        "video_type": "full_fight",
+        "video_type_label": "Full fight",
+        "channel": {
+          "id": "UCk8XGxi7fsTqQQRVq9LSraw",
+          "name": "UFC Brasil",
+          "verified": true
+        },
+        "links": {
+          "event_id": "221ca353-f623-4b66-98aa-3a504a418236",
+          "bout_id": null,
+          "article_id": null,
+          "fighter_ids": [
+            "17563ab2-dbac-4366-861f-917628a0a4b1",
+            "38d76024-e211-4429-bb77-0f6e3c2016cc"
+          ]
+        },
+        "resolver_confidence": "medium",
+        "attribution": "YouTube · UFC Brasil",
+        "captured_at": "2026-09-07T01:29:49.806359+00:00",
+        "updated_at": "2026-09-07T01:29:46.802+00:00"
+      },
+      {
+        "id": "c7e07888-bd3e-4391-ada6-a5960050bf13",
+        "provider": "youtube",
+        "provider_video_id": "cs-T1Qgb-sk",
+        "url": "https://www.youtube.com/watch?v=cs-T1Qgb-sk",
+        "embed_url": "https://www.youtube-nocookie.com/embed/cs-T1Qgb-sk",
+        "thumbnail_url": "https://i4.ytimg.com/vi/cs-T1Qgb-sk/hqdefault.jpg",
+        "title": "Noche UFC: Silva vs Delgado - September 12th | Fight Promo",
+        "published_at": "2026-09-06T17:30:29+00:00",
+        "duration_sec": null,
+        "embeddable": true,
+        "live_broadcast_state": null,
+        "video_type": "fight_preview",
+        "video_type_label": "Fight preview",
+        "channel": {
+          "id": "UCvgfXK4nTYKudb0rFR6noLA",
+          "name": "UFC",
+          "verified": true
+        },
+        "links": {
+          "event_id": "1d0b22df-81e7-4e5b-8fa5-8e5d03c24c52",
+          "bout_id": null,
+          "article_id": null,
+          "fighter_ids": [
+            "55ef67ad-88fe-4f7a-b4cb-dc9a10c12feb",
+            "eed368a5-484b-412f-9d2c-a4fd6d24d019"
+          ]
+        },
+        "resolver_confidence": "medium",
+        "attribution": "YouTube · UFC",
+        "captured_at": "2026-09-07T01:29:49.112112+00:00",
+        "updated_at": "2026-09-07T01:29:46.802+00:00"
+      }
+    ],
+    "meta": {
+      "api": "PropSports UFC",
+      "version": "2026-09-06.3",
+      "request_id": "8af15986-56f0-43d0-96ea-ca297853764f",
+      "count": 2,
+      "total": 63,
+      "limit": 2,
+      "type": null,
+      "fighter_id": null,
+      "event_id": null,
+      "bout_id": null,
+      "published_only": true,
+      "access_tier": "public"
+    }
+  }
+}

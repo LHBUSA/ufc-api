@@ -1,0 +1,1293 @@
+openapi: 3.1.0
+info:
+  title: PropSports UFC API
+  version: 2026-09-06.3
+  description: >-
+    Read-only normalized UFC event, fighter, bout, result, round-stat, image,
+    rankings and editorial data used by ufc.propbetedge.ai and future PropSports
+    clients. Every change since 2026-09-06 is additive: no field was removed or
+    renamed. Media URLs are first-party durable Storage URLs derived from
+    `ufc_images.r2_key`; rankings come only from the verified ufc.com snapshot
+    store; nothing is synthesized.
+servers:
+  - url: https://ufc-api.propbetedge.ai
+security:
+  - ApiKeyAuth: []
+  - {}
+paths:
+  /v1/ufc:
+    get:
+      summary: API index (advertises every route and the media base URL)
+      responses:
+        '200': { $ref: '#/components/responses/Success' }
+  /v1/ufc/events:
+    get:
+      summary: List UFC events
+      parameters:
+        - { name: status, in: query, schema: { type: string, enum: [all, upcoming, recent], default: all } }
+        - { name: date, in: query, schema: { type: string, format: date } }
+        - { name: limit, in: query, schema: { type: integer, minimum: 1, maximum: 1000, default: 25 } }
+      responses:
+        '200': { $ref: '#/components/responses/Success' }
+  /v1/ufc/events/{id}:
+    get:
+      summary: Get an event by UUID, UFCStats ID, or ESPN event ID
+      parameters:
+        - $ref: '#/components/parameters/EntityId'
+      responses:
+        '200': { $ref: '#/components/responses/Success' }
+        '404': { $ref: '#/components/responses/Error' }
+  /v1/ufc/events/{id}/card:
+    get:
+      summary: Event plus its complete ordered card (composite event-page contract)
+      description: >-
+        `data.event` plus `data.bouts[]` ordered main event first. Each bout carries
+        `fighter_a` / `fighter_b` with `images[]` and `primary_image`, and `result`
+        (null when unfought). `include=stats` adds `round_stats[]` (both fighters,
+        every round) and `stat_totals` keyed by fighter id to each bout, in one
+        request. `media` and `results` are accepted for symmetry and are always on.
+      parameters:
+        - $ref: '#/components/parameters/EntityId'
+        - $ref: '#/components/parameters/CardInclude'
+      responses:
+        '200': { $ref: '#/components/responses/Success' }
+        '400': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
+  /v1/ufc/events/{id}/articles:
+    get:
+      summary: Published articles attached to an event, with resolved hero media
+      parameters:
+        - $ref: '#/components/parameters/EntityId'
+        - { name: limit, in: query, schema: { type: integer, minimum: 1, maximum: 100, default: 12 } }
+      responses:
+        '200': { $ref: '#/components/responses/Success' }
+        '404': { $ref: '#/components/responses/Error' }
+  /v1/ufc/fighters:
+    get:
+      summary: Search/list fighters (each row carries a compact primary_image)
+      description: >-
+        Rows are `Fighter` plus `primary_image` (`PrimaryImage` or null). The full
+        `images[]` array is only on fighter detail so archive grids stay small.
+        `meta.with_media` counts rows with a resolved portrait.
+      parameters:
+        - { name: q, in: query, schema: { type: string, maxLength: 100 } }
+        - { name: active, in: query, schema: { type: boolean } }
+        - { name: limit, in: query, schema: { type: integer, minimum: 1, maximum: 250, default: 60 } }
+        - { name: offset, in: query, schema: { type: integer, minimum: 0, default: 0 } }
+      responses:
+        '200': { $ref: '#/components/responses/Success' }
+  /v1/ufc/fighters/media:
+    get:
+      summary: Bulk primary_image lookup for archive grids (max 150 ids)
+      description: >-
+        `data.media` is an object keyed by every requested fighter UUID whose value
+        is `PrimaryImage` or null. `meta.requested` / `meta.found` summarize coverage.
+      parameters:
+        - name: ids
+          in: query
+          required: true
+          description: Comma-separated fighter UUIDs (1..150).
+          schema: { type: string }
+      responses:
+        '200': { $ref: '#/components/responses/Success' }
+        '400': { $ref: '#/components/responses/Error' }
+  /v1/ufc/fighters/{id}:
+    get:
+      summary: Fighter profile (composite fighter-page contract via include)
+      description: >-
+        Default response is the fighter row plus `slug_id`, `images[]` (full
+        licensed media with `image_url`, `card_url`, `thumb_url`) and
+        `primary_image`. Includes are additive and never change the base fields:
+        `ranking` adds `ranking` (verified positions or null when no snapshot),
+        `next` adds `next_bout` (next scheduled bout with event + opponent, or null),
+        `history` adds `history[]` (bout + event + opponent + result + outcome,
+        newest first, `history_limit` 1..250), `stats` adds `stats`
+        (`career_snapshot` display-only fields with the leakage warning, plus
+        `computed` per-bout totals and career aggregates from UFC Stats round rows,
+        with provenance). `media` is accepted and always on.
+      parameters:
+        - $ref: '#/components/parameters/EntityId'
+        - $ref: '#/components/parameters/FighterInclude'
+        - { name: history_limit, in: query, schema: { type: integer, minimum: 1, maximum: 250, default: 100 } }
+      responses:
+        '200': { $ref: '#/components/responses/Success' }
+        '400': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
+  /v1/ufc/fighters/{id}/history:
+    get:
+      summary: Fighter bout history with event context, opponent and outcome
+      parameters:
+        - $ref: '#/components/parameters/EntityId'
+        - { name: limit, in: query, schema: { type: integer, minimum: 1, maximum: 250, default: 100 } }
+      responses:
+        '200': { $ref: '#/components/responses/Success' }
+        '404': { $ref: '#/components/responses/Error' }
+  /v1/ufc/fighters/{id}/stats:
+    get:
+      summary: Career snapshot plus round-stat rows and computed aggregates
+      description: >-
+        `career_snapshot` fields are display-only and explicitly not valid as
+        historical as-of model features. `round_stats[]` is every UFC Stats round
+        row for the fighter; `computed` sums them per bout and across the career
+        with labelled provenance (`fight_time_basis`).
+      parameters:
+        - $ref: '#/components/parameters/EntityId'
+      responses:
+        '200': { $ref: '#/components/responses/Success' }
+        '404': { $ref: '#/components/responses/Error' }
+  /v1/ufc/fighters/{id}/articles:
+    get:
+      summary: Published articles tagged with a fighter, with resolved hero media
+      parameters:
+        - $ref: '#/components/parameters/EntityId'
+        - { name: limit, in: query, schema: { type: integer, minimum: 1, maximum: 100, default: 8 } }
+      responses:
+        '200': { $ref: '#/components/responses/Success' }
+        '404': { $ref: '#/components/responses/Error' }
+  /v1/ufc/bouts/{id}:
+    get:
+      summary: Get bout, fighters, result, and event context
+      parameters:
+        - $ref: '#/components/parameters/EntityId'
+      responses:
+        '200': { $ref: '#/components/responses/Success' }
+        '404': { $ref: '#/components/responses/Error' }
+  /v1/ufc/bouts/{id}/stats:
+    get:
+      summary: Bout, every round-level row, per-fighter totals and provenance
+      parameters:
+        - $ref: '#/components/parameters/EntityId'
+      responses:
+        '200': { $ref: '#/components/responses/Success' }
+        '404': { $ref: '#/components/responses/Error' }
+  /v1/ufc/results:
+    get:
+      summary: List completed bout results with bout/event context
+      parameters:
+        - { name: limit, in: query, schema: { type: integer, minimum: 1, maximum: 200, default: 50 } }
+      responses:
+        '200': { $ref: '#/components/responses/Success' }
+  /v1/ufc/rankings:
+    get:
+      summary: Verified official UFC rankings (ufc.com snapshot)
+      description: >-
+        Served from the `ufc_rankings` table when migration 003 is applied and
+        populated, otherwise from the Storage snapshot written by the same ingest
+        (`meta.store` says which). Divisions are in official page order; entries are
+        ordered by rank (competition ranking, ties are real). `fighter` is the
+        linked `{id, name, slug_id}` identity or null when the alias resolver could
+        not link unambiguously. Returns `503 rankings_not_available` with
+        `data: null` when no store exists. Never synthesized.
+      parameters:
+        - { name: division, in: query, description: Division key filter (e.g. MIDDLEWEIGHT, P4P, light-heavyweight), schema: { type: string } }
+        - { name: womens, in: query, schema: { type: boolean } }
+      responses:
+        '200': { $ref: '#/components/responses/Success' }
+        '404': { $ref: '#/components/responses/Error' }
+        '503': { $ref: '#/components/responses/Error' }
+  /v1/ufc/wire:
+    get:
+      summary: Global live wire — attributed newsroom headlines, deduped, newest first, mapped to internal pages
+      description: >-
+        Source of truth is `ufc_news_items` joined to `ufc_news_sources`. Items are
+        newest first; near-identical headlines from several feeds are collapsed
+        (normalized title: lowercase, punctuation and stopwords stripped, first 60
+        chars) keeping the earliest-published copy. `taxonomy` is the first label
+        string (or null); the full taxonomy object is under `taxonomy_detail`.
+        `internal_url` is `/news/<slug>` when a published PropBetEdge article shares
+        the bout, shares the event plus a fighter, or cites the item in `sources`;
+        else `/fights/<a>-vs-<b>-<event-slug>` for a linked bout; else
+        `/events/<event-slug>`; else `/fighters/<name>-<slug_id>` when exactly one
+        fighter is linked; else null (link the attributed `source_url` instead).
+        Titles and summaries are never fabricated. Responses carry
+        `Cache-Control: public, max-age=15, s-maxage=30, stale-while-revalidate=120`
+        and CORS `*` so the rail can poll from the browser.
+      parameters:
+        - { name: limit, in: query, schema: { type: integer, minimum: 1, maximum: 50, default: 20 } }
+      responses:
+        '200':
+          description: Wire items with freshness meta
+          headers:
+            Cache-Control: { schema: { type: string, const: 'public, max-age=15, s-maxage=30, stale-while-revalidate=120' } }
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items: { $ref: '#/components/schemas/WireItem' }
+                      meta: { $ref: '#/components/schemas/WireMeta' }
+  /v1/ufc/news:
+    get:
+      summary: List published PropBetEdge UFC articles with resolved hero media and a compact analysis_summary
+      description: >-
+        Every row carries `analysis_summary` (`AnalysisSummary` or null). The raw
+        `fact_block`, the full `analysis` block and `body_md` are never on list
+        rows. `story_class` filters on the editorial fact block's `story_class`
+        (v2 blocks only); `story_type` remains the column filter. `meta.with_analysis`
+        counts rows with a summary.
+      parameters:
+        - { name: story_type, in: query, schema: { type: string, enum: [card_change, rankings, fight_preview, weigh_in, results, line_move, external] } }
+        - { name: story_class, in: query, schema: { type: string, enum: [main_event_preview, main_card_preview, prelim_preview, event_preview, results, card_change, rankings, external] } }
+        - { name: limit, in: query, schema: { type: integer, minimum: 1, maximum: 100, default: 20 } }
+        - { name: offset, in: query, schema: { type: integer, minimum: 0, default: 0 } }
+      responses:
+        '200': { $ref: '#/components/responses/Success' }
+  /v1/ufc/articles/{slug}:
+    get:
+      summary: Get a published UFC article with resolved hero media and the bettor-angle analysis
+      description: >-
+        Adds `analysis` (`ArticleAnalysis`) copied field-for-field from
+        `fact_block` when `fact_block.version >= 2`, else null — never synthesized
+        from prose; `analysis_summary` (`AnalysisSummary` or null); `word_count`
+        and `reading_minutes` (220 wpm, minimum 1) computed from `body_md`. The raw
+        `fact_block` stays on detail for provenance. Odds and model fields inside
+        the analysis are `unavailable` until verified structured data exists;
+        `impact_score` is editorial analysis, not a price or probability.
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200': { $ref: '#/components/responses/Success' }
+        '404': { $ref: '#/components/responses/Error' }
+  /v1/ufc/search:
+    get:
+      summary: Search fighters (with primary_image + slug_id), events, and articles (with hero media)
+      parameters:
+        - name: q
+          in: query
+          required: true
+          schema: { type: string, minLength: 2, maxLength: 100 }
+        - { name: limit, in: query, schema: { type: integer, minimum: 1, maximum: 25, default: 10 } }
+      responses:
+        '200': { $ref: '#/components/responses/Success' }
+        '400': { $ref: '#/components/responses/Error' }
+  /v1/ufc/counts:
+    get:
+      summary: Dataset counts (fighters, events, bouts, results, round_stat_rows/rounds, articles, images, fighters_with_media)
+      responses:
+        '200': { $ref: '#/components/responses/Success' }
+  /v1/ufc/dna/metrics:
+    get:
+      summary: Fight DNA metric registry (active, public rows grouped by family)
+      description: >-
+        `data.metrics[]` and `data.families{}` are `MetricDefinition` rows from `ufc_dna_metric_definitions`
+        (`active=true`, `public=true`, requested `definition_version`), plus `origin_labels`, `confidence_tiers` and
+        `as_of_semantics`. Every Fight DNA route shares the cache policy
+        `public, max-age=60, s-maxage=300, stale-while-revalidate=900`. `503 dna_not_available` while migration 004 is
+        not applied (`error.detail.reason = schema_not_applied`).
+      tags: [Fight DNA]
+      parameters:
+        - $ref: '#/components/parameters/DefinitionVersion'
+      responses:
+        '200': { $ref: '#/components/responses/Success' }
+        '503': { $ref: '#/components/responses/Error' }
+  /v1/ufc/dna/query:
+    get:
+      summary: Filter current Fight DNA snapshots (or stance splits) by one metric
+      description: >-
+        North-star filter, e.g. `?metric=pace_retention_r3_vs_r1&min=0.9`. Filters run in PostgREST on the stored
+        MetricObject (`metrics-><key>->value` jsonb ordering, `metrics-><key>->>confidence`); only a fighter's latest
+        snapshot (<= `as_of`) qualifies; the candidate scan is capped at 1000 rows (PostgREST max_rows) (`meta.truncated`). With `stance`
+        the query runs over `ufc_fighter_stance_splits` for that opponent stance and `metric` must be one of
+        finish_rate, ko_rate, sub_rate, sig_diff_per_min, kd_per_15, td_landed_per_15 (registry aliases accepted).
+        Rows are `DnaQueryRow`, sorted by value (`order`, nulls last).
+      tags: [Fight DNA]
+      parameters:
+        - { name: metric, in: query, required: true, schema: { type: string, pattern: '^[a-z][a-z0-9_]{1,63}$' } }
+        - { name: min, in: query, schema: { type: number } }
+        - { name: max, in: query, schema: { type: number } }
+        - { name: stance, in: query, schema: { type: string, enum: [ORTHODOX, SOUTHPAW, SWITCH, OPEN_STANCE, SIDEWAYS, UNKNOWN] } }
+        - { name: min_confidence, in: query, schema: { type: string, enum: [insufficient, low, medium, high], default: low } }
+        - { name: min_appearances, in: query, description: Stance-split mode only., schema: { type: integer, minimum: 0, default: 1 } }
+        - { name: active, in: query, schema: { type: boolean } }
+        - { name: order, in: query, schema: { type: string, enum: [asc, desc], default: desc } }
+        - { name: limit, in: query, schema: { type: integer, minimum: 1, maximum: 200, default: 50 } }
+        - $ref: '#/components/parameters/AsOf'
+        - $ref: '#/components/parameters/DefinitionVersion'
+      responses:
+        '200': { $ref: '#/components/responses/Success' }
+        '400': { $ref: '#/components/responses/Error' }
+        '503': { $ref: '#/components/responses/Error' }
+  /v1/ufc/fighters/{id}/dna:
+    get:
+      summary: Fighter Fight DNA snapshot (latest, or latest at/before as_of)
+      description: >-
+        `data.fighter` (compact, with `primary_image`, `stance`, `is_active`) plus `data.snapshot` (`DnaSnapshot`).
+        `as_of_date` is exclusive: the snapshot dated D contains bouts with event_date < D, so a bout fought on D is
+        excluded by the snapshot dated D; `?as_of=D` resolves to the latest snapshot with `as_of_date <= D`
+        (`meta.requested_as_of`, `meta.resolved_as_of`). `404 dna_not_available` with `data:null` when no snapshot
+        exists (`detail.reason = no_snapshot | no_snapshot_at_or_before_as_of`); `503 dna_not_available` while the
+        schema is not applied. Nothing is synthesized.
+      tags: [Fight DNA]
+      parameters:
+        - $ref: '#/components/parameters/EntityId'
+        - $ref: '#/components/parameters/AsOf'
+        - $ref: '#/components/parameters/DefinitionVersion'
+      responses:
+        '200': { $ref: '#/components/responses/Success' }
+        '400': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
+        '503': { $ref: '#/components/responses/Error' }
+  /v1/ufc/fighters/{id}/splits:
+    get:
+      summary: Fighter stance splits (record / finish profile by opponent listed stance)
+      description: >-
+        `data.splits[]` are `StanceSplitRow` rows from `ufc_fighter_stance_splits` for the latest `as_of_date`
+        (or latest <= `as_of`), ordered ORTHODOX, SOUTHPAW, SWITCH, OPEN_STANCE, SIDEWAYS, UNKNOWN. With
+        `opponent_stance`, `data.split` is the row or an explicit null. Unknown stance values are `400 invalid_stance`.
+      tags: [Fight DNA]
+      parameters:
+        - $ref: '#/components/parameters/EntityId'
+        - { name: opponent_stance, in: query, schema: { type: string, enum: [ORTHODOX, SOUTHPAW, SWITCH, OPEN_STANCE, SIDEWAYS, UNKNOWN] } }
+        - $ref: '#/components/parameters/AsOf'
+        - $ref: '#/components/parameters/DefinitionVersion'
+      responses:
+        '200': { $ref: '#/components/responses/Success' }
+        '400': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
+        '503': { $ref: '#/components/responses/Error' }
+  /v1/ufc/fighters/{id}/round-profile:
+    get:
+      summary: Snapshot round_profile family with sample context
+      description: '`DnaFamilyResponse` with `round_profile`; `status: insufficient_coverage` and `round_profile: null` when the family is empty.'
+      tags: [Fight DNA]
+      parameters:
+        - $ref: '#/components/parameters/EntityId'
+        - $ref: '#/components/parameters/AsOf'
+        - $ref: '#/components/parameters/DefinitionVersion'
+      responses:
+        '200': { $ref: '#/components/responses/Success' }
+        '404': { $ref: '#/components/responses/Error' }
+        '503': { $ref: '#/components/responses/Error' }
+  /v1/ufc/fighters/{id}/finish-profile:
+    get:
+      summary: Snapshot finish_profile family with sample context
+      description: '`DnaFamilyResponse` with `finish_profile`; `status: insufficient_coverage` and `finish_profile: null` when the family is empty.'
+      tags: [Fight DNA]
+      parameters:
+        - $ref: '#/components/parameters/EntityId'
+        - $ref: '#/components/parameters/AsOf'
+        - $ref: '#/components/parameters/DefinitionVersion'
+      responses:
+        '200': { $ref: '#/components/responses/Success' }
+        '404': { $ref: '#/components/responses/Error' }
+        '503': { $ref: '#/components/responses/Error' }
+  /v1/ufc/fighters/{id}/position-profile:
+    get:
+      summary: Snapshot position_profile family (licensed data; explicit unavailable shape until it exists)
+      description: >-
+        `DnaFamilyResponse` with `position_profile`. While no licensed position source exists the family is `{}` and
+        the response is `status: licensed_data_not_available`, `available: false`, `position_profile: null` with a
+        note; nothing is synthesized from UFC Stats control time. When populated `origin` is `licensed`.
+      tags: [Fight DNA]
+      parameters:
+        - $ref: '#/components/parameters/EntityId'
+        - $ref: '#/components/parameters/AsOf'
+        - $ref: '#/components/parameters/DefinitionVersion'
+      responses:
+        '200': { $ref: '#/components/responses/Success' }
+        '404': { $ref: '#/components/responses/Error' }
+        '503': { $ref: '#/components/responses/Error' }
+  /v1/ufc/matchups/{fighterA}/{fighterB}/dna:
+    get:
+      summary: Matchup Fight DNA (paired comparisons, stance context, threshold-gated insights, Bettor's Edge evidence)
+      description: >-
+        `MatchupDna`. Each side resolves its own snapshot (`meta.resolved_as_of: {a,b}`). `insights[]` are emitted only
+        when the thresholds in `meta.insight_rules` are met (documented in docs/fight_dna_api.md); otherwise the
+        missing sample is named in `warnings[]`. Never from `insufficient` metrics. `bettors_edge_evidence[]` mirrors
+        the insights one-to-one and is evidence only, never a pick. `404 dna_not_available` when neither fighter has
+        a snapshot; `400 invalid_matchup` for identical ids.
+      tags: [Fight DNA]
+      parameters:
+        - { name: fighterA, in: path, required: true, schema: { type: string }, description: 'UUID, UFCStats id, or ESPN athlete id.' }
+        - { name: fighterB, in: path, required: true, schema: { type: string } }
+        - $ref: '#/components/parameters/AsOf'
+        - $ref: '#/components/parameters/DefinitionVersion'
+      responses:
+        '200': { $ref: '#/components/responses/Success' }
+        '400': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
+        '503': { $ref: '#/components/responses/Error' }
+  /v1/ufc/videos:
+    get:
+      summary: Published official videos (allowlisted channels), newest first
+      description: >-
+        Rows are `Video` (metadata only; `embed_url` is built at render time from the provider id on the
+        privacy-enhanced YouTube domain, nothing is rehosted). Only `link_status = published` rows are ever returned;
+        review / rejected links never leave the database. `fighter_id` must be a UUID; `event_id` / `bout_id` accept
+        UUID, UFCStats or ESPN ids. `503 videos_not_available` while migration 006 is not applied.
+      tags: [Video]
+      parameters:
+        - { name: limit, in: query, schema: { type: integer, minimum: 1, maximum: 100, default: 20 } }
+        - { name: type, in: query, schema: { $ref: '#/components/schemas/VideoType' } }
+        - { name: fighter_id, in: query, schema: { type: string, format: uuid } }
+        - { name: event_id, in: query, schema: { type: string } }
+        - { name: bout_id, in: query, schema: { type: string } }
+      responses:
+        '200': { $ref: '#/components/responses/Success' }
+        '400': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
+        '503': { $ref: '#/components/responses/Error' }
+  /v1/ufc/fighters/{id}/videos:
+    get:
+      summary: Published official videos linked to a fighter, newest first
+      description: '`{ fighter: compact (with primary_image), videos: Video[] }`.'
+      tags: [Video]
+      parameters:
+        - $ref: '#/components/parameters/EntityId'
+        - { name: limit, in: query, schema: { type: integer, minimum: 1, maximum: 100, default: 20 } }
+        - { name: type, in: query, schema: { $ref: '#/components/schemas/VideoType' } }
+      responses:
+        '200': { $ref: '#/components/responses/Success' }
+        '404': { $ref: '#/components/responses/Error' }
+        '503': { $ref: '#/components/responses/Error' }
+  /v1/ufc/events/{id}/videos:
+    get:
+      summary: Fight-week video rail for an event (chronological, grouped by video_type)
+      description: >-
+        `{ event: compact, videos: Video[] (chronological), groups: [ { video_type, label, count, first_published_at,
+        last_published_at, videos } ] }` with groups in the fight-week order given by `meta.timeline_order`
+        (fight_preview, countdown, embedded_episode, interview, analysis, press_conference, media_day, weigh_in, faceoff,
+        full_fight, highlights, post_fight, other).
+      tags: [Video]
+      parameters:
+        - $ref: '#/components/parameters/EntityId'
+        - { name: limit, in: query, schema: { type: integer, minimum: 1, maximum: 200, default: 100 } }
+        - { name: type, in: query, schema: { $ref: '#/components/schemas/VideoType' } }
+      responses:
+        '200': { $ref: '#/components/responses/Success' }
+        '404': { $ref: '#/components/responses/Error' }
+        '503': { $ref: '#/components/responses/Error' }
+  /v1/ufc/bouts/{id}/videos:
+    get:
+      summary: Published official videos linked to one bout, newest first
+      description: '`{ bout: compact (event, fighter_a, fighter_b), videos: Video[] }`. Event-wide fight-week videos live on /events/{id}/videos.'
+      tags: [Video]
+      parameters:
+        - $ref: '#/components/parameters/EntityId'
+        - { name: limit, in: query, schema: { type: integer, minimum: 1, maximum: 100, default: 20 } }
+        - { name: type, in: query, schema: { $ref: '#/components/schemas/VideoType' } }
+      responses:
+        '200': { $ref: '#/components/responses/Success' }
+        '404': { $ref: '#/components/responses/Error' }
+        '503': { $ref: '#/components/responses/Error' }
+  /v1/ufc/bouts/{id}/ledger:
+    get:
+      summary: Fight State Ledger snapshots for a bout, newest first, with deterministic diffs
+      description: >-
+        `data.snapshots[]` are `LedgerSnapshot` rows (every block) from the append-only `ufc_fight_state_ledger`;
+        `data.diffs[]` are `LedgerDiff` objects for consecutive snapshots (shallow, interpretation-free; see
+        `meta.diff_rules`). `data.card_shock` is the stable `{status: not_computed}` placeholder. A bout with no rows is
+        `200` with empty arrays; `503 ledger_not_available` while migration 005 is not applied.
+      tags: [Fight State Ledger]
+      parameters:
+        - $ref: '#/components/parameters/EntityId'
+        - { name: limit, in: query, schema: { type: integer, minimum: 1, maximum: 100, default: 25 } }
+      responses:
+        '200': { $ref: '#/components/responses/Success' }
+        '404': { $ref: '#/components/responses/Error' }
+        '503': { $ref: '#/components/responses/Error' }
+  /v1/ufc/events/{id}/intelligence:
+    get:
+      summary: Card intelligence, latest ledger checkpoint per bout with diff summary and source availability
+      description: >-
+        One `IntelligenceBout` per bout on the card (main event first) from the latest ledger checkpoint:
+        `hours_to_start`, bout state, fighters, `has_dna` per side, `wire_count`, `result.status`, source statuses and
+        the diff versus the previous checkpoint. `meta.checkpoints` counts rows per checkpoint and
+        `meta.unavailable_sources` lists weigh_in/odds/market/model sources unavailable on every bout.
+        `card_shock` is `{status: not_computed, reason: card_shock_engine_not_built}` until the engine exists.
+      tags: [Fight State Ledger]
+      parameters:
+        - $ref: '#/components/parameters/EntityId'
+      responses:
+        '200': { $ref: '#/components/responses/Success' }
+        '404': { $ref: '#/components/responses/Error' }
+        '503': { $ref: '#/components/responses/Error' }
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+  parameters:
+    EntityId:
+      name: id
+      in: path
+      required: true
+      description: Internal UUID, 16-character UFCStats ID, or ESPN source ID.
+      schema: { type: string }
+    FighterInclude:
+      name: include
+      in: query
+      required: false
+      description: Comma-separated additive blocks. Unknown values return 400 invalid_include.
+      schema:
+        type: string
+        example: media,ranking,next,history,stats,videos
+    CardInclude:
+      name: include
+      in: query
+      required: false
+      description: Comma-separated additive blocks (`videos` adds the latest 6 published official videos, or null while migration 006 is unapplied). Unknown values return 400 invalid_include.
+      schema:
+        type: string
+        example: media,results,stats,videos
+    AsOf:
+      name: as_of
+      in: query
+      required: false
+      description: >-
+        Calendar date (YYYY-MM-DD). Resolves to the latest snapshot with as_of_date <= as_of. Snapshot dates are
+        exclusive (a snapshot dated D contains bouts with event_date < D). Invalid dates are 400 invalid_as_of.
+      schema: { type: string, format: date }
+    DefinitionVersion:
+      name: version
+      in: query
+      required: false
+      description: Fight DNA definition_version (default 1).
+      schema: { type: integer, minimum: 1, maximum: 99, default: 1 }
+  schemas:
+    PrimaryImage:
+      type: object
+      description: Compact licensed media reference. Null wherever no approved image exists; never fabricated.
+      required: [image_url, card_url, thumb_url, author, license, source_url, kind]
+      properties:
+        id: { type: [string, 'null'], format: uuid }
+        image_url: { type: string, format: uri, description: 'Durable first-party URL: {UFC_IMAGE_BASE_URL}/{r2_key} (portrait, <=1200px long edge).' }
+        card_url: { type: [string, 'null'], format: uri, description: 800x1000 attention crop beside the portrait; null for non-portrait keys. }
+        thumb_url: { type: [string, 'null'], format: uri, description: 320x400 cover crop beside the portrait; null for non-portrait keys. }
+        author: { type: [string, 'null'] }
+        license: { type: [string, 'null'] }
+        source_url: { type: [string, 'null'], format: uri, description: Wikimedia Commons file page; render as the credit link. }
+        kind: { type: [string, 'null'], enum: [wikimedia, statcard, public_domain, licensed_editorial, official_press, null] }
+        attribution_text: { type: [string, 'null'], description: Rendered credit line from the 006 media registry; null when not recorded. }
+        rights_label: { type: [string, 'null'], description: 'e.g. "CC BY-SA 4.0", "Public domain", "Licensed (contract #)"; null when not recorded.' }
+    ImageRef:
+      allOf:
+        - $ref: '#/components/schemas/PrimaryImage'
+        - type: object
+          properties:
+            r2_key: { type: string }
+            fighter_id: { type: [string, 'null'], format: uuid }
+            created_at: { type: [string, 'null'], format: date-time }
+    HeroImage:
+      allOf:
+        - $ref: '#/components/schemas/PrimaryImage'
+        - type: object
+          properties:
+            fighter_id: { type: [string, 'null'], format: uuid }
+            ref: { type: string, description: The article's hero_image_ref (ufc_images.id or storage key). }
+    BettorAngle:
+      type: object
+      description: >-
+        Editorial bettor-angle analysis from docs/editorial_contract.md. Analysis,
+        labelled as such: impact_score is not a price, probability or pick.
+        odds_status / model_status stay `unavailable` until verified data exists.
+      required: [impact_score, markets, summary, supporting_facts, risks, watch_items, odds_status, model_status]
+      properties:
+        impact_score: { type: integer, minimum: 1, maximum: 5, description: Editorial betting relevance (1 low, 5 high). Analysis, not a price. }
+        markets:
+          type: array
+          items: { type: string, enum: [moneyline, fight_goes_distance, total_rounds, method_of_victory, round_betting, significant_strikes, takedowns] }
+        summary: { type: string, description: 2–5 sentences of analysis. }
+        supporting_facts: { type: array, minItems: 1, items: { type: string }, description: Each fact is traceable to matchup/archive fields. }
+        risks: { type: array, minItems: 1, items: { type: string }, description: At least one counter-case. }
+        watch_items: { type: array, items: { type: string } }
+        odds_status: { type: string, enum: [unavailable, snapshot, live], description: '`unavailable` until verified odds exist in PropBetEdge data.' }
+        model_status: { type: string, enum: [unavailable, priced], description: '`unavailable` until a real model output exists.' }
+    MarketWatch:
+      type: object
+      required: [status, markets, note]
+      properties:
+        status: { type: string, enum: [unavailable, snapshot, live] }
+        markets: { type: array, items: { type: string } }
+        note: { type: string }
+    FighterFacts:
+      type: object
+      description: Fighter facts as printed in the fact block (percentages as printed, e.g. 42 = 42%); null fields when absent.
+      properties:
+        fighter_id: { type: string, format: uuid }
+        name: { type: string }
+        nickname: { type: [string, 'null'] }
+        slug: { type: string, description: web fighter slug (slugified name + slug_id). }
+        record: { type: object, properties: { w: { type: integer }, l: { type: integer }, d: { type: integer }, nc: { type: integer } } }
+        age: { type: [integer, 'null'] }
+        height_in: { type: [number, 'null'] }
+        reach_in: { type: [number, 'null'] }
+        stance: { type: [string, 'null'] }
+        weight_lbs: { type: [number, 'null'] }
+        career: { type: [object, 'null'], properties: { slpm: { type: [number, 'null'] }, str_acc: { type: [number, 'null'] }, sapm: { type: [number, 'null'] }, str_def: { type: [number, 'null'] }, td_avg: { type: [number, 'null'] }, td_acc: { type: [number, 'null'] }, td_def: { type: [number, 'null'] }, sub_avg: { type: [number, 'null'] } } }
+        archive:
+          type: [object, 'null']
+          properties:
+            fights: { type: integer }
+            w: { type: integer }
+            l: { type: integer }
+            d: { type: integer }
+            nc: { type: integer }
+            ko: { type: integer }
+            sub: { type: integer }
+            dec: { type: integer }
+            finish_rate: { type: [number, 'null'] }
+            rounds_with_stats: { type: integer }
+            totals: { type: object, properties: { sig_l: { type: integer }, sig_a: { type: integer }, td_l: { type: integer }, td_a: { type: integer }, kd: { type: integer }, ctrl_sec: { type: integer } } }
+            last: { type: array, items: { type: object, properties: { date: { type: string }, opponent: { type: string }, opponent_slug: { type: [string, 'null'] }, result: { type: string }, method: { type: [string, 'null'] }, round: { type: [integer, 'null'] }, event: { type: string } } } }
+            days_since_last: { type: [integer, 'null'] }
+    MatchupFacts:
+      type: object
+      required: [a, b, edges]
+      properties:
+        a: { $ref: '#/components/schemas/FighterFacts' }
+        b: { $ref: '#/components/schemas/FighterFacts' }
+        edges:
+          type: array
+          items:
+            type: object
+            properties:
+              key: { type: string }
+              favors: { type: string, enum: [a, b] }
+              delta: { type: [number, 'null'] }
+              unit: { type: [string, 'null'] }
+              note: { type: [string, 'null'] }
+    ArticleAnalysis:
+      type: object
+      description: Present on article detail only when fact_block.version >= 2; copied from the stored block, never synthesized.
+      required: [version, story_class, generated_at, sources, bettor_angle, market_watch, matchup]
+      properties:
+        version: { type: integer, minimum: 2 }
+        story_class: { type: [string, 'null'], enum: [main_event_preview, main_card_preview, prelim_preview, event_preview, results, card_change, rankings, external, null] }
+        generated_at: { type: [string, 'null'], format: date-time }
+        sources: { type: [object, 'null'], properties: { families: { type: array, items: { type: string } }, news_item_ids: { type: array, items: { type: string, format: uuid } } } }
+        bettor_angle:
+          oneOf:
+            - $ref: '#/components/schemas/BettorAngle'
+            - type: 'null'
+        market_watch:
+          oneOf:
+            - $ref: '#/components/schemas/MarketWatch'
+            - type: 'null'
+        matchup:
+          oneOf:
+            - $ref: '#/components/schemas/MatchupFacts'
+            - type: 'null'
+    AnalysisSummary:
+      type: object
+      description: Compact bettor-angle summary on list rows and search hits; null for legacy (< v2) fact blocks.
+      required: [impact_score, markets, odds_status, model_status, story_class]
+      properties:
+        impact_score: { type: [integer, 'null'], minimum: 1, maximum: 5, description: Analysis, not a price. }
+        markets: { type: array, items: { type: string } }
+        odds_status: { type: string, enum: [unavailable, snapshot, live] }
+        model_status: { type: string, enum: [unavailable, priced] }
+        story_class: { type: [string, 'null'] }
+    RankedFighter:
+      type: object
+      description: Linked fighter identity; slug_id = espn_athlete_id || ufcstats_id, the id used by /fighters/<slugified-name>-<slug_id> on the web.
+      required: [id, name, slug_id]
+      properties:
+        id: { type: string, format: uuid }
+        name: { type: string }
+        slug_id: { type: [string, 'null'] }
+    RankingEntry:
+      type: object
+      required: [rank, name, ufc_slug, fighter_id, change, is_new, fighter]
+      properties:
+        rank: { type: integer, minimum: 1 }
+        name: { type: string, description: Verbatim ufc.com name. }
+        ufc_slug: { type: [string, 'null'] }
+        fighter_id: { type: [string, 'null'], format: uuid }
+        change: { type: [integer, 'null'], description: Signed movement; positive = moved up; null = unknown. }
+        is_new: { type: boolean }
+        fighter:
+          oneOf:
+            - $ref: '#/components/schemas/RankedFighter'
+            - type: 'null'
+    RankingDivision:
+      type: object
+      required: [key, label, is_womens, is_p4p, champion, entries]
+      properties:
+        key: { type: string, enum: [P4P, STRAWWEIGHT, FLYWEIGHT, BANTAMWEIGHT, FEATHERWEIGHT, LIGHTWEIGHT, WELTERWEIGHT, MIDDLEWEIGHT, LIGHT_HEAVYWEIGHT, HEAVYWEIGHT] }
+        label: { type: string }
+        is_womens: { type: boolean }
+        is_p4p: { type: boolean }
+        champion:
+          oneOf:
+            - type: object
+              required: [name, ufc_slug, fighter_id, fighter]
+              properties:
+                name: { type: string }
+                ufc_slug: { type: [string, 'null'] }
+                fighter_id: { type: [string, 'null'], format: uuid }
+                fighter:
+                  oneOf:
+                    - $ref: '#/components/schemas/RankedFighter'
+                    - type: 'null'
+            - type: 'null'
+        entries:
+          type: array
+          items: { $ref: '#/components/schemas/RankingEntry' }
+    Rankings:
+      type: object
+      required: [source, source_url, snapshot_date, captured_at, divisions]
+      properties:
+        source: { type: string, const: ufc.com official rankings }
+        source_url: { type: string, format: uri }
+        snapshot_date: { type: string, format: date }
+        captured_at: { type: string, format: date-time }
+        divisions:
+          type: array
+          items: { $ref: '#/components/schemas/RankingDivision' }
+    FighterRanking:
+      type: object
+      description: Per-fighter verified ranking state (fighter detail include=ranking). Null when no snapshot exists; positions empty when unranked.
+      required: [source, source_url, snapshot_date, captured_at, positions]
+      properties:
+        source: { type: string }
+        source_url: { type: string, format: uri }
+        snapshot_date: { type: string, format: date }
+        captured_at: { type: string, format: date-time }
+        positions:
+          type: array
+          items:
+            type: object
+            required: [division, label, is_womens, is_p4p, rank, is_champion, change, is_new]
+            properties:
+              division: { type: string }
+              label: { type: string }
+              is_womens: { type: boolean }
+              is_p4p: { type: boolean }
+              rank: { type: integer, minimum: 0, description: 0 = champion. }
+              is_champion: { type: boolean }
+              change: { type: [integer, 'null'] }
+              is_new: { type: boolean }
+    RoundStatTotals:
+      type: object
+      description: Sum of the round rows for one fighter; a metric is null only when every round is null.
+      properties:
+        rounds: { type: integer }
+        kd: { type: [integer, 'null'] }
+        sig_str_landed: { type: [integer, 'null'] }
+        sig_str_att: { type: [integer, 'null'] }
+        total_str_landed: { type: [integer, 'null'] }
+        total_str_att: { type: [integer, 'null'] }
+        td_landed: { type: [integer, 'null'] }
+        td_att: { type: [integer, 'null'] }
+        sub_att: { type: [integer, 'null'] }
+        rev: { type: [integer, 'null'] }
+        ctrl_sec: { type: [integer, 'null'] }
+        head_landed: { type: [integer, 'null'] }
+        head_att: { type: [integer, 'null'] }
+        body_landed: { type: [integer, 'null'] }
+        body_att: { type: [integer, 'null'] }
+        leg_landed: { type: [integer, 'null'] }
+        leg_att: { type: [integer, 'null'] }
+        distance_landed: { type: [integer, 'null'] }
+        distance_att: { type: [integer, 'null'] }
+        clinch_landed: { type: [integer, 'null'] }
+        clinch_att: { type: [integer, 'null'] }
+        ground_landed: { type: [integer, 'null'] }
+        ground_att: { type: [integer, 'null'] }
+    ComputedFighterStats:
+      type: object
+      description: Aggregates computed from UFC Stats round rows for this fighter only, with provenance. Not as-of model features.
+      required: [provenance, career_totals, career_rates, bouts]
+      properties:
+        provenance:
+          type: object
+          properties:
+            source: { type: string, const: ufcstats_round_stats }
+            method: { type: string }
+            bouts_with_stats: { type: integer }
+            rounds: { type: integer }
+            fight_time_sec: { type: [integer, 'null'] }
+            fight_time_basis: { type: object, properties: { result: { type: integer }, rounds_x_5min: { type: integer } } }
+            coverage_note: { type: string }
+        career_totals: { $ref: '#/components/schemas/RoundStatTotals' }
+        career_rates:
+          type: object
+          description: Null when the denominator is unknown.
+          properties:
+            sig_str_landed_per_min: { type: [number, 'null'] }
+            sig_str_accuracy: { type: [number, 'null'] }
+            total_str_accuracy: { type: [number, 'null'] }
+            td_per_15min: { type: [number, 'null'] }
+            td_accuracy: { type: [number, 'null'] }
+            sub_att_per_15min: { type: [number, 'null'] }
+            kd_per_15min: { type: [number, 'null'] }
+            ctrl_share: { type: [number, 'null'] }
+            head_share: { type: [number, 'null'] }
+            body_share: { type: [number, 'null'] }
+            leg_share: { type: [number, 'null'] }
+            distance_share: { type: [number, 'null'] }
+            clinch_share: { type: [number, 'null'] }
+            ground_share: { type: [number, 'null'] }
+        bouts:
+          type: array
+          description: Newest first. One entry per bout with round rows.
+          items:
+            type: object
+            properties:
+              bout_id: { type: string, format: uuid }
+              event: { type: [object, 'null'] }
+              opponent: { type: [object, 'null'], description: Compact fighter with primary_image. }
+              result: { type: [object, 'null'] }
+              outcome: { type: [string, 'null'], enum: [W, L, D, NC, null] }
+              rounds: { type: integer }
+              fight_time_sec: { type: [integer, 'null'] }
+              fight_time_basis: { type: string, enum: [result, rounds_x_5min, unknown] }
+              totals: { $ref: '#/components/schemas/RoundStatTotals' }
+              rounds_detail: { type: array, items: { type: object } }
+    WireItem:
+      type: object
+      required: [id, title, published_at, summary, taxonomy, taxonomy_detail, source, source_url, fighter_ids, event_id, bout_id, internal_url]
+      properties:
+        id: { type: string, format: uuid }
+        title: { type: string, description: Verbatim source headline. }
+        published_at: { type: [string, 'null'], format: date-time }
+        summary: { type: [string, 'null'], description: Verbatim source summary; never generated. }
+        taxonomy: { type: [string, 'null'], description: First taxonomy label (e.g. card_change, result, injury) or null. }
+        taxonomy_detail: { type: [object, 'null'], description: 'Full stored taxonomy: {labels[], scores{}, matched[], confidence}.' }
+        source:
+          type: object
+          required: [name, url]
+          properties:
+            name: { type: [string, 'null'] }
+            url: { type: [string, 'null'], format: uri, description: Feed URL of the attributed source. }
+        source_url: { type: [string, 'null'], format: uri, description: The item's own URL at the source. }
+        fighter_ids: { type: array, items: { type: string, format: uuid } }
+        event_id: { type: [string, 'null'], format: uuid }
+        bout_id: { type: [string, 'null'], format: uuid }
+        internal_url: { type: [string, 'null'], description: Site-relative canonical destination (/news/…, /fights/…, /events/…, /fighters/…) or null. }
+    WireMeta:
+      type: object
+      required: [generated_at, newest_published_at, count, freshness_minutes, live, fight_week]
+      properties:
+        generated_at: { type: string, format: date-time, description: When the API built this response. }
+        newest_published_at: { type: [string, 'null'], format: date-time }
+        count: { type: integer }
+        limit: { type: integer }
+        fetched: { type: integer, description: Rows read before dedupe. }
+        deduped: { type: integer, description: Rows collapsed as near-duplicate headlines. }
+        freshness_minutes: { type: [integer, 'null'], description: Age of the newest item in minutes; null when there are no items. }
+        live: { type: boolean, description: True only when freshness_minutes <= 120. Do not label the rail LIVE otherwise. }
+        live_threshold_minutes: { type: integer, const: 120 }
+        fight_week: { type: boolean, description: True when a non-Contender-Series UFC event is within the next 6 days or the last 1 day. }
+        fight_week_events: { type: array, items: { type: object, properties: { id: { type: string }, name: { type: string }, event_date: { type: [string, 'null'] } } } }
+        linked: { type: integer, description: Items with a non-null internal_url. }
+    Confidence:
+      type: string
+      enum: [insufficient, low, medium, high]
+      description: >-
+        insufficient = below the registry minimum (min_bouts/min_rounds/min_seconds); low = minimum met but
+        sample_bouts < 3 (result metrics) or sample_seconds < 1800 (rate metrics); medium = < 8 bouts / < 5400 s; high above.
+    DnaOrigin:
+      type: string
+      enum: [pbe_derived, source, licensed, model]
+      description: 'UI labels: PBE DERIVED, SOURCE, LICENSED, MODEL. Snapshot tables are always pbe_derived.'
+    MetricObject:
+      type: object
+      description: Every derived number. Sample context is never stripped; value is null when there is no denominator.
+      required: [metric_key, value, unit, sample_bouts, sample_rounds, sample_seconds, confidence, coverage_status, definition_version, origin]
+      properties:
+        metric_key: { type: string }
+        value: { type: [number, object, 'null'], description: 'number, or a record/distribution object for those units' }
+        unit: { type: string, enum: [ratio, per_min, per_15, seconds, seconds_per_td, record, count, distribution] }
+        numerator: { type: [number, 'null'] }
+        denominator: { type: [number, 'null'] }
+        sample_bouts: { type: integer }
+        sample_rounds: { type: integer }
+        sample_seconds: { type: integer }
+        confidence: { $ref: '#/components/schemas/Confidence' }
+        coverage_status: { $ref: '#/components/schemas/Confidence' }
+        definition_version: { type: integer }
+        origin: { $ref: '#/components/schemas/DnaOrigin' }
+        source_families: { type: array, items: { type: string } }
+        as_of_date: { type: string, format: date }
+    MetricDefinition:
+      type: object
+      description: Registry row from ufc_dna_metric_definitions plus origin.
+      required: [metric_key, definition_version, family, display_name, description, formula, min_bouts, min_rounds, min_seconds, public, active]
+      properties:
+        metric_key: { type: string }
+        definition_version: { type: integer }
+        family: { type: string, enum: [stance, striking, pace, grappling, finish, context, position, composite, opponent_adjusted] }
+        display_name: { type: string }
+        description: { type: string }
+        unit: { type: [string, 'null'] }
+        formula: { type: string }
+        source_families: { type: array, items: { type: string } }
+        min_bouts: { type: integer }
+        min_rounds: { type: integer }
+        min_seconds: { type: integer }
+        public: { type: boolean }
+        active: { type: boolean }
+        updated_at: { type: [string, 'null'], format: date-time }
+        origin: { $ref: '#/components/schemas/DnaOrigin' }
+    Record:
+      type: object
+      required: [w, l, d, nc, appearances]
+      properties:
+        w: { type: integer }
+        l: { type: integer }
+        d: { type: integer }
+        nc: { type: integer }
+        appearances: { type: integer }
+    StanceSplit:
+      type: object
+      description: Snapshot stance_splits entry (keyed by opponent listed stance, plus `open` / `same`).
+      required: [record, ko_tko_wins, submission_wins, decision_wins, confidence]
+      properties:
+        record: { $ref: '#/components/schemas/Record' }
+        ko_tko_wins: { type: integer }
+        submission_wins: { type: integer }
+        decision_wins: { type: integer }
+        finish_rate: { $ref: '#/components/schemas/MetricObject' }
+        ko_rate: { $ref: '#/components/schemas/MetricObject' }
+        sub_rate: { $ref: '#/components/schemas/MetricObject' }
+        sig_diff_per_min: { $ref: '#/components/schemas/MetricObject' }
+        kd_per_15: { $ref: '#/components/schemas/MetricObject' }
+        td_landed_per_15: { $ref: '#/components/schemas/MetricObject' }
+        stat_bouts: { type: integer }
+        stat_rounds: { type: integer }
+        observed_seconds: { type: integer }
+        confidence: { $ref: '#/components/schemas/Confidence' }
+    StanceSplitRow:
+      type: object
+      description: Row from ufc_fighter_stance_splits plus record and origin (served by /fighters/{id}/splits).
+      required: [fighter_id, as_of_date, opponent_stance, definition_version, appearances, wins, losses, draws, no_contests, ko_tko_wins, submission_wins, decision_wins, stat_bouts, stat_rounds, observed_seconds, metrics, confidence, record, origin]
+      properties:
+        fighter_id: { type: string, format: uuid }
+        as_of_date: { type: string, format: date }
+        opponent_stance: { type: string, enum: [ORTHODOX, SOUTHPAW, SWITCH, OPEN_STANCE, SIDEWAYS, UNKNOWN] }
+        definition_version: { type: integer }
+        appearances: { type: integer }
+        wins: { type: integer }
+        losses: { type: integer }
+        draws: { type: integer }
+        no_contests: { type: integer }
+        ko_tko_wins: { type: integer }
+        submission_wins: { type: integer }
+        decision_wins: { type: integer }
+        stat_bouts: { type: integer }
+        stat_rounds: { type: integer }
+        observed_seconds: { type: integer }
+        metrics: { type: object, additionalProperties: { $ref: '#/components/schemas/MetricObject' }, description: finish_rate, ko_rate, sub_rate, sig_diff_per_min, kd_per_15, td_landed_per_15 }
+        confidence: { $ref: '#/components/schemas/Confidence' }
+        provenance: { type: object }
+        generated_at: { type: [string, 'null'], format: date-time }
+        record: { $ref: '#/components/schemas/Record' }
+        origin: { $ref: '#/components/schemas/DnaOrigin' }
+    DnaFighter:
+      type: object
+      description: Compact fighter used by DNA routes (compact identity + primary_image + stance + is_active).
+      required: [id, name, slug_id, primary_image, stance, is_active]
+      properties:
+        id: { type: string, format: uuid }
+        name: { type: string }
+        nickname: { type: [string, 'null'] }
+        ufcstats_id: { type: [string, 'null'] }
+        espn_athlete_id: { type: [string, 'null'] }
+        slug_id: { type: [string, 'null'] }
+        record_w: { type: [integer, 'null'] }
+        record_l: { type: [integer, 'null'] }
+        record_d: { type: [integer, 'null'] }
+        record_nc: { type: [integer, 'null'] }
+        primary_image: { oneOf: [{ $ref: '#/components/schemas/PrimaryImage' }, { type: 'null' }] }
+        stance: { type: [string, 'null'] }
+        is_active: { type: [boolean, 'null'] }
+    DnaSnapshot:
+      type: object
+      description: One ufc_fighter_dna_snapshots row as served. as_of_date is exclusive.
+      required: [as_of_date, definition_version, sample_bouts, sample_completed_bouts, sample_stat_bouts, sample_rounds, sample_seconds, coverage_status, metrics, stance_splits, round_profile, finish_profile, context_splits, position_profile, provenance, origin]
+      properties:
+        as_of_date: { type: string, format: date }
+        definition_version: { type: integer }
+        sample_bouts: { type: integer }
+        sample_completed_bouts: { type: integer }
+        sample_stat_bouts: { type: integer }
+        sample_rounds: { type: integer }
+        sample_seconds: { type: integer }
+        coverage_status: { $ref: '#/components/schemas/Confidence' }
+        metrics: { type: object, additionalProperties: { $ref: '#/components/schemas/MetricObject' } }
+        stance_splits: { type: object, additionalProperties: { $ref: '#/components/schemas/StanceSplit' } }
+        round_profile: { type: object, description: 'rounds{1..5}, pace_retention_r2_vs_r1, pace_retention_r3_vs_r1, championship_round_delta, defensive_drift_r3_vs_r1 (MetricObjects); {} when no stat coverage' }
+        finish_profile: { type: object, description: 'finish_rate, ko_finish_rate, submission_finish_rate, finish_round_distribution, finish_time_median_sec (MetricObjects), finished_by {ko_tko, submission}' }
+        context_splits: { type: object }
+        position_profile: { type: object, description: '{} until licensed data exists; never synthesized' }
+        archetype: { type: [object, 'null'] }
+        provenance: { type: object }
+        generated_at: { type: [string, 'null'], format: date-time }
+        origin: { $ref: '#/components/schemas/DnaOrigin' }
+    DnaFamilyResponse:
+      type: object
+      description: /round-profile, /finish-profile, /position-profile payload.
+      required: [fighter, as_of_date, definition_version, origin, sample, available, status]
+      properties:
+        fighter: { $ref: '#/components/schemas/DnaFighter' }
+        as_of_date: { type: string, format: date }
+        definition_version: { type: integer }
+        origin: { $ref: '#/components/schemas/DnaOrigin' }
+        sample:
+          type: object
+          properties:
+            sample_bouts: { type: integer }
+            sample_completed_bouts: { type: integer }
+            sample_stat_bouts: { type: integer }
+            sample_rounds: { type: integer }
+            sample_seconds: { type: integer }
+            sample_minutes: { type: number }
+            coverage_status: { $ref: '#/components/schemas/Confidence' }
+        available: { type: boolean }
+        status: { type: string, enum: [ok, insufficient_coverage, licensed_data_not_available] }
+        round_profile: { type: [object, 'null'] }
+        finish_profile: { type: [object, 'null'] }
+        position_profile: { type: [object, 'null'] }
+        note: { type: string }
+    DnaComparison:
+      type: object
+      required: [key, label, unit, family, higher_is_better, a, b, delta, direction, comparable, min_confidence]
+      properties:
+        key: { type: string }
+        label: { type: string }
+        unit: { type: string }
+        family: { type: string }
+        higher_is_better: { type: [boolean, 'null'], description: null for contextual shares/rates }
+        mismatch: { type: [string, 'null'], description: insight family this comparison can feed }
+        min_abs_delta: { type: [number, 'null'] }
+        a: { oneOf: [{ $ref: '#/components/schemas/MetricObject' }, { type: 'null' }] }
+        b: { oneOf: [{ $ref: '#/components/schemas/MetricObject' }, { type: 'null' }] }
+        delta: { type: [number, 'null'], description: 'a - b, 4 dp; null unless both sides are numeric' }
+        direction: { type: [string, 'null'], enum: [a, b, even, null], description: side with the higher value }
+        comparable: { type: boolean }
+        min_confidence: { $ref: '#/components/schemas/Confidence' }
+    Insight:
+      type: object
+      description: Emitted only when the documented thresholds are met; never from insufficient metrics.
+      required: [key, label, value, unit, sample_bouts, confidence, direction, side, explanation, origin]
+      properties:
+        key: { type: string, example: a_vs_southpaw_finish_rate }
+        label: { type: string }
+        value: { type: [number, 'null'] }
+        unit: { type: string }
+        record: { $ref: '#/components/schemas/Record' }
+        a_value: { type: number }
+        b_value: { type: number }
+        sample_bouts: { type: [integer, 'null'] }
+        sample_rounds: { type: [integer, 'null'] }
+        sample_seconds: { type: [integer, 'null'] }
+        samples: { type: object, description: per-side samples on two-sided insights }
+        confidence: { $ref: '#/components/schemas/Confidence' }
+        direction: { type: string, enum: [contextual, a, b] }
+        side: { type: [string, 'null'], enum: [a, b, null] }
+        metric_keys: { type: array, items: { type: string } }
+        explanation: { type: string, description: Deterministic template naming the sample and as-of date. }
+        origin: { $ref: '#/components/schemas/DnaOrigin' }
+    BettorsEdgeEvidence:
+      type: object
+      description: One-to-one projection of insights for the Bettor's Edge module. Evidence only, never a pick.
+      required: [key, label, value, unit, side, direction, sample, confidence, origin, origin_label, explanation]
+      properties:
+        key: { type: string }
+        label: { type: string }
+        value: { type: [number, 'null'] }
+        unit: { type: string }
+        side: { type: [string, 'null'] }
+        direction: { type: string }
+        sample: { type: string, example: 5 bouts / 13 rounds / 62.0 min }
+        sample_bouts: { type: [integer, 'null'] }
+        sample_rounds: { type: [integer, 'null'] }
+        sample_seconds: { type: [integer, 'null'] }
+        confidence: { $ref: '#/components/schemas/Confidence' }
+        origin: { $ref: '#/components/schemas/DnaOrigin' }
+        origin_label: { type: string, const: PBE DERIVED }
+        explanation: { type: string }
+    MatchupDna:
+      type: object
+      required: [fighters, a, b, comparisons, stance_context, insights, warnings, bettors_edge_evidence, origin, note]
+      properties:
+        fighters: { type: array, minItems: 2, maxItems: 2, items: { $ref: '#/components/schemas/DnaFighter' } }
+        a: { type: [object, 'null'], description: 'DnaSnapshot subset (as_of_date, definition_version, sample_*, coverage_status, metrics, stance_splits, round_profile, finish_profile) or null' }
+        b: { type: [object, 'null'] }
+        comparisons: { type: array, items: { $ref: '#/components/schemas/DnaComparison' } }
+        stance_context:
+          type: object
+          properties:
+            a_stance: { type: [string, 'null'] }
+            b_stance: { type: [string, 'null'] }
+            context: { type: string, enum: [same, open, switch_involved, unknown] }
+            a_vs_b_stance: { type: object, description: 'A split vs B listed stance: {side, fighter_id, opponent_stance, split, appearances, confidence, meets_threshold}' }
+            b_vs_a_stance: { type: object }
+            a_context_split: { oneOf: [{ $ref: '#/components/schemas/StanceSplit' }, { type: 'null' }] }
+            b_context_split: { oneOf: [{ $ref: '#/components/schemas/StanceSplit' }, { type: 'null' }] }
+        insights: { type: array, items: { $ref: '#/components/schemas/Insight' } }
+        warnings: { type: array, items: { type: string }, description: Every threshold not met, naming the missing sample. }
+        bettors_edge_evidence: { type: array, items: { $ref: '#/components/schemas/BettorsEdgeEvidence' } }
+        origin: { $ref: '#/components/schemas/DnaOrigin' }
+        note: { type: string }
+    DnaQueryRow:
+      type: object
+      required: [fighter, as_of_date, metric_key, metric, sample, origin]
+      properties:
+        fighter:
+          type: object
+          properties:
+            id: { type: string, format: uuid }
+            name: { type: [string, 'null'] }
+            nickname: { type: [string, 'null'] }
+            slug_id: { type: [string, 'null'] }
+            stance: { type: [string, 'null'] }
+            is_active: { type: [boolean, 'null'] }
+        as_of_date: { type: string, format: date }
+        metric_key: { type: string }
+        metric: { $ref: '#/components/schemas/MetricObject' }
+        sample: { type: object }
+        opponent_stance: { type: string, description: stance-split mode only }
+        record: { $ref: '#/components/schemas/Record' }
+        origin: { $ref: '#/components/schemas/DnaOrigin' }
+    VideoType:
+      type: string
+      enum: [embedded_episode, countdown, fight_preview, full_fight, highlights, interview, press_conference, media_day, weigh_in, faceoff, post_fight, analysis, other]
+    Video:
+      type: object
+      description: Official video metadata from an allowlisted channel. Published rows only; playback stays on the provider.
+      required: [id, provider, provider_video_id, url, embed_url, thumbnail_url, title, published_at, duration_sec, embeddable, video_type, channel, links, resolver_confidence, attribution]
+      properties:
+        id: { type: string, format: uuid }
+        provider: { type: string, example: youtube }
+        provider_video_id: { type: string }
+        url: { type: string, format: uri, description: Provider watch URL. }
+        embed_url: { type: [string, 'null'], format: uri, description: 'https://www.youtube-nocookie.com/embed/<provider_video_id>; null for non-YouTube providers.' }
+        thumbnail_url: { type: [string, 'null'], format: uri }
+        title: { type: string }
+        published_at: { type: [string, 'null'], format: date-time }
+        duration_sec: { type: [integer, 'null'], description: null when unknown }
+        embeddable: { type: [boolean, 'null'], description: null when not yet checked }
+        live_broadcast_state: { type: [string, 'null'] }
+        video_type: { $ref: '#/components/schemas/VideoType' }
+        video_type_label: { type: string }
+        channel:
+          type: object
+          required: [id, name, verified]
+          properties:
+            id: { type: [string, 'null'] }
+            name: { type: [string, 'null'] }
+            verified: { type: boolean, description: channel_verified_source at capture }
+        links:
+          type: object
+          required: [event_id, bout_id, article_id, fighter_ids]
+          properties:
+            event_id: { type: [string, 'null'], format: uuid }
+            bout_id: { type: [string, 'null'], format: uuid }
+            article_id: { type: [string, 'null'], format: uuid }
+            fighter_ids: { type: array, items: { type: string, format: uuid } }
+        resolver_confidence: { type: string, enum: [none, low, medium, high] }
+        attribution: { type: string, example: 'YouTube · UFC', description: Render verbatim as the credit. }
+        captured_at: { type: [string, 'null'], format: date-time }
+        updated_at: { type: [string, 'null'], format: date-time }
+    LedgerSnapshot:
+      type: object
+      description: 'One append-only ufc_fight_state_ledger row. Blocks without a source are explicit {status: unavailable, reason} objects.'
+      required: [id, bout_id, event_id, checkpoint, ledger_version, captured_at, bout_state, fighters, rankings, dna, weigh_in, wire, odds, market, model, result, provenance]
+      properties:
+        id: { type: string, format: uuid }
+        bout_id: { type: string, format: uuid }
+        event_id: { type: string, format: uuid }
+        checkpoint: { type: string, enum: [t_minus_7d, t_minus_72h, t_minus_24h, post_weigh_in, t_minus_3h, close, post_result, ad_hoc] }
+        ledger_version: { type: integer }
+        captured_at: { type: string, format: date-time }
+        scheduled_start: { type: [string, 'null'], format: date-time }
+        event_date: { type: [string, 'null'], format: date }
+        hours_to_start: { type: [number, 'null'] }
+        bout_state: { type: object }
+        fighters: { type: object, description: '{a, b, stance_context}' }
+        rankings: { type: object }
+        dna: { type: object, description: '{a, b}: latest snapshot in force per fighter, or {status: unavailable}' }
+        weigh_in: { type: object }
+        wire: { type: object, description: '{status, count, items[], articles[]}' }
+        odds: { type: object }
+        market: { type: object }
+        model: { type: object }
+        result: { type: object, description: '{status: pending | final, winner_id, method, round, time_sec, ...}' }
+        provenance: { type: object }
+    LedgerDiff:
+      type: object
+      description: Deterministic shallow diff between consecutive snapshots (newer vs older); no interpretation.
+      required: [newer, older, hours_between, changed, changes]
+      properties:
+        newer: { type: object, properties: { id: { type: string }, checkpoint: { type: string }, captured_at: { type: string } } }
+        older: { type: object, properties: { id: { type: string }, checkpoint: { type: string }, captured_at: { type: string } } }
+        hours_between: { type: [number, 'null'] }
+        changed: { type: array, items: { type: string }, example: [fighters.a.stance, fighters.stance_context, wire.count] }
+        changes: { type: array, items: { type: object, required: [path, from, to], properties: { path: { type: string }, from: {}, to: {} } } }
+    CardShock:
+      type: object
+      description: Stable placeholder until the Card Shock engine exists. No score is computed.
+      required: [status, reason]
+      properties:
+        status: { type: string, const: not_computed }
+        reason: { type: string, const: card_shock_engine_not_built }
+    IntelligenceBout:
+      type: object
+      required: [bout, ledger_status, latest, hours_to_start, checkpoints, snapshots, has_dna, wire_count, result, sources, diff, card_shock]
+      properties:
+        bout: { type: object }
+        ledger_status: { type: string, enum: [ok, no_checkpoint] }
+        latest: { type: [object, 'null'], description: '{id, checkpoint, captured_at, ledger_version, scheduled_start, hours_to_start_at_capture}' }
+        hours_to_start: { type: [number, 'null'], description: 'scheduled_start minus meta.generated_at, in hours' }
+        checkpoints: { type: array, items: { type: string } }
+        snapshots: { type: integer }
+        bout_state: { type: [object, 'null'] }
+        fighters: { type: [object, 'null'] }
+        has_dna: { type: object, properties: { a: { type: [boolean, 'null'] }, b: { type: [boolean, 'null'] } } }
+        dna: { type: [object, 'null'] }
+        wire_count: { type: [integer, 'null'] }
+        result: { type: [object, 'null'] }
+        sources: { type: [object, 'null'], description: '{weigh_in, odds, market, model} status strings' }
+        diff: { oneOf: [{ $ref: '#/components/schemas/LedgerDiff' }, { type: 'null' }] }
+        card_shock: { $ref: '#/components/schemas/CardShock' }
+    SuccessEnvelope:
+      type: object
+      required: [ok, data, meta]
+      properties:
+        ok: { type: boolean, const: true }
+        data: {}
+        meta:
+          type: object
+          properties:
+            api: { type: string, const: PropSports UFC }
+            version: { type: string }
+            request_id: { type: string }
+    ErrorEnvelope:
+      type: object
+      required: [ok, data, error, meta]
+      properties:
+        ok: { type: boolean, const: false }
+        data: { type: 'null' }
+        error:
+          type: object
+          required: [code, message]
+          properties:
+            code: { type: string }
+            message: { type: string }
+            detail: {}
+        meta: { type: object }
+  responses:
+    Success:
+      description: Successful normalized UFC API response
+      headers:
+        X-Request-Id: { schema: { type: string } }
+        X-API-Version: { schema: { type: string } }
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/SuccessEnvelope' }
+    Error:
+      description: Explicit API failure or unavailable data surface (data is always null)
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ErrorEnvelope' }

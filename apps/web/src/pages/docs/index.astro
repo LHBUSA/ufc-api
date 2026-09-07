@@ -1,0 +1,247 @@
+---
+import Base from "../../layouts/Base.astro";
+import Code from "../../components/Code.astro";
+import Snippets from "../../components/Snippets.astro";
+import gen from "../../generated/entitlements.json";
+import ex from "../../generated/examples.json";
+import { fmtDate, fmtNumber } from "../../lib/hl";
+
+const plans = gen.plans.plans;
+const order = gen.plans.plan_order;
+const contract = gen.contract;
+const matrix = gen.matrix;
+const reg = ex.dna_registry;
+const S = "ec94d296-2db3-4e0d-be6a-46de4f480672";
+const D = "9a3b2a15-27d8-4554-9217-42ef2dd5d25c";
+const upcoming = ex.events_upcoming.body.data[0];
+const planName = (k: string | null) => (k ? plans[k as keyof typeof plans]?.name : "Enterprise");
+const chip = (key: string) => { const m = matrix.find((x) => x.key === key); return { cls: `chip plan-${m?.minimum_plan || "enterprise"}`, label: `${planName(m?.minimum_plan || null)}+` }; };
+const searchTrim = { ...ex.search_strickland.body, data: { q: ex.search_strickland.body.data.q, fighters: ex.search_strickland.body.data.fighters.slice(0, 1), events: (ex.search_strickland.body.data.events || []).slice(0, 1), articles: (ex.search_strickland.body.data.articles || []).slice(0, 1) } };
+const historyTrim = { ...ex.fighter_history.body, data: { fighter: { id: ex.fighter_history.body.data.fighter.id, name: ex.fighter_history.body.data.fighter.name }, bouts: (ex.fighter_history.body.data.bouts || []).slice(0, 1), "…": "remaining bouts omitted from this example" } };
+const statsTrim = { ...ex.fighter_stats.body, data: { ...ex.fighter_stats.body.data, round_stats: (ex.fighter_stats.body.data.round_stats || []).slice(0, 1), computed: { provenance: ex.fighter_stats.body.data.computed?.provenance, career_rates: ex.fighter_stats.body.data.computed?.career_rates, "…": "career_totals and bouts[] omitted from this example" } } };
+const splitsTrim = { ...ex.fighter_splits.body, data: { ...ex.fighter_splits.body.data, splits: (ex.fighter_splits.body.data.splits || []).slice(0, 1), "…": "other stance rows omitted from this example" } };
+const roundTrim = { ...ex.fighter_round_profile.body, data: { ...ex.fighter_round_profile.body.data, fighter: { id: ex.fighter_round_profile.body.data.fighter.id, name: ex.fighter_round_profile.body.data.fighter.name } } };
+const finishTrim = { ...ex.fighter_finish_profile.body, data: { ...ex.fighter_finish_profile.body.data, fighter: { id: ex.fighter_finish_profile.body.data.fighter.id, name: ex.fighter_finish_profile.body.data.fighter.name } } };
+const positionTrim = { ...ex.fighter_position_profile.body, data: { ...ex.fighter_position_profile.body.data, fighter: { id: ex.fighter_position_profile.body.data.fighter.id, name: ex.fighter_position_profile.body.data.fighter.name } } };
+const fighterTrim = { ...ex.fighter_detail.body, data: { ...ex.fighter_detail.body.data, images: undefined } };
+const gatewayErrors = [
+  ["401", "api_key_required", "No credential sent."], ["401", "invalid_api_key", "Malformed or unknown key, or secret mismatch."], ["401", "api_key_expired", "Key past expires_at."], ["401", "api_key_revoked", "Key revoked or rotated."],
+  ["403", "plan_required", "Endpoint or parameter needs a higher plan; detail carries required_plan, current_plan, upgrade_url."],
+  ["404", "route_not_found", "Path is not part of the commercial contract (no upstream call is made)."],
+  ["429", "rate_limited", "Per-minute limit hit; Retry-After set."], ["429", "quota_exceeded", "Monthly quota hit on a hard-limit plan; Retry-After set."],
+  ["502", "upstream_unavailable", "Canonical API unreachable."], ["504", "upstream_timeout", "Canonical API did not answer within 15 s."],
+];
+const upstreamErrors = [
+  ["400", "invalid_include / invalid_ids / too_many_ids / invalid_as_of / invalid_stance / invalid_metric / invalid_bound / invalid_confidence / invalid_type / invalid_fighter_id / invalid_matchup", "Validation errors from the canonical API; detail lists allowed values."],
+  ["404", "event_not_found / fighter_not_found / bout_not_found / article_not_found / division_not_found", "Unknown entity."],
+  ["404", "dna_not_available", "No Fight DNA snapshot for the fighter (or none at/before as_of). detail.reason: no_snapshot | no_snapshot_at_or_before_as_of."],
+  ["503", "rankings_not_available / dna_not_available / ledger_not_available / videos_not_available", "The store does not exist yet; data is null, nothing is synthesized."],
+];
+const sections = [
+  ["quickstart", "Quickstart"], ["authentication", "Authentication"], ["current-event", "Current event"], ["event-card", "Event card"], ["search-fighters", "Search fighters"], ["fighter-profile", "Fighter profile"], ["fighter-history", "Fighter history"], ["round-stats", "Round stats"],
+  ["fight-dna", "Fight DNA"], ["stance-dna", "Stance DNA"], ["round-profile", "Round profile"], ["finish-profile", "Finish profile"], ["matchup-dna", "Matchup DNA"], ["as-of", "As-of queries"], ["confidence", "Confidence"], ["provenance", "Provenance"],
+  ["rate-limits", "Rate limits"], ["errors", "Errors"], ["origin-labels", "Origin labels"], ["endpoints", "Endpoint index"],
+];
+---
+<Base title="UFC API Documentation | PropTechUSA.ai" description="Quickstart, authentication, endpoints, Fight DNA, Matchup DNA, as-of queries, confidence, provenance, rate limits and errors for the PropTechUSA UFC Intelligence API." path="/docs">
+  <div class="wrap docs">
+    <aside class="docs-nav" aria-label="Documentation sections">
+      <h5>Guide</h5>
+      {sections.slice(0, 8).map(([id, l]) => <a href={`#${id}`}>{l}</a>)}
+      <h5>Fight DNA</h5>
+      {sections.slice(8, 16).map(([id, l]) => <a href={`#${id}`}>{l}</a>)}
+      <h5>Operations</h5>
+      {sections.slice(16).map(([id, l]) => <a href={`#${id}`}>{l}</a>)}
+      <h5>Reference</h5>
+      <a href="/docs/reference">Interactive reference</a>
+      <a href="/openapi.json">openapi.json</a>
+      <a href="/learn/fight-dna">Fight DNA methodology</a>
+    </aside>
+    <div class="docs-body">
+      <p class="eyebrow">Documentation</p>
+      <h1 style="font-size:clamp(2rem,4vw,3rem)">UFC Intelligence API</h1>
+      <p class="lede">Base URL <code>https://ufc.proptechusa.ai</code>. Data contract <code>{contract.api_version}</code>, Fight DNA definitions v{contract.fight_dna_definition_version}. Every response is <code>{`{ ok, data, meta }`}</code> or <code>{`{ ok:false, data:null, error, meta }`}</code>. All examples below are live responses captured on {fmtDate(ex.fighter_dna.captured_at)}; large payloads are subset and marked with an ellipsis.</p>
+
+      <section id="quickstart">
+        <h2>Quickstart <span class={chip("events").cls}>{chip("events").label}</span></h2>
+        <ol>
+          <li><a href="/pricing#access">Get a key</a>. It looks like <code>pt_ufc_live_&lt;id&gt;_&lt;secret&gt;</code> and is shown once.</li>
+          <li>Export it: <code>export UFC_API_KEY=pt_ufc_live_…</code></li>
+          <li>Call the API:</li>
+        </ol>
+        <Snippets path="/v1/ufc/events?status=upcoming&limit=3" />
+        <p>Read <code>data</code>. Read <code>meta.request_id</code> if you need support. Check <code>X-RateLimit-Remaining</code> and <code>X-Quota-Remaining</code> on every response. Bodies are identical to the canonical PropBetEdge host; the gateway only adds headers.</p>
+        <div class="callout">The index <code>GET /v1/ufc</code> advertises every canonical route. Routes not in your plan return <code>403 plan_required</code>; routes outside the commercial contract return <code>404 route_not_found</code>. The <a href="#endpoints">endpoint index</a> lists exactly what each plan can call.</div>
+      </section>
+
+      <section id="authentication">
+        <h2>Authentication</h2>
+        <p>Send the key as a bearer token (preferred) or in <code>X-API-Key</code>:</p>
+        <Code shell={`curl -H "Authorization: Bearer $UFC_API_KEY" "https://ufc.proptechusa.ai/v1/ufc"\n\n# equivalent\ncurl -H "X-API-Key: $UFC_API_KEY" "https://ufc.proptechusa.ai/v1/ufc"`} title="auth" />
+        <ul>
+          <li>Keys are scoped to a plan and a channel. The key id (the 12 characters after <code>pt_ufc_live_</code>) is safe to log; the secret is not.</li>
+          <li>Rotate a key from the <a href="/dashboard">dashboard</a>. Rotation issues a new key and revokes the old one immediately.</li>
+          <li>Never ship a key in browser code. Call the API from your server or an edge function; CORS is enabled for tooling, not as a credential model.</li>
+          <li>Missing or bad credentials return <code>401</code> with <code>api_key_required</code>, <code>invalid_api_key</code>, <code>api_key_expired</code> or <code>api_key_revoked</code>.</li>
+        </ul>
+      </section>
+
+      <section id="current-event">
+        <h2>Current event <span class={chip("events").cls}>{chip("events").label}</span></h2>
+        <p><code>GET /v1/ufc/events?status=upcoming|recent|all&amp;date=YYYY-MM-DD&amp;limit=N</code>. Upcoming events are ordered by date; <code>meta.total</code> is the full count.</p>
+        <Code method="GET" path="/v1/ufc/events?status=upcoming&limit=3" json={ex.events_upcoming.body} note={`live · ${fmtDate(ex.events_upcoming.captured_at)}`} />
+        <p>Look up one event by UUID, UFCStats id or ESPN event id: <code>GET /v1/ufc/events/{`{id}`}</code>.</p>
+      </section>
+
+      <section id="event-card">
+        <h2>Event card <span class={chip("event_card").cls}>{chip("event_card").label}</span></h2>
+        <p><code>GET /v1/ufc/events/{`{id}`}/card?include=media,results,stats</code> returns <code>data.event</code> plus <code>data.bouts[]</code> ordered main event first. Each bout carries <code>fighter_a</code> / <code>fighter_b</code> with <code>images[]</code> and <code>primary_image</code>, and <code>result</code> (null when unfought).</p>
+        <Snippets path={`/v1/ufc/events/${upcoming?.id || "{id}"}/card?include=media,results`} />
+        <div class="callout gold"><code>include=stats</code> adds <code>round_stats[]</code> and <code>stat_totals</code> to every bout and requires <strong>Pro</strong>. On Developer it returns <code>403 plan_required</code> with <code>detail.parameter</code>.</div>
+      </section>
+
+      <section id="search-fighters">
+        <h2>Search fighters <span class={chip("search").cls}>{chip("search").label}</span></h2>
+        <p><code>GET /v1/ufc/search?q=&amp;limit=N</code> searches fighters (with <code>primary_image</code> and <code>slug_id</code>), events and articles in one call. <code>GET /v1/ufc/fighters?q=&amp;active=true</code> lists fighters only.</p>
+        <Code method="GET" path="/v1/ufc/search?q=strickland&limit=3" json={searchTrim} note="live · subset" />
+      </section>
+
+      <section id="fighter-profile">
+        <h2>Fighter profile <span class={chip("fighter").cls}>{chip("fighter").label}</span></h2>
+        <p><code>GET /v1/ufc/fighters/{`{id}`}?include=media,ranking,next,history,stats,videos</code>. The id may be the UUID, the 16-hex UFCStats id or the ESPN athlete id. Includes are opt-in; the default response never grows.</p>
+        <Code method="GET" path={`/v1/ufc/fighters/${S}?include=ranking,next`} json={fighterTrim} note="live · images[] omitted" />
+        <p>Render <code>primary_image.attribution_text</code> (author, license, source) wherever you show the portrait. <code>include=stats</code> requires Pro.</p>
+      </section>
+
+      <section id="fighter-history">
+        <h2>Fighter history <span class={chip("fighter_history").cls}>{chip("fighter_history").label}</span></h2>
+        <p><code>GET /v1/ufc/fighters/{`{id}`}/history?limit=N</code>, newest first. Rows add <code>opponent</code>, <code>outcome</code> (W/L/D/NC/null) and <code>is_fighter_a</code>.</p>
+        <Code method="GET" path={`/v1/ufc/fighters/${S}/history?limit=3`} json={historyTrim} note="live · 1 of 3 rows" />
+      </section>
+
+      <section id="round-stats">
+        <h2>Round stats <span class={chip("bout_stats").cls}>{chip("bout_stats").label}</span> <span class="chip source">Source</span></h2>
+        <p><code>GET /v1/ufc/bouts/{`{id}`}/stats</code> returns every UFC Stats round row for a bout (<code>kd</code>, <code>sig_str_*</code>, <code>total_str_*</code>, <code>td_*</code>, <code>sub_att</code>, <code>rev</code>, <code>ctrl_sec</code>, head/body/leg and distance/clinch/ground splits) plus per-fighter <code>totals</code>, <code>fight_time_sec</code> and <code>provenance</code>. Coverage is partial while the historical backfill runs; bouts without rows return empty arrays, never zeroes.</p>
+        <h3>Career round rows and computed rates <span class={chip("fighter_stats").cls}>{chip("fighter_stats").label}</span></h3>
+        <p><code>GET /v1/ufc/fighters/{`{id}`}/stats</code> adds <code>computed.career_totals</code>, <code>computed.career_rates</code> and per-bout aggregates with explicit provenance. These are display-grade career aggregates, not as-of features; use Fight DNA for as-of work.</p>
+        <Code method="GET" path={`/v1/ufc/fighters/${S}/stats`} json={statsTrim} note="live · subset" />
+      </section>
+
+      <section id="fight-dna">
+        <h2>Fight DNA <span class={chip("fighter_dna").cls}>{chip("fighter_dna").label}</span> <span class="chip derived">PBE derived</span></h2>
+        <p><code>GET /v1/ufc/fighters/{`{id}`}/dna[?as_of=YYYY-MM-DD&amp;version=1]</code> returns the fighter's latest snapshot: <code>metrics</code> (striking, pace, grappling, finish keys), <code>stance_splits</code>, <code>round_profile</code>, <code>finish_profile</code>, <code>context_splits</code>, <code>position_profile</code> and <code>provenance</code>, with sample counts at the snapshot level and on every metric.</p>
+        <Snippets path={`/v1/ufc/fighters/${S}/dna`} />
+        <Code method="GET" path={`/v1/ufc/fighters/${S}/dna`} json={ex.fighter_dna.body} note="live · subset" tall />
+        <p>The registry of definitions is public on every plan: <code>GET /v1/ufc/dna/metrics</code> lists each metric's formula, unit, source families and minimum sample, grouped by family ({Object.keys(reg?.families || {}).join(", ")}). Read the <a href="/learn/fight-dna">methodology</a> for the definitions themselves.</p>
+      </section>
+
+      <section id="stance-dna">
+        <h2>Stance DNA <span class={chip("fighter_splits").cls}>{chip("fighter_splits").label}</span> <span class="chip derived">PBE derived</span></h2>
+        <p><code>GET /v1/ufc/fighters/{`{id}`}/splits[?opponent_stance=SOUTHPAW&amp;as_of=]</code>. One row per opponent stance (ORTHODOX, SOUTHPAW, SWITCH, OPEN_STANCE, SIDEWAYS, UNKNOWN) with <code>record</code>, KO/submission/decision counts and <code>metrics</code> (finish_rate, ko_rate, sub_rate, sig_diff_per_min, kd_per_15, td_landed_per_15). With a filter, <code>data.split</code> is the row or an explicit <code>null</code>.</p>
+        <Code method="GET" path={`/v1/ufc/fighters/${S}/splits`} json={splitsTrim} note="live · 1 row shown" />
+      </section>
+
+      <section id="round-profile">
+        <h2>Round profile <span class={chip("fighter_round_profile").cls}>{chip("fighter_round_profile").label}</span> <span class="chip derived">PBE derived</span></h2>
+        <p><code>GET /v1/ufc/fighters/{`{id}`}/round-profile</code>: per-round attempt pace, landed and absorbed rates, pace retention R2/R1 and R3/R1, championship-round delta and defensive drift, with <code>sample</code>, <code>available</code> and <code>status</code>.</p>
+        <Code method="GET" path={`/v1/ufc/fighters/${S}/round-profile`} json={roundTrim} note="live" tall />
+      </section>
+
+      <section id="finish-profile">
+        <h2>Finish profile <span class={chip("fighter_finish_profile").cls}>{chip("fighter_finish_profile").label}</span> <span class="chip derived">PBE derived</span></h2>
+        <p><code>GET /v1/ufc/fighters/{`{id}`}/finish-profile</code>: finish, KO and submission finish rates, finish-round distribution, median finish time and <code>finished_by</code> counts.</p>
+        <Code method="GET" path={`/v1/ufc/fighters/${S}/finish-profile`} json={finishTrim} note="live" />
+        <h3>Position profile <span class="chip licensed">Licensed</span></h3>
+        <p><code>GET /v1/ufc/fighters/{`{id}`}/position-profile</code> is the licensed family. Until a licensed position source exists it answers <code>status: "licensed_data_not_available"</code> with <code>position_profile: null</code>; nothing is synthesized from UFC Stats control time.</p>
+        <Code method="GET" path={`/v1/ufc/fighters/${S}/position-profile`} json={positionTrim} note="live · truthful unavailable" />
+      </section>
+
+      <section id="matchup-dna">
+        <h2>Matchup DNA <span class={chip("matchup_dna").cls}>{chip("matchup_dna").label}</span> <span class="chip derived">PBE derived</span></h2>
+        <p><code>GET /v1/ufc/matchups/{`{a}`}/{`{b}`}/dna[?as_of=]</code> resolves both fighters, compares {ex.matchup_meta?.comparisons?.length} paired metrics (<code>comparisons[]</code> with <code>delta</code>, <code>direction</code>, <code>comparable</code>, <code>min_confidence</code>), adds <code>stance_context</code>, and returns <code>insights[]</code> only where the documented thresholds in <code>meta.insight_rules</code> are met. Everything below threshold is a named entry in <code>warnings[]</code>. <code>bettors_edge_evidence[]</code> is a projection of the insights: evidence, never a pick.</p>
+        <Snippets path={`/v1/ufc/matchups/${S}/${D}/dna`} />
+        <Code method="GET" path={`/v1/ufc/matchups/${S}/${D}/dna`} json={ex.matchup_dna.body} note="live · subset" tall />
+        <p>Cross-fighter queries (<code>GET /v1/ufc/dna/query?metric=pace_retention_r3_vs_r1&amp;min=0.9&amp;min_confidence=low</code>), the Fight State Ledger (<code>/bouts/{`{id}`}/ledger</code>) and event intelligence (<code>/events/{`{id}`}/intelligence</code>) are also Ultra.</p>
+        <Code method="GET" path="/v1/ufc/dna/query?metric=sig_landed_per_min&min_confidence=medium&limit=3" json={ex.dna_query.body} note="live" />
+      </section>
+
+      <section id="as-of">
+        <h2>As-of queries <span class="chip plan-pro">Pro+</span></h2>
+        <p>{reg?.as_of_semantics}</p>
+        <p>Add <code>?as_of=YYYY-MM-DD</code> to any fighter DNA route (Pro) or to Matchup DNA (Ultra). <code>meta.requested_as_of</code> and <code>meta.resolved_as_of</code> tell you which snapshot answered. A date before the fighter's first snapshot is a truthful <code>404 dna_not_available</code>:</p>
+        <Code method="GET" path={`/v1/ufc/fighters/${S}/dna?as_of=2024-01-01`} json={ex.fighter_dna_asof_404.body} note="live · 404" />
+      </section>
+
+      <section id="confidence">
+        <h2>Confidence</h2>
+        <div class="table-wrap"><table><thead><tr><th>Tier</th><th>Rule</th></tr></thead><tbody>{Object.entries(reg?.confidence_tiers || {}).map(([k, v]) => <tr><td><code>{k}</code></td><td>{v as string}</td></tr>)}</tbody></table></div>
+        <p><code>coverage_status</code> uses the same scale for stat coverage of the sample. Treat <code>insufficient</code> and <code>low</code> as exactly that; the API will not round them up for you.</p>
+      </section>
+
+      <section id="provenance">
+        <h2>Provenance</h2>
+        <p>Every derived value is a <code>MetricObject</code>. The gateway never strips provenance to make responses smaller.</p>
+        <Code json={contract.metric_object_sample} title="MetricObject" />
+        <p>Snapshots also carry <code>provenance.bouts[]</code> (the bout ids in scope), <code>provenance.watermark</code> (source capture times) and <code>build_run_id</code>. Source facts carry their source ids and <code>captured_at</code> / <code>updated_at</code>.</p>
+      </section>
+
+      <section id="rate-limits">
+        <h2>Rate limits and quotas</h2>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Plan</th><th>Price</th><th>Requests / month</th><th>Requests / minute</th><th>At the limit</th></tr></thead>
+          <tbody>{order.map((k) => { const p = plans[k as keyof typeof plans]; return <tr><td>{p.name}</td><td>{p.price_usd_month === null ? (p as any).price_label : `$${p.price_usd_month}/mo`}</td><td>{p.included_requests === null ? "custom" : fmtNumber(p.included_requests)}</td><td>{p.rate_limit_per_min ?? "custom"}</td><td>{p.limit_mode === "hard" ? "429 quota_exceeded" : p.limit_mode === "soft" ? "allowed, X-Quota-Status: over-quota-soft" : "custom"}</td></tr>; })}</tbody>
+        </table></div>
+        <p>Headers on every response:</p>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Header</th><th>Meaning</th></tr></thead>
+          <tbody>
+            <tr><td><code>X-Request-Id</code></td><td>Gateway request id. Quote it in support requests.</td></tr>
+            <tr><td><code>X-Upstream-Request-Id</code></td><td>Request id assigned by the canonical API for the forwarded call.</td></tr>
+            <tr><td><code>X-API-Version</code></td><td>Canonical data-contract version (<code>{contract.api_version}</code>).</td></tr>
+            <tr><td><code>X-Gateway-Version</code></td><td>Commercial gateway version.</td></tr>
+            <tr><td><code>X-Plan</code></td><td>Plan the request was authorized under.</td></tr>
+            <tr><td><code>X-RateLimit-Limit</code> / <code>-Remaining</code> / <code>-Reset</code></td><td>Per-minute window (reset is a Unix timestamp).</td></tr>
+            <tr><td><code>X-Quota-Limit</code> / <code>-Remaining</code> / <code>-Reset</code></td><td>Calendar-month quota (UTC); reset is the first of next month.</td></tr>
+            <tr><td><code>Retry-After</code></td><td>Seconds to wait, on 429 only.</td></tr>
+            <tr><td><code>Cache-Control</code></td><td><code>private, max-age=N</code> mirroring the canonical freshness: short for upcoming cards, rankings and search; longer for historical events, bouts and as-of DNA snapshots.</td></tr>
+          </tbody>
+        </table></div>
+        <p>Denied requests (401, 403, 429) do not consume quota. Quota is counted per key; first-party PropBetEdge traffic never shares your quota.</p>
+      </section>
+
+      <section id="errors">
+        <h2>Errors</h2>
+        <p>Failures use <code>{`{ ok:false, data:null, error:{ code, message, detail? }, meta }`}</code>. Gateway errors:</p>
+        <div class="table-wrap"><table><thead><tr><th>Status</th><th>Code</th><th>Meaning</th></tr></thead><tbody>{gatewayErrors.map(([s, c, m]) => <tr><td><code>{s}</code></td><td><code>{c}</code></td><td>{m}</td></tr>)}</tbody></table></div>
+        <p style="margin-top:14px">Canonical API errors are passed through unchanged:</p>
+        <div class="table-wrap"><table><thead><tr><th>Status</th><th>Code</th><th>Meaning</th></tr></thead><tbody>{upstreamErrors.map(([s, c, m]) => <tr><td><code>{s}</code></td><td class="small mono">{c}</td><td>{m}</td></tr>)}</tbody></table></div>
+        <Code json={ex.unknown_fighter_404.body} title="404 fighter_not_found (live)" />
+        <div class="callout red">Missing data is never converted into a 200 with fake zeroes. If a value is not knowable, you get <code>null</code>, an explicit <code>status</code>, or a 404/503 with a reason.</div>
+      </section>
+
+      <section id="origin-labels">
+        <h2>Origin labels</h2>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Label</th><th>Where</th><th>Rule</th></tr></thead>
+          <tbody>
+            <tr><td><span class="chip source">Source</span></td><td>events, fighters, bouts, results, round stats, rankings</td><td>Normalized ESPN / UFC Stats / ufc.com facts. Attribute the source where you display them.</td></tr>
+            <tr><td><span class="chip derived">PBE derived</span></td><td>Fight DNA, Matchup DNA, computed career rates, ledger diffs</td><td>PropBetEdge analytics. Show the sample and confidence. Never present as official statistics or predictions.</td></tr>
+            <tr><td><span class="chip licensed">Licensed</span></td><td>position profile (reserved)</td><td>Licensed enrichment, labelled separately when it exists.</td></tr>
+            <tr><td><span class="chip editorial">Editorial</span></td><td>news, articles</td><td>PropBetEdge newsroom content.</td></tr>
+            <tr><td><span class="chip media">Media</span></td><td>primary_image, images[], hero_image</td><td>Render <code>attribution_text</code>; each file's <code>license</code> governs reuse.</td></tr>
+            <tr><td><span class="chip link">Third-party link</span></td><td>videos, wire</td><td>Ids and official URLs only. Use the provider's player; never rehost.</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <section id="endpoints">
+        <h2>Endpoint index</h2>
+        <p>Everything the commercial contract exposes, with the minimum plan. Full request and response schemas are in the <a href="/docs/reference">interactive reference</a>.</p>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Endpoint</th><th>Summary</th><th>Origin</th><th>Minimum plan</th></tr></thead>
+          <tbody>{matrix.map((m) => <tr><td><code>{m.path}</code></td><td class="small">{m.summary}</td><td><span class="chip">{m.origin.replace(/_/g, " ").toLowerCase()}</span></td><td><span class={`chip plan-${m.minimum_plan || "enterprise"}`}>{planName(m.minimum_plan)}</span></td></tr>)}</tbody>
+        </table></div>
+      </section>
+    </div>
+  </div>
+</Base>

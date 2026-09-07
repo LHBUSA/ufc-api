@@ -1,0 +1,241 @@
+{
+  "captured_at": "2026-09-07T12:18:42.990Z",
+  "base": "https://ufc-api.propbetedge.ai",
+  "path": "/v1/ufc/rankings?division=MIDDLEWEIGHT",
+  "status": 200,
+  "api_version": "2026-09-06.3",
+  "body": {
+    "ok": true,
+    "data": {
+      "source": "ufc.com official rankings",
+      "source_url": "https://www.ufc.com/rankings",
+      "snapshot_date": "2026-09-06",
+      "captured_at": "2026-09-06T16:10:07.916+00:00",
+      "divisions": [
+        {
+          "key": "MIDDLEWEIGHT",
+          "label": "Middleweight",
+          "is_womens": false,
+          "is_p4p": false,
+          "champion": {
+            "name": "Sean Strickland",
+            "ufc_slug": "sean-strickland",
+            "fighter_id": "ec94d296-2db3-4e0d-be6a-46de4f480672",
+            "fighter": {
+              "id": "ec94d296-2db3-4e0d-be6a-46de4f480672",
+              "name": "Sean Strickland",
+              "slug_id": "3093653"
+            }
+          },
+          "entries": [
+            {
+              "rank": 1,
+              "name": "Khamzat Chimaev",
+              "ufc_slug": "khamzat-chimaev",
+              "fighter_id": "82f23ba8-2053-4f0f-88e3-8216893e2f28",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "82f23ba8-2053-4f0f-88e3-8216893e2f28",
+                "name": "Khamzat Chimaev",
+                "slug_id": "4684751"
+              }
+            },
+            {
+              "rank": 2,
+              "name": "Dricus Du Plessis",
+              "ufc_slug": "dricus-du-plessis",
+              "fighter_id": "9a3b2a15-27d8-4554-9217-42ef2dd5d25c",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "9a3b2a15-27d8-4554-9217-42ef2dd5d25c",
+                "name": "Dricus Du Plessis",
+                "slug_id": "3166126"
+              }
+            },
+            {
+              "rank": 3,
+              "name": "Nassourdine Imavov",
+              "ufc_slug": "nassourdine-imavov",
+              "fighter_id": "5c028189-a57d-45ff-a868-f86a724b94df",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "5c028189-a57d-45ff-a868-f86a724b94df",
+                "name": "Nassourdine Imavov",
+                "slug_id": "4690539"
+              }
+            },
+            {
+              "rank": 4,
+              "name": "Brendan Allen",
+              "ufc_slug": "brendan-allen",
+              "fighter_id": "ba405ece-13e8-409e-997f-fb0557035f21",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "ba405ece-13e8-409e-997f-fb0557035f21",
+                "name": "Brendan Allen",
+                "slug_id": "4025699"
+              }
+            },
+            {
+              "rank": 5,
+              "name": "Caio Borralho",
+              "ufc_slug": "caio-borralho",
+              "fighter_id": "e2c3582d-104d-4005-83d5-e086269f0d92",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "e2c3582d-104d-4005-83d5-e086269f0d92",
+                "name": "Caio Borralho",
+                "slug_id": "4835137"
+              }
+            },
+            {
+              "rank": 6,
+              "name": "Joe Pyfer",
+              "ufc_slug": "joe-pyfer",
+              "fighter_id": "5f0d2c64-9ab0-4764-8b51-59d1c96b5ece",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "5f0d2c64-9ab0-4764-8b51-59d1c96b5ece",
+                "name": "Joe Pyfer",
+                "slug_id": "4684135"
+              }
+            },
+            {
+              "rank": 7,
+              "name": "Gregory Rodrigues",
+              "ufc_slug": "gregory-rodrigues",
+              "fighter_id": "2d93f8f3-ccaa-420c-b8d5-f446da57bec5",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "2d93f8f3-ccaa-420c-b8d5-f446da57bec5",
+                "name": "Gregory Rodrigues",
+                "slug_id": "4690541"
+              }
+            },
+            {
+              "rank": 8,
+              "name": "Anthony Hernandez",
+              "ufc_slug": "anthony-hernandez",
+              "fighter_id": "60491150-2bf5-43c0-bdac-73118b5d3937",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "60491150-2bf5-43c0-bdac-73118b5d3937",
+                "name": "Anthony Hernandez",
+                "slug_id": "4290956"
+              }
+            },
+            {
+              "rank": 9,
+              "name": "Israel Adesanya",
+              "ufc_slug": "israel-adesanya",
+              "fighter_id": "b24ade25-45e1-4393-9a53-c59094236403",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "b24ade25-45e1-4393-9a53-c59094236403",
+                "name": "Israel Adesanya",
+                "slug_id": "4285679"
+              }
+            },
+            {
+              "rank": 10,
+              "name": "Christian Leroy Duncan",
+              "ufc_slug": "christian-leroy-duncan",
+              "fighter_id": "e1e5aab9-51a6-4d21-989e-5b25f313e408",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "e1e5aab9-51a6-4d21-989e-5b25f313e408",
+                "name": "Christian Leroy Duncan",
+                "slug_id": "4848674"
+              }
+            },
+            {
+              "rank": 11,
+              "name": "Jared Cannonier",
+              "ufc_slug": "jared-cannonier",
+              "fighter_id": "d861b989-7c43-4c14-9dc4-b7dfd264045f",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "d861b989-7c43-4c14-9dc4-b7dfd264045f",
+                "name": "Jared Cannonier",
+                "slug_id": "3154860"
+              }
+            },
+            {
+              "rank": 12,
+              "name": "Ikram Aliskerov",
+              "ufc_slug": "ikram-aliskerov",
+              "fighter_id": "0cb1c2d5-9ffa-4599-a232-5a9a8f4e8e56",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "0cb1c2d5-9ffa-4599-a232-5a9a8f4e8e56",
+                "name": "Ikram Aliskerov",
+                "slug_id": "4684776"
+              }
+            },
+            {
+              "rank": 13,
+              "name": "Bo Nickal",
+              "ufc_slug": "bo-nickal",
+              "fighter_id": "ecc4cdfc-bfbf-4283-b665-f3a62801d9da",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "ecc4cdfc-bfbf-4283-b665-f3a62801d9da",
+                "name": "Bo Nickal",
+                "slug_id": "5061870"
+              }
+            },
+            {
+              "rank": 14,
+              "name": "Abus Magomedov",
+              "ufc_slug": "abus-magomedov",
+              "fighter_id": "c91fbe3e-bc17-414d-a78e-b7095a2d24b5",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "c91fbe3e-bc17-414d-a78e-b7095a2d24b5",
+                "name": "Abus Magomedov",
+                "slug_id": "3077822"
+              }
+            },
+            {
+              "rank": 15,
+              "name": "Michael Venom Page",
+              "ufc_slug": "michael-page",
+              "fighter_id": "940796ad-7733-4992-95c0-91031101fef7",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "940796ad-7733-4992-95c0-91031101fef7",
+                "name": "Michael Page",
+                "slug_id": "3022067"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "meta": {
+      "api": "PropSports UFC",
+      "version": "2026-09-06.3",
+      "request_id": "eaf8f415-92cf-49de-9a28-2b88fd03e9e1",
+      "store": "table",
+      "divisions": 1,
+      "division": "MIDDLEWEIGHT",
+      "womens": null,
+      "access_tier": "public"
+    }
+  }
+}

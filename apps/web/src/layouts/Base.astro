@@ -1,0 +1,123 @@
+---
+import "../styles/global.css";
+import gen from "../generated/entitlements.json";
+
+export interface Props {
+  title: string;
+  description: string;
+  path?: string;
+  ogType?: string;
+  jsonLd?: unknown[];
+  wide?: boolean;
+}
+const { title, description, path = "/", ogType = "website", jsonLd = [] } = Astro.props;
+const site = "https://ufc.proptechusa.ai";
+const canonical = site + (path === "/" ? "/" : path);
+const contract = gen.contract;
+const nav = [
+  { href: "/docs", label: "Docs" },
+  { href: "/pricing", label: "Pricing" },
+  { href: "/learn/fight-dna", label: "Fight DNA" },
+  { href: "/dashboard", label: "Dashboard" },
+];
+const current = (href: string) => (path === href || (href !== "/" && path.startsWith(href + "/")) ? "page" : undefined);
+const baseLd = [
+  { "@context": "https://schema.org", "@type": "Organization", name: "PropTechUSA", url: "https://proptechusa.ai", sameAs: ["https://propbetedge.ai"] },
+  { "@context": "https://schema.org", "@type": "WebSite", name: "PropTechUSA UFC Intelligence API", url: site },
+  ...jsonLd,
+];
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="robots" content="index,follow" />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content="PropTechUSA UFC Intelligence API" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={site + "/og.png"} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={site + "/og.png"} />
+    <meta name="theme-color" content="#fbfaf6" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+    <meta name="x-api-version" content={contract.api_version} />
+    {baseLd.map((ld) => <script type="application/ld+json" set:html={JSON.stringify(ld)} />)}
+    <slot name="head" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap">
+        <a class="brand" href="/" aria-label="PropTechUSA UFC Intelligence API home">
+          <span class="mark" aria-hidden="true">P</span>
+          <span class="name"><b>PROPTECHUSA</b><span>UFC Intelligence API</span></span>
+        </a>
+        <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="site-nav"><span></span><span></span><span></span></button>
+        <nav class="nav" id="site-nav" aria-label="Primary">
+          {nav.map((n) => <a href={n.href} aria-current={current(n.href)}>{n.label}</a>)}
+          <a class="btn primary" href="/pricing#access">Get API access</a>
+        </nav>
+      </div>
+    </header>
+    <main>
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="wrap">
+        <div class="cols">
+          <div>
+            <h4>PropTechUSA UFC Intelligence API</h4>
+            <p>UFC data built for developers. Normalized events, fighters, cards, results and round-level statistics, plus proprietary PropBetEdge Fight DNA. PropTechUSA operates the infrastructure; PropBetEdge demonstrates what can be built with it.</p>
+            <p class="small mono">Contract {contract.api_version} · Fight DNA definitions v{contract.fight_dna_definition_version} · gateway {gen.plans ? "" : ""}<a href="/openapi.json">openapi.json</a></p>
+          </div>
+          <div>
+            <h4>Product</h4>
+            <ul>
+              <li><a href="/docs">Documentation</a></li>
+              <li><a href="/docs/reference">API reference</a></li>
+              <li><a href="/pricing">Pricing</a></li>
+              <li><a href="/learn/fight-dna">Fight DNA methodology</a></li>
+              <li><a href="/dashboard">Dashboard</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Network</h4>
+            <ul>
+              <li><a href="https://proptechusa.ai" rel="noopener">PropTechUSA.ai</a></li>
+              <li><a href="https://ufc.propbetedge.ai" rel="noopener">PropBetEdge UFC — see Fight DNA in action</a></li>
+              <li><a href="https://ufc-api.propbetedge.ai/v1/ufc" rel="noopener">Canonical API host (first-party)</a></li>
+              <li><a href="https://github.com/LHBUSA/ufc-api" rel="noopener">Gateway source &amp; contract</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Company</h4>
+            <ul>
+              <li><a href="mailto:sales@proptechusa.ai">sales@proptechusa.ai</a></li>
+              <li><a href="/legal">Legal, rights &amp; attribution</a></li>
+              <li><a href="/health">Gateway status</a></li>
+            </ul>
+          </div>
+        </div>
+        <p class="disclaimer">
+          PropTechUSA and PropBetEdge are independent products and are not affiliated with, endorsed by, or sponsored by UFC, Zuffa LLC, TKO Group, ESPN or any sportsbook. Fight DNA metrics are PropBetEdge-derived analytics, not official UFC statistics. Source facts are normalized from ESPN, UFC Stats and ufc.com; fighter images carry their own license and attribution; video metadata links to official channels and is never rehosted. Source and media rights remain attributed according to their applicable contracts and licenses.
+          © {new Date().getUTCFullYear()} PropTechUSA.ai.
+        </p>
+      </div>
+    </footer>
+    <script>
+      const t = document.querySelector(".nav-toggle");
+      const n = document.getElementById("site-nav");
+      t?.addEventListener("click", () => { const open = n?.classList.toggle("open"); t.setAttribute("aria-expanded", String(!!open)); });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,67 @@
+{
+  "captured_at": "2026-09-07T12:18:42.990Z",
+  "base": "https://ufc-api.propbetedge.ai",
+  "path": "/v1/ufc/events?status=upcoming&limit=3",
+  "status": 200,
+  "api_version": "2026-09-06.3",
+  "body": {
+    "ok": true,
+    "data": [
+      {
+        "id": "187505ab-636d-4f90-8d5f-d98ebfd1cd7c",
+        "ufcstats_id": null,
+        "espn_event_id": "600060736",
+        "name": "Dana White's Contender Series: Season 10, Week 5",
+        "event_date": "2026-09-08",
+        "venue": "Meta APEX",
+        "city": "Las Vegas",
+        "region": "NV",
+        "country": "USA",
+        "commission": null,
+        "is_ppv": null,
+        "card_status": "announced",
+        "updated_at": "2026-09-07T06:03:34.55+00:00"
+      },
+      {
+        "id": "1d0b22df-81e7-4e5b-8fa5-8e5d03c24c52",
+        "ufcstats_id": "638cfec7ec559d6e",
+        "espn_event_id": "600060772",
+        "name": "Noche UFC: Silva vs. Delgado",
+        "event_date": "2026-09-12",
+        "venue": "Desert Diamond Arena",
+        "city": "Glendale",
+        "region": "AZ",
+        "country": "USA",
+        "commission": null,
+        "is_ppv": null,
+        "card_status": "announced",
+        "updated_at": "2026-09-07T06:03:41.716+00:00"
+      },
+      {
+        "id": "64bfa864-454c-4d0a-92e3-408f25598d6c",
+        "ufcstats_id": null,
+        "espn_event_id": "600060737",
+        "name": "Dana White's Contender Series: Season 10, Week 6",
+        "event_date": "2026-09-15",
+        "venue": "Meta APEX",
+        "city": "Las Vegas",
+        "region": "NV",
+        "country": "USA",
+        "commission": null,
+        "is_ppv": null,
+        "card_status": "announced",
+        "updated_at": "2026-09-07T06:03:57.561+00:00"
+      }
+    ],
+    "meta": {
+      "api": "PropSports UFC",
+      "version": "2026-09-06.3",
+      "request_id": "fc7fb3b9-e33e-4039-aa98-68253483ce5e",
+      "count": 3,
+      "total": 17,
+      "status": "upcoming",
+      "date": null,
+      "access_tier": "public"
+    }
+  }
+}

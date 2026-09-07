@@ -1,0 +1,34 @@
+{
+  "name": "proptechusa-ufc-intelligence-api",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "PropTechUSA UFC Intelligence API — commercial gateway, developer portal and distribution layer over the canonical PropBetEdge UFC API (LHBUSA/UFC).",
+  "workspaces": [
+    "gateway",
+    "apps/web"
+  ],
+  "scripts": {
+    "test": "npm run test --workspace=gateway && node --test \"tests/*.test.mjs\"",
+    "check": "node scripts/check-syntax.mjs",
+    "openapi:build": "node scripts/build-openapi.mjs",
+    "openapi:lint": "redocly lint openapi/ufc-intelligence-api.yaml --config openapi/redocly.yaml",
+    "contract:check": "node scripts/check-upstream-contract.mjs",
+    "contract:check:live": "node scripts/check-upstream-contract.mjs --live",
+    "entitlements:doc": "node scripts/build-entitlements-doc.mjs",
+    "generate": "npm run openapi:build && npm run entitlements:doc",
+    "build": "npm run generate && npm run build --workspace=apps/web",
+    "dev": "npm run build --workspace=apps/web && npm run dev --workspace=gateway",
+    "deploy:preview": "npm run build && npm run deploy --workspace=gateway",
+    "deploy:production": "npm run build && npm run deploy:production --workspace=gateway",
+    "smoke": "node scripts/smoke.mjs",
+    "issue-key": "node scripts/issue-key.mjs"
+  },
+  "devDependencies": {
+    "@redocly/cli": "^2.51.2",
+    "yaml": "^2.9.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -1,0 +1,130 @@
+---
+import Base from "../../layouts/Base.astro";
+import Code from "../../components/Code.astro";
+import gen from "../../generated/entitlements.json";
+import ex from "../../generated/examples.json";
+import { fmtDate, fmtNumber } from "../../lib/hl";
+
+const reg = ex.dna_registry;
+const contract = gen.contract;
+const rec = ex.receipts;
+const mm = ex.matchup_meta;
+const S = "ec94d296-2db3-4e0d-be6a-46de4f480672";
+const fam = (k: string) => reg?.families?.[k] || [];
+const famBlocks = [
+  { id: "stance-dna", t: "Stance DNA", k: "stance", p: "How a fighter performs against southpaws, orthodox fighters and switch hitters. Record, finish, KO and submission rates, and significant-strike differential are grouped by the opponent's listed stance; open-stance and same-stance contexts are reported separately. Result counts reconcile exactly to canonical bout results." },
+  { id: "striking-dna", t: "Striking DNA", k: "striking", p: "Pace, accuracy and defense normalized per observed minute, target shares (head, body, leg) and phase shares (distance, clinch, ground) from UFC Stats round rows. Denominators are actual observed seconds, not scheduled time." },
+  { id: "grappling-dna", t: "Grappling DNA", k: "grappling", p: "Takedown volume and accuracy per 15 observed minutes, control seconds per takedown landed, control share of observed time, submission attempts and reversals." },
+  { id: "finish-dna", t: "Finish DNA", k: "finish", p: "How and when finishes happen: finish, KO and submission finish rates, finish-round distribution and median elapsed finish time, computed from canonical results only." },
+  { id: "round-dna", t: "Round DNA", k: "pace", p: "Whether round-one pace survives into rounds two and three, championship-round delta for five-round fights, and defensive drift (absorbed rate in round three minus round one)." },
+  { id: "context-dna", t: "Context DNA", k: "context", p: "Records under specific conditions: short notice, three-round and five-round bouts, title fights and main events. Each split carries its own appearances and confidence." },
+];
+---
+<Base title="PropBetEdge Fight DNA API — Proprietary MMA Analytics" description="How PropBetEdge Fight DNA turns normalized UFC fight history into versioned, as-of, sample-aware fighter and matchup intelligence: definitions, confidence, provenance and what it cannot tell you." path="/learn/fight-dna">
+  <section class="section" style="background:linear-gradient(180deg,var(--paper) 0%,#fdf9ee 100%)">
+    <div class="wrap">
+      <p class="eyebrow gold">Methodology</p>
+      <h1 style="font-size:clamp(2.2rem,4.5vw,3.6rem)">PropBetEdge Fight DNA, for developers.</h1>
+      <p class="lede">Raw data tells you what happened. Fight DNA reveals the patterns inside the record. This page explains exactly how, using the live metric registry (definition version {reg?.definition_version ?? contract.fight_dna_definition_version}, captured {fmtDate(reg?.captured_at)}).</p>
+      <div class="network" style="margin-top:8px">
+        {["what-it-is", "source-vs-derived", "pipeline", "as-of", "sample-size", "confidence", "stance-dna", "striking-dna", "grappling-dna", "finish-dna", "round-dna", "context-dna", "matchup-dna", "provenance", "versioning", "limits"].map((id) => <a href={`#${id}`}>{id.replace(/-/g, " ")}</a>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap prose">
+      <h2 id="what-it-is">What Fight DNA is</h2>
+      <p>Fight DNA is the proprietary analytics layer above the normalized UFC record. It is a versioned, reproducible, as-of feature system that transforms event-dated bout and round history into fighter-specific and matchup-specific intelligence. It is deterministic: the same source rows always produce the same output. It is not a model, and it is not a prediction.</p>
+      <p>It answers questions a fighter page does not: how does a fighter do against southpaws, does pace survive into round three, is offense head-heavy or leg-heavy, does a takedown produce control, where do finishes happen, and which of those variables are unusually different between two fighters about to meet.</p>
+
+      <h2 id="source-vs-derived">Source facts versus derived features</h2>
+      <p>The API labels origin on every payload so you never confuse the two.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Origin</th><th>Label</th><th>Meaning</th><th>Examples</th></tr></thead>
+        <tbody>
+          <tr><td><code>source</code></td><td><span class="chip source">Source</span></td><td>Normalized facts from ESPN, UFC Stats and ufc.com. Copied, never computed.</td><td>event, fighter identity, fight result, strike counts, takedowns, official ranking snapshot</td></tr>
+          <tr><td><code>pbe_derived</code></td><td><span class="chip derived">PBE derived</span></td><td>Computed by the Fight DNA builder from canonical rows. Every value is a <code>MetricObject</code>.</td><td>stance splits, strike differential, target and phase shares, per-minute and per-15 rates, finish distributions, control yield, pace retention, context splits, matchup comparisons</td></tr>
+          <tr><td><code>licensed</code></td><td><span class="chip licensed">Licensed</span></td><td>Reserved for licensed enrichment stored separately from derived features.</td><td>position profile (control time by position, finish weapon) — explicitly unavailable until a licensed source exists</td></tr>
+          <tr><td><code>model</code></td><td><span class="chip">Model</span></td><td>Reserved for actual model output. Fight DNA is not labelled <code>model</code>.</td><td>none today</td></tr>
+        </tbody>
+      </table></div>
+
+      <h2 id="pipeline">The feature pipeline</h2>
+      <ol>
+        <li><strong>Source rows.</strong> Only canonical tables: fighters, events, bouts, results, round stats. Career snapshot fields are never inputs.</li>
+        <li><strong>Per-bout features.</strong> Two rows per completed bout, one from each fighter's perspective: stance context, outcome, method, scheduled rounds, title and main-event flags, stat coverage, observed seconds, raw totals, derived per-bout values and provenance.</li>
+        <li><strong>Observed time.</strong> 300 seconds per full standard round; a partial final round uses the recorded stoppage time; unrecognised time formats set observed seconds to <code>null</code> with a warning.</li>
+        <li><strong>As-of snapshots.</strong> One snapshot per fighter per as-of date: metrics, stance splits, round profile, finish profile, context splits, provenance.</li>
+        <li><strong>Matchup composition.</strong> Two snapshots compared against each other's actual profile with threshold-gated insights.</li>
+      </ol>
+
+      <h2 id="as-of">As-of reconstruction</h2>
+      <p>{reg?.as_of_semantics}</p>
+      <p>Use <code>?as_of=YYYY-MM-DD</code> on any fighter DNA route (Pro and above) to reconstruct what was knowable before a given date. If no snapshot exists at or before that date the API answers <code>404 dna_not_available</code> with the reason, never an empty profile. Example, captured live:</p>
+      <Code method="GET" path={`/v1/ufc/fighters/${S}/dna?as_of=2024-01-01`} json={ex.fighter_dna_asof_404.body} note="404 · truthful" />
+
+      <h2 id="sample-size">Why sample size matters</h2>
+      <p>Round-stat coverage is a backfill in progress, and many fighters have few covered bouts. A rate built on ten minutes of observed time is not the same as one built on ninety. Fight DNA therefore never returns a bare number: <code>sample_bouts</code>, <code>sample_rounds</code> and <code>sample_seconds</code> travel with every value, and the UI contract forbids turning a low-sample split into a categorical claim.</p>
+      {rec && <p>Example: {rec.fighter}'s <code>{rec.metric.metric_key}</code> is {rec.metric.value} per minute from {rec.metric.sample_bouts} stat-covered bouts, {rec.metric.sample_rounds} rounds and {fmtNumber(rec.metric.sample_seconds / 60, 1)} observed minutes, confidence <em>{rec.metric.confidence}</em>. That is exactly how it is reported.</p>}
+
+      <h2 id="confidence">Confidence</h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Tier</th><th>Rule (v{reg?.definition_version})</th></tr></thead>
+        <tbody>{Object.entries(reg?.confidence_tiers || {}).map(([k, v]) => <tr><td><code>{k}</code></td><td>{v as string}</td></tr>)}</tbody>
+      </table></div>
+      <p><code>coverage_status</code> uses the same scale and describes how much of the fighter's bout history has round-stat coverage. A zero denominator produces <code>value: null</code> with <code>confidence: "insufficient"</code>.</p>
+    </div>
+  </section>
+
+  {famBlocks.map((f) => (
+    <section class="section tight" id={f.id}>
+      <div class="wrap">
+        <p class="eyebrow gold">{f.t}</p>
+        <p class="lede">{f.p}</p>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Metric</th><th>Definition</th><th>Formula</th><th>Unit</th><th>Minimum sample</th></tr></thead>
+          <tbody>{fam(f.k).map((m: any) => <tr><td><code>{m.metric_key}</code><div class="small muted">{m.display_name}</div></td><td>{m.description}</td><td class="small mono">{m.formula}</td><td><code>{m.unit}</code></td><td class="small">{m.min_bouts} bouts · {m.min_rounds} rounds · {m.min_seconds}s</td></tr>)}</tbody>
+        </table></div>
+      </div>
+    </section>
+  ))}
+
+  <section class="section" id="matchup-dna">
+    <div class="wrap prose">
+      <p class="eyebrow gold">Matchup DNA</p>
+      <h2>Fighter versus the opponent actually in front of them.</h2>
+      <p>A matchup response resolves each fighter's own snapshot (each with its own as-of date), then compares {mm?.comparisons?.length} paired metrics with a signed delta and direction, adds stance context (fighter A's history against fighter B's listed stance and vice versa), and emits insights only when every documented rule is met. Below threshold, the missing sample is named in <code>warnings[]</code>. Nothing is fabricated.</p>
+      <h3>Comparison keys</h3>
+      <p class="mono small">{(mm?.comparisons || []).map((c: any) => c.key).join(" · ")}</p>
+      <h3>Insight rules (version {mm?.insight_rules?.version})</h3>
+      <Code json={mm?.insight_rules} title="meta.insight_rules" />
+      <h3>Live example: {mm?.fighters?.join(" vs ")}</h3>
+      <ul>{(mm?.insights || []).map((i: any) => <li><strong>{i.label}</strong> — {i.explanation} <span class="chip">{i.confidence}</span></li>)}</ul>
+      <p>And the warnings the same call produced, verbatim:</p>
+      <ul>{(mm?.warnings || []).map((w: string) => <li class="small muted">{w}</li>)}</ul>
+      <div class="callout gold">{mm?.note}</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap prose">
+      <h2 id="provenance">Provenance</h2>
+      <p>Every <code>MetricObject</code> carries: <code>metric_key</code>, <code>value</code>, <code>unit</code>, <code>numerator</code>, <code>denominator</code>, <code>sample_bouts</code>, <code>sample_rounds</code>, <code>sample_seconds</code>, <code>confidence</code>, <code>coverage_status</code>, <code>definition_version</code>, <code>origin</code>, <code>source_families</code> and <code>as_of_date</code>. Snapshots additionally carry the list of bout ids in scope, the source watermark and the build run id. The commercial gateway never strips any of it; it is part of what you pay for.</p>
+      <Code json={contract.metric_object_sample} title="MetricObject (live)" />
+
+      <h2 id="versioning">Definition versioning</h2>
+      <p>Every metric is defined in a registry row with <code>definition_version</code>, formula, unit, source families and minimum sample. A change to a definition is a new version, never a silent recalculation; snapshots carry the version they were built with, and <code>GET /v1/ufc/dna/metrics?version=</code> serves the registry for a version. The commercial contract pins the definition version it targets (currently v{contract.fight_dna_definition_version}) and a drift guard fails our build if it changes upstream.</p>
+
+      <h2 id="limits">What Fight DNA cannot tell you</h2>
+      <ul>
+        <li>It does not predict outcomes, price a market or output a probability. Nothing in the API is a pick.</li>
+        <li>It does not know what is not in the record. Bouts without round stats contribute results only; position data does not exist until a licensed source is added; injuries, weigh-ins and odds are not part of Fight DNA.</li>
+        <li>It does not adjust for opponent quality yet. Opponent-adjusted metrics and archetypes are reserved for a later definition version.</li>
+        <li>It cannot make a small sample large. Low-sample values are reported as low-sample values.</li>
+        <li>It is not an official UFC statistic and must not be presented as one.</li>
+      </ul>
+      <p><a class="btn gold" href="/pricing#plan-pro">Unlock Fight DNA on Pro</a> <a class="btn ghost" href="https://ufc.propbetedge.ai" rel="noopener">See Fight DNA in action →</a></p>
+    </div>
+  </section>
+</Base>

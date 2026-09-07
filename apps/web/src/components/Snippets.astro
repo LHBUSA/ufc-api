@@ -1,0 +1,13 @@
+---
+/* curl / JavaScript / Python snippets for one GET path, using the real auth convention. */
+import Code from "./Code.astro";
+export interface Props { path: string; host?: string; }
+const { path, host = "https://ufc.proptechusa.ai" } = Astro.props;
+const url = host + path;
+const tabs = [
+  { label: "curl", lang: "shell" as const, code: `curl -H "Authorization: Bearer $UFC_API_KEY" \\\n  "${url}"` },
+  { label: "JavaScript", lang: "js" as const, code: `const res = await fetch("${url}", {\n  headers: { Authorization: \`Bearer \${process.env.UFC_API_KEY}\` },\n});\nconst { ok, data, meta, error } = await res.json();\nif (!ok) throw new Error(\`\${error.code}: \${error.message}\`);\nconsole.log(meta.request_id, res.headers.get("x-ratelimit-remaining"));` },
+  { label: "Python", lang: "python" as const, code: `import os, requests\n\nres = requests.get(\n    "${url}",\n    headers={"Authorization": f"Bearer {os.environ['UFC_API_KEY']}"},\n    timeout=15,\n)\nbody = res.json()\nif not body["ok"]:\n    raise RuntimeError(f"{body['error']['code']}: {body['error']['message']}")\ndata = body["data"]` },
+];
+---
+<Code method="GET" path={path} tabs={tabs} />

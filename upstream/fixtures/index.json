@@ -1,0 +1,63 @@
+{
+  "captured_at": "2026-09-07T12:18:42.990Z",
+  "base": "https://ufc-api.propbetedge.ai",
+  "path": "/v1/ufc",
+  "status": 200,
+  "api_version": "2026-09-06.3",
+  "body": {
+    "ok": true,
+    "data": {
+      "name": "PropSports UFC API",
+      "version": "2026-09-06.3",
+      "status": "beta",
+      "principles": [
+        "read-only contract",
+        "source-grounded normalized facts",
+        "explicit nulls and unavailable states",
+        "no fabricated rankings, odds, predictions, or editorial facts"
+      ],
+      "media_base_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media",
+      "endpoints": {
+        "events": "/v1/ufc/events",
+        "event": "/v1/ufc/events/{id}",
+        "card": "/v1/ufc/events/{id}/card?include=media,results,stats",
+        "event_articles": "/v1/ufc/events/{id}/articles",
+        "fighters": "/v1/ufc/fighters",
+        "fighters_media": "/v1/ufc/fighters/media?ids=a,b,c",
+        "fighter": "/v1/ufc/fighters/{id}?include=media,ranking,next,history,stats",
+        "fighter_history": "/v1/ufc/fighters/{id}/history",
+        "fighter_stats": "/v1/ufc/fighters/{id}/stats",
+        "fighter_articles": "/v1/ufc/fighters/{id}/articles",
+        "bout": "/v1/ufc/bouts/{id}",
+        "bout_stats": "/v1/ufc/bouts/{id}/stats",
+        "results": "/v1/ufc/results",
+        "rankings": "/v1/ufc/rankings?division=MIDDLEWEIGHT",
+        "news": "/v1/ufc/news",
+        "wire": "/v1/ufc/wire?limit=20",
+        "article": "/v1/ufc/articles/{slug}",
+        "search": "/v1/ufc/search?q=volkanovski",
+        "counts": "/v1/ufc/counts",
+        "dna_metrics": "/v1/ufc/dna/metrics",
+        "dna_query": "/v1/ufc/dna/query?metric=pace_retention_r3_vs_r1&min=0.9&min_confidence=low&limit=50",
+        "fighter_dna": "/v1/ufc/fighters/{id}/dna?as_of=YYYY-MM-DD",
+        "fighter_splits": "/v1/ufc/fighters/{id}/splits?opponent_stance=SOUTHPAW",
+        "fighter_round_profile": "/v1/ufc/fighters/{id}/round-profile",
+        "fighter_finish_profile": "/v1/ufc/fighters/{id}/finish-profile",
+        "fighter_position_profile": "/v1/ufc/fighters/{id}/position-profile",
+        "matchup_dna": "/v1/ufc/matchups/{fighterA}/{fighterB}/dna?as_of=YYYY-MM-DD",
+        "bout_ledger": "/v1/ufc/bouts/{id}/ledger?limit=25",
+        "event_intelligence": "/v1/ufc/events/{id}/intelligence",
+        "videos": "/v1/ufc/videos?limit=20&type=&fighter_id=&event_id=&bout_id=",
+        "fighter_videos": "/v1/ufc/fighters/{id}/videos",
+        "event_videos": "/v1/ufc/events/{id}/videos",
+        "bout_videos": "/v1/ufc/bouts/{id}/videos"
+      }
+    },
+    "meta": {
+      "api": "PropSports UFC",
+      "version": "2026-09-06.3",
+      "request_id": "c0de9aa1-f262-4816-8f30-75cb4e72ad23",
+      "access_tier": "public"
+    }
+  }
+}

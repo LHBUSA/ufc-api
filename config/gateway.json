@@ -1,0 +1,27 @@
+{
+  "$note": "Runtime gateway settings that are neither secrets nor plan-specific.",
+  "product_name": "PropTechUSA UFC Intelligence API",
+  "gateway_version": "2026-09-07.1",
+  "commercial_host": "https://ufc.proptechusa.ai",
+  "upstream_base_url": "https://ufc-api.propbetedge.ai",
+  "consumer_demo_host": "https://ufc.propbetedge.ai",
+  "docs_url": "https://ufc.proptechusa.ai/docs",
+  "pricing_url": "https://ufc.proptechusa.ai/pricing",
+  "support_email": "sales@proptechusa.ai",
+  "upstream_timeout_ms": 15000,
+  "upstream_forward_request_headers": ["accept", "if-none-match", "if-modified-since"],
+  "upstream_strip_response_headers": [
+    "set-cookie", "access-control-allow-origin", "access-control-allow-headers", "access-control-allow-methods",
+    "access-control-expose-headers", "report-to", "nel", "alt-svc", "server", "cf-ray", "cf-cache-status",
+    "cache-control", "cdn-cache-control", "x-request-id", "content-length", "content-encoding", "transfer-encoding", "connection"
+  ],
+  "rate_limit_window_seconds": 60,
+  "recent_requests_kept": 50,
+  "dashboard_rate_limit_per_min": 30,
+  "cors_public_api": {
+    "origin": "*",
+    "methods": "GET,HEAD,OPTIONS",
+    "headers": "Content-Type, Authorization, X-API-Key",
+    "expose": "X-Request-Id, X-Upstream-Request-Id, X-API-Version, X-Gateway-Version, X-Plan, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-Quota-Limit, X-Quota-Remaining, X-Quota-Reset"
+  }
+}

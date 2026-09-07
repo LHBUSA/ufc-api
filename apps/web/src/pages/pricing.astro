@@ -1,0 +1,131 @@
+---
+import Base from "../layouts/Base.astro";
+import gen from "../generated/entitlements.json";
+import { fmtNumber } from "../lib/hl";
+
+const plans = gen.plans.plans;
+const order = gen.plans.plan_order;
+const cols = [...order, "first_party"];
+const matrix = gen.matrix;
+const gates = gen.entitlements.param_gates;
+const rapid = gen.rapidapi;
+const cards: Record<string, { head: string; items: string[] }> = {
+  developer: { head: "Core UFC data", items: ["Events", "Cards", "Fighters", "Results", "Rankings", "Search", "Core fight history"] },
+  pro: { head: "Fighter intelligence", items: ["Everything in Developer", "Fight DNA", "Stance DNA", "Striking DNA", "Grappling DNA", "Finish DNA", "Round profiles", "Deeper stats"] },
+  ultra: { head: "Matchup intelligence", items: ["Everything in Pro", "Matchup DNA", "Advanced context splits", "Historical as-of intelligence", "Fight Week API where available", "Higher quotas"] },
+  scale: { head: "Production infrastructure", items: ["Everything in Ultra", "Very high usage", "Higher concurrency", "Priority support", "Direct integration support", "Commercial production terms", "Bulk/custom options where rights permit"] },
+  enterprise: { head: "Custom", items: ["Dedicated infrastructure", "Custom endpoints", "Large datasets", "Special delivery", "SLAs", "Custom licensing", "Partnerships"] },
+};
+const mailto = (plan: string) => `mailto:sales@proptechusa.ai?subject=${encodeURIComponent(`UFC Intelligence API — ${plans[plan as keyof typeof plans].name} plan access`)}&body=${encodeURIComponent(`Hi PropTechUSA,\n\nI'd like API access on the ${plans[plan as keyof typeof plans].name} plan.\n\nCompany / project:\nUse case:\nExpected monthly requests:\n\nThanks`)}`;
+const groups = [
+  { t: "Core data", keys: ["index", "events", "event", "event_card", "fighters", "fighter", "fighter_history", "bout", "bout_stats", "results", "rankings", "search", "counts"] },
+  { t: "Media + video metadata", keys: ["fighters_media", "videos", "fighter_videos", "event_videos", "bout_videos"] },
+  { t: "Editorial", keys: ["news", "article", "event_articles", "fighter_articles", "wire"] },
+  { t: "Fight DNA", keys: ["dna_metrics", "fighter_stats", "fighter_dna", "fighter_splits", "fighter_round_profile", "fighter_finish_profile", "fighter_position_profile"] },
+  { t: "Matchup + Fight Week", keys: ["matchup_dna", "dna_query", "bout_ledger", "event_intelligence"] },
+];
+const jsonLd = [{ "@context": "https://schema.org", "@type": "Product", name: "PropTechUSA UFC Intelligence API", description: "Developer-ready UFC data with proprietary PropBetEdge Fight DNA.", brand: { "@type": "Brand", name: "PropTechUSA" }, offers: order.filter((k) => plans[k as keyof typeof plans].price_usd_month !== null).map((k) => ({ "@type": "Offer", name: plans[k as keyof typeof plans].name, price: plans[k as keyof typeof plans].price_usd_month, priceCurrency: "USD", availability: "https://schema.org/InStock", url: "https://ufc.proptechusa.ai/pricing" })) }];
+---
+<Base title="UFC Intelligence API Pricing | PropTechUSA.ai" description="Developer $79, Pro $199, Ultra $499, Scale $1,499, Enterprise custom. Every plan starts with normalized UFC fight records; Pro and above unlock PropBetEdge Fight DNA." path="/pricing" jsonLd={jsonLd}>
+  <section class="section">
+    <div class="wrap">
+      <p class="eyebrow">Pricing</p>
+      <h1 style="font-size:clamp(2.2rem,4.5vw,3.4rem)">Not just UFC data.</h1>
+      <p class="lede">Every plan starts with normalized fight records.</p>
+      <p class="lede" style="margin-top:-0.4em">Pro and above unlock PropBetEdge Fight DNA — proprietary fighter intelligence derived from the underlying fight record.</p>
+      <div class="pricing-grid" style="margin-top:36px">
+        {order.filter((k) => k !== "enterprise").map((k) => { const p = plans[k as keyof typeof plans] as any; const c = cards[k]; return (
+          <div class:list={["plan", { recommended: p.recommended }]} id={`plan-${k}`}>
+            {p.recommended && <span class="rec">Recommended</span>}
+            <div class="tier">{p.name}</div>
+            <div class="price">${p.price_usd_month}<small>/mo</small></div>
+            <div class="pos">{c.head}</div>
+            <ul>{c.items.map((i) => <li>{i}</li>)}</ul>
+            <div class="limits">{fmtNumber(p.included_requests)} requests / month<br />{p.rate_limit_per_min} requests / minute<br />{p.limit_mode === "soft" ? "soft limit, reviewed" : "hard limit"}</div>
+            <a class:list={["btn cta", p.recommended ? "gold" : "secondary"]} href={mailto(k)}>{p.cta}</a>
+          </div>
+        ); })}
+      </div>
+      <div class="plan enterprise" style="margin-top:16px;display:grid;grid-template-columns:1fr 2fr auto;gap:24px;align-items:center" id="plan-enterprise">
+        <div><div class="tier">Enterprise</div><div class="price" style="font-size:2rem">Let's talk</div><div class="pos">{cards.enterprise.head}</div></div>
+        <ul style="grid-template-columns:repeat(2,minmax(0,1fr))">{cards.enterprise.items.map((i) => <li>{i}</li>)}</ul>
+        <a class="btn gold cta" href={mailto("enterprise")}>Talk to us</a>
+      </div>
+      <p class="small muted" style="margin-top:14px">Prices in USD per month. Quotas and per-minute limits are initial values and are configured per plan; direct customers can be granted per-key overrides. Overage billing is not enabled on any plan.</p>
+    </div>
+  </section>
+
+  <section class="section" id="access">
+    <div class="wrap">
+      <div class="split">
+        <div>
+          <p class="eyebrow">Get API access</p>
+          <h2>Keys are issued by PropTechUSA.</h2>
+          <p>Choose a plan above and email <a href="mailto:sales@proptechusa.ai">sales@proptechusa.ai</a> with your project and expected volume. You receive a key in the <code>pt_ufc_live_…</code> format, shown once; manage it in the <a href="/dashboard">dashboard</a>. Self-serve checkout is being prepared on Stripe; until it is live, invoicing is handled directly.</p>
+          <p>Prefer a marketplace? The same API and the same plan ladder are being packaged for RapidAPI. Direct plans carry higher included request counts than the marketplace plans.</p>
+        </div>
+        <div class="card flat">
+          <h3 style="font-family:var(--font-body);font-size:1rem">Direct vs RapidAPI</h3>
+          <div class="table-wrap" style="border:0">
+            <table style="min-width:0">
+              <thead><tr><th>Plan</th><th>Direct req/mo</th><th>RapidAPI req/mo</th><th>Req/min</th></tr></thead>
+              <tbody>
+                {order.filter((k) => rapid.marketplace_plans[k as keyof typeof rapid.marketplace_plans]).map((k) => { const p = plans[k as keyof typeof plans]; const r = rapid.marketplace_plans[k as keyof typeof rapid.marketplace_plans]; return (<tr><td>{p.name}</td><td>{fmtNumber(p.included_requests)}</td><td>{fmtNumber(r.requests_per_month)}</td><td>{p.rate_limit_per_min}</td></tr>); })}
+              </tbody>
+            </table>
+          </div>
+          <p class="small muted" style="margin:10px 0 0">Same price, same response schema on both channels. Direct customers get more included requests, per-key overrides and the Enterprise upgrade path.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="matrix">
+    <div class="wrap">
+      <p class="eyebrow">Entitlements</p>
+      <h2>Every endpoint, every plan.</h2>
+      <p class="lede">Generated from the same configuration the gateway enforces. Anything not listed is not exposed.</p>
+      {groups.map((g) => (
+        <div style="margin-top:28px">
+          <h3>{g.t}</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Endpoint</th><th>Origin</th>{cols.map((c) => <th>{c === "first_party" ? "First-party" : plans[c as keyof typeof plans].name}</th>)}</tr></thead>
+              <tbody>
+                {g.keys.map((k) => { const m = matrix.find((x) => x.key === k)!; return (
+                  <tr><td><code>{m.path}</code><div class="small muted">{m.summary}</div></td><td><span class="chip">{m.origin.replace(/_/g, " ").toLowerCase()}</span></td>{cols.map((c) => <td style="text-align:center">{m.plans[c as keyof typeof m.plans] ? "✔" : "—"}</td>)}</tr>
+                ); })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      ))}
+      <div style="margin-top:28px">
+        <h3>Parameter gates</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Endpoint</th><th>Parameter</th><th>Minimum plan</th><th>What it unlocks</th></tr></thead>
+            <tbody>{gates.map((g) => { const e = matrix.find((x) => x.key === g.endpoint)!; const min = gen.matrix.find((x) => x.feature === g.feature)?.minimum_plan || order.find((p) => (plans[p as keyof typeof plans].features as string[]).includes(g.feature)); return (<tr><td><code>{e.path}</code></td><td><code>{g.param}={g.value === "*" ? "…" : g.value}</code></td><td>{plans[min as keyof typeof plans]?.name}</td><td>{g.note}</td></tr>); })}</tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="faq">
+    <div class="wrap prose">
+      <p class="eyebrow">Questions</p>
+      <h2>Straight answers.</h2>
+      <h3>What counts as a request?</h3>
+      <p>Every authenticated call to <code>/v1/ufc/*</code> that reaches the gateway, including 4xx responses from the canonical API. Denied requests (401, 403, 429) are not counted against your quota. Quotas reset on the first of each month (UTC).</p>
+      <h3>What happens at the limit?</h3>
+      <p>Developer, Pro and Ultra are hard limits: <code>429 quota_exceeded</code> with <code>Retry-After</code>. Scale is a soft limit: requests continue and the response carries <code>X-Quota-Status: over-quota-soft</code> while we talk. Per-minute limits always return <code>429 rate_limited</code>.</p>
+      <h3>Is Fight DNA a prediction?</h3>
+      <p>No. Fight DNA is deterministic, PBE-derived analytics over normalized fight history. It is not a pick, price or probability, and it is not an official UFC statistic. Every value carries its sample and confidence so you can decide what to do with it.</p>
+      <h3>Can I redistribute the data?</h3>
+      <p>Source facts and PBE-derived metrics are licensed for use in your product under the commercial terms. Image files carry their own licenses and attribution requirements; video metadata links to official channels and must not be rehosted. Third-party headlines are not sold on self-serve plans. See <a href="/legal">rights and attribution</a>.</p>
+      <h3>Do PropBetEdge properties use this gateway?</h3>
+      <p>PropBetEdge consumer products use a first-party entitlement on the canonical host. Public plans never share quota with first-party traffic.</p>
+    </div>
+  </section>
+</Base>

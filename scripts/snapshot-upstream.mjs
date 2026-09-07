@@ -1,0 +1,118 @@
+#!/usr/bin/env node
+/* Snapshot the canonical upstream UFC API contract into upstream/.
+ *
+ *   node scripts/snapshot-upstream.mjs --sha <upstream git sha> [--base https://ufc-api.propbetedge.ai]
+ *
+ * Writes:
+ *   upstream/ufc-contract.json      machine-readable provenance + route inventory + MetricObject key set
+ *   upstream/fixtures/*.json        production-safe live responses used by docs, tests and the drift guard
+ *
+ * The drift guard (scripts/check-upstream-contract.mjs) compares the live API against this snapshot.
+ * Nothing here is fabricated: every fixture is a verbatim response from the canonical host.
+ */
+import { mkdirSync, writeFileSync, readFileSync, existsSync } from "node:fs";
+import { join } from "node:path";
+import { fileURLToPath } from "node:url";
+
+const ROOT = join(fileURLToPath(new URL(".", import.meta.url)), "..");
+const args = process.argv.slice(2);
+const opt = (name, dflt) => { const i = args.indexOf(name); return i >= 0 ? args[i + 1] : dflt; };
+const gateway = JSON.parse(readFileSync(join(ROOT, "config", "gateway.json"), "utf8"));
+const BASE = (opt("--base", process.env.UPSTREAM_BASE_URL || gateway.upstream_base_url)).replace(/\/$/, "");
+const SHA = opt("--sha", process.env.UPSTREAM_SHA || null);
+const BRANCH = opt("--branch", "ufc-fight-dna-v1");
+const OUT = join(ROOT, "upstream");
+const FIX = join(OUT, "fixtures");
+mkdirSync(FIX, { recursive: true });
+
+/* Real, stable public fighters used for fixtures (UUIDs from the canonical API). */
+const STRICKLAND = "ec94d296-2db3-4e0d-be6a-46de4f480672";
+const DU_PLESSIS = "9a3b2a15-27d8-4554-9217-42ef2dd5d25c";
+
+const FIXTURES = {
+  index: "/v1/ufc",
+  health: "/health",
+  counts: "/v1/ufc/counts",
+  events_upcoming: "/v1/ufc/events?status=upcoming&limit=3",
+  rankings_middleweight: "/v1/ufc/rankings?division=MIDDLEWEIGHT",
+  search_strickland: "/v1/ufc/search?q=strickland&limit=3",
+  fighter_detail: `/v1/ufc/fighters/${STRICKLAND}?include=ranking,next`,
+  fighter_history: `/v1/ufc/fighters/${STRICKLAND}/history?limit=3`,
+  fighter_stats: `/v1/ufc/fighters/${STRICKLAND}/stats`,
+  results: "/v1/ufc/results?limit=2",
+  news: "/v1/ufc/news?limit=2",
+  videos: "/v1/ufc/videos?limit=2",
+  dna_metrics: "/v1/ufc/dna/metrics",
+  dna_query: "/v1/ufc/dna/query?metric=sig_landed_per_min&min_confidence=medium&limit=3",
+  fighter_dna: `/v1/ufc/fighters/${STRICKLAND}/dna`,
+  fighter_dna_asof_404: `/v1/ufc/fighters/${STRICKLAND}/dna?as_of=2024-01-01`,
+  fighter_splits: `/v1/ufc/fighters/${STRICKLAND}/splits`,
+  fighter_splits_southpaw: `/v1/ufc/fighters/${STRICKLAND}/splits?opponent_stance=SOUTHPAW`,
+  fighter_round_profile: `/v1/ufc/fighters/${STRICKLAND}/round-profile`,
+  fighter_finish_profile: `/v1/ufc/fighters/${STRICKLAND}/finish-profile`,
+  fighter_position_profile: `/v1/ufc/fighters/${STRICKLAND}/position-profile`,
+  matchup_dna: `/v1/ufc/matchups/${STRICKLAND}/${DU_PLESSIS}/dna`,
+  unknown_fighter_404: "/v1/ufc/fighters/00000000-0000-0000-0000-000000000000/dna",
+  unknown_route_404: "/v1/ufc/does-not-exist",
+};
+
+async function get(path) {
+  const res = await fetch(BASE + path, { headers: { accept: "application/json", "user-agent": "proptechusa-ufc-api/snapshot" } });
+  const text = await res.text();
+  let body = null; try { body = JSON.parse(text); } catch { body = { raw: text.slice(0, 2000) }; }
+  return { status: res.status, headers: Object.fromEntries(res.headers), body };
+}
+
+const captured_at = new Date().toISOString();
+const results = {};
+for (const [name, path] of Object.entries(FIXTURES)) {
+  const r = await get(path);
+  results[name] = r;
+  writeFileSync(join(FIX, `${name}.json`), JSON.stringify({ captured_at, base: BASE, path, status: r.status, api_version: r.headers["x-api-version"] || null, body: r.body }, null, 2) + "\n");
+  console.log(`${String(r.status).padEnd(4)} ${name.padEnd(28)} ${path}`);
+}
+
+const index = results.index.body?.data || {};
+const metrics = results.dna_metrics.body?.data || {};
+const sample = results.fighter_dna.body?.data?.snapshot?.metrics?.sig_landed_per_min || null;
+const eventRow = results.events_upcoming.body?.data?.[0] || null;
+const fighterRow = results.fighter_detail.body?.data || null;
+
+const contract = {
+  repository: "LHBUSA/UFC",
+  branch: BRANCH,
+  commit: SHA,
+  captured_at,
+  upstream_base_url: BASE,
+  api_version: results.index.headers["x-api-version"] || index.version || null,
+  api_name: index.name || null,
+  fight_dna_definition_version: metrics.definition_version ?? null,
+  endpoints: index.endpoints || {},
+  endpoint_paths: [...new Set(["/v1/ufc", ...Object.values(index.endpoints || {}).map((p) => p.replace(/\?.*$/, ""))])].sort(),
+  envelope: { success: ["ok", "data", "meta"], error: ["ok", "data", "error", "meta"], error_fields: ["code", "message"], meta_fields: ["api", "version", "request_id"] },
+  headers: ["X-Request-Id", "X-API-Version"],
+  metric_object_keys: sample ? Object.keys(sample).sort() : null,
+  metric_object_sample: sample,
+  origin_labels: metrics.origin_labels || null,
+  confidence_tiers: metrics.confidence_tiers ? Object.keys(metrics.confidence_tiers) : null,
+  as_of_semantics: metrics.as_of_semantics || null,
+  metric_families: metrics.families ? Object.fromEntries(Object.entries(metrics.families).map(([k, v]) => [k, v.map((m) => m.metric_key)])) : null,
+  required_fields: {
+    event: eventRow ? Object.keys(eventRow).sort() : null,
+    fighter: fighterRow ? Object.keys(fighterRow).filter((k) => !["ranking", "next_bout", "images", "primary_image"].includes(k)).sort() : null,
+    fighter_dna_snapshot: results.fighter_dna.body?.data?.snapshot ? Object.keys(results.fighter_dna.body.data.snapshot).sort() : null,
+    matchup_dna: results.matchup_dna.body?.data ? Object.keys(results.matchup_dna.body.data).sort() : null,
+    dna_comparison: results.matchup_dna.body?.data?.comparisons?.[0] ? Object.keys(results.matchup_dna.body.data.comparisons[0]).sort() : null,
+  },
+  error_codes_observed: {
+    fighter_not_found: results.unknown_fighter_404.body?.error?.code || null,
+    dna_not_available: results.fighter_dna_asof_404.body?.error?.code || null,
+    route_not_found: results.unknown_route_404.body?.error?.code || null,
+  },
+  notes: [],
+};
+const prev = existsSync(join(OUT, "ufc-contract.json")) ? JSON.parse(readFileSync(join(OUT, "ufc-contract.json"), "utf8")) : null;
+if (prev?.notes?.length) contract.notes = prev.notes;
+if (!contract.commit && prev?.commit) contract.commit = prev.commit;
+writeFileSync(join(OUT, "ufc-contract.json"), JSON.stringify(contract, null, 2) + "\n");
+console.log(`\nupstream/ufc-contract.json written: api_version=${contract.api_version} definition_version=${contract.fight_dna_definition_version} endpoints=${contract.endpoint_paths.length} commit=${contract.commit}`);

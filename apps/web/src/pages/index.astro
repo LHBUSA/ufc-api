@@ -1,0 +1,247 @@
+---
+import Base from "../layouts/Base.astro";
+import Code from "../components/Code.astro";
+import Snippets from "../components/Snippets.astro";
+import gen from "../generated/entitlements.json";
+import ex from "../generated/examples.json";
+import { fmtDate, fmtNumber } from "../lib/hl";
+
+const plans = gen.plans.plans;
+const order = gen.plans.plan_order;
+const contract = gen.contract;
+const counts = ex.counts_full;
+const reg = ex.dna_registry;
+const rec = ex.receipts;
+const S = "ec94d296-2db3-4e0d-be6a-46de4f480672";
+const D = "9a3b2a15-27d8-4554-9217-42ef2dd5d25c";
+const minPlan = (key: string) => gen.matrix.find((m) => m.key === key)?.minimum_plan || "enterprise";
+const planName = (k: string) => plans[k as keyof typeof plans]?.name || k;
+
+const heroEvents = { ...ex.events_upcoming.body, data: ex.events_upcoming.body.data.slice(0, 1) };
+const coverage = [
+  { t: "Events", key: "events", path: "/v1/ufc/events", d: counts ? `${fmtNumber(counts.events)} events` : "" },
+  { t: "Fighters", key: "fighters", path: "/v1/ufc/fighters", d: counts ? `${fmtNumber(counts.fighters)} fighters` : "" },
+  { t: "Fight cards", key: "event_card", path: "/v1/ufc/events/{id}/card", d: counts ? `${fmtNumber(counts.bouts)} bouts` : "" },
+  { t: "Results", key: "results", path: "/v1/ufc/results", d: counts ? `${fmtNumber(counts.results)} results` : "" },
+  { t: "Round stats", key: "bout_stats", path: "/v1/ufc/bouts/{id}/stats", d: counts ? `${fmtNumber(counts.round_stat_rows)} round rows` : "" },
+  { t: "Rankings", key: "rankings", path: "/v1/ufc/rankings", d: "verified ufc.com snapshot" },
+  { t: "Media", key: "fighters_media", path: "/v1/ufc/fighters/media", d: counts ? `${fmtNumber(counts.images)} licensed portraits` : "" },
+  { t: "News", key: "news", path: "/v1/ufc/news", d: counts ? `${fmtNumber(counts.articles)} PropBetEdge articles` : "" },
+  { t: "Fight DNA", key: "fighter_dna", path: "/v1/ufc/fighters/{id}/dna", d: `definition v${contract.fight_dna_definition_version}` },
+  { t: "Matchup DNA", key: "matchup_dna", path: "/v1/ufc/matchups/{a}/{b}/dna", d: "threshold-gated insights" },
+];
+const fam = (k: string) => (reg?.families?.[k] || []).map((m: any) => m.metric_key);
+const families = [
+  { t: "Stance DNA", p: "Record, finish, KO and submission rates and striking differential split by the opponent's listed stance, plus open- and same-stance context.", keys: fam("stance") },
+  { t: "Striking DNA", p: "Significant-strike pace, accuracy and defense normalized per observed minute; head, body and leg target shares; distance, clinch and ground phase shares; knockdowns per 15.", keys: fam("striking") },
+  { t: "Grappling DNA", p: "Takedown attempts and landings per 15 observed minutes, accuracy, control seconds per takedown, control share, submission attempts and reversals.", keys: fam("grappling") },
+  { t: "Finish DNA", p: "Finish, KO and submission finish rates, finish-round distribution and median finish time, from canonical results only.", keys: fam("finish") },
+  { t: "Round DNA", p: "Round-by-round attempt pace, pace retention from round one into rounds two and three, championship-round delta and defensive drift.", keys: fam("pace") },
+  { t: "Context DNA", p: "Short-notice, three-round, five-round, title-bout and main-event records, each with its own sample.", keys: fam("context") },
+  { t: "Matchup DNA", p: "Every fighter metric compared against the opponent actually in front of them: stance-specific history, pace, target, phase and grappling mismatches, finish windows. Insights are emitted only when the sample clears documented thresholds.", keys: (ex.matchup_meta?.comparisons || []).map((c: any) => c.key).slice(0, 8) },
+];
+const jsonLd = [
+  { "@context": "https://schema.org", "@type": "SoftwareApplication", name: "PropTechUSA UFC Intelligence API", applicationCategory: "DeveloperApplication", operatingSystem: "Any", url: "https://ufc.proptechusa.ai", description: "Developer-ready UFC event, fighter, fight-card and round-level data with proprietary PropBetEdge Fight DNA and matchup intelligence.", offers: order.filter((k) => plans[k as keyof typeof plans].price_usd_month !== null).map((k) => ({ "@type": "Offer", name: `${planName(k)} plan`, price: plans[k as keyof typeof plans].price_usd_month, priceCurrency: "USD", url: "https://ufc.proptechusa.ai/pricing" })) },
+];
+---
+<Base title="UFC Intelligence API — Fighter Data, Fight Stats & Fight DNA | PropTechUSA.ai" description="Developer-ready UFC event, fighter, fight-card and round-level data with proprietary PropBetEdge Fight DNA and matchup intelligence." path="/" jsonLd={jsonLd}>
+  <section class="hero">
+    <div class="hero-bg" aria-hidden="true"></div>
+    <div class="hero-grid" aria-hidden="true"></div>
+    <div class="wrap">
+      <div>
+        <div class="kicker"><span class="pt">PropTechUSA</span><span class="sep">/</span><span>UFC Intelligence API</span><span class="sep">/</span><span class="chip derived">Powered by PropBetEdge Fight DNA</span></div>
+        <h1>UFC data built for developers.</h1>
+        <p class="lede">Normalized events, fighters, cards, results and round-level statistics — plus proprietary PropBetEdge Fight DNA.</p>
+        <div class="actions">
+          <a class="btn primary" href="/pricing#access">Get API access</a>
+          <a class="btn secondary" href="/docs">View documentation</a>
+        </div>
+        <div class="trust"><span>Versioned contracts</span><span>Explicit provenance</span><span>Truthful nulls</span><span>Edge delivery</span></div>
+      </div>
+      <div>
+        <Snippets path="/v1/ufc/events?status=upcoming&limit=1" />
+        <div style="height:10px"></div>
+        <Code json={heroEvents} note={`live · ${fmtDate(ex.events_upcoming.captured_at)}`} title="response" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section tight">
+    <div class="wrap">
+      <div class="grid cols-4">
+        {[
+          ["01", "Source data", "ESPN schedule, results and identity. UFC Stats round-level statistics. ufc.com official rankings. Licensed fighter imagery."],
+          ["02", "Normalized fight record", "One identity per fighter, event and bout. Source ids preserved. Missing facts stay null; nothing is fabricated."],
+          ["03", "Proprietary Fight DNA", "Event-dated bout and round history rebuilt into as-of fighter and matchup intelligence with sample, confidence and provenance on every number."],
+          ["04", "One developer API", "A single versioned contract, edge-delivered, with the same response shape on the direct host and on RapidAPI."],
+        ].map(([n, t, p]) => (
+          <div class="card flat">
+            <p class="eyebrow">{n}</p>
+            <h3>{t}</h3>
+            <p class="small muted" style="margin:0">{p}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="coverage">
+    <div class="wrap">
+      <p class="eyebrow">Coverage</p>
+      <h2>Everything a UFC product needs, one contract.</h2>
+      <p class="lede">Only what is live today. Coverage figures are the canonical API's own counts as of {fmtDate(counts?.captured_at)}; round-stat coverage continues to backfill.</p>
+      <div class="tiles" style="margin-top:28px">
+        {coverage.map((c) => (
+          <div class="tile">
+            <div class="t">{c.t}</div>
+            <div class="d">{c.d}</div>
+            <div class="p"><span class:list={["chip", `plan-${minPlan(c.key)}`]}>{planName(minPlan(c.key))}+</span></div>
+            <div class="small mono muted" style="margin-top:8px;word-break:break-all">{c.path}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="fight-dna" style="background:linear-gradient(180deg,var(--paper) 0%,#fdf9ee 100%)">
+    <div class="wrap">
+      <p class="eyebrow gold">Proprietary intelligence</p>
+      <h2 style="font-size:clamp(2.4rem,5vw,4rem)">Fight DNA</h2>
+      <div class="split">
+        <div>
+          <p class="lede">Raw statistics describe individual events.</p>
+          <p>Fight DNA reconstructs event-dated bout and round history into proprietary fighter intelligence covering stance matchups, striking patterns, grappling, finishing behavior, round progression and context.</p>
+          <p>Every derived metric includes its sample, provenance, confidence, as-of date and definition version.</p>
+          <p class="small muted">From fight records to fight intelligence. Not simply republished source statistics: derived by PropBetEdge, labelled <span class="chip derived">PBE derived</span>, never presented as official UFC statistics.</p>
+          <p style="margin-top:18px"><a class="btn gold" href="/learn/fight-dna">How Fight DNA is built</a> <a class="btn ghost" href="https://ufc.propbetedge.ai" rel="noopener">See Fight DNA in action →</a></p>
+        </div>
+        <div class="dna-grid" style="grid-template-columns:1fr">
+          {families.slice(0, 3).map((f) => (
+            <div class="dna"><h3>{f.t}</h3><p>{f.p}</p><div class="keys">{f.keys.join(" · ")}</div></div>
+          ))}
+        </div>
+      </div>
+      <div class="dna-grid" style="margin-top:14px">
+        {families.slice(3).map((f) => (
+          <div class="dna"><h3>{f.t}</h3><p>{f.p}</p><div class="keys">{f.keys.join(" · ")}</div></div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="pipeline">
+    <div class="wrap">
+      <p class="eyebrow">The moat</p>
+      <h2>From source records to matchup intelligence.</h2>
+      <p class="lede">One upstream engine. One definition system. Every stage is versioned and reproducible.</p>
+      <div class="pipeline" style="margin-top:32px">
+        <div class="stage"><div class="label">Source records</div><div><h3>Events, bouts, results, round stats</h3><p>ESPN and UFC Stats facts, captured with source URLs and timestamps.</p><div class="items"><span>events</span><span>bouts</span><span>results</span><span>round stats</span><span>rankings</span></div></div></div>
+        <div class="arrow">↓</div>
+        <div class="stage"><div class="label">Identity + normalization</div><div><h3>One canonical record</h3><p>Fighters, events and bouts resolved across sources; UUID, UFCStats id and ESPN id all accepted for lookup.</p></div></div>
+        <div class="arrow">↓</div>
+        <div class="stage moat"><div class="label">As-of reconstruction</div><div><h3>Snapshots that never leak the future</h3><p>A snapshot dated D contains only bouts fought before D. Career displays are never used as historical features.</p></div></div>
+        <div class="arrow">↓</div>
+        <div class="stage moat"><div class="label">Fight DNA feature system</div><div><h3>Versioned metric registry</h3><p>Deterministic builder, definition version {contract.fight_dna_definition_version}, observed-time denominators.</p><div class="items"><span>stance</span><span>striking</span><span>grappling</span><span>finish</span><span>round</span><span>context</span></div></div></div>
+        <div class="arrow">↓</div>
+        <div class="stage moat"><div class="label">Confidence + provenance</div><div><h3>Every number carries evidence</h3><p>sample_bouts, sample_rounds, sample_seconds, confidence tier, coverage status, source families, as-of date.</p></div></div>
+        <div class="arrow">↓</div>
+        <div class="stage moat"><div class="label">Matchup intelligence</div><div><h3>Fighter versus the opponent in front of them</h3><p>Paired comparisons, stance context and insights emitted only above documented thresholds; everything else is a named warning.</p></div></div>
+        <div class="arrow">↓</div>
+        <div class="stage"><div class="label">Developer API</div><div><h3>ufc.proptechusa.ai/v1/ufc</h3><p>Plan-gated, metered, edge-delivered. Same body on the direct host and on RapidAPI.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  {rec && (
+    <section class="section" id="receipts">
+      <div class="wrap">
+        <p class="eyebrow gold">Provenance</p>
+        <h2>Every number has receipts.</h2>
+        <div class="receipt" style="margin-top:24px">
+          <div class="receipt-card">
+            <div class="who">{rec.fighter} · {rec.metric.metric_key}</div>
+            <div class="big">{rec.metric.value}<span style="font-size:1.4rem;color:#b9b3a2">/min</span></div>
+            <div class="who">significant strikes landed per observed minute</div>
+            <dl>
+              <div><dt>Value</dt><dd>{rec.metric.value} {rec.metric.unit}</dd></div>
+              <div><dt>Sample</dt><dd>{rec.metric.sample_bouts} bouts</dd></div>
+              <div><dt>Rounds</dt><dd>{rec.metric.sample_rounds}</dd></div>
+              <div><dt>Observed</dt><dd>{fmtNumber(rec.metric.sample_seconds / 60, 1)} minutes</dd></div>
+              <div><dt>Numerator / denominator</dt><dd>{rec.metric.numerator} / {rec.metric.denominator} s</dd></div>
+              <div><dt>Confidence</dt><dd style="text-transform:capitalize">{rec.metric.confidence}</dd></div>
+              <div><dt>Coverage</dt><dd style="text-transform:capitalize">{rec.metric.coverage_status}</dd></div>
+              <div><dt>As of</dt><dd>{fmtDate(rec.metric.as_of_date)}</dd></div>
+              <div><dt>Definition</dt><dd>v{rec.metric.definition_version}</dd></div>
+              <div><dt>Origin</dt><dd>PBE derived · {rec.metric.source_families.join(", ")}</dd></div>
+            </dl>
+          </div>
+          <div>
+            <Code method="GET" path={`/v1/ufc/fighters/${S}/dna`} json={{ metric_key: rec.metric.metric_key, ...rec.metric }} note={`live · ${fmtDate(rec.captured_at)}`} />
+            <p class="small muted" style="margin-top:12px">This is a verbatim <code>MetricObject</code> from the live API for {rec.fighter}'s current snapshot ({rec.snapshot.sample_bouts} completed bouts in scope, {rec.snapshot.sample_rounds} stat-covered rounds). A low sample is reported as a low sample. A zero denominator is a <code>null</code> value with <code>confidence: "insufficient"</code>, never a fake zero.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="section" id="examples">
+    <div class="wrap">
+      <p class="eyebrow">Real responses</p>
+      <h2>What you actually get back.</h2>
+      <p class="lede">Verbatim responses captured from the canonical API on {fmtDate(ex.fighter_dna.captured_at)}. Large payloads are subset for display and marked with an ellipsis; no value was edited.</p>
+      <div class="grid cols-2" style="margin-top:28px">
+        <div>
+          <p class="eyebrow">Fighter Fight DNA <span class="chip plan-pro">Pro+</span></p>
+          <Code method="GET" path={`/v1/ufc/fighters/${S}/dna`} json={ex.fighter_dna.body} tall />
+        </div>
+        <div>
+          <p class="eyebrow">Matchup DNA <span class="chip plan-ultra">Ultra+</span></p>
+          <Code method="GET" path={`/v1/ufc/matchups/${S}/${D}/dna`} json={ex.matchup_dna.body} tall />
+        </div>
+      </div>
+      <p style="margin-top:20px"><a class="btn secondary" href="/docs">Read the docs</a> <a class="btn ghost" href="/docs/reference">Interactive API reference →</a></p>
+    </div>
+  </section>
+
+  <section class="section" id="plans">
+    <div class="wrap">
+      <p class="eyebrow">Plans</p>
+      <h2>Not just UFC data.</h2>
+      <p class="lede">Every plan starts with normalized fight records. Pro and above unlock PropBetEdge Fight DNA; Ultra unlocks Matchup DNA; Scale is production infrastructure.</p>
+      <div class="pricing-grid" style="margin-top:28px">
+        {order.filter((k) => k !== "enterprise").map((k) => { const p = plans[k as keyof typeof plans]; return (
+          <div class:list={["plan", { recommended: (p as any).recommended }]}>
+            {(p as any).recommended && <span class="rec">Recommended</span>}
+            <div class="tier">{p.name}</div>
+            <div class="price">${p.price_usd_month}<small>/mo</small></div>
+            <div class="pos">{p.tagline}</div>
+            <div class="limits">{fmtNumber(p.included_requests)} req/mo · {p.rate_limit_per_min} req/min</div>
+            <a class="btn secondary cta" href="/pricing">{p.cta}</a>
+          </div>
+        ); })}
+      </div>
+      <p class="small muted" style="margin-top:16px">Enterprise: dedicated infrastructure, custom endpoints, licensing and partnerships. <a href="/pricing">Full pricing and entitlement matrix →</a></p>
+    </div>
+  </section>
+
+  <section class="section tight">
+    <div class="wrap">
+      <div class="split">
+        <div>
+          <p class="eyebrow">Independent</p>
+          <h3>Not an official UFC API.</h3>
+          <p class="small muted">PropTechUSA and PropBetEdge are independent products and are not affiliated with, endorsed by, or sponsored by UFC, Zuffa LLC, TKO Group, ESPN or any sportsbook. Source facts, images and video links carry their own attribution and licenses; Fight DNA values are PropBetEdge-derived analytics. <a href="/legal">Rights and attribution →</a></p>
+        </div>
+        <div>
+          <p class="eyebrow">Network</p>
+          <div class="network">
+            <a href="https://proptechusa.ai" rel="noopener">PropTechUSA.ai <span class="m">data infrastructure</span></a>
+            <a href="https://ufc.propbetedge.ai" rel="noopener">PropBetEdge UFC <span class="m">consumer demonstration</span></a>
+            <a href="https://ufc-api.propbetedge.ai/v1/ufc" rel="noopener">ufc-api.propbetedge.ai <span class="m">canonical host</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

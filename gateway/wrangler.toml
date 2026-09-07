@@ -1,0 +1,81 @@
+# PropTechUSA UFC Intelligence API — commercial gateway + developer portal.
+#
+# One Worker serves ufc.proptechusa.ai:
+#   static portal (apps/web/dist)           /, /docs, /pricing, /learn/fight-dna, /dashboard, /openapi.json
+#   commercial gateway (src/index.js)       /v1/ufc/*, /health, /dashboard/api/*, /admin/*
+#
+# Default environment = PREVIEW on workers.dev (no custom domain, no DNS change).
+# `wrangler deploy --env production` attaches the custom domain ufc.proptechusa.ai — run only after the
+# preview gate in docs/DEPLOYMENT.md passes.
+
+name = "proptechusa-ufc-api"
+main = "src/index.js"
+compatibility_date = "2026-09-01"
+compatibility_flags = ["nodejs_compat"]
+account_id = "fd3a233edadd0a60916413c1199f71ee"
+workers_dev = true
+preview_urls = true
+
+[assets]
+directory = "../apps/web/dist"
+binding = "ASSETS"
+not_found_handling = "404-page"
+html_handling = "auto-trailing-slash"
+run_worker_first = ["/v1/*", "/health", "/dashboard/api/*", "/admin/*"]
+
+[vars]
+GATEWAY_ENV = "preview"
+UPSTREAM_BASE_URL = "https://ufc-api.propbetedge.ai"
+PUBLIC_HOST = "https://proptechusa-ufc-api.sales-fd3.workers.dev"
+# Secrets (never in this file):
+#   npx wrangler secret put ADMIN_TOKEN              admin key-issuance API + scripts/issue-key.mjs
+#   npx wrangler secret put RAPIDAPI_PROXY_SECRET    value from the RapidAPI provider console (Settings → Proxy secret)
+#   npx wrangler secret put UPSTREAM_API_KEY         optional; forwarded as X-API-Key once the canonical host enables REQUIRE_API_KEY
+
+[[kv_namespaces]]
+binding = "API_KEYS"
+id = "91103613c6e2490c928e35b7c7d35121"
+
+[[durable_objects.bindings]]
+name = "USAGE_COUNTER"
+class_name = "UsageCounter"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["UsageCounter"]
+
+[[analytics_engine_datasets]]
+binding = "USAGE"
+dataset = "ufc_api_usage"
+
+[observability]
+enabled = true
+
+# ---------------------------------------------------------------------------
+[env.production]
+name = "proptechusa-ufc-api"
+workers_dev = false
+preview_urls = false
+routes = [
+  { pattern = "ufc.proptechusa.ai", custom_domain = true }
+]
+
+[env.production.vars]
+GATEWAY_ENV = "production"
+UPSTREAM_BASE_URL = "https://ufc-api.propbetedge.ai"
+PUBLIC_HOST = "https://ufc.proptechusa.ai"
+
+[[env.production.kv_namespaces]]
+binding = "API_KEYS"
+id = "91103613c6e2490c928e35b7c7d35121"
+
+[[env.production.durable_objects.bindings]]
+name = "USAGE_COUNTER"
+class_name = "UsageCounter"
+
+[[env.production.analytics_engine_datasets]]
+binding = "USAGE"
+dataset = "ufc_api_usage"
+
+[env.production.observability]
+enabled = true

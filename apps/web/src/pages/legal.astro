@@ -1,0 +1,39 @@
+---
+import Base from "../layouts/Base.astro";
+import gen from "../generated/entitlements.json";
+const contract = gen.contract;
+---
+<Base title="Legal, Rights & Attribution | PropTechUSA UFC Intelligence API" description="Independence statement, source attribution, media and video rights, and commercial use notes for the PropTechUSA UFC Intelligence API." path="/legal">
+  <section class="section">
+    <div class="wrap prose">
+      <p class="eyebrow">Legal</p>
+      <h1 style="font-size:clamp(2rem,4vw,3rem)">Rights, attribution and independence.</h1>
+
+      <h2>Independence</h2>
+      <p>PropTechUSA and PropBetEdge are independent products and are not affiliated with, endorsed by, or sponsored by UFC, Zuffa LLC, TKO Group, ESPN or any sportsbook. "UFC" and related marks belong to their respective owners and are used here only to identify the subject matter of the data. Nothing on this service is an official UFC statistic, ranking or publication.</p>
+
+      <h2>What you receive, by origin</h2>
+      <ul>
+        <li><strong>Source facts</strong> (events, fighters, bouts, results, round statistics, official rankings snapshot) are normalized from ESPN, UFC Stats and ufc.com public pages. They are provided for use in your product under your plan's terms. Source ids and capture provenance are preserved so you can attribute the underlying fact.</li>
+        <li><strong>PBE-derived metrics</strong> (Fight DNA, Matchup DNA, computed career rates) are PropBetEdge analytics computed from normalized fight history. They must be presented as PropBetEdge-derived analytics, never as official statistics, predictions, odds or advice.</li>
+        <li><strong>Editorial</strong> (news, articles) is PropBetEdge content.</li>
+        <li><strong>Media metadata</strong>: fighter image entries carry <code>license</code>, <code>author</code>, <code>source_url</code>, <code>attribution_text</code> and <code>rights_label</code>. The license attached to each image governs its use; most are Creative Commons or public-domain works from Wikimedia Commons and require the credit to be displayed wherever the image is shown. An image reference in the API is not a grant of unrestricted relicensing.</li>
+        <li><strong>Video metadata</strong> references official YouTube channels by id and URL. Playback must use the provider's own player and rules; downloading or rehosting is not permitted. <code>attribution</code> must be rendered verbatim.</li>
+        <li><strong>Third-party headlines</strong> (the wire) are verbatim source headlines with attribution and are not included in self-serve plans.</li>
+      </ul>
+
+      <h2>Truthfulness</h2>
+      <p>The API returns <code>null</code> or an explicit unavailable state when a fact is missing. It never fabricates rankings, odds, picks, probabilities, images or editorial facts. Derived metrics carry their sample size and confidence; you are responsible for presenting low-confidence values as such.</p>
+
+      <h2>Commercial use</h2>
+      <p>Plans license the use of API responses inside your own products and services. Bulk redistribution, resale of raw datasets, or sublicensing of image files is not included in self-serve plans and requires an Enterprise agreement and, where applicable, a rights review of the specific fields involved. Our internal classification of every field is maintained in the commercial rights matrix shipped with the gateway source and is marked <em>review required</em> wherever we have not confirmed redistribution rights.</p>
+
+      <h2>Terms of service</h2>
+      <div class="callout gold">Formal terms of service and a data licence agreement for direct customers are being finalized with counsel. Until published here, access is governed by the written agreement or order confirmation issued with your key. Marketplace subscribers are additionally bound by the marketplace's terms.</div>
+
+      <h2>Contract provenance</h2>
+      <p class="small mono">Canonical data contract {contract.api_version} · Fight DNA definition version {contract.fight_dna_definition_version} · upstream {contract.repository}@{contract.branch} {String(contract.commit).slice(0, 10)}</p>
+      <p>Questions: <a href="mailto:sales@proptechusa.ai">sales@proptechusa.ai</a>.</p>
+    </div>
+  </section>
+</Base>

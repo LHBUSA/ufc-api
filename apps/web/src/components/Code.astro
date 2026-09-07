@@ -1,0 +1,45 @@
+---
+/* Code panel: optional method/path bar, optional language tabs (curl / JavaScript / Python). */
+import { hlJson, hlShell } from "../lib/hl";
+export interface Props {
+  method?: string;
+  path?: string;
+  json?: unknown;
+  shell?: string;
+  tabs?: { label: string; code: string; lang?: "shell" | "js" | "python" | "json" }[];
+  title?: string;
+  tall?: boolean;
+  note?: string;
+}
+const { method, path, json, shell, tabs, title, tall = false, note } = Astro.props;
+const id = "c" + Math.random().toString(36).slice(2, 8);
+const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+---
+<div class:list={["code", { tall }]}>
+  <div class="bar">
+    {method && <span class="method">{method}</span>}
+    {path && <span class="path" title={path}>{path}</span>}
+    {title && !path && <span class="path">{title}</span>}
+    {note && <span class="right">{note}</span>}
+    {tabs && (
+      <div class="right tabs" role="tablist">
+        {tabs.map((t, i) => <button role="tab" aria-selected={i === 0 ? "true" : "false"} data-tab={`${id}-${i}`}>{t.label}</button>)}
+      </div>
+    )}
+  </div>
+  {json !== undefined && <pre><code set:html={hlJson(json)} /></pre>}
+  {shell && <pre><code set:html={hlShell(shell)} /></pre>}
+  {tabs && tabs.map((t, i) => <pre id={`${id}-${i}`} hidden={i !== 0}><code set:html={t.lang === "json" ? hlJson(t.code) : t.lang === "shell" ? hlShell(t.code) : esc(t.code)} /></pre>)}
+</div>
+{tabs && (
+  <script is:inline define:vars={{ id }}>
+    document.querySelectorAll(`[data-tab^="${id}-"]`).forEach((b) => b.addEventListener("click", () => {
+      const group = b.closest(".code");
+      group.querySelectorAll("[role=tab]").forEach((x) => x.setAttribute("aria-selected", "false"));
+      group.querySelectorAll("pre[id]").forEach((p) => (p.hidden = true));
+      b.setAttribute("aria-selected", "true");
+      const target = group.querySelector("#" + b.dataset.tab);
+      if (target) target.hidden = false;
+    }));
+  </script>
+)}

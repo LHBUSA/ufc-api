@@ -1,0 +1,27 @@
+{
+  "captured_at": "2026-09-07T12:18:42.990Z",
+  "base": "https://ufc-api.propbetedge.ai",
+  "path": "/v1/ufc/counts",
+  "status": 200,
+  "api_version": "2026-09-06.3",
+  "body": {
+    "ok": true,
+    "data": {
+      "fighters": 1323,
+      "events": 898,
+      "bouts": 1465,
+      "results": 1380,
+      "round_stat_rows": 2566,
+      "articles": 28,
+      "images": 174,
+      "fighters_with_media": 174,
+      "rounds": 2566
+    },
+    "meta": {
+      "api": "PropSports UFC",
+      "version": "2026-09-06.3",
+      "request_id": "64a5270a-6e8c-412e-8bab-4a594c5a5de4",
+      "access_tier": "public"
+    }
+  }
+}

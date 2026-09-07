@@ -1,0 +1,48 @@
+# UFC Intelligence API — commercial rights matrix
+
+Classification of every commercially exposed endpoint / field family by origin and redistribution status. This is an engineering inventory to support a legal review, **not a legal conclusion**. Wherever redistribution rights have not been confirmed by counsel or by a source contract the status is **REVIEW REQUIRED**. The ability to display a field on the PropBetEdge consumer site does not imply the right to sell unrestricted redistribution of it.
+
+Legend — origin: `PBE_DERIVED` computed by PropBetEdge from normalized data · `SOURCE_FACT` normalized public fact · `LICENSED` third-party licensed data · `EDITORIAL` PropBetEdge-authored content · `MEDIA` image assets and metadata · `THIRD_PARTY_LINK` identifiers/URLs pointing at a third party.
+
+## Endpoints and field families
+
+| Endpoint / field family | Origin | Source family | Technically available | Commercial redistribution status | Attribution requirement | Known restriction | Legal / source review |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `/v1/ufc/events`, `/events/{id}` (event identity, date, venue, status) | SOURCE_FACT | ESPN schedule, UFC Stats | yes | facts; served to customers under plan terms | none required by API; source ids preserved | scraped public pages; no source contract | **REVIEW REQUIRED** (ESPN ToS for commercial redistribution of scraped schedule facts) |
+| `/events/{id}/card` (bout list, order, weight class, scheduled rounds, `result`) | SOURCE_FACT | ESPN, UFC Stats | yes | facts | none | as above | **REVIEW REQUIRED** |
+| `/fighters`, `/fighters/{id}` (identity, dob, height, reach, stance, record) | SOURCE_FACT | ESPN, UFC Stats | yes | facts | none | as above | **REVIEW REQUIRED** |
+| `/fighters/{id}/history` | SOURCE_FACT | ESPN, UFC Stats | yes | facts | none | as above | **REVIEW REQUIRED** |
+| `/results` | SOURCE_FACT | ESPN | yes | facts | none | as above | **REVIEW REQUIRED** |
+| `/bouts/{id}`, `/bouts/{id}/stats` (round-level strike/takedown/control counts) | SOURCE_FACT | UFC Stats | yes (partial coverage) | facts; per-round counts are the most sensitive source field family | none by API; recommend "Statistics via UFC Stats" | ufcstats.com terms; bulk republication of round stats is the highest-risk source field | **REVIEW REQUIRED** — do not offer bulk export of round rows until cleared |
+| `/rankings` (official rankings snapshot) | SOURCE_FACT | ufc.com | yes | facts with explicit `source` / `source_url` | render `source` ("ufc.com official rankings") | ufc.com terms; rankings are UFC editorial output | **REVIEW REQUIRED** — attribution mandatory |
+| `/search`, `/counts`, `/v1/ufc` index | SOURCE_FACT | derived from the above | yes | same as underlying | none | — | inherits above |
+| `/fighters/{id}/stats` → `computed.*` (career rates, totals) | PBE_DERIVED | computed from UFC Stats rows | yes | PBE-derived; sellable as PropBetEdge analytics | label "PBE derived"; show sample/provenance | derived from source counts (see round stats row) | review only if round-stat redistribution is restricted at the *derived* level |
+| `/dna/metrics` (registry definitions) | PBE_DERIVED | PropBetEdge | yes | PropBetEdge IP; sellable | label "PBE derived" | none | none |
+| `/fighters/{id}/dna`, `/splits`, `/round-profile`, `/finish-profile` (MetricObjects) | PBE_DERIVED | computed from ESPN results + UFC Stats rounds | yes | PropBetEdge IP; sellable; must not be presented as official statistics | label "PBE derived"; expose sample, confidence, as-of, definition version | metrics embed `numerator`/`denominator` raw counts (e.g. strikes landed, observed seconds) — those are source-derived aggregates | **REVIEW REQUIRED** only for raw numerator/denominator exposure if source terms restrict republication of counts; the derived values themselves are PBE IP |
+| `/fighters/{id}/position-profile` | LICENSED (reserved) | none yet | returns explicit `licensed_data_not_available` | not available | n/a | requires a licensed position/finish source and contract | **REVIEW REQUIRED** before any licensed source is exposed |
+| `/matchups/{a}/{b}/dna`, `/dna/query` | PBE_DERIVED | PropBetEdge | yes | PropBetEdge IP; sellable | label "PBE derived"; insights carry samples; `note` says not a pick/price/probability | none | none |
+| `/bouts/{id}/ledger`, `/events/{id}/intelligence` | PBE_DERIVED + SOURCE_FACT | PropBetEdge ledger over ESPN/UFC Stats/ufc.com facts; `wire.count` only | yes | derived state; sellable as analytics | none | contains rankings snapshot dates and result status from sources | inherits source rows above |
+| `primary_image`, `images[]`, `hero_image` (image URLs + `license`, `author`, `source_url`, `attribution_text`, `rights_label`, `kind`) | MEDIA | Wikimedia Commons (CC BY / CC BY-SA / CC0 / public domain), `licensed_editorial`, `official_press` | yes (174 fighters at capture) | **per-file license**: CC BY / CC BY-SA require attribution and (SA) share-alike on derivatives; CC0 / PD unrestricted; `licensed_editorial` / `official_press` per their contract | **mandatory**: render `attribution_text` wherever the image is shown | API delivers first-party Storage URLs of derived crops (portrait/card/thumb) — derivative works of CC images; customers must carry the license forward | **REVIEW REQUIRED** for `licensed_editorial` and `official_press` kinds; CC families are self-describing but customers must be told the obligation. ESPN display-only fallbacks are never in the API. |
+| `/fighters/media` (bulk map) | MEDIA | as above | yes (max 150 ids) | as above | as above | bulk lookup of licensed media metadata | as above; keep RapidAPI packaging conservative (metadata + attribution, no relicensing language) |
+| `/videos`, `/fighters/{id}/videos`, `/events/{id}/videos`, `/bouts/{id}/videos` (YouTube ids, official URLs, embed URL, thumbnail URL, channel, `attribution`) | THIRD_PARTY_LINK | YouTube Data API v3, official UFC / partner channels | yes | **identifiers and links only**; no video content is hosted or redistributed | render `attribution` ("YouTube · <channel>") verbatim; playback via YouTube player | YouTube API Services Terms (no caching beyond limits, no download, embed rules); `thumbnail_url` points at YouTube | **REVIEW REQUIRED** (YouTube API ToS compliance for a resold metadata feed; thumbnail URL redistribution) |
+| `/news`, `/articles/{slug}`, `/events/{id}/articles`, `/fighters/{id}/articles` (PropBetEdge articles, `analysis`, `analysis_summary`) | EDITORIAL | PropBetEdge newsroom (fact-block writer + editorial desk) | yes | PropBetEdge content; sellable | attribute to PropBetEdge; `hero_image` follows the MEDIA row | `sources[]` cite third-party items; `impact_score` is analysis, not a price | none for prose; hero images per MEDIA row |
+| `/wire` (third-party headlines, verbatim titles and summaries, source URLs) | THIRD_PARTY_LINK | RSS feeds of MMA news publishers | yes | **not offered on self-serve plans**; Enterprise / first-party only | source name + URL on every item | verbatim third-party headlines and summaries; publisher terms vary | **REVIEW REQUIRED** — treat as a link feed only; no redistribution of summaries without publisher terms |
+| Envelope `meta` (request ids, versions, counts) | PBE_DERIVED | gateway / canonical API | yes | n/a | none | none | none |
+
+## Positioning rules (enforced in docs and marketplace copy)
+
+1. Fight DNA and Matchup DNA are described as PropBetEdge-derived analytics. Never "official UFC analytics", never "exclusive industry data", never "UFC affiliated", never "patented".
+2. Source facts are described as normalized from public sources with preserved provenance. No claim that UFC lacks the data or that nobody else can compute it.
+3. Media: the API is a metadata and reference service. Image files carry their own license; the customer inherits the attribution obligation. No language implying relicensing.
+4. Video: identifiers and official links only. No rehosting, no implied ownership.
+5. Editorial: PropBetEdge editorial is clearly separated from third-party headlines and from PBE-derived analysis.
+
+## Items needing rights / legal review before launch
+
+- ESPN and UFC Stats terms for commercial redistribution of scraped schedule, result and round-count facts (highest priority: round-level counts and bulk export).
+- ufc.com rankings attribution and reuse terms.
+- YouTube API Services Terms for a resold video-metadata feed (including thumbnail URLs and caching limits).
+- Media `kind = licensed_editorial` / `official_press` contract scope (redistribution to API customers).
+- Wire feed publisher terms (currently excluded from self-serve plans).
+- Formal terms of service / data licence for direct customers (portal `/legal` states this is pending).
+- RapidAPI listing terms and marketplace attribution requirements.

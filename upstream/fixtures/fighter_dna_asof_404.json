@@ -1,0 +1,26 @@
+{
+  "captured_at": "2026-09-07T12:18:42.990Z",
+  "base": "https://ufc-api.propbetedge.ai",
+  "path": "/v1/ufc/fighters/ec94d296-2db3-4e0d-be6a-46de4f480672/dna?as_of=2024-01-01",
+  "status": 404,
+  "api_version": "2026-09-06.3",
+  "body": {
+    "ok": false,
+    "data": null,
+    "error": {
+      "code": "dna_not_available",
+      "message": "No Fight DNA snapshot exists for Sean Strickland at or before 2024-01-01. Nothing is synthesized.",
+      "detail": {
+        "fighter_id": "ec94d296-2db3-4e0d-be6a-46de4f480672",
+        "requested_as_of": "2024-01-01",
+        "definition_version": 1,
+        "reason": "no_snapshot_at_or_before_as_of"
+      }
+    },
+    "meta": {
+      "api": "PropSports UFC",
+      "version": "2026-09-06.3",
+      "request_id": "2777d9f5-5951-429c-b72e-514a05073292"
+    }
+  }
+}

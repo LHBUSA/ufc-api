@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.wrangler/
+.dev.vars
+*.log
+.DS_Store
+.env
+.env.*
+!.env.example
+apps/web/.astro/
+apps/web/public/openapi.json
+apps/web/src/generated/
+.secrets/
+qa/screenshots/*.png

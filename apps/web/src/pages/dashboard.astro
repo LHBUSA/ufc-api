@@ -1,0 +1,134 @@
+---
+import Base from "../layouts/Base.astro";
+import gen from "../generated/entitlements.json";
+---
+<Base title="API Dashboard | PropTechUSA UFC Intelligence API" description="Plan, usage, quota, rate limit and recent requests for your UFC Intelligence API key. Copy, rotate and manage your key." path="/dashboard">
+  <section class="dash wrap">
+    <p class="eyebrow">Dashboard</p>
+    <h1 style="font-size:clamp(2rem,4vw,2.8rem)">Your key, your usage.</h1>
+    <p class="lede">Paste your API key to load plan, usage and recent requests. The key stays in this browser tab only and is never stored.</p>
+    <div class="card" style="margin-top:20px">
+      <label for="key" class="eyebrow" style="display:block">API key</label>
+      <div class="field">
+        <input id="key" type="password" autocomplete="off" spellcheck="false" placeholder="pt_ufc_live_…" aria-describedby="status" />
+        <button class="btn primary" id="load">Load</button>
+        <button class="btn secondary" id="copy" type="button">Copy key</button>
+      </div>
+      <p class="status-line" id="status" role="status"></p>
+    </div>
+
+    <div id="panel" hidden>
+      <div class="row" style="margin-top:20px">
+        <div class="stat"><div class="l">Plan</div><div class="v" id="p-plan">—</div><div class="s" id="p-price"></div></div>
+        <div class="stat"><div class="l">Month usage</div><div class="v" id="p-used">—</div><div class="s" id="p-quota"></div><div class="bar-track"><div class="bar-fill" id="p-bar"></div></div></div>
+        <div class="stat"><div class="l">Rate limit</div><div class="v" id="p-rpm">—</div><div class="s">requests / minute</div></div>
+        <div class="stat"><div class="l">API version</div><div class="v mono" style="font-size:1.05rem" id="p-version">—</div><div class="s" id="p-gw"></div></div>
+      </div>
+      <div class="grid cols-2" style="margin-top:14px">
+        <div class="card flat">
+          <h3 style="font-family:var(--font-body);font-size:1rem">Key</h3>
+          <div class="keybox" id="p-display">—</div>
+          <dl class="small" style="display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:14px 0 0">
+            <dt class="muted">Key id</dt><dd class="mono" id="p-id"></dd>
+            <dt class="muted">Label</dt><dd id="p-label"></dd>
+            <dt class="muted">Channel</dt><dd id="p-channel"></dd>
+            <dt class="muted">Status</dt><dd id="p-status"></dd>
+            <dt class="muted">Created</dt><dd id="p-created"></dd>
+            <dt class="muted">Expires</dt><dd id="p-expires"></dd>
+            <dt class="muted">Last used</dt><dd id="p-last"></dd>
+            <dt class="muted">Customer</dt><dd id="p-customer"></dd>
+          </dl>
+          <div class="actions-row" style="margin-top:16px">
+            <button class="btn secondary" id="rotate" type="button">Rotate key</button>
+            <a class="btn secondary" href="/docs">View docs</a>
+            <a class="btn gold" href="/pricing">Upgrade</a>
+          </div>
+          <div id="rotate-confirm" hidden style="margin-top:14px" class="callout red">
+            <strong>Rotate now?</strong> A new key is issued and shown once. The current key stops working immediately.
+            <div class="actions-row" style="margin-top:10px"><button class="btn primary" id="rotate-yes" type="button">Yes, rotate</button><button class="btn secondary" id="rotate-no" type="button">Cancel</button></div>
+          </div>
+          <div id="rotated" hidden style="margin-top:14px" class="callout gold">
+            <strong>New key (shown once). Store it now.</strong>
+            <div class="keybox" id="new-key" style="margin-top:8px"></div>
+            <div class="actions-row" style="margin-top:10px"><button class="btn secondary" id="copy-new" type="button">Copy new key</button></div>
+          </div>
+        </div>
+        <div class="card flat">
+          <h3 style="font-family:var(--font-body);font-size:1rem">Entitlements</h3>
+          <p class="small muted">Features on this plan. Endpoints for each are listed on the <a href="/pricing#matrix">pricing page</a>.</p>
+          <div id="p-features" class="network"></div>
+          <h3 style="font-family:var(--font-body);font-size:1rem;margin-top:18px">Denied this month</h3>
+          <div id="p-denied" class="small muted">—</div>
+          <h3 style="font-family:var(--font-body);font-size:1rem;margin-top:18px">Previous months</h3>
+          <div id="p-months" class="small mono muted">—</div>
+        </div>
+      </div>
+      <div class="card flat" style="margin-top:14px">
+        <h3 style="font-family:var(--font-body);font-size:1rem">Recent requests</h3>
+        <div class="table-wrap" style="border:0"><table id="p-recent"><thead><tr><th>Time (UTC)</th><th>Status</th><th>Path</th><th>Route</th><th>Latency</th><th>Request id</th></tr></thead><tbody></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:28px" id="no-key-help">
+      <strong>No key yet?</strong> Keys are issued per plan by PropTechUSA. <a href="/pricing#access">Get API access →</a>
+    </div>
+  </section>
+
+  <script>
+    const $ = (id: string) => document.getElementById(id)!;
+    const status = (msg: string, err = false) => { const s = $("status"); s.textContent = msg; s.classList.toggle("err", err); };
+    const fmt = (n: number | null) => (n === null || n === undefined ? "unlimited" : n.toLocaleString("en-US"));
+    const when = (iso: string | null) => (iso ? new Date(iso).toISOString().replace("T", " ").slice(0, 19) + "Z" : "—");
+    let currentKey = "";
+    try { currentKey = sessionStorage.getItem("ufc_api_key") || ""; } catch {}
+    const input = $("key") as HTMLInputElement;
+    if (currentKey) input.value = currentKey;
+
+    async function api(path: string, method = "GET") {
+      const res = await fetch(path, { method, headers: { authorization: `Bearer ${currentKey}` } });
+      const body = await res.json();
+      if (!body.ok) throw new Error(`${body.error?.code}: ${body.error?.message}`);
+      return body.data;
+    }
+
+    function render(d: any) {
+      $("panel").hidden = false; $("no-key-help").hidden = true;
+      $("p-plan").textContent = d.plan.name;
+      $("p-price").textContent = d.plan.price_usd_month === null ? d.plan.tagline : `$${d.plan.price_usd_month}/mo · ${d.plan.tagline}`;
+      $("p-used").textContent = fmt(d.usage.used);
+      $("p-quota").textContent = d.usage.quota === null ? "unlimited · resets " + when(new Date(d.usage.month_reset * 1000).toISOString()) : `of ${fmt(d.usage.quota)} · resets ${new Date(d.usage.month_reset * 1000).toISOString().slice(0, 10)}`;
+      const pct = d.usage.quota ? Math.min(100, (100 * d.usage.used) / d.usage.quota) : 0;
+      const bar = $("p-bar"); bar.style.width = pct + "%"; bar.className = "bar-fill" + (pct >= 100 ? " over" : pct >= 80 ? " warn" : "");
+      $("p-rpm").textContent = fmt(d.plan.limits.rate_limit_per_min);
+      $("p-version").textContent = d.api.version; $("p-gw").textContent = `gateway ${d.api.gateway_version} · Fight DNA v${d.api.fight_dna_definition_version}`;
+      $("p-display").textContent = d.key.display; $("p-id").textContent = d.key.id; $("p-label").textContent = d.key.label || "—"; $("p-channel").textContent = d.key.channel; $("p-status").textContent = d.key.status;
+      $("p-created").textContent = when(d.key.created_at); $("p-expires").textContent = d.key.expires_at ? when(d.key.expires_at) : "never"; $("p-last").textContent = when(d.key.last_used_at); $("p-customer").textContent = d.customer ? `${d.customer.name} (${d.customer.keys} key${d.customer.keys === 1 ? "" : "s"})` : "—";
+      $("p-features").innerHTML = d.plan.features.map((f: string) => `<span class="chip">${f === "*" ? "everything" : f.replace(/_/g, " ")}</span>`).join(" ");
+      $("p-denied").textContent = d.usage.denied.length ? d.usage.denied.map((x: any) => `${x.reason}: ${x.count}`).join(" · ") : "none";
+      $("p-months").textContent = d.usage.months.length ? d.usage.months.map((m: any) => `${m.month}: ${fmt(m.requests)}`).join(" · ") : "—";
+      const tb = $("p-recent").querySelector("tbody")!;
+      tb.innerHTML = d.recent_requests.length ? d.recent_requests.map((r: any) => `<tr><td class="mono small">${when(r.ts)}</td><td><code>${r.status}</code></td><td class="mono small" style="word-break:break-all">${escapeHtml(r.path)}</td><td class="small">${r.route_key || ""}</td><td class="small">${r.latency_ms == null ? "" : Math.round(r.latency_ms) + " ms"}</td><td class="mono small">${r.request_id}</td></tr>`).join("") : `<tr><td colspan="6" class="muted">No requests yet.</td></tr>`;
+    }
+    const escapeHtml = (s: string) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c] as string));
+
+    async function load() {
+      currentKey = input.value.trim();
+      if (!currentKey) return status("Paste an API key first.", true);
+      status("Loading…");
+      try { const d = await api("/dashboard/api/me"); try { sessionStorage.setItem("ufc_api_key", currentKey); } catch {} render(d); status(`Loaded ${d.key.display} at ${when(new Date().toISOString())}`); }
+      catch (e: any) { $("panel").hidden = true; status(e.message, true); }
+    }
+    $("load").addEventListener("click", load);
+    input.addEventListener("keydown", (e) => { if (e.key === "Enter") load(); });
+    $("copy").addEventListener("click", async () => { try { await navigator.clipboard.writeText(input.value.trim()); status("Key copied to clipboard."); } catch { status("Clipboard unavailable; copy manually.", true); } });
+    $("rotate").addEventListener("click", () => { $("rotate-confirm").hidden = false; });
+    $("rotate-no").addEventListener("click", () => { $("rotate-confirm").hidden = true; });
+    $("rotate-yes").addEventListener("click", async () => {
+      $("rotate-confirm").hidden = true; status("Rotating…");
+      try { const d = await api("/dashboard/api/rotate", "POST"); $("new-key").textContent = d.key; $("rotated").hidden = false; currentKey = d.key; input.value = d.key; try { sessionStorage.setItem("ufc_api_key", d.key); } catch {} status("Rotated. The old key is revoked."); await load(); }
+      catch (e: any) { status(e.message, true); }
+    });
+    $("copy-new").addEventListener("click", async () => { try { await navigator.clipboard.writeText($("new-key").textContent || ""); status("New key copied."); } catch { status("Clipboard unavailable; copy manually.", true); } });
+    if (currentKey) load();
+  </script>
+</Base>

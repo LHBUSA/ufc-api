@@ -1,0 +1,15 @@
+extends:
+  - recommended
+rules:
+  operation-4xx-response: off
+  no-unused-components: off
+  security-defined: error
+  operation-operationId: error
+  info-license: off
+  no-server-trailing-slash: error
+  operation-summary: error
+  tag-description: error
+  operation-tag-defined: error
+  no-invalid-media-type-examples:
+    severity: error
+    allowAdditionalProperties: true
