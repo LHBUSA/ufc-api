@@ -10,6 +10,6 @@
     <g fill="#fbfaf6"><circle cx="48" cy="24" r="3.2"/><circle cx="48" cy="72" r="3.2"/><circle cx="24" cy="48" r="3.2"/><circle cx="72" cy="48" r="3.2"/><circle cx="31" cy="31" r="2.4"/><circle cx="65" cy="65" r="2.4"/><circle cx="65" cy="31" r="2.4"/><circle cx="31" cy="65" r="2.4"/></g>
     <circle cx="48" cy="48" r="10.5" fill="#101613"/><circle cx="48" cy="48" r="10.5" fill="none" stroke="#d4a648" stroke-width="1.5" stroke-dasharray="4 3"/><circle cx="48" cy="48" r="5" fill="#d4a648"/>
   </g>
-  <text x="112" y="44" font-family="'JetBrains Mono', ui-monospace, Menlo, monospace" font-size="19" font-weight="700" letter-spacing="3.5" fill="#18170f">PROPTECHUSA</text>
-  <text x="112" y="68" font-family="Inter, system-ui, sans-serif" font-size="15" font-weight="500" letter-spacing="0.5" fill="#625f53">UFC Intelligence API</text>
+  <text x="112" y="44" font-family="'JetBrains Mono', ui-monospace, Menlo, monospace" font-size="19" font-weight="700" letter-spacing="3.5" fill="#f5f1eb">PROPTECHUSA</text>
+  <text x="112" y="68" font-family="Inter, system-ui, sans-serif" font-size="15" font-weight="500" letter-spacing="0.5" fill="#b8b3a8">UFC Intelligence API</text>
 </svg>

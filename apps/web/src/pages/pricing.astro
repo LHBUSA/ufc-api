@@ -9,12 +9,12 @@ const cols = [...order, "first_party"];
 const matrix = gen.matrix;
 const gates = gen.entitlements.param_gates;
 const rapid = gen.rapidapi;
-const cards: Record<string, { head: string; items: string[] }> = {
-  developer: { head: "Core UFC data", items: ["Events", "Cards", "Fighters", "Results", "Rankings", "Search", "Core fight history"] },
-  pro: { head: "Fighter intelligence", items: ["Everything in Developer", "Fight DNA", "Stance DNA", "Striking DNA", "Grappling DNA", "Finish DNA", "Round profiles", "Deeper stats"] },
-  ultra: { head: "Matchup intelligence", items: ["Everything in Pro", "Matchup DNA", "Advanced context splits", "Historical as-of intelligence", "Fight Week API where available", "Higher quotas"] },
-  scale: { head: "Production infrastructure", items: ["Everything in Ultra", "Very high usage", "Higher concurrency", "Priority support", "Direct integration support", "Commercial production terms", "Bulk/custom options where rights permit"] },
-  enterprise: { head: "Custom", items: ["Dedicated infrastructure", "Custom endpoints", "Large datasets", "Special delivery", "SLAs", "Custom licensing", "Partnerships"] },
+const cards: Record<string, { head: string; items: string[]; endpoints: string[] }> = {
+  developer: { head: "Core UFC data", items: ["Events and full fight cards", "Fighter profiles and history", "Bout results and round stats", "Official rankings snapshot", "Fighter media with license + attribution", "Official video metadata", "Fight DNA metric registry"], endpoints: ["/events/{id}/card", "/fighters/{id}", "/bouts/{id}/stats", "/rankings"] },
+  pro: { head: "Fighter Fight DNA", items: ["Everything in Developer", "Stance DNA · Striking DNA", "Grappling DNA · Finish DNA", "Round profiles and pace retention", "Context splits", "As-of historical snapshots", "Computed career rates"], endpoints: ["/fighters/{id}/dna", "/fighters/{id}/splits", "/fighters/{id}/round-profile", "/fighters/{id}/stats"] },
+  ultra: { head: "Matchup DNA", items: ["Everything in Pro", "Matchup DNA with threshold-gated insights", "Cross-fighter Fight DNA query", "Fight State Ledger", "Event intelligence", "Higher quotas and burst"], endpoints: ["/matchups/{a}/{b}/dna", "/dna/query", "/events/{id}/intelligence", "/bouts/{id}/ledger"] },
+  scale: { head: "Production infrastructure", items: ["Everything in Ultra", "2M requests / month, soft limit", "1,200 requests / minute", "Priority support", "Direct integration support", "Commercial production terms", "Bulk and custom options where rights permit"], endpoints: ["all 34 endpoints", "higher concurrency", "soft quota, reviewed"] },
+  enterprise: { head: "Custom", items: ["Dedicated infrastructure", "Custom endpoints", "Large datasets and bulk delivery", "SLAs", "Custom licensing", "Third-party wire feed after rights review", "Partnerships"], endpoints: ["custom contract"] },
 };
 const billing = gen.billing;
 /* Self-serve plans go to Stripe-hosted Checkout (Payment Links from config/billing.json); Enterprise never does. */
@@ -32,9 +32,8 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "Product", name: "P
   <section class="section">
     <div class="wrap">
       <p class="eyebrow">Pricing</p>
-      <h1 style="font-size:clamp(2.2rem,4.5vw,3.4rem)">Not just UFC data.</h1>
-      <p class="lede">Every plan starts with normalized fight records.</p>
-      <p class="lede" style="margin-top:-0.4em">Pro and above unlock PropBetEdge Fight DNA — proprietary fighter intelligence derived from the underlying fight record.</p>
+      <h1>Not just UFC data.<br /><span class="gold-em">Fight intelligence.</span></h1>
+      <p class="lede">Every plan starts with normalized fight records. Pro unlocks fighter Fight DNA. Ultra unlocks Matchup DNA. Scale is production infrastructure.</p>
       <div class="pricing-grid" style="margin-top:36px">
         {order.filter((k) => k !== "enterprise").map((k) => { const p = plans[k as keyof typeof plans] as any; const c = cards[k]; return (
           <div class:list={["plan", { recommended: p.recommended }]} id={`plan-${k}`}>
@@ -43,6 +42,7 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "Product", name: "P
             <div class="price">${p.price_usd_month}<small>/mo</small></div>
             <div class="pos">{c.head}</div>
             <ul>{c.items.map((i) => <li>{i}</li>)}</ul>
+            <div class="endpoints">{c.endpoints.map((e) => <div>{e.startsWith("/") ? `GET /v1/ufc${e}` : e}</div>)}</div>
             <div class="limits">{fmtNumber(p.included_requests)} requests / month<br />{p.rate_limit_per_min} requests / minute<br />{p.limit_mode === "soft" ? "soft limit, reviewed" : "hard limit"}</div>
             <a class:list={["btn cta", p.recommended ? "gold" : "secondary"]} href={mailto(k)} rel="noopener" data-checkout={k}>{p.cta}</a>
           </div>

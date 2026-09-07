@@ -32,6 +32,9 @@ const DU_PLESSIS = "9a3b2a15-27d8-4554-9217-42ef2dd5d25c";
 const NOCHE_EVENT = "1d0b22df-81e7-4e5b-8fa5-8e5d03c24c52";
 const SILVA = "eed368a5-484b-412f-9d2c-a4fd6d24d019";
 const DELGADO = "55ef67ad-88fe-4f7a-b4cb-dc9a10c12feb";
+/* Co-main used for the portal showcases: both fighters carry CC BY 3.0 portraits and are ranked. */
+const FIOROT = "2c9c2a88-aec1-4bf0-9b16-3ce58adf6fd6";
+const GRASSO = "1d296292-4969-43a8-9948-cd0a76a642ce";
 
 const FIXTURES = {
   index: "/v1/ufc",
@@ -71,6 +74,14 @@ const FIXTURES = {
     silva_finish_profile: `/v1/ufc/fighters/${SILVA}/finish-profile`,
     silva_videos: `/v1/ufc/fighters/${SILVA}/videos?limit=3`,
   } : {}),
+  fiorot_detail: `/v1/ufc/fighters/${FIOROT}?include=ranking,next,history&history_limit=5`,
+  fiorot_dna: `/v1/ufc/fighters/${FIOROT}/dna`,
+  fiorot_stats: `/v1/ufc/fighters/${FIOROT}/stats`,
+  grasso_detail: `/v1/ufc/fighters/${GRASSO}?include=ranking,next,history&history_limit=5`,
+  grasso_dna: `/v1/ufc/fighters/${GRASSO}/dna`,
+  grasso_stats: `/v1/ufc/fighters/${GRASSO}/stats`,
+  matchup_comain: `/v1/ufc/matchups/${FIOROT}/${GRASSO}/dna`,
+  rankings_womens_flyweight: "/v1/ufc/rankings?division=FLYWEIGHT&womens=true",
   ...(SILVA && DELGADO ? { delgado_detail: `/v1/ufc/fighters/${DELGADO}?include=ranking`, delgado_dna: `/v1/ufc/fighters/${DELGADO}/dna`, matchup_noche: `/v1/ufc/matchups/${SILVA}/${DELGADO}/dna` } : {}),
 };
 
@@ -88,6 +99,19 @@ for (const [name, path] of Object.entries(FIXTURES)) {
   results[name] = r;
   writeFileSync(join(FIX, `${name}.json`), JSON.stringify({ captured_at, base: BASE, path, status: r.status, api_version: r.headers["x-api-version"] || null, body: r.body }, null, 2) + "\n");
   console.log(`${String(r.status).padEnd(4)} ${name.padEnd(28)} ${path}`);
+}
+
+/* second pass: bulk media for the ranked fighters we render (needs ids from the rankings response) */
+for (const [name, src] of [["rankings_womens_flyweight_media", "rankings_womens_flyweight"], ["rankings_featherweight_media", "rankings_featherweight"]]) {
+  const div = results[src]?.body?.data?.divisions?.[0];
+  if (!div) continue;
+  const ids = [div.champion?.fighter_id, ...div.entries.map((e) => e.fighter_id)].filter(Boolean).slice(0, 12);
+  if (!ids.length) continue;
+  const path = `/v1/ufc/fighters/media?ids=${ids.join(",")}`;
+  const r = await get(path);
+  results[name] = r;
+  writeFileSync(join(FIX, `${name}.json`), JSON.stringify({ captured_at, base: BASE, path, status: r.status, api_version: r.headers["x-api-version"] || null, body: r.body }, null, 2) + "\n");
+  console.log(`${String(r.status).padEnd(4)} ${name.padEnd(28)} ${path.slice(0, 60)}…`);
 }
 
 const index = results.index.body?.data || {};

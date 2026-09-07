@@ -22,7 +22,7 @@ export function fixture(name) {
 export function trimExample(name, body) {
   if (!body || !body.data) return body;
   const clone = JSON.parse(JSON.stringify(body));
-  if (name === "fighter_dna" || name === "silva_dna" || name === "delgado_dna") {
+  if (name === "fighter_dna" || name === "silva_dna" || name === "delgado_dna" || name === "fiorot_dna" || name === "grasso_dna") {
     const s = clone.data.snapshot;
     const keep = ["sig_landed_per_min", "sig_absorbed_per_min", "sig_accuracy", "td_attempts_per_15", "finish_rate", "pace_retention_r3_vs_r1"];
     s.metrics = Object.fromEntries(keep.filter((k) => s.metrics[k]).map((k) => [k, s.metrics[k]]));
@@ -30,7 +30,7 @@ export function trimExample(name, body) {
     s.context_splits = { "…": "omitted from this example" };
     s.provenance = { ...s.provenance, bouts: (s.provenance?.bouts || []).slice(0, 2) };
   }
-  if (name === "matchup_dna" || name === "matchup_noche") {
+  if (name === "matchup_dna" || name === "matchup_noche" || name === "matchup_comain") {
     for (const side of ["a", "b"]) clone.data[side] = { as_of_date: clone.data[side].as_of_date, sample_bouts: clone.data[side].sample_bouts, sample_rounds: clone.data[side].sample_rounds, coverage_status: clone.data[side].coverage_status, "…": "full snapshot subset omitted from this example" };
     clone.data.comparisons = clone.data.comparisons.slice(0, 3);
     clone.data.insights = clone.data.insights.slice(0, 2);
@@ -44,7 +44,7 @@ export function trimExample(name, body) {
   if (name === "fighter_stats" || name === "silva_stats") { clone.data.round_stats = (clone.data.round_stats || []).slice(0, 2); if (clone.data.computed?.bouts) clone.data.computed.bouts = clone.data.computed.bouts.slice(0, 1); }
   if (name === "fighter_splits" || name === "silva_splits") clone.data.splits = (clone.data.splits || []).slice(0, 2);
   if (name.startsWith("rankings_")) clone.data.divisions = (clone.data.divisions || []).map((d) => ({ ...d, entries: (d.entries || []).slice(0, 3) }));
-  if (name === "fighter_detail" || name === "silva_detail" || name === "delgado_detail") { clone.data.images = (clone.data.images || []).slice(0, 1); if (clone.data.history) clone.data.history = clone.data.history.slice(0, 1); }
+  if (name === "fighter_detail" || name === "silva_detail" || name === "delgado_detail" || name === "fiorot_detail" || name === "grasso_detail") { clone.data.images = (clone.data.images || []).slice(0, 1); if (clone.data.history) clone.data.history = clone.data.history.slice(0, 1); }
   if (name === "noche_card") clone.data.bouts = clone.data.bouts.slice(0, 2).map((b) => ({ ...b, fighter_a: { ...b.fighter_a, images: undefined }, fighter_b: { ...b.fighter_b, images: undefined } }));
   return clone;
 }
@@ -76,7 +76,7 @@ function showcase(name, detailName, dnaName, statsName, historyName) {
 /** Everything the portal needs, keyed by fixture name. */
 export function portalExamples() {
   const out = {};
-  for (const name of [...new Set(Object.values(EXAMPLES)), "fighter_dna_asof_404", "unknown_fighter_404", "counts", "index", "health", "silva_dna", "matchup_noche", "silva_detail", "rankings_featherweight", "rankings_flyweight"]) {
+  for (const name of [...new Set(Object.values(EXAMPLES)), "fighter_dna_asof_404", "unknown_fighter_404", "counts", "index", "health", "silva_dna", "matchup_noche", "silva_detail", "rankings_featherweight", "rankings_flyweight", "matchup_comain", "fiorot_detail", "fiorot_dna", "grasso_detail", "rankings_womens_flyweight"]) {
     const f = fixture(name);
     if (!f) continue;
     out[name] = { captured_at: f.captured_at, path: f.path, status: f.status, api_version: f.api_version, body: trimExample(name, f.body) };
@@ -99,7 +99,21 @@ export function portalExamples() {
     hero: showcase("strickland", "fighter_detail", "fighter_dna", "fighter_stats", "fighter_history"),
     fighter: showcase("silva", "silva_detail", "silva_dna", "silva_stats", null),
     opponent: showcase("delgado", "delgado_detail", "delgado_dna", null, null),
+    fiorot: showcase("fiorot", "fiorot_detail", "fiorot_dna", "fiorot_stats", null),
+    grasso: showcase("grasso", "grasso_detail", "grasso_dna", "grasso_stats", null),
   };
+  const matchupShowcase = (fixName, detailNames) => {
+    const mn = fixture(fixName);
+    if (!mn?.body?.data) return null;
+    const d = mn.body.data;
+    /* The matchup response returns compact fighters (no reach/height/ranking). A real product composes the fighter
+       endpoint alongside it, so the demo does the same: identity fields come from /fighters/{id}, metrics from the matchup. */
+    const details = Object.fromEntries(detailNames.map((n) => fixture(n)).filter((f) => f?.body?.data).map((f) => [f.body.data.id, f.body.data]));
+    const enrich = (f) => { const c = compactFighter(f); const dd = details[f.id]; return dd ? { ...c, height_in: dd.height_in ?? c.height_in, reach_in: dd.reach_in ?? c.reach_in, weight_lbs: dd.weight_lbs ?? c.weight_lbs, dob: dd.dob ?? c.dob, ranking: dd.ranking ? { snapshot_date: dd.ranking.snapshot_date, source: dd.ranking.source, positions: dd.ranking.positions } : c.ranking, career: dd.career_slpm !== undefined ? { slpm: dd.career_slpm, str_acc: dd.career_str_acc, sapm: dd.career_sapm, str_def: dd.career_str_def, td_avg: dd.career_td_avg, td_acc: dd.career_td_acc, td_def: dd.career_td_def, sub_avg: dd.career_sub_avg } : c.career, _identity_from: "/v1/ufc/fighters/{id}" } : c; };
+    return { captured_at: mn.captured_at, path: mn.path, fighters: d.fighters.map(enrich), a: snapshotView(d.a), b: snapshotView(d.b), comparisons: d.comparisons.map((c) => ({ key: c.key, label: c.label, unit: c.unit, family: c.family, higher_is_better: c.higher_is_better, a: c.a ? { value: c.a.value, confidence: c.a.confidence, sample_bouts: c.a.sample_bouts } : null, b: c.b ? { value: c.b.value, confidence: c.b.confidence, sample_bouts: c.b.sample_bouts } : null, delta: c.delta, direction: c.direction, comparable: c.comparable })), stance_context: { a_stance: d.stance_context.a_stance, b_stance: d.stance_context.b_stance, context: d.stance_context.context }, insights: d.insights.map((i) => ({ key: i.key, label: i.label, value: i.value, unit: i.unit, side: i.side, confidence: i.confidence, sample_bouts: i.sample_bouts, sample_rounds: i.sample_rounds, sample_seconds: i.sample_seconds, explanation: i.explanation })), warnings: d.warnings, note: d.note, meta: { resolved_as_of: mn.body.meta?.resolved_as_of, insights: mn.body.meta?.insights, warnings: mn.body.meta?.warnings, comparable: mn.body.meta?.comparable, comparisons: mn.body.meta?.comparisons } };
+  };
+  out.showcase.comain = matchupShowcase("matchup_comain", ["fiorot_detail", "grasso_detail"]);
+
   const mn = fixture("matchup_noche");
   if (mn?.body?.data) {
     const d = mn.body.data;
@@ -114,9 +128,11 @@ export function portalExamples() {
     const d = card.body.data;
     out.showcase.event = { captured_at: card.captured_at, path: card.path, event: { id: d.event.id, name: d.event.name, event_date: d.event.event_date, venue: d.event.venue, city: d.event.city, region: d.event.region, country: d.event.country, card_status: d.event.card_status, is_ppv: d.event.is_ppv }, bout_count: d.bouts.length, bouts: d.bouts.map((b) => ({ id: b.id, bout_order: b.bout_order, card_position: b.card_position, weight_class: b.weight_class, is_title: b.is_title, is_womens: b.is_womens, scheduled_rounds: b.scheduled_rounds, status: b.status, fighter_a: compactFighter(b.fighter_a), fighter_b: compactFighter(b.fighter_b), result: b.result ? { winner_id: b.result.winner_id ?? null, method: b.result.method ?? null } : null })) };
   }
-  for (const div of ["featherweight", "flyweight", "middleweight"]) {
+  for (const div of ["featherweight", "flyweight", "middleweight", "womens_flyweight"]) {
     const r = fixture(`rankings_${div}`);
-    if (r?.body?.data) { const dv = r.body.data.divisions[0]; out.showcase[`rankings_${div}`] = { captured_at: r.captured_at, path: r.path, source: r.body.data.source, source_url: r.body.data.source_url, snapshot_date: r.body.data.snapshot_date, division: { key: dv.key, label: dv.label, is_womens: dv.is_womens, champion: dv.champion ? { name: dv.champion.name, fighter_id: dv.champion.fighter_id, slug_id: dv.champion.fighter?.slug_id ?? null } : null, entries: dv.entries.map((e) => ({ rank: e.rank, name: e.name, fighter_id: e.fighter_id, change: e.change, is_new: e.is_new })) } }; }
+    const mediaFix = fixture(`rankings_${div}_media`);
+    const media = mediaFix?.body?.data?.media || {};
+    if (r?.body?.data) { const dv = r.body.data.divisions[0]; out.showcase[`rankings_${div}`] = { captured_at: r.captured_at, path: r.path, source: r.body.data.source, source_url: r.body.data.source_url, snapshot_date: r.body.data.snapshot_date, division: { key: dv.key, label: dv.label, is_womens: dv.is_womens, champion: dv.champion ? { name: dv.champion.name, fighter_id: dv.champion.fighter_id, slug_id: dv.champion.fighter?.slug_id ?? null } : null, entries: dv.entries.map((e) => ({ rank: e.rank, name: e.name, fighter_id: e.fighter_id, change: e.change, is_new: e.is_new, primary_image: compactImage(media[e.fighter_id] || null) })) }, media_path: mediaFix?.path || null }; if (dv.champion && media[dv.champion.fighter_id]) out.showcase[`rankings_${div}`].division.champion.primary_image = compactImage(media[dv.champion.fighter_id]); }
   }
   return out;
 }

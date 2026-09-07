@@ -1,0 +1,114 @@
+{
+  "captured_at": "2026-09-07T14:27:59.388Z",
+  "base": "https://ufc-api.propbetedge.ai",
+  "path": "/v1/ufc/fighters/media?ids=4008721e-66c0-429e-b904-51d0d0a7e0d0,56d860de-6ba5-4e97-a889-2129951e52cf,2c9c2a88-aec1-4bf0-9b16-3ce58adf6fd6,1d296292-4969-43a8-9948-cd0a76a642ce,6c613851-d11b-4ee6-97d2-bdde0a467d32,fc84c7be-0db5-44a6-88da-c4f74af0e86c,2a139533-8a7d-4d6a-802e-b49660209bc6,51fbc8ad-d3cf-4c14-9f58-df8ac1838323,c66c4189-2a2e-4a64-a688-d2b77e7ee01c,7757ac44-3ded-4440-b444-01cdad3bf7d1,580ce473-c18c-4e53-941e-1fbf91576653,38ea7e9b-b88c-4a18-9ae8-feaa0672b5b4",
+  "status": 200,
+  "api_version": "2026-09-06.3",
+  "body": {
+    "ok": true,
+    "data": {
+      "media": {
+        "4008721e-66c0-429e-b904-51d0d0a7e0d0": {
+          "id": "6c5c0cd9-5359-41fc-9d4b-fd8f2be1baaa",
+          "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/4008721e-66c0-429e-b904-51d0d0a7e0d0/portrait.jpg",
+          "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/4008721e-66c0-429e-b904-51d0d0a7e0d0/card.jpg",
+          "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/4008721e-66c0-429e-b904-51d0d0a7e0d0/thumb.jpg",
+          "author": "MMAnytt",
+          "license": "CC BY 3.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Valentina_Shevchenko_2020.jpg",
+          "kind": "wikimedia",
+          "attribution_text": "MMAnytt, CC BY 3.0, via Wikimedia Commons",
+          "rights_label": "CC BY 3.0"
+        },
+        "56d860de-6ba5-4e97-a889-2129951e52cf": {
+          "id": "4eb92053-753d-4c1d-a831-2e623076ee10",
+          "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/56d860de-6ba5-4e97-a889-2129951e52cf/portrait.jpg",
+          "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/56d860de-6ba5-4e97-a889-2129951e52cf/card.jpg",
+          "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/56d860de-6ba5-4e97-a889-2129951e52cf/thumb.jpg",
+          "author": "Sexto Round",
+          "license": "CC BY-SA 4.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Natalia_Silva_UFC.jpg",
+          "kind": "wikimedia",
+          "attribution_text": "Sexto Round, CC BY-SA 4.0, via Wikimedia Commons",
+          "rights_label": "CC BY-SA 4.0"
+        },
+        "2c9c2a88-aec1-4bf0-9b16-3ce58adf6fd6": {
+          "id": "61827143-8f84-4f0d-8e06-53486dcc22ac",
+          "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/2c9c2a88-aec1-4bf0-9b16-3ce58adf6fd6/portrait.jpg",
+          "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/2c9c2a88-aec1-4bf0-9b16-3ce58adf6fd6/card.jpg",
+          "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/2c9c2a88-aec1-4bf0-9b16-3ce58adf6fd6/thumb.jpg",
+          "author": "Lucie Bertaud",
+          "license": "CC BY 3.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:MANON_FIOROT_ET_ALDRIC_CASSATA,_LE_COUPLE_GOAL_DU_MMA_-_MMA_EXTRA_ROUND_-22_-_YouTube_-_0-28-31_(cropped).jpg",
+          "kind": "wikimedia",
+          "attribution_text": "Lucie Bertaud, CC BY 3.0, via Wikimedia Commons",
+          "rights_label": "CC BY 3.0"
+        },
+        "1d296292-4969-43a8-9948-cd0a76a642ce": {
+          "id": "85e0a287-fae3-43d1-be20-0fa490c01fb8",
+          "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/1d296292-4969-43a8-9948-cd0a76a642ce/portrait.jpg",
+          "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/1d296292-4969-43a8-9948-cd0a76a642ce/card.jpg",
+          "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/1d296292-4969-43a8-9948-cd0a76a642ce/thumb.jpg",
+          "author": "Alexa Lopez Col",
+          "license": "CC BY 3.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Alexa_Grasso_2023_03.png",
+          "kind": "wikimedia",
+          "attribution_text": "Alexa Lopez Col, CC BY 3.0, via Wikimedia Commons",
+          "rights_label": "CC BY 3.0"
+        },
+        "6c613851-d11b-4ee6-97d2-bdde0a467d32": null,
+        "fc84c7be-0db5-44a6-88da-c4f74af0e86c": {
+          "id": "680ade17-abcf-4d55-89b4-e76a40fcc3d7",
+          "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/fc84c7be-0db5-44a6-88da-c4f74af0e86c/portrait.jpg",
+          "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/fc84c7be-0db5-44a6-88da-c4f74af0e86c/card.jpg",
+          "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/fc84c7be-0db5-44a6-88da-c4f74af0e86c/thumb.jpg",
+          "author": "Andy Grahn",
+          "license": "CC BY-SA 4.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Rose_Namajunas.jpg",
+          "kind": "wikimedia",
+          "attribution_text": "Andy Grahn, CC BY-SA 4.0, via Wikimedia Commons",
+          "rights_label": "CC BY-SA 4.0"
+        },
+        "2a139533-8a7d-4d6a-802e-b49660209bc6": null,
+        "51fbc8ad-d3cf-4c14-9f58-df8ac1838323": {
+          "id": "1d5ce084-0b05-42f0-94d0-815b3e496391",
+          "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/51fbc8ad-d3cf-4c14-9f58-df8ac1838323/portrait.jpg",
+          "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/51fbc8ad-d3cf-4c14-9f58-df8ac1838323/card.jpg",
+          "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/51fbc8ad-d3cf-4c14-9f58-df8ac1838323/thumb.jpg",
+          "author": "MM-eh",
+          "license": "CC BY 3.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Jasmine_Jasudavicius_in_2023_01.png",
+          "kind": "wikimedia",
+          "attribution_text": null,
+          "rights_label": null
+        },
+        "c66c4189-2a2e-4a64-a688-d2b77e7ee01c": null,
+        "7757ac44-3ded-4440-b444-01cdad3bf7d1": null,
+        "580ce473-c18c-4e53-941e-1fbf91576653": null,
+        "38ea7e9b-b88c-4a18-9ae8-feaa0672b5b4": null
+      },
+      "ids": [
+        "4008721e-66c0-429e-b904-51d0d0a7e0d0",
+        "56d860de-6ba5-4e97-a889-2129951e52cf",
+        "2c9c2a88-aec1-4bf0-9b16-3ce58adf6fd6",
+        "1d296292-4969-43a8-9948-cd0a76a642ce",
+        "6c613851-d11b-4ee6-97d2-bdde0a467d32",
+        "fc84c7be-0db5-44a6-88da-c4f74af0e86c",
+        "2a139533-8a7d-4d6a-802e-b49660209bc6",
+        "51fbc8ad-d3cf-4c14-9f58-df8ac1838323",
+        "c66c4189-2a2e-4a64-a688-d2b77e7ee01c",
+        "7757ac44-3ded-4440-b444-01cdad3bf7d1",
+        "580ce473-c18c-4e53-941e-1fbf91576653",
+        "38ea7e9b-b88c-4a18-9ae8-feaa0672b5b4"
+      ]
+    },
+    "meta": {
+      "api": "PropSports UFC",
+      "version": "2026-09-06.3",
+      "request_id": "e5f6308a-87ff-4b09-9052-baf06434bb55",
+      "requested": 12,
+      "found": 6,
+      "access_tier": "public"
+    }
+  }
+}

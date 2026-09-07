@@ -1,5 +1,5 @@
 {
-  "captured_at": "2026-09-07T13:38:00.478Z",
+  "captured_at": "2026-09-07T14:27:59.388Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/videos?limit=2",
   "status": 200,
@@ -77,7 +77,7 @@
     "meta": {
       "api": "PropSports UFC",
       "version": "2026-09-06.3",
-      "request_id": "b4e2c48a-3344-413b-b3ec-8079e0a874cc",
+      "request_id": "ca0975ae-febc-4c47-b3a8-60d679bf07fe",
       "count": 2,
       "total": 63,
       "limit": 2,

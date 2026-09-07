@@ -26,9 +26,18 @@ const APPROVED_KINDS = new Set(["wikimedia", "public_domain"]);
 
 export const SILHOUETTE = "/brand/fighter-silhouette.svg";
 
+/* Assets held back from marketing surfaces pending an upstream attribution audit. The API still returns them;
+   the portal renders the original silhouette instead so we never publish a credit we have not verified.
+   006e6554… is not listed: that is the Strickland portrait (MMAnytt, CC BY-SA 4.0) and is verified. */
+const AUDIT_HOLD = new Set<string>([
+  "776d6a0a-e701-4756-b789-912addfd276d", /* Jean Silva portrait: credited "The White House (U.S. Government work), Public domain" — attribution under upstream review */
+]);
+export function holdForAudit(id: string) { return AUDIT_HOLD.has(id); }
+
 export function marketingImage(img: ApiImage | null | undefined, name: string): MarketingImage {
   const fallback: MarketingImage = { approved: false, src: SILHOUETTE, width: 320, height: 400, alt: `${name} (silhouette; no rights-cleared portrait)`, credit: null, license: img?.license ?? null, source_url: img?.source_url ?? null };
   if (!img || !img.card_url) return { ...fallback, reason: "no_image" };
+  if (img.id && AUDIT_HOLD.has(img.id)) return { ...fallback, reason: "attribution_audit_pending" };
   const license = (img.rights_label || img.license || "").trim();
   if (!APPROVED.test(license)) return { ...fallback, reason: `license_not_approved_for_marketing:${license || "unknown"}` };
   if (img.kind && !APPROVED_KINDS.has(img.kind) && img.kind !== "licensed_editorial") return { ...fallback, reason: `kind_not_approved:${img.kind}` };

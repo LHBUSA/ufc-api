@@ -1,7 +1,7 @@
 {
   "captured_at": "2026-09-07T14:27:59.388Z",
   "base": "https://ufc-api.propbetedge.ai",
-  "path": "/v1/ufc/rankings?division=FLYWEIGHT",
+  "path": "/v1/ufc/rankings?division=FLYWEIGHT&womens=true",
   "status": 200,
   "api_version": "2026-09-06.3",
   "body": {
@@ -12,219 +12,6 @@
       "snapshot_date": "2026-09-06",
       "captured_at": "2026-09-06T16:10:07.916+00:00",
       "divisions": [
-        {
-          "key": "FLYWEIGHT",
-          "label": "Flyweight",
-          "is_womens": false,
-          "is_p4p": false,
-          "champion": {
-            "name": "Joshua Van",
-            "ufc_slug": "joshua-van",
-            "fighter_id": "e204408f-aee9-4987-83ca-8a43e8802e3f",
-            "fighter": {
-              "id": "e204408f-aee9-4987-83ca-8a43e8802e3f",
-              "name": "Joshua Van",
-              "slug_id": "5120301"
-            }
-          },
-          "entries": [
-            {
-              "rank": 1,
-              "name": "Alexandre Pantoja",
-              "ufc_slug": "alexandre-pantoja",
-              "fighter_id": "13eebfea-dbd0-4110-a41a-200b8a73051d",
-              "change": 0,
-              "is_new": false,
-              "fighter": {
-                "id": "13eebfea-dbd0-4110-a41a-200b8a73051d",
-                "name": "Alexandre Pantoja",
-                "slug_id": "2560746"
-              }
-            },
-            {
-              "rank": 2,
-              "name": "Manel Kape",
-              "ufc_slug": "manel-kape",
-              "fighter_id": "12f748ce-9380-4672-81b9-8755a54e4e12",
-              "change": 0,
-              "is_new": false,
-              "fighter": {
-                "id": "12f748ce-9380-4672-81b9-8755a54e4e12",
-                "name": "Manel Kape",
-                "slug_id": "4236504"
-              }
-            },
-            {
-              "rank": 3,
-              "name": "Brandon Royval",
-              "ufc_slug": "brandon-royval",
-              "fighter_id": "abdccf66-41ce-43a1-9ded-dce665b07400",
-              "change": 0,
-              "is_new": false,
-              "fighter": {
-                "id": "abdccf66-41ce-43a1-9ded-dce665b07400",
-                "name": "Brandon Royval",
-                "slug_id": "4239928"
-              }
-            },
-            {
-              "rank": 4,
-              "name": "Tatsuro Taira",
-              "ufc_slug": "tatsuro-taira",
-              "fighter_id": "826104d2-9067-466a-9d1c-303813781395",
-              "change": 0,
-              "is_new": false,
-              "fighter": {
-                "id": "826104d2-9067-466a-9d1c-303813781395",
-                "name": "Tatsuro Taira",
-                "slug_id": "4917772"
-              }
-            },
-            {
-              "rank": 5,
-              "name": "Kyoji Horiguchi",
-              "ufc_slug": "kyoji-horiguchi",
-              "fighter_id": "50c787a8-a624-4361-8d9b-d0491ff9ee6b",
-              "change": 0,
-              "is_new": false,
-              "fighter": {
-                "id": "50c787a8-a624-4361-8d9b-d0491ff9ee6b",
-                "name": "Kyoji Horiguchi",
-                "slug_id": "2613374"
-              }
-            },
-            {
-              "rank": 6,
-              "name": "Lone’er Kavanagh",
-              "ufc_slug": "loneer-kavanagh",
-              "fighter_id": "2bf52767-0491-4602-9133-508eea617d8e",
-              "change": 0,
-              "is_new": false,
-              "fighter": {
-                "id": "2bf52767-0491-4602-9133-508eea617d8e",
-                "name": "Lone'er Kavanagh",
-                "slug_id": "5147737"
-              }
-            },
-            {
-              "rank": 7,
-              "name": "Asu Almabayev",
-              "ufc_slug": "asu-almabayev",
-              "fighter_id": "c3d524fb-3774-4c1d-ad33-5c5b72ae4be0",
-              "change": 0,
-              "is_new": false,
-              "fighter": {
-                "id": "c3d524fb-3774-4c1d-ad33-5c5b72ae4be0",
-                "name": "Asu Almabayev",
-                "slug_id": "4294926"
-              }
-            },
-            {
-              "rank": 8,
-              "name": "Brandon Moreno",
-              "ufc_slug": "brandon-moreno",
-              "fighter_id": "1fa71f4b-3f7d-4705-ba00-1f6bcf397b9a",
-              "change": 0,
-              "is_new": false,
-              "fighter": {
-                "id": "1fa71f4b-3f7d-4705-ba00-1f6bcf397b9a",
-                "name": "Brandon Moreno",
-                "slug_id": "3027545"
-              }
-            },
-            {
-              "rank": 9,
-              "name": "Amir Albazi",
-              "ufc_slug": "amir-albazi",
-              "fighter_id": "69363dfc-ac02-45fb-b2af-a1ae442baea6",
-              "change": 0,
-              "is_new": false,
-              "fighter": {
-                "id": "69363dfc-ac02-45fb-b2af-a1ae442baea6",
-                "name": "Amir Albazi",
-                "slug_id": "4684848"
-              }
-            },
-            {
-              "rank": 10,
-              "name": "Ramazan Temirov",
-              "ufc_slug": "ramazan-temirov",
-              "fighter_id": "6bdf15b3-2209-4641-aabc-dada806dfa98",
-              "change": 0,
-              "is_new": false,
-              "fighter": {
-                "id": "6bdf15b3-2209-4641-aabc-dada806dfa98",
-                "name": "Ramazan Temirov",
-                "slug_id": "4895691"
-              }
-            },
-            {
-              "rank": 11,
-              "name": "Steve Erceg",
-              "ufc_slug": "steve-erceg",
-              "fighter_id": "7ba7cfd2-7a83-4f1e-b848-268d9b5bf675",
-              "change": 1,
-              "is_new": false,
-              "fighter": {
-                "id": "7ba7cfd2-7a83-4f1e-b848-268d9b5bf675",
-                "name": "Steve Erceg",
-                "slug_id": "4997217"
-              }
-            },
-            {
-              "rank": 12,
-              "name": "Tim Elliott",
-              "ufc_slug": "tim-elliott",
-              "fighter_id": "cbdc3e19-b826-44c5-83ac-3f48f4047b46",
-              "change": 1,
-              "is_new": false,
-              "fighter": {
-                "id": "cbdc3e19-b826-44c5-83ac-3f48f4047b46",
-                "name": "Tim Elliott",
-                "slug_id": "2614020"
-              }
-            },
-            {
-              "rank": 13,
-              "name": "Sumudaerji",
-              "ufc_slug": "su-mudaerji",
-              "fighter_id": "bac15cd8-ebdd-429b-b0a4-cb409961d0a0",
-              "change": null,
-              "is_new": true,
-              "fighter": {
-                "id": "bac15cd8-ebdd-429b-b0a4-cb409961d0a0",
-                "name": "Sumudaerji",
-                "slug_id": "4405109"
-              }
-            },
-            {
-              "rank": 14,
-              "name": "Tagir Ulanbekov",
-              "ufc_slug": "tagir-ulanbekov",
-              "fighter_id": "5490415b-bb93-4ce5-9bb1-1456c6b86e5c",
-              "change": 0,
-              "is_new": false,
-              "fighter": {
-                "id": "5490415b-bb93-4ce5-9bb1-1456c6b86e5c",
-                "name": "Tagir Ulanbekov",
-                "slug_id": "4294924"
-              }
-            },
-            {
-              "rank": 15,
-              "name": "Alex Perez",
-              "ufc_slug": "alex-perez",
-              "fighter_id": "fa5664e7-1b78-4a2f-b681-da030858c484",
-              "change": -4,
-              "is_new": false,
-              "fighter": {
-                "id": "fa5664e7-1b78-4a2f-b681-da030858c484",
-                "name": "Alex Perez",
-                "slug_id": "3155425"
-              }
-            }
-          ]
-        },
         {
           "key": "FLYWEIGHT",
           "label": "Women's Flyweight",
@@ -443,11 +230,11 @@
     "meta": {
       "api": "PropSports UFC",
       "version": "2026-09-06.3",
-      "request_id": "9ec1c266-0d87-498c-89cc-ebcaec5400dd",
+      "request_id": "f1faacfe-7dcd-4e0a-8400-1444c7c6a0a8",
       "store": "table",
-      "divisions": 2,
+      "divisions": 1,
       "division": "FLYWEIGHT",
-      "womens": null,
+      "womens": "true",
       "access_tier": "public"
     }
   }

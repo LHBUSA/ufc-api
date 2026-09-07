@@ -1,5 +1,5 @@
 {
-  "captured_at": "2026-09-07T13:38:00.478Z",
+  "captured_at": "2026-09-07T14:27:59.388Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/counts",
   "status": 200,
@@ -20,7 +20,7 @@
     "meta": {
       "api": "PropSports UFC",
       "version": "2026-09-06.3",
-      "request_id": "f4ec3f14-cbe3-41be-838d-0e59d5a8d85e",
+      "request_id": "d670bbac-38dd-44e2-b3af-e938b0870d88",
       "access_tier": "public"
     }
   }

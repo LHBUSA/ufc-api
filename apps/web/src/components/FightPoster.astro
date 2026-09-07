@@ -1,0 +1,41 @@
+---
+/* Fight poster: the consumer product's next-event card, with a developer layer underneath. */
+import { marketingImage, fmtRecord, titleCase } from "../lib/media";
+import { fmtDate } from "../lib/hl";
+export interface Props {
+  a: any; b: any;
+  eventName: string; eventDate: string; venue?: string | null; city?: string | null; region?: string | null;
+  label?: string; badge?: string; meta?: string;
+  endpoints?: { path: string; plan?: string }[];
+  status?: { code: number; ms: number; plan?: string } | null;
+}
+const { a, b, eventName, eventDate, venue, city, region, label = "Next card", badge = "Fight week", meta, endpoints = [], status = null } = Astro.props;
+const ia = marketingImage(a.primary_image, a.name), ib = marketingImage(b.primary_image, b.name);
+const rank = (f: any) => { const p = (f.ranking?.positions || []).filter((x: any) => !x.is_p4p)[0]; return p ? (p.rank === 0 || p.is_champion ? "Champion" : `#${p.rank} ${titleCase(p.label)}`) : null; };
+const credits = [ia.credit, ib.credit].filter(Boolean);
+const place = [venue, city, region].filter(Boolean).join(" · ");
+---
+<div class="poster">
+  <div class="poster-top"><span>{label}</span><span class="chip derived">{badge}</span></div>
+  <div class="poster-faces">
+    <div class="face a"><img src={ia.src} srcset={ia.srcset} sizes="(max-width: 1000px) 50vw, 300px" width={ia.width} height={ia.height} alt={ia.alt} loading="eager" decoding="async" /></div>
+    <div class="face b"><img src={ib.src} srcset={ib.srcset} sizes="(max-width: 1000px) 50vw, 300px" width={ib.width} height={ib.height} alt={ib.alt} loading="eager" decoding="async" /></div>
+    <div class="poster-vs">VS</div>
+    <div class="poster-names">
+      <div><div class="n">{a.name}</div><div class="r">{fmtRecord(a)}{rank(a) && <> · {rank(a)}</>}</div></div>
+      <div class="right"><div class="n">{b.name}</div><div class="r">{fmtRecord(b)}{rank(b) && <> · {rank(b)}</>}</div></div>
+    </div>
+  </div>
+  <div class="poster-meta">
+    <div class="t">{eventName}</div>
+    <div class="d">{fmtDate(eventDate)}{place && <> · {place}</>}{meta && <><br />{meta}</>}</div>
+  </div>
+  {credits.length > 0 && <div class="poster-credit">{credits.join(" · ")}</div>}
+  {endpoints.length > 0 && (
+    <div class="poster-api">
+      <div class="h"><span>Powered by</span>{status && <span class="chip live">{status.code} · {status.ms} ms</span>}</div>
+      <ul>{endpoints.map((e) => <li><b>GET</b><span>{e.path}</span></li>)}</ul>
+      {status && <div class="status"><span>Response <span class="ok">{status.code}</span></span><span>{status.ms} ms</span>{status.plan && <span>Plan {status.plan}</span>}<span>PBE derived + source fact</span></div>}
+    </div>
+  )}
+</div>

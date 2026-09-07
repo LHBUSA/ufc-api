@@ -25,7 +25,7 @@ const famBlocks = [
 ];
 ---
 <Base title="PropBetEdge Fight DNA API — Proprietary MMA Analytics" description="How PropBetEdge Fight DNA turns normalized UFC fight history into versioned, as-of, sample-aware fighter and matchup intelligence: definitions, confidence, provenance and what it cannot tell you." path="/learn/fight-dna" jsonLd={jsonLd} breadcrumbs={[{ name: "Fight DNA", path: "/learn/fight-dna" }]}>
-  <section class="section" style="background:linear-gradient(180deg,var(--paper) 0%,#fdf9ee 100%)">
+  <section class="section band-gold">
     <div class="wrap">
       <p class="eyebrow gold">Methodology</p>
       <h1 style="font-size:clamp(2.2rem,4.5vw,3.6rem)">PropBetEdge Fight DNA, for developers.</h1>
@@ -37,7 +37,7 @@ const famBlocks = [
   </section>
 
   <section class="section">
-    <div class="wrap prose">
+    <div class="wrap"><div class="docs-body prose" style="max-width:var(--max-narrow);margin:0 auto">
       <h2 id="what-it-is">What Fight DNA is</h2>
       <p>Fight DNA is the proprietary analytics layer above the normalized UFC record. It is a versioned, reproducible, as-of feature system that transforms event-dated bout and round history into fighter-specific and matchup-specific intelligence. It is deterministic: the same source rows always produce the same output. It is not a model, and it is not a prediction.</p>
       <p>It answers questions a fighter page does not: how does a fighter do against southpaws, does pace survive into round three, is offense head-heavy or leg-heavy, does a takedown produce control, where do finishes happen, and which of those variables are unusually different between two fighters about to meet.</p>
@@ -78,7 +78,7 @@ const famBlocks = [
         <tbody>{Object.entries(reg?.confidence_tiers || {}).map(([k, v]) => <tr><td><code>{k}</code></td><td>{v as string}</td></tr>)}</tbody>
       </table></div>
       <p><code>coverage_status</code> uses the same scale and describes how much of the fighter's bout history has round-stat coverage. A zero denominator produces <code>value: null</code> with <code>confidence: "insufficient"</code>.</p>
-    </div>
+    </div></div>
   </section>
 
   {famBlocks.map((f) => (
@@ -112,7 +112,7 @@ const famBlocks = [
   </section>
 
   <section class="section">
-    <div class="wrap prose">
+    <div class="wrap"><div class="docs-body prose" style="max-width:var(--max-narrow);margin:0 auto">
       <h2 id="provenance">Provenance</h2>
       <p>Every <code>MetricObject</code> carries: <code>metric_key</code>, <code>value</code>, <code>unit</code>, <code>numerator</code>, <code>denominator</code>, <code>sample_bouts</code>, <code>sample_rounds</code>, <code>sample_seconds</code>, <code>confidence</code>, <code>coverage_status</code>, <code>definition_version</code>, <code>origin</code>, <code>source_families</code> and <code>as_of_date</code>. Snapshots additionally carry the list of bout ids in scope, the source watermark and the build run id. The commercial gateway never strips any of it; it is part of what you pay for.</p>
       <Code json={contract.metric_object_sample} title="MetricObject (live)" />
@@ -129,6 +129,6 @@ const famBlocks = [
         <li>It is not an official UFC statistic and must not be presented as one.</li>
       </ul>
       <p><a class="btn gold" href="/pricing#plan-pro">Unlock Fight DNA on Pro</a> <a class="btn ghost" href="https://ufc.propbetedge.ai" rel="noopener">See Fight DNA in action →</a></p>
-    </div>
+    </div></div>
   </section>
 </Base>

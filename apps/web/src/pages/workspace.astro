@@ -1,14 +1,23 @@
 ---
 import Base from "../layouts/Base.astro";
 import gen from "../generated/entitlements.json";
+import ex from "../generated/examples.json";
 const plans = gen.plans.plans;
+const sc = ex.showcase;
+const art = {
+  a: { id: sc.comain.fighters[0].id, name: sc.comain.fighters[0].name, img: sc.comain.fighters[0].primary_image?.card_url || null },
+  b: { id: sc.comain.fighters[1].id, name: sc.comain.fighters[1].name, img: sc.comain.fighters[1].primary_image?.card_url || null },
+  champ: { name: sc.rankings_womens_flyweight.division.champion.name, img: sc.rankings_womens_flyweight.division.champion.primary_image?.card_url || null },
+  event: { name: sc.event.event.name, date: sc.event.event.event_date, bouts: sc.event.bout_count, a: sc.event.bouts[0]?.fighter_a?.primary_image?.card_url || null, b: sc.event.bouts[0]?.fighter_b?.primary_image?.card_url || null },
+};
 const jsonLd = [{ "@context": "https://schema.org", "@type": "WebApplication", name: "UFC Intelligence API Workspace", url: "https://ufc.proptechusa.ai/workspace", applicationCategory: "DeveloperApplication", operatingSystem: "Any", isPartOf: { "@id": "https://ufc.proptechusa.ai/#website" }, description: "In-browser developer workspace: search fighters, run Fight DNA and Matchup DNA, render cards and rankings, inspect requests and copy code." }];
 ---
 <Base title="Workspace | PropTechUSA UFC Intelligence API" description="Test the UFC Intelligence API in your browser: fighter explorer, Matchup DNA builder, current card, rankings, Fight DNA, request inspector with copyable cURL, JavaScript and Python." path="/workspace" jsonLd={jsonLd} breadcrumbs={[{ name: "Workspace", path: "/workspace" }]}>
   <div class="wrap ws">
     <aside class="ws-rail" aria-label="Workspace tools" id="rail">
       <h5>Start</h5>
-      <button data-tool="card">Current card</button>
+      <button data-tool="home">Workspace home</button>
+      <button data-tool="card">Current Fight Week</button>
       <h5>Explore</h5>
       <button data-tool="fighter">Fighters</button>
       <button data-tool="events">Events</button>
@@ -28,7 +37,7 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "WebApplication", n
         <a class="small" href="/pricing" id="ws-getkey">Need a key?</a>
       </div>
       <select class="ws-rail-select" id="rail-select" aria-label="Workspace tool">
-        <option value="card">Current card</option><option value="fighter">Fighters</option><option value="events">Events</option><option value="rankings">Rankings</option><option value="dna">Fight DNA</option><option value="matchup">Matchup DNA</option><option value="custom">Request builder</option>
+        <option value="home">Workspace home</option><option value="card">Current Fight Week</option><option value="fighter">Fighters</option><option value="events">Events</option><option value="rankings">Rankings</option><option value="dna">Fight DNA</option><option value="matchup">Matchup DNA</option><option value="custom">Request builder</option>
       </select>
       <div class="ws-tool" id="ws-tool"></div>
       <div class="ws-result" id="ws-result" hidden>
@@ -46,7 +55,7 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "WebApplication", n
     </div>
   </div>
 
-  <script define:vars={{ PLAN_NAMES: Object.fromEntries(Object.entries(plans).map(([k, v]) => [k, (v as any).name])) }}>
+  <script define:vars={{ PLAN_NAMES: Object.fromEntries(Object.entries(plans).map(([k, v]) => [k, (v as any).name])), ART: art }}>
     /* ===== UFC Workspace (client) — the key is stored in localStorage only and sent solely to this origin's /v1 and /dashboard/api routes. Never logged. ===== */
     const $ = (id) => document.getElementById(id);
     const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
@@ -174,6 +183,19 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "WebApplication", n
     /* ---------- tools ---------- */
     async function fighterById(id) { if (cache["f:" + id]) return cache["f:" + id]; const l = await api(`/v1/ufc/fighters/${encodeURIComponent(id)}?include=ranking,next`); if (l.body?.ok) cache["f:" + id] = l.body.data; return l.body?.ok ? l.body.data : null; }
     const tools = {
+      home: { title: "Workspace home", render(root) {
+        const card = (tool, title, sub, arts, plan) => `<button class="ws-card" data-go="${tool}"><div class="art${arts.length > 1 ? " two" : ""}">${arts.map((a) => a ? `<img src="${esc(a)}" alt="" loading="lazy">` : `<img src="${SIL}" alt="" loading="lazy">`).join("")}</div><div class="body"><b>${esc(title)}</b><span>${esc(sub)}</span>${plan ? chip(plan) : ""}</div></button>`;
+        root.innerHTML = `<div class="section-head" style="margin:0"><div><h3>Run the API on real fights.</h3><p class="small muted" style="margin:6px 0 0">${KEY ? "Pick a starting point. Every panel renders the product first; JSON stays one tab away." : "Connect your API key above, then pick a starting point."}</p></div></div>
+          <div class="ws-home">
+            ${card("card", "Current Fight Week", `${ART.event.name} · ${ART.event.date} · ${ART.event.bouts} bouts`, [ART.event.a, ART.event.b], "developer")}
+            ${card("fighter", "Explore a fighter", "Search by name → overview, history, stats, Fight DNA, media", [ART.a.img], "developer")}
+            ${card("matchup", "Compare fighters", "Full matchup card with stance context and threshold-gated reads", [ART.a.img, ART.b.img], "ultra")}
+            ${card("rankings", "View rankings", `Champion and top 15 · ${ART.champ.name}`, [ART.champ.img], "developer")}
+            ${card("dna", "Test Fight DNA", "Snapshot, stance splits, round and finish profiles, as-of dates", [ART.b.img], "pro")}
+            ${card("custom", "Any endpoint", "Request builder with rendered preview, JSON and code", [null], "developer")}
+          </div>`;
+        root.querySelectorAll("[data-go]").forEach((b) => b.addEventListener("click", () => { history.replaceState(null, "", `/workspace?tool=${b.dataset.go}`); open(b.dataset.go); window.scrollTo({ top: 0, behavior: "smooth" }); }));
+      } },
       card: { title: "Current card", desc: "Zero-configuration first test: the next upcoming event and its full card.", render(root) {
         root.innerHTML = `<h3>Current card</h3><p class="small muted">GET /v1/ufc/events?status=upcoming&limit=1 → GET /v1/ufc/events/{id}/card</p><div class="actions-row"><button class="btn primary" id="run-card" type="button">Run current card</button></div>`;
         $("run-card").addEventListener("click", async () => { const e = await api("/v1/ufc/events?status=upcoming&limit=1"); if (!e.body?.ok || !e.body.data?.length) return out(handle(e, () => `<div class="ws-empty">No upcoming events.</div>`)); const id = e.body.data[0].id; const c = await api(`/v1/ufc/events/${id}/card?include=media,results`); out(handle(c, eventCard)); });
@@ -191,7 +213,7 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "WebApplication", n
           if (ft === "stats") { const l = await api(`/v1/ufc/fighters/${f.id}/stats`); out(handle(l, statsView)); }
           if (ft === "dna") { const l = await api(`/v1/ufc/fighters/${f.id}/dna`); out(handle(l, (d) => `${fighterCard(d.fighter, "mini")}<div style="height:12px"></div>${dnaPanel(d.snapshot)}`)); }
           if (ft === "media") { const l = await api(`/v1/ufc/fighters/${f.id}?include=media,videos`); let vids = l.body?.data?.videos; if (l.body?.ok && vids === undefined) { const v = await api(`/v1/ufc/fighters/${f.id}/videos?limit=6`); vids = v.body?.ok ? v.body.data.videos : []; inspect(l); } out(handle(l, (d) => mediaView(d, vids))); } };
-        $("f-search").appendChild(searchBox("f", "Search fighters, e.g. Jean Silva", (f) => { pick.f = f; $("f-pick").innerHTML = pickHtml(f); $("f-tabs").hidden = false; run("overview"); }));
+        $("f-search").appendChild(searchBox("f", "Search fighters, e.g. Manon Fiorot", (f) => { pick.f = f; $("f-pick").innerHTML = pickHtml(f); $("f-tabs").hidden = false; run("overview"); }));
         $("f-tabs").querySelectorAll("[data-ft]").forEach((b) => b.addEventListener("click", () => run(b.dataset.ft)));
         const id = new URLSearchParams(location.search).get("id"); if (id && KEY) fighterById(id).then((f) => { if (f) { pick.f = f; $("f-pick").innerHTML = pickHtml(f); $("f-tabs").hidden = false; run("overview"); } });
       } },
@@ -204,8 +226,8 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "WebApplication", n
       } },
       matchup: { title: "Matchup DNA", render(root) {
         root.innerHTML = `<h3>Compare fighters ${chip("ultra")}</h3><p class="small muted">GET /v1/ufc/matchups/{a}/{b}/dna — paired metrics, stance context, threshold-gated insights.</p><div class="ws-form"><div class="ws-two"><div><div id="m-a"></div><div id="m-a-pick"></div></div><div><div id="m-b"></div><div id="m-b-pick"></div></div></div><div class="ws-two"><input type="text" id="m-asof" placeholder="as_of (optional)" aria-label="as of"><button class="btn gold" id="run-m" type="button">Run Matchup DNA</button></div></div>`;
-        $("m-a").appendChild(searchBox("ma", "Fighter A, e.g. Jean Silva", (f) => { pick.a = f; $("m-a-pick").innerHTML = pickHtml(f); }));
-        $("m-b").appendChild(searchBox("mb", "Fighter B, e.g. Jose Miguel Delgado", (f) => { pick.b = f; $("m-b-pick").innerHTML = pickHtml(f); }));
+        $("m-a").appendChild(searchBox("ma", "Fighter A, e.g. Manon Fiorot", (f) => { pick.a = f; $("m-a-pick").innerHTML = pickHtml(f); }));
+        $("m-b").appendChild(searchBox("mb", "Fighter B, e.g. Alexa Grasso", (f) => { pick.b = f; $("m-b-pick").innerHTML = pickHtml(f); }));
         $("run-m").addEventListener("click", async () => { if (!pick.a || !pick.b) return; const asof = $("m-asof").value.trim();
           /* compose like a real product: identity from /fighters/{id} (reach, height, ranking), metrics from the matchup */
           const [da, db] = await Promise.all([fighterById(pick.a.id), fighterById(pick.b.id)]);
@@ -226,9 +248,9 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "WebApplication", n
         $("run-c").addEventListener("click", async () => { let p = $("c-path").value.trim(); if (!p.startsWith("/v1/")) p = "/v1/ufc" + (p.startsWith("/") ? p : "/" + p); const l = await api(p); out(handle(l, (d) => generic(d))); });
       } },
     };
-    function open(name) { tool = tools[name] ? name : "card"; document.querySelectorAll("#rail [data-tool]").forEach((b) => b.setAttribute("aria-current", String(b.dataset.tool === tool))); $("rail-select").value = tool; tools[tool].render($("ws-tool")); }
+    function open(name) { tool = tools[name] ? name : "home"; document.querySelectorAll("#rail [data-tool]").forEach((b) => b.setAttribute("aria-current", String(b.dataset.tool === tool))); $("rail-select").value = tool; $("ws-result").hidden = true; $("ws-preview").innerHTML = ""; last = null; tools[tool].render($("ws-tool")); }
     document.querySelectorAll("#rail [data-tool]").forEach((b) => b.addEventListener("click", () => { history.replaceState(null, "", `/workspace?tool=${b.dataset.tool}`); open(b.dataset.tool); }));
     $("rail-select").addEventListener("change", (e) => { history.replaceState(null, "", `/workspace?tool=${e.target.value}`); open(e.target.value); });
-    open(new URLSearchParams(location.search).get("tool") || "card");
+    open(new URLSearchParams(location.search).get("tool") || "home");
   </script>
 </Base>

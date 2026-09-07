@@ -19,15 +19,15 @@ const contract = gen.contract;
 const matrix = gen.matrix;
 const reg = ex.dna_registry;
 const sc = ex.showcase;
-const S = sc.hero.fighter.id, SILVA = sc.fighter.fighter.id, DELGADO = sc.opponent.fighter.id, EVENT = sc.event.event.id;
+const S = sc.hero.fighter.id, FIOROT = sc.fiorot.fighter.id, GRASSO = sc.grasso.fighter.id, EVENT = sc.event.event.id;
 const planName = (k: string | null) => (k ? plans[k as keyof typeof plans]?.name : "Enterprise");
 const minPlan = (key: string) => matrix.find((x) => x.key === key)?.minimum_plan || "enterprise";
 const captured = fmtDate(ex.fighter_dna.captured_at);
 /* compact JSON excerpts: verbatim subsets */
 const eventsExcerpt = { ok: true, data: ex.events_upcoming.body.data.slice(0, 2), meta: ex.events_upcoming.body.meta };
-const fighterExcerpt = { ...ex.silva_detail.body, data: { ...ex.silva_detail.body.data, images: undefined, history: undefined, ranking: undefined } };
+const fighterExcerpt = { ...ex.fiorot_detail.body, data: { ...ex.fiorot_detail.body.data, images: undefined, history: undefined, ranking: undefined } };
 const dnaExcerpt = (() => { const s = ex.fighter_dna.body.data.snapshot; return { ok: true, data: { fighter: { id: ex.fighter_dna.body.data.fighter.id, name: ex.fighter_dna.body.data.fighter.name }, snapshot: { as_of_date: s.as_of_date, definition_version: s.definition_version, sample_bouts: s.sample_bouts, sample_rounds: s.sample_rounds, sample_seconds: s.sample_seconds, coverage_status: s.coverage_status, metrics: { sig_landed_per_min: s.metrics.sig_landed_per_min, finish_rate: s.metrics.finish_rate, "…": "more metric keys" }, "…": "stance_splits, round_profile, finish_profile, context_splits, provenance" } }, meta: ex.fighter_dna.body.meta }; })();
-const matchupExcerpt = { ok: true, data: { fighters: ex.matchup_noche.body.data.fighters.map((f: any) => ({ id: f.id, name: f.name, stance: f.stance })), comparisons: ex.matchup_noche.body.data.comparisons.slice(0, 2), insights: ex.matchup_noche.body.data.insights.slice(0, 1), warnings: ex.matchup_noche.body.data.warnings.slice(0, 2), "…": "stance_context, bettors_edge_evidence, note" }, meta: { resolved_as_of: ex.matchup_noche.body.meta.resolved_as_of, insights: ex.matchup_noche.body.meta.insights, warnings: ex.matchup_noche.body.meta.warnings } };
+const matchupExcerpt = { ok: true, data: { fighters: ex.matchup_comain.body.data.fighters.map((f: any) => ({ id: f.id, name: f.name, stance: f.stance })), comparisons: ex.matchup_comain.body.data.comparisons.slice(0, 2), insights: ex.matchup_comain.body.data.insights.slice(0, 1), warnings: ex.matchup_comain.body.data.warnings.slice(0, 2), "…": "stance_context, bettors_edge_evidence, note" }, meta: { resolved_as_of: ex.matchup_comain.body.meta.resolved_as_of, insights: ex.matchup_comain.body.meta.insights, warnings: ex.matchup_comain.body.meta.warnings } };
 const cardExcerpt = { ok: true, data: { event: ex.noche_card.body.data.event, bouts: ex.noche_card.body.data.bouts.slice(0, 1).map((b: any) => ({ id: b.id, bout_order: b.bout_order, weight_class: b.weight_class, scheduled_rounds: b.scheduled_rounds, fighter_a: { id: b.fighter_a.id, name: b.fighter_a.name, "…": "record, stance, primary_image" }, fighter_b: { id: b.fighter_b.id, name: b.fighter_b.name, "…": "…" }, result: b.result })), "…": "12 more bouts" }, meta: ex.noche_card.body.meta };
 const rankExcerpt = ex.rankings_featherweight.body;
 const nav = [
@@ -121,9 +121,9 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "TechArticle", head
       <section id="fighters">
         <h2>Fighters <span class="chip plan-developer">Developer+</span></h2>
         <p><code>GET /v1/ufc/fighters?q=&amp;active=true</code> to search, <code>GET /v1/ufc/fighters/{`{id}`}?include=media,ranking,next,history,stats,videos</code> for the composite profile (ids: UUID, UFCStats or ESPN athlete id). <code>include=stats</code> requires Pro. History: <code>/fighters/{`{id}`}/history?limit=</code>.</p>
-        <ApiPreview path={`/v1/ufc/fighters/${SILVA}?include=ranking,next,history&history_limit=5`} plan="developer" json={ex.silva_detail.body} captured={fmtDate(sc.fighter.captured_at)} title="Response excerpt → fighter profile" note="subset">
+        <ApiPreview path={`/v1/ufc/fighters/${FIOROT}?include=ranking,next,history&history_limit=5`} plan="developer" json={ex.fiorot_detail.body} captured={fmtDate(sc.fiorot.captured_at)} title="Response excerpt → fighter profile" note="subset">
           <Code json={fighterExcerpt} title="excerpt" />
-          <div class="demo" style="margin-top:12px;padding:14px"><FighterPreview fighter={sc.fighter.fighter} size="card" showCareer /></div>
+          <div class="demo" style="margin-top:12px;padding:14px"><FighterPreview fighter={sc.fiorot.fighter} size="card" showCareer /></div>
         </ApiPreview>
       </section>
 
@@ -152,7 +152,7 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "TechArticle", head
       <section id="media">
         <h2>Media <span class="chip plan-developer">Developer+</span> <span class="chip media">Media</span></h2>
         <p>Fighter rows carry <code>primary_image</code> (<code>image_url</code>, <code>card_url</code> 800×1000, <code>thumb_url</code> 320×400) with <code>author</code>, <code>license</code>, <code>source_url</code>, <code>kind</code>, <code>attribution_text</code> and <code>rights_label</code>; fighter detail adds <code>images[]</code>; <code>GET /v1/ufc/fighters/media?ids=…</code> maps up to 150 ids. <b>Render the credit wherever the image is shown; the file's license governs reuse.</b> Official video metadata (<code>/videos</code>, <code>/fighters/{`{id}`}/videos</code>, <code>/events/{`{id}`}/videos</code>) returns ids, official URLs, <code>embed_url</code> and <code>attribution</code>; play through the provider, never rehost.</p>
-        <Code json={sc.fighter.fighter.primary_image} title="primary_image (live)" />
+        <Code json={sc.fiorot.fighter.primary_image} title="primary_image (live)" />
       </section>
 
       <section id="fight-dna">
@@ -168,9 +168,9 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "TechArticle", head
       <section id="matchup-dna">
         <h2>Matchup DNA <span class="chip plan-ultra">Ultra+</span> <span class="chip derived">PBE derived</span></h2>
         <p><code>GET /v1/ufc/matchups/{`{a}`}/{`{b}`}/dna[?as_of=]</code> compares {ex.matchup_meta?.comparisons?.length} paired metrics (<code>delta</code>, <code>direction</code>, <code>comparable</code>), adds <code>stance_context</code>, and emits <code>insights[]</code> only above the thresholds in <code>meta.insight_rules</code>; the rest is named in <code>warnings[]</code>. Also Ultra: <code>/dna/query</code>, <code>/bouts/{`{id}`}/ledger</code>, <code>/events/{`{id}`}/intelligence</code>.</p>
-        <ApiPreview path={`/v1/ufc/matchups/${SILVA}/${DELGADO}/dna`} plan="ultra" json={ex.matchup_noche.body} captured={fmtDate(sc.matchup.captured_at)} title="Response excerpt → matchup card" note="subset">
+        <ApiPreview path={`/v1/ufc/matchups/${FIOROT}/${GRASSO}/dna`} plan="ultra" json={ex.matchup_comain.body} captured={fmtDate(sc.comain.captured_at)} title="Response excerpt → matchup card" note="subset">
           <Code json={matchupExcerpt} title="excerpt" />
-          <div class="demo" style="margin-top:12px;padding:14px"><MatchupPreview matchup={sc.matchup} compact /></div>
+          <div class="demo" style="margin-top:12px;padding:14px"><MatchupPreview matchup={sc.comain} compact /></div>
         </ApiPreview>
       </section>
 
@@ -196,12 +196,12 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "TechArticle", head
       <section id="guide-fighter">
         <h2>Build a fighter profile</h2>
         <ol>
-          <li><b>Find the fighter</b>: <code>GET /v1/ufc/fighters?q=jean+silva</code> → take <code>id</code> (or accept a UFCStats / ESPN id directly).</li>
+          <li><b>Find the fighter</b>: <code>GET /v1/ufc/fighters?q=fiorot</code> → take <code>id</code> (or accept a UFCStats / ESPN id directly).</li>
           <li><b>Profile</b>: <code>GET /v1/ufc/fighters/{`{id}`}?include=ranking,next,history&amp;history_limit=10</code> → name, record, height/reach/stance, <code>primary_image</code> (+ credit), ranking positions, next bout, recent history.</li>
           <li><b>Career stats</b> (Pro): <code>GET /v1/ufc/fighters/{`{id}`}/stats</code> → <code>computed.career_rates</code> with provenance; label as display aggregates.</li>
           <li><b>Fight DNA</b> (Pro): <code>GET /v1/ufc/fighters/{`{id}`}/dna</code> → render metrics with their confidence; show the sample line; hide nothing.</li>
         </ol>
-        <p>Result: the <a href="/#fighter-profile">fighter profile demo</a> on the homepage, rendered from exactly these responses. Try it live in the <a href={`/workspace?tool=fighter&id=${SILVA}`}>Workspace</a>.</p>
+        <p>Result: the <a href="/#fighter-profile">fighter profile demo</a> on the homepage, rendered from exactly these responses. Try it live in the <a href={`/workspace?tool=fighter&id=${FIOROT}`}>Workspace</a>.</p>
       </section>
 
       <section id="guide-card">
@@ -223,7 +223,7 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "TechArticle", head
           <li>Tale of the tape from <code>fighters[]</code> (reach, stance, record, rank); paired rows from <code>comparisons[]</code> (<code>comparable=false</code> → show “—”, never a placeholder number); <code>stance_context</code> for the stance story.</li>
           <li>Render <code>insights[]</code> as the read, each with its confidence and sample; surface <code>warnings[]</code> so users see what was <em>not</em> claimed.</li>
         </ol>
-        <p>Live: <a href={`/workspace?tool=matchup&a=${SILVA}&b=${DELGADO}`}>Workspace matchup builder</a>.</p>
+        <p>Live: <a href={`/workspace?tool=matchup&a=${FIOROT}&b=${GRASSO}`}>Workspace matchup builder</a>.</p>
       </section>
 
       <section id="guide-rankings">

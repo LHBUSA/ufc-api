@@ -5,7 +5,7 @@ const billing = gen.billing;
 ---
 <Base title="API Dashboard | PropTechUSA UFC Intelligence API" description="Plan, subscription status, renewal, usage, quota, rate limit and your API key for the UFC Intelligence API. Copy, rotate and manage your subscription." path="/dashboard">
   <section class="dash wrap">
-    <div id="checkout-banner" hidden class="card" style="border-color:var(--gold-2);background:linear-gradient(180deg,#fffdf7,#fbf3df);margin-bottom:20px">
+    <div id="checkout-banner" hidden class="card" style="border-color:rgba(212,175,55,.45);background:linear-gradient(180deg,rgba(212,175,55,.14),rgba(13,11,8,.85));margin-bottom:20px">
       <p class="eyebrow gold" style="margin-bottom:6px">Subscription active</p>
       <h2 style="font-size:1.6rem;margin-bottom:6px">Your UFC Intelligence API access is being provisioned.</h2>
       <p id="checkout-msg" class="muted" style="margin:0">Your API access is being activated. Refresh in a moment.</p>
@@ -67,7 +67,7 @@ const billing = gen.billing;
             <strong>Rotate now?</strong> A new key is issued and shown once. The current key stops working immediately. Your subscription stays attached to the new key.
             <div class="actions-row" style="margin-top:10px"><button class="btn primary" id="rotate-yes" type="button">Yes, rotate</button><button class="btn secondary" id="rotate-no" type="button">Cancel</button></div>
           </div>
-          <div id="rotated" hidden style="margin-top:14px" class="callout gold">
+          <div id="rotated" hidden style="margin-top:14px" class="callout">
             <strong>New key (shown once). Store it now.</strong>
             <div class="keybox" id="new-key" style="margin-top:8px"></div>
             <div class="actions-row" style="margin-top:10px"><button class="btn secondary" id="copy-new" type="button">Copy new key</button></div>

@@ -1,17 +1,36 @@
 ---
-/* Rendered rankings division from /rankings?division=. */
+/* Rendered rankings division: champion stage + ranked list with portraits where the API carries rights-cleared media. */
+import { marketingImage } from "../lib/media";
 export interface Props { rankings: any; limit?: number; }
 const { rankings: r, limit = 8 } = Astro.props;
 const d = r.division;
+const champImg = d.champion ? marketingImage(d.champion.primary_image, d.champion.name) : null;
+const entries = d.entries.slice(0, limit).map((e: any) => ({ ...e, img: e.primary_image ? marketingImage(e.primary_image, e.name) : null }));
+const anyImg = entries.some((e: any) => e.img?.approved);
 ---
-<div class="rank-preview">
+<div class="card-preview rank-preview">
   <div class="event-head">
-    <div><div class="eyebrow" style="margin:0">{d.label}{d.is_womens ? " (W)" : ""} · snapshot {r.snapshot_date}</div><h3 style="margin:4px 0 0">{d.champion ? d.champion.name : "Vacant"} <span class="chip plan-scale" style="vertical-align:middle">Champion</span></h3></div>
-    <div class="small muted"><a href={r.source_url} rel="noopener">{r.source}</a> <span class="chip source">Source</span></div>
+    <div><div class="eyebrow" style="margin:0">{d.label}{d.is_womens ? " · Women's" : ""}</div><div class="mono small muted" style="margin-top:4px">Official snapshot {r.snapshot_date}</div></div>
+    <div class="event-meta"><span class="chip source">Source</span><a href={r.source_url} rel="noopener">ufc.com</a></div>
   </div>
+  {d.champion && (
+    <div class="rank-champ">
+      {champImg && <img src={champImg.src} srcset={champImg.srcset} sizes="110px" width={champImg.width} height={champImg.height} alt={champImg.alt} loading="lazy" decoding="async" />}
+      <div>
+        <div class="t">Champion</div>
+        <div class="n">{d.champion.name}</div>
+        {champImg?.credit && <div class="credit">{champImg.source_url ? <a href={champImg.source_url} rel="noopener">{champImg.credit}</a> : champImg.credit}</div>}
+      </div>
+    </div>
+  )}
   <ol class="rank-list">
-    {d.entries.slice(0, limit).map((e: any) => (
-      <li><span class="rank-n">{e.rank}</span><span class="rank-name">{e.name}{e.is_new && <span class="chip" style="margin-left:6px">new</span>}</span><span class:list={["rank-move", e.change > 0 ? "up" : e.change < 0 ? "down" : ""]}>{e.change > 0 ? `▲ ${e.change}` : e.change < 0 ? `▼ ${Math.abs(e.change)}` : "–"}</span></li>
+    {entries.map((e: any) => (
+      <li class:list={[{ "no-img": !anyImg }]}>
+        <span class="rank-n">{e.rank}</span>
+        {anyImg && (e.img?.approved ? <img src={e.img.src} srcset={e.img.srcset} sizes="40px" width={e.img.width} height={e.img.height} alt={e.img.alt} loading="lazy" decoding="async" /> : <img src={e.img?.src || "/brand/fighter-silhouette.svg"} width="40" height="50" alt="" loading="lazy" decoding="async" />)}
+        <span class="rank-name">{e.name}{e.is_new && <span class="chip" style="margin-left:8px">New</span>}</span>
+        <span class:list={["rank-move", e.change > 0 ? "up" : e.change < 0 ? "down" : ""]}>{e.change > 0 ? `▲ ${e.change}` : e.change < 0 ? `▼ ${Math.abs(e.change)}` : "—"}</span>
+      </li>
     ))}
   </ol>
 </div>
