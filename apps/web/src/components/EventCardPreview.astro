@@ -1,6 +1,7 @@
 ---
 /* Rendered fight card from /events/{id}/card. */
-import { marketingImage, fmtRecord, titleCase } from "../lib/media";
+import { fmtRecord, titleCase } from "../lib/media";
+import FighterImage from "./FighterImage.astro";
 import { fmtDate } from "../lib/hl";
 export interface Props { event: any; limit?: number; compact?: boolean; }
 const { event: e, limit = 6, compact = false } = Astro.props;
@@ -8,7 +9,6 @@ const bouts = [...e.bouts].sort((a, b) => b.bout_order - a.bout_order);
 const main = bouts[0];
 const rest = bouts.slice(1, limit);
 const groups = ["main", "prelim", "early_prelim"];
-const face = (f: any) => marketingImage(f.primary_image, f.name);
 ---
 <div class:list={["card-preview", { compact }]}>
   <div class="event-head">
@@ -22,10 +22,10 @@ const face = (f: any) => marketingImage(f.primary_image, f.name);
     <div class="main-event">
       <div class="eyebrow gold" style="margin:0 0 8px">Main event · {titleCase(main.weight_class)}{main.is_title ? " · Title" : ""} · {main.scheduled_rounds} rounds</div>
       <div class="main-row">
-        {[main.fighter_a, main.fighter_b].map((f: any, i) => { const img = face(f); return (
+        {[main.fighter_a, main.fighter_b].map((f: any, i) => { return (
           <div class:list={["main-side", i === 1 ? "right" : ""]}>
-            <img src={img.src} srcset={img.srcset} sizes="96px" width={img.width} height={img.height} alt={img.alt} loading="lazy" decoding="async" />
-            <div><div class="fighter-name">{f.name}</div><div class="fighter-sub">{fmtRecord(f)} · {titleCase(f.stance)}</div>{img.credit && <div class="credit">{img.credit}</div>}</div>
+            <FighterImage fighter={f} sizes="96px" />
+            <div><div class="fighter-name">{f.name}</div><div class="fighter-sub">{fmtRecord(f)} · {titleCase(f.stance)}</div></div>
           </div>
         ); })}
         <div class="vs-badge">VS</div>

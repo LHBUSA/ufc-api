@@ -1,11 +1,11 @@
 ---
 /* Matchup DNA VS card: portraits, tale of the tape, paired metrics (nulls stay visible), threshold-gated insights. */
-import { marketingImage, fmtRecord, fmtInches, titleCase } from "../lib/media";
+import { fmtRecord, fmtInches, titleCase } from "../lib/media";
+import FighterImage from "./FighterImage.astro";
 import { fmtNumber } from "../lib/hl";
 export interface Props { matchup: any; compact?: boolean; }
 const { matchup: m, compact = false } = Astro.props;
 const [A, B] = m.fighters;
-const imgA = marketingImage(A.primary_image, A.name), imgB = marketingImage(B.primary_image, B.name);
 const ROWS: [string, string, string][] = [["sig_landed_per_min", "Pace (sig. landed/min)", "n"], ["sig_accuracy", "Strike accuracy", "%"], ["distance_attack_share", "Distance share", "%"], ["td_attempts_per_15", "Takedown attempts /15", "n"], ["td_accuracy", "Takedown accuracy", "%"], ["pace_retention_r3_vs_r1", "Pace retention R3/R1", "x"], ["finish_rate", "Finish rate (wins)", "%"]];
 const cmp = Object.fromEntries(m.comparisons.map((c: any) => [c.key, c]));
 const show = (side: any, u: string) => (!side || side.value === null || side.value === undefined ? "—" : u === "%" ? `${fmtNumber(side.value * 100, 0)}%` : u === "x" ? `${fmtNumber(side.value, 2)}×` : fmtNumber(side.value, 2));
@@ -14,9 +14,9 @@ const insights = (m.insights || []).slice(0, compact ? 2 : 4);
 ---
 <div class:list={["vs", { compact }]}>
   <div class="vs-head">
-    {[[A, imgA], [B, imgB]].map(([f, img]: any, i) => (
+    {[A, B].map((f: any, i) => (
       <div class:list={["vs-fighter", i === 1 ? "right" : ""]}>
-        <figure class="fighter-figure"><img src={img.src} srcset={img.srcset} sizes="140px" width={img.width} height={img.height} alt={img.alt} loading="lazy" decoding="async" /><figcaption class="credit">{img.credit ? (img.source_url ? <a href={img.source_url} rel="noopener">{img.credit}</a> : img.credit) : "silhouette"}</figcaption></figure>
+        <figure class="fighter-figure"><FighterImage fighter={f} sizes="140px" credit creditFallback="silhouette" /></figure>
         <div><div class="fighter-name">{f.name}</div><div class="fighter-sub">{fmtRecord(f)} · {rank(f)}</div></div>
       </div>
     ))}

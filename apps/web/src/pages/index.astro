@@ -119,7 +119,7 @@ const jsonLd = [
         <div><p class="eyebrow">Fight Week API</p><h2>Build Fight Week.</h2><p class="lede">The current event, main card, fighter faces and matchup intelligence — the whole fight-week surface from four endpoints.</p></div>
         <a class="btn secondary" href="/workspace?tool=card">Open in Workspace →</a>
       </div>
-      <Demo eyebrow="Current card · rendered from the response" title="The next card, end to end" intro="Event, ordered bouts, card positions, both fighters with rights-cleared media, and the matchup read for the co-main." captured={fresh.capturedAt}
+      <Demo eyebrow="Current card · rendered from the response" title="The next card, end to end" intro="Event, ordered bouts, card positions, both fighters with credited media, and the matchup read for the co-main." captured={fresh.capturedAt}
         endpoints={[{ path: "/v1/ufc/events?status=upcoming", plan: "developer" }, { path: "/v1/ufc/events/{id}/card", plan: "developer" }, { path: "/v1/ufc/fighters/{id}", plan: "developer" }, { path: "/v1/ufc/matchups/{a}/{b}/dna", plan: "ultra" }]}
         workspace="/workspace?tool=card" json={event.raw} jsonPath={event.path} jsonNote="subset: 2 of 13 bouts, images[] omitted" pbe={pbeEvent} pbeLabel="See this card on PropBetEdge UFC Fight Week →">
         <EventCardPreview event={event} limit={8} />

@@ -1,7 +1,8 @@
 ---
 /* Fight poster: the consumer product's next-event card, with a developer layer underneath.
-   A fighter without a rights-cleared portrait gets an angular cage name-lockup, never a generic silhouette. */
-import { marketingImage, fmtRecord, titleCase } from "../lib/media";
+   A fighter with no resolvable media at all gets an angular cage name-lockup, never a generic silhouette. */
+import { fighterMedia, fmtRecord, titleCase } from "../lib/media";
+import FighterImage from "./FighterImage.astro";
 import { fmtDate } from "../lib/hl";
 export interface Props {
   a: any; b: any;
@@ -12,7 +13,7 @@ export interface Props {
   tall?: boolean;
 }
 const { a, b, eventName, eventDate, venue, city, region, label = "Next card", badge = "Fight week", meta, endpoints = [], status = null, tall = false } = Astro.props;
-const ia = marketingImage(a.primary_image, a.name), ib = marketingImage(b.primary_image, b.name);
+const ia = fighterMedia(a), ib = fighterMedia(b);
 const rank = (f: any) => { const p = (f.ranking?.positions || []).filter((x: any) => !x.is_p4p)[0]; return p ? (p.rank === 0 || p.is_champion ? "Champion" : `#${p.rank} ${titleCase(p.label)}`) : null; };
 const initials = (n: string) => n.split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join("");
 const credits = [ia.credit, ib.credit].filter(Boolean);
@@ -23,7 +24,7 @@ const sides = [{ f: a, img: ia, cls: "a" }, { f: b, img: ib, cls: "b" }];
   <div class="poster-top"><span>{label}</span><span class="chip derived">{badge}</span></div>
   <div class="poster-faces">
     {sides.map(({ f, img, cls }) => img.approved ? (
-      <div class:list={["face", cls]}><img src={img.src} srcset={img.srcset} sizes="(max-width: 1000px) 50vw, 320px" width={img.width} height={img.height} alt={img.alt} loading="eager" decoding="async" /></div>
+      <div class:list={["face", cls]}><FighterImage fighter={f} sizes="(max-width: 1000px) 50vw, 320px" eager /></div>
     ) : (
       <div class:list={["face", cls, "lockup"]} aria-label={f.name}>
         <svg class="cage" viewBox="0 0 160 200" aria-hidden="true" preserveAspectRatio="none">
@@ -32,7 +33,7 @@ const sides = [{ f: a, img: ia, cls: "a" }, { f: b, img: ib, cls: "b" }];
           <path d="M80 6v188M6 100h148" stroke="currentColor" stroke-opacity=".08" stroke-width="1" />
         </svg>
         <span class="ini">{initials(f.name)}</span>
-        <span class="lk">No cleared portrait</span>
+        <span class="lk">No image available</span>
       </div>
     ))}
     <div class="poster-vs">VS</div>

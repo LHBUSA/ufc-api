@@ -1,12 +1,18 @@
 ---
-/* Rendered rankings division: champion stage + ranked list with portraits where the API carries rights-cleared media. */
-import { marketingImage } from "../lib/media";
+/* Rendered rankings division: champion stage + ranked list. Media resolves through the shared policy, so a
+   fighter with a portrait on the consumer rankings has one here too. */
+import { fighterMedia } from "../lib/media";
+import FighterImage from "./FighterImage.astro";
 export interface Props { rankings: any; limit?: number; }
 const { rankings: r, limit = 8 } = Astro.props;
 const d = r.division;
-const champImg = d.champion ? marketingImage(d.champion.primary_image, d.champion.name) : null;
-const entries = d.entries.slice(0, limit).map((e: any) => ({ ...e, img: e.primary_image ? marketingImage(e.primary_image, e.name) : null }));
-const anyImg = entries.some((e: any) => e.img?.approved);
+/* Rankings rows join to media by canonical fighter id / slug_id, exactly like every other surface,
+   so a fighter with a portrait on the consumer rankings has one here too. */
+const asFighter = (e: any) => ({ id: e.fighter_id ?? e.id ?? null, name: e.name, slug_id: e.slug_id ?? null, primary_image: e.primary_image ?? null, media: e.media ?? null });
+const champ = d.champion ? asFighter(d.champion) : null;
+const champImg = champ ? fighterMedia(champ) : null;
+const entries = d.entries.slice(0, limit).map((e: any) => ({ ...e, f: asFighter(e) }));
+const anyImg = (champImg?.approved ?? false) || entries.some((e: any) => fighterMedia(e.f).approved);
 ---
 <div class="card-preview rank-preview">
   <div class="event-head">
@@ -15,7 +21,7 @@ const anyImg = entries.some((e: any) => e.img?.approved);
   </div>
   {d.champion && (
     <div class="rank-champ">
-      {champImg && <img src={champImg.src} srcset={champImg.srcset} sizes="110px" width={champImg.width} height={champImg.height} alt={champImg.alt} loading="lazy" decoding="async" />}
+      {champ && <FighterImage fighter={champ} sizes="110px" />}
       <div>
         <div class="t">Champion</div>
         <div class="n">{d.champion.name}</div>
@@ -27,7 +33,7 @@ const anyImg = entries.some((e: any) => e.img?.approved);
     {entries.map((e: any) => (
       <li class:list={[{ "no-img": !anyImg }]}>
         <span class="rank-n">{e.rank}</span>
-        {anyImg && (e.img?.approved ? <img src={e.img.src} srcset={e.img.srcset} sizes="40px" width={e.img.width} height={e.img.height} alt={e.img.alt} loading="lazy" decoding="async" /> : <img src={e.img?.src || "/brand/fighter-silhouette.svg"} width="40" height="50" alt="" loading="lazy" decoding="async" />)}
+        {anyImg && <FighterImage fighter={e.f} sizes="40px" />}
         <span class="rank-name">{e.name}{e.is_new && <span class="chip" style="margin-left:8px">New</span>}</span>
         <span class:list={["rank-move", e.change > 0 ? "up" : e.change < 0 ? "down" : ""]}>{e.change > 0 ? `▲ ${e.change}` : e.change < 0 ? `▼ ${Math.abs(e.change)}` : "—"}</span>
       </li>

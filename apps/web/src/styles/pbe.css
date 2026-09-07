@@ -707,3 +707,34 @@ th { font-family: var(--font-data); font-weight: 600; font-size: var(--fs-micro)
 .prod-example a:hover { border-bottom-color: var(--gold); }
 .docs-body .prod-example p { color: var(--paper-2); }
 .docs-body .prod-example a { color: var(--gold); }
+
+/* ===== fighter media parity =====
+   A stored asset is an 800x1000 portrait crop and fills its slot. A display-only ESPN headshot is
+   600x436 head-and-shoulders; cropping that to a 4/5 box removes the face, so it is letterboxed on a
+   plinth instead. Same resolver, same markup, different fit — no distorted crops either way. */
+.fighter-img { display: block; background: #0a0806; }
+img.media-headshot,
+.poster-faces .face img.media-headshot,
+.fighter-figure img.media-headshot,
+.rank-champ img.media-headshot,
+.rank-list img.media-headshot,
+.main-side img.media-headshot,
+.media-grid img.media-headshot,
+.ws-ac img.media-headshot,
+.ws-pick img.media-headshot {
+  object-fit: contain;
+  object-position: 50% 60%;
+  background: radial-gradient(120% 90% at 50% 8%, rgba(212,175,55,.10), rgba(10,8,6,.96) 62%);
+}
+/* the silhouette is a flat mark, not a photo: never zoom-crop it */
+img.media-none,
+.poster-faces .face img.media-none,
+.fighter-figure img.media-none,
+.rank-champ img.media-none,
+.rank-list img.media-none,
+.main-side img.media-none {
+  object-fit: contain;
+  object-position: 50% 50%;
+  opacity: .55;
+  background: #0a0806;
+}

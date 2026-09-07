@@ -15,9 +15,11 @@
  */
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
 import { join, dirname } from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 const ROOT = join(fileURLToPath(new URL(".", import.meta.url)), "..");
+/* the SAME media policy the site renders with; imported, never re-implemented */
+const { resolveFighterMedia, mediaCoverage, ESPN_HEADSHOT } = await import(pathToFileURL(join(ROOT, "apps", "web", "src", "lib", "media-policy.mjs")).href);
 const args = process.argv.slice(2);
 const opt = (n, d) => { const i = args.indexOf(n); return i >= 0 ? args[i + 1] : d; };
 const DRY = args.includes("--dry-run");
@@ -51,7 +53,10 @@ const APPROVED = /^(cc[ -]?by(-sa)?(\s*\d(\.\d)?)?|cc0(\s*1\.0)?|public domain|p
 const okImage = (im) => !!(im && im.card_url && APPROVED.test(String(im.rights_label || im.license || "").trim()));
 const compactImage = (im) => (im ? { id: im.id, image_url: im.image_url, card_url: im.card_url, thumb_url: im.thumb_url, author: im.author, license: im.license, source_url: im.source_url, kind: im.kind, attribution_text: im.attribution_text, rights_label: im.rights_label } : null);
 const compactFighter = (f) => (f ? {
-  id: f.id, name: f.name, nickname: f.nickname ?? null, slug_id: f.slug_id ?? null, stance: f.stance ?? null,
+  id: f.id, name: f.name, nickname: f.nickname ?? null,
+  /* Canonical join key for both the consumer deep link and the display-only media source. The detail
+     endpoint calls it slug_id, the card endpoint espn_athlete_id; they are the same ESPN athlete id. */
+  slug_id: f.slug_id ?? f.espn_athlete_id ?? null, stance: f.stance ?? null,
   record_w: f.record_w ?? null, record_l: f.record_l ?? null, record_d: f.record_d ?? null, record_nc: f.record_nc ?? null,
   height_in: f.height_in ?? null, reach_in: f.reach_in ?? null, weight_lbs: f.weight_lbs ?? null, dob: f.dob ?? null, is_active: f.is_active ?? null,
   primary_image: compactImage(f.primary_image),
@@ -85,6 +90,42 @@ const isWomensLabel = (l) => /women/i.test(String(l || ""));
 const rankOf = (f) => (f?.ranking?.positions || []).filter((p) => !p.is_p4p)[0] || null;
 const dnaScore = (dna) => (dna ? (dna.sample_stat_bouts || 0) * 6 + Math.min(30, (dna.sample_rounds || 0) * 2) + Math.min(20, Math.round((dna.sample_seconds || 0) / 300)) + (dna.coverage_status === "high" ? 12 : dna.coverage_status === "medium" ? 8 : dna.coverage_status === "low" ? 3 : 0) : 0);
 const nonNullMetrics = (dna) => (dna ? Object.values(dna.metrics).filter((m) => m && m.value !== null && m.value !== undefined).length : 0);
+
+
+/* ---------- fighter media parity ----------
+   The consumer product resolves a fighter portrait from the canonical store first and falls back to the
+   ESPN headshot keyed on the athlete id. The API site now does the same, so a fighter with a picture on
+   ufc.propbetedge.ai is not a silhouette here. The headshot is DISPLAY-ONLY: it is confirmed to exist,
+   credited to ESPN, and never described as rights-cleared. It is not added to any /v1 response. */
+const espnSeen = new Map();
+let espnProbes = 0;
+async function espnAvailable(athleteId) {
+  if (!athleteId) return false;
+  const key = String(athleteId);
+  if (espnSeen.has(key)) return espnSeen.get(key);
+  if (espnProbes >= 120) return false; /* bounded; unprobed fighters stay on the stored/none path */
+  espnProbes++;
+  let ok = false;
+  try {
+    const ac = new AbortController();
+    const t = setTimeout(() => ac.abort(), 8000);
+    const r = await fetch(ESPN_HEADSHOT(key), { method: "GET", headers: { "user-agent": headers["user-agent"] }, signal: ac.signal });
+    clearTimeout(t);
+    ok = r.ok && String(r.headers.get("content-type") || "").startsWith("image/");
+  } catch { ok = false; }
+  espnSeen.set(key, ok);
+  return ok;
+}
+/* Resolve one fighter's media through the shared policy and attach it to the compact fighter object. */
+async function withMedia(f) {
+  if (!f) return f;
+  const athleteId = f.slug_id ?? f.espn_athlete_id ?? null;
+  const needsFallback = !f.primary_image || !f.primary_image.card_url;
+  const avail = needsFallback ? await espnAvailable(athleteId) : undefined;
+  f.media = resolveFighterMedia(f, { espnAvailable: avail, captured_at });
+  return f;
+}
+const withMediaAll = async (list) => { for (const f of list) await withMedia(f); return list; };
 
 /* ---------- 1. contract + counts ---------- */
 console.log(`refresh-showcase → ${BASE}`);
@@ -394,18 +435,39 @@ const showcase = {
     division: {
       key: rankPick.dv.key, label: rankPick.dv.label, is_womens: rankPick.dv.is_womens,
       champion: rankPick.dv.champion ? { name: rankPick.dv.champion.name, fighter_id: rankPick.dv.champion.fighter_id, slug_id: rankPick.dv.champion.fighter?.slug_id ?? null, primary_image: compactImage(rankPick.map[rankPick.dv.champion.fighter_id] || null) } : null,
-      entries: rankPick.dv.entries.map((e) => ({ rank: e.rank, name: e.name, fighter_id: e.fighter_id, change: e.change, is_new: e.is_new, primary_image: compactImage(rankPick.map[e.fighter_id] || null) })),
+      entries: rankPick.dv.entries.map((e) => ({ rank: e.rank, name: e.name, fighter_id: e.fighter_id, slug_id: e.fighter?.slug_id ?? null, change: e.change, is_new: e.is_new, primary_image: compactImage(rankPick.map[e.fighter_id] || null) })),
     },
   },
   womens: {
     matchup: womensMatchup,
-    rankings: womensRank.ok && womensRank.data.divisions?.[0] ? (() => { const dv = womensRank.data.divisions[0]; const map = womensMedia?.ok ? womensMedia.data.media || {} : {}; return { ...wrap(womensRank), source: womensRank.data.source, source_url: womensRank.data.source_url, snapshot_date: womensRank.data.snapshot_date, division: { key: dv.key, label: dv.label, is_womens: dv.is_womens, champion: dv.champion ? { name: dv.champion.name, fighter_id: dv.champion.fighter_id, primary_image: compactImage(map[dv.champion.fighter_id] || null) } : null, entries: dv.entries.map((e) => ({ rank: e.rank, name: e.name, fighter_id: e.fighter_id, change: e.change, is_new: e.is_new, primary_image: compactImage(map[e.fighter_id] || null) })) } }; })() : null,
+    rankings: womensRank.ok && womensRank.data.divisions?.[0] ? (() => { const dv = womensRank.data.divisions[0]; const map = womensMedia?.ok ? womensMedia.data.media || {} : {}; return { ...wrap(womensRank), source: womensRank.data.source, source_url: womensRank.data.source_url, snapshot_date: womensRank.data.snapshot_date, division: { key: dv.key, label: dv.label, is_womens: dv.is_womens, champion: dv.champion ? { name: dv.champion.name, fighter_id: dv.champion.fighter_id, slug_id: dv.champion.fighter?.slug_id ?? null, primary_image: compactImage(map[dv.champion.fighter_id] || null) } : null, entries: dv.entries.map((e) => ({ rank: e.rank, name: e.name, fighter_id: e.fighter_id, slug_id: e.fighter?.slug_id ?? null, change: e.change, is_new: e.is_new, primary_image: compactImage(map[e.fighter_id] || null) })) } }; })() : null,
   },
   product_links,
   provenance: prov ? { ...prov, captured_at, upstream_base: BASE } : null,
   registry: { definition_version: reg.data.definition_version, origin_labels: reg.data.origin_labels, confidence_tiers: reg.data.confidence_tiers, as_of_semantics: reg.data.as_of_semantics, families: Object.fromEntries(Object.entries(reg.data.families || {}).map(([k, v]) => [k, v.map((m) => ({ metric_key: m.metric_key, display_name: m.display_name, description: m.description, unit: m.unit, formula: m.formula, min_bouts: m.min_bouts, min_rounds: m.min_rounds, min_seconds: m.min_seconds }))])) },
   upstream_calls: calls,
 };
+
+
+/* ---------- 7.9 resolve fighter media for every rendered subject ----------
+   One pass over every fighter the site will actually paint, through the shared policy module. The
+   resolved block travels in the snapshot so the page renders exactly what was classified here, and a
+   portrait that appears upstream later is picked up by the next refresh instead of being frozen. */
+const mediaNodes = [];
+for (const b of showcase.event.bouts) { if (b.fighter_a) mediaNodes.push(b.fighter_a); if (b.fighter_b) mediaNodes.push(b.fighter_b); }
+if (showcase.fighter.fighter) mediaNodes.push(showcase.fighter.fighter);
+for (const f of showcase.matchup.fighters) mediaNodes.push(f);
+for (const r of [showcase.rankings, showcase.womens?.rankings]) {
+  if (!r?.division) continue;
+  if (r.division.champion) mediaNodes.push(r.division.champion);
+  for (const e of r.division.entries) mediaNodes.push(e);
+}
+if (showcase.womens?.matchup?.fighters) for (const f of showcase.womens.matchup.fighters) mediaNodes.push(f);
+/* rankings rows name their fighter id differently; normalise before resolving */
+for (const n of mediaNodes) { if (!n.id && n.fighter_id) n.id = n.fighter_id; }
+for (const n of mediaNodes) await withMedia(n);
+showcase.media_coverage = { ...mediaCoverage(mediaNodes.map((n) => n.media)), espn_probes: espnProbes, resolved_at: captured_at };
+note(`media: ${showcase.media_coverage.stored} stored · ${showcase.media_coverage.display_only} display-only · ${showcase.media_coverage.blocked} blocked · ${showcase.media_coverage.unavailable} unavailable (${espnProbes} headshot probes)`);
 
 /* ---------- 8. validate, fail closed ---------- */
 const prev = existsSync(OUT) ? JSON.parse(readFileSync(OUT, "utf8")) : null;
@@ -432,6 +494,13 @@ if (showcase.provenance && !showcase.provenance.metric.definition_version) probl
 for (const [k, v] of Object.entries(showcase.product_links)) {
   if (v === null || k === "captured_at" || k === "sitemap_status") continue;
   if (typeof v !== "string" || !v.startsWith("https://ufc.propbetedge.ai")) problems.push(`product_links.${k} is not a consumer-site URL (${v})`);
+}
+for (const n of mediaNodes) {
+  const m = n.media;
+  if (!m) { problems.push(`fighter ${n.name} has no resolved media block`); continue; }
+  if (m.display_policy === "redistributable" && m.media_status !== "stored") problems.push(`${n.name}: redistributable claimed for ${m.media_status}`);
+  if (m.media_status === "display_only" && (m.license || !m.attribution)) problems.push(`${n.name}: display-only media must carry attribution and no licence claim`);
+  if (m.approved && !m.src) problems.push(`${n.name}: approved media without a src`);
 }
 if (!showcase.api_version) problems.push("no api_version reported");
 if (Math.abs(Date.now() - Date.parse(showcase.generated_at)) > 10 * 60 * 1000) problems.push("generated_at is not current");

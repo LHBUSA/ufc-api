@@ -1,57 +1,62 @@
-/* Image-use helper for MARKETING surfaces.
+/* Typed view over the SINGLE media policy in ./media-policy.mjs.
  *
- * The API returns image metadata with a per-file license. Marketing pages may only show a portrait when the
- * license clearly permits commercial display with attribution. Everything else falls back to the original
- * PropTechUSA silhouette. Attribution is always returned so the caller can render the credit. */
+ * This file deliberately contains no policy of its own. The refresh script imports the same module, so
+ * the generated snapshot and the rendered site classify every fighter image identically. If you are
+ * about to add a licence check or a fallback here, add it to media-policy.mjs instead. */
+import { resolveFighterMedia, mediaCoverage, holdForAudit, SILHOUETTE, ESPN_HEADSHOT, ESPN_PROFILE } from "./media-policy.mjs";
+
+export type MediaStatus = "stored" | "display_only" | "blocked" | "unavailable";
+export type DisplayPolicy = "redistributable" | "display_only" | "none";
+
 export interface ApiImage {
   id?: string; image_url?: string | null; card_url?: string | null; thumb_url?: string | null;
   author?: string | null; license?: string | null; source_url?: string | null; kind?: string | null;
   attribution_text?: string | null; rights_label?: string | null;
 }
-export interface MarketingImage {
-  approved: boolean;
-  src: string;            /* card (800x1000) or silhouette */
-  srcset?: string;        /* thumb 320w, card 800w when approved */
-  width: number; height: number;
-  alt: string;
-  credit: string | null;  /* attribution to render when approved */
-  license: string | null;
-  source_url: string | null;
-  reason?: string;        /* why not approved */
+
+export interface FighterLike {
+  id?: string | null; name?: string | null; slug_id?: string | null; espn_athlete_id?: string | null;
+  primary_image?: ApiImage | null;
+  /* set by the refresh script when it has confirmed the display-only headshot resolves */
+  media?: ResolvedMedia | null;
 }
 
-/* Licenses that permit commercial display with attribution (CC BY, CC BY-SA, CC0, public domain). NC / ND / unknown are refused. */
-const APPROVED = /^(cc[ -]?by(-sa)?(\s*\d(\.\d)?)?|cc0(\s*1\.0)?|public domain|pd(-[a-z]+)?)$/i;
-const APPROVED_KINDS = new Set(["wikimedia", "public_domain"]);
+export interface ResolvedMedia {
+  fighter_id: string | null;
+  name: string;
+  media_status: MediaStatus;
+  display_policy: DisplayPolicy;
+  approved: boolean;
+  aspect: "portrait" | "headshot" | "none";
+  src: string;
+  srcset?: string;
+  portrait_url: string | null; card_url: string | null; thumb_url: string | null;
+  width: number; height: number;
+  alt: string;
+  attribution: string | null;
+  credit: string | null;
+  license: string | null;
+  source_url: string | null;
+  kind?: string | null;
+  captured_at?: string | null;
+  reason: string;
+}
 
-export const SILHOUETTE = "/brand/fighter-silhouette.svg";
+export { SILHOUETTE, holdForAudit, mediaCoverage, ESPN_HEADSHOT, ESPN_PROFILE };
 
-/* Assets held back from marketing surfaces pending an upstream attribution audit. The API still returns them;
-   the portal renders the fight-poster name lockup instead so we never publish a credit we have not verified.
-   Audited and released 2026-09-07:
-     776d6a0a… Jean Silva — commons.wikimedia.org/wiki/File:Jean_Silva_(54451587575).jpg resolves, artist
-     "The White House", licence "Public domain", credited to the official White House Flickr, described as an
-     official White House photo taken at UFC 314. Attribution verified; asset is in use. */
-const AUDIT_HOLD = new Set<string>([]);
-export function holdForAudit(id: string) { return AUDIT_HOLD.has(id); }
+/**
+ * Resolve a fighter's image for a MARKETING surface.
+ * Prefers the media block the refresh script already resolved (which carries a verified display-only
+ * flag); otherwise resolves live from the fighter's canonical ids. Never guesses by name.
+ */
+export function fighterMedia(f: FighterLike | null | undefined): ResolvedMedia {
+  if (f && f.media && (f.media as any).media_status) return f.media as ResolvedMedia;
+  return resolveFighterMedia(f || {}) as ResolvedMedia;
+}
 
-export function marketingImage(img: ApiImage | null | undefined, name: string): MarketingImage {
-  const fallback: MarketingImage = { approved: false, src: SILHOUETTE, width: 320, height: 400, alt: `${name} (silhouette; no rights-cleared portrait)`, credit: null, license: img?.license ?? null, source_url: img?.source_url ?? null };
-  if (!img || !img.card_url) return { ...fallback, reason: "no_image" };
-  if (img.id && AUDIT_HOLD.has(img.id)) return { ...fallback, reason: "attribution_audit_pending" };
-  const license = (img.rights_label || img.license || "").trim();
-  if (!APPROVED.test(license)) return { ...fallback, reason: `license_not_approved_for_marketing:${license || "unknown"}` };
-  if (img.kind && !APPROVED_KINDS.has(img.kind) && img.kind !== "licensed_editorial") return { ...fallback, reason: `kind_not_approved:${img.kind}` };
-  if (img.kind === "licensed_editorial") return { ...fallback, reason: "licensed_editorial_requires_contract_review" };
-  return {
-    approved: true,
-    src: img.card_url,
-    srcset: img.thumb_url ? `${img.thumb_url} 320w, ${img.card_url} 800w` : undefined,
-    width: 800, height: 1000,
-    alt: `${name} portrait`,
-    credit: img.attribution_text || [img.author, license].filter(Boolean).join(", ") || null,
-    license, source_url: img.source_url ?? null,
-  };
+/** Back-compat shim for call sites that only hold an image plus a name. Prefer fighterMedia(). */
+export function marketingImage(img: ApiImage | null | undefined, name: string, slugId?: string | null): ResolvedMedia {
+  return resolveFighterMedia({ name, slug_id: slugId ?? null, primary_image: img ?? null }) as ResolvedMedia;
 }
 
 export function fmtRecord(f: { record_w?: number | null; record_l?: number | null; record_d?: number | null; record_nc?: number | null }): string {

@@ -49,6 +49,12 @@ jobs:
       - name: Verify the snapshot still builds the site
         run: npm run build
 
+      # Fighter media must stay at parity with the consumer product. This fails the run on an
+      # unexplained resolver mismatch or a URL we publish that does not load; a fighter nobody has a
+      # picture of, and a deliberate rights difference, are reported but do not fail.
+      - name: Audit fighter-media parity
+        run: npm run media:audit:ci
+
       - name: Commit only when the payload actually changed
         id: commit
         run: |

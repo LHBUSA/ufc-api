@@ -1,9 +1,10 @@
 ---
-/* Rendered fighter card from the /fighters/{id} response (compact projection). Portrait only when rights-cleared. */
-import { marketingImage, fmtRecord, fmtHeight, fmtInches, titleCase } from "../lib/media";
+/* Rendered fighter card from the /fighters/{id} response (compact projection). Media goes through the
+   shared policy in ../lib/media-policy.mjs, which decides stored vs display-only vs nothing. */
+import { fmtRecord, fmtHeight, fmtInches, titleCase } from "../lib/media";
+import FighterImage from "./FighterImage.astro";
 export interface Props { fighter: any; size?: "hero" | "card" | "mini"; showCareer?: boolean; nextBout?: boolean; }
 const { fighter: f, size = "card", showCareer = false, nextBout = true } = Astro.props;
-const img = marketingImage(f.primary_image, f.name);
 const pos = (f.ranking?.positions || []).filter((p: any) => !p.is_p4p)[0] || (f.ranking?.positions || [])[0] || null;
 const rankLabel = pos ? (pos.is_champion || pos.rank === 0 ? "Champion" : `#${pos.rank}`) : null;
 const division = pos ? pos.label : null;
@@ -11,8 +12,7 @@ const career = f.career || {};
 ---
 <article class:list={["fighter", `fighter-${size}`]}>
   <figure class="fighter-figure">
-    <img src={img.src} srcset={img.srcset} sizes={size === "hero" ? "(max-width: 640px) 60vw, 320px" : "160px"} width={img.width} height={img.height} alt={img.alt} loading={size === "hero" ? "eager" : "lazy"} decoding="async" />
-    {img.credit ? <figcaption class="credit">{img.source_url ? <a href={img.source_url} rel="noopener">{img.credit}</a> : img.credit}</figcaption> : <figcaption class="credit">No rights-cleared portrait · silhouette</figcaption>}
+    <FighterImage fighter={f} sizes={size === "hero" ? "(max-width: 640px) 60vw, 320px" : "160px"} eager={size === "hero"} credit creditFallback="No image available · silhouette" />
   </figure>
   <div class="fighter-body">
     <div class="fighter-name">{f.name}{f.nickname && <span class="fighter-nick">“{f.nickname}”</span>}</div>

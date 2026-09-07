@@ -22,6 +22,8 @@
     "deploy:preview": "npm run build && npm run deploy --workspace=gateway",
     "deploy:production": "npm run build && npm run deploy:production --workspace=gateway",
     "smoke": "node scripts/smoke.mjs",
+    "media:audit": "node scripts/audit-media-parity.mjs --set default",
+    "media:audit:ci": "node scripts/audit-media-parity.mjs --set default --ci",
     "issue-key": "node scripts/issue-key.mjs"
   },
   "devDependencies": {

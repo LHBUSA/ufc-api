@@ -1,0 +1,58 @@
+---
+/* The ONE way a fighter image is rendered on this site.
+ *
+ * Every surface (hero poster, fighter profile, fight card, matchup, rankings) goes through here so that
+ * media resolution, the display-only treatment, the credit and the last-resort fallback cannot diverge
+ * between components. Policy itself lives in ../lib/media-policy.mjs.
+ *
+ * A stored asset is an 800x1000 portrait crop and fills its slot. A display-only ESPN headshot is
+ * 600x436 head-and-shoulders: it is letterboxed with object-fit:contain instead, because cropping it to
+ * a portrait box cuts the face off. That is why `aspect` exists rather than a single image style. */
+import { fighterMedia } from "../lib/media";
+export interface Props {
+  fighter: any;
+  sizes?: string;
+  eager?: boolean;
+  /* render the credit line under the image; surfaces that show credits elsewhere pass false */
+  credit?: boolean;
+  creditFallback?: string;
+}
+const { fighter, sizes, eager = false, credit = false, creditFallback } = Astro.props;
+const m = fighterMedia(fighter);
+/* If a URL rots later, drop to the silhouette in the browser rather than showing a broken image. */
+const onerror = "this.onerror=null;this.src='/brand/fighter-silhouette.svg';this.classList.remove('media-headshot');this.classList.add('media-none');this.setAttribute('data-media-status','unavailable');";
+---
+{m.approved ? (
+  <img
+    class:list={["fighter-img", `media-${m.aspect}`]}
+    data-media-status={m.media_status}
+    data-display-policy={m.display_policy}
+    src={m.src}
+    srcset={m.srcset}
+    sizes={sizes}
+    width={m.width}
+    height={m.height}
+    alt={m.alt}
+    loading={eager ? "eager" : "lazy"}
+    decoding="async"
+    referrerpolicy={m.media_status === "display_only" ? "no-referrer" : undefined}
+    onerror={onerror}
+  />
+) : (
+  <img
+    class:list={["fighter-img", "media-none"]}
+    data-media-status={m.media_status}
+    data-display-policy={m.display_policy}
+    src={m.src}
+    width={m.width}
+    height={m.height}
+    alt={m.alt}
+    loading="lazy"
+    decoding="async"
+  />
+)}
+{credit && (m.credit ? (
+  <figcaption class="credit">{m.source_url ? <a href={m.source_url} rel="noopener nofollow">{m.credit}</a> : m.credit}</figcaption>
+) : (
+  <figcaption class="credit">{creditFallback ?? "No image available · silhouette"}</figcaption>
+))}
