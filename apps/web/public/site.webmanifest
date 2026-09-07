@@ -1,14 +1,15 @@
 {
   "name": "PropTechUSA UFC Intelligence API",
   "short_name": "UFC API",
-  "description": "UFC data built for developers, plus proprietary PropBetEdge Fight DNA.",
+  "description": "Developer-ready UFC intelligence: normalized fighters, events, bouts, round statistics, Fight DNA and matchup analytics.",
   "start_url": "/",
+  "scope": "/",
   "display": "browser",
-  "background_color": "#fbfaf6",
-  "theme_color": "#0e6639",
+  "background_color": "#14110d",
+  "theme_color": "#14110d",
   "icons": [
-    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
     { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
   ]
 }

@@ -10,12 +10,18 @@ export interface Props {
   description: string;
   path?: string;
   ogType?: string;
+  /* Share card. Defaults to the versioned brand card; pass a path to override per page.
+     The filename carries a version because social platforms cache OG images by URL, so replacing the
+     bytes at a stale path would leave old previews in circulation indefinitely. */
+  ogImage?: string;
   jsonLd?: unknown[];
   breadcrumbs?: { name: string; path: string }[];
 }
-const { title, description, path = "/", ogType = "website", jsonLd = [], breadcrumbs = [] } = Astro.props;
+const { title, description, path = "/", ogType = "website", ogImage = "/brand/og-ufc-api-v2-1200x630.png", jsonLd = [], breadcrumbs = [] } = Astro.props;
 const site = "https://ufc.proptechusa.ai";
 const canonical = site + (path === "/" ? "/" : path);
+const ogUrl = site + ogImage;
+const ogAlt = "PropTechUSA UFC Intelligence API — fight data, Fight DNA, developer ready";
 /* Every number in the strip comes from the generated showcase snapshot, never a hard-coded literal. */
 const counts = show.counts;
 const nextEvent = show.event;
@@ -30,7 +36,7 @@ const nav = [
 const current = (n: { href: string; exact?: boolean }) => (n.exact ? path === n.href : path === n.href || path.startsWith(n.href + "/")) ? "page" : undefined;
 const crumbs = [{ name: "Home", path: "/" }, ...breadcrumbs];
 const baseLd = [
-  { "@context": "https://schema.org", "@type": "Organization", "@id": "https://proptechusa.ai/#organization", name: "PropTechUSA", url: "https://proptechusa.ai", logo: site + "/brand/ufc-api-mark.svg", sameAs: ["https://propbetedge.ai"], contactPoint: { "@type": "ContactPoint", contactType: "sales", email: "sales@proptechusa.ai" } },
+  { "@context": "https://schema.org", "@type": "Organization", "@id": "https://proptechusa.ai/#organization", name: "PropTechUSA", url: "https://proptechusa.ai", logo: site + "/icon-512.png", sameAs: ["https://propbetedge.ai"], contactPoint: { "@type": "ContactPoint", contactType: "sales", email: "sales@proptechusa.ai" } },
   { "@context": "https://schema.org", "@type": "WebSite", "@id": site + "/#website", name: "PropTechUSA UFC Intelligence API", url: site, publisher: { "@id": "https://proptechusa.ai/#organization" } },
   ...(breadcrumbs.length ? [{ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: crumbs.map((c, i) => ({ "@type": "ListItem", position: i + 1, name: c.name, item: site + (c.path === "/" ? "/" : c.path) })) }] : []),
   ...jsonLd,
@@ -51,18 +57,24 @@ const fmt = (n: number) => n.toLocaleString("en-US");
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={site + "/og.png"} />
+    <meta property="og:image" content={ogUrl} />
+    <meta property="og:image:secure_url" content={ogUrl} />
+    <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="PropTechUSA UFC Intelligence API — Fight DNA, Matchup DNA, events, fighters, round stats" />
+    <meta property="og:image:alt" content={ogAlt} />
+    <meta property="og:locale" content="en_US" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={site + "/og.png"} />
+    <meta name="twitter:image" content={ogUrl} />
+    <meta name="twitter:image:alt" content={ogAlt} />
     <meta name="theme-color" content="#14110d" />
-    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
+    <link rel="icon" href="/favicon-16.png" type="image/png" sizes="16x16" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
