@@ -33,6 +33,14 @@ const FA = flagship.fighters[0], FB = flagship.fighters[1];
 const mw = show.rankings;
 const womens = show.womens;
 const rec = show.provenance;
+/* Cross-links to the production application. Resolved and liveness-checked at refresh time by
+   scripts/refresh-showcase.mjs, so no slug is hard-coded here and a deep link is only rendered when
+   that page exists; otherwise it falls back to the consumer site's section index. */
+const links = show.product_links;
+const pbeFighter = links.fighter || links.fighters_index;
+const pbeMatchup = links.matchup || links.fight_week;
+const pbeEvent = links.fight_week;
+
 const EVENT_ID = event.event.id, SHOW_FIGHTER = fighterShow.fighter.id, FA_ID = FA.id, FB_ID = FB.id;
 const fam = (k: string) => (reg?.families?.[k] || []);
 const famCard = (t: string, k: string, blurb: string, picks: [string, string][]) => ({ t, blurb, keys: fam(k).map((m: any) => m.metric_key), picks });
@@ -63,8 +71,9 @@ const jsonLd = [
         <div class="actions">
           <a class="btn primary" href="/pricing">Get API access</a>
           <a class="btn secondary" href="/workspace">Open Workspace</a>
-          <a class="btn ghost" href="/docs">View docs →</a>
+          <a class="btn ghost" href={links.site} rel="noopener">See it in production →</a>
         </div>
+        <p class="hero-sub-links"><a href="/docs">View docs →</a><span aria-hidden="true">·</span><a href={links.site} rel="noopener">PropBetEdge UFC is built on the same UFC intelligence layer</a></p>
         <div class="statstrip">
           <div><b>{fmtNumber(counts.events)}</b><span>Events</span></div>
           <div><b>{fmtNumber(counts.fighters)}</b><span>Fighters</span></div>
@@ -91,7 +100,7 @@ const jsonLd = [
       </div>
       <Demo eyebrow={`${divisionOf(fighterShow.fighter) || "Fighter"}${(fighterShow.fighter.ranking?.positions || []).filter((p: any) => !p.is_p4p)[0]?.rank === 0 ? " champion" : (fighterShow.fighter.ranking?.positions || []).filter((p: any) => !p.is_p4p)[0] ? " #" + (fighterShow.fighter.ranking?.positions || []).filter((p: any) => !p.is_p4p)[0].rank : ""} · selected on live coverage`} title={fighterShow.fighter.name} intro={`${fighterShow.fighter.record_w}-${fighterShow.fighter.record_l} · ${fighterShow.dna.sample_stat_bouts} stat-covered bouts · ${fighterShow.dna.sample_rounds} rounds · ${fmtNumber(fighterShow.dna.sample_seconds / 60, 0)} observed minutes`} captured={fresh.capturedAt}
         endpoints={[{ path: "/v1/ufc/fighters/{id}", plan: "developer" }, { path: "/v1/ufc/fighters/{id}/history", plan: "developer" }, { path: "/v1/ufc/fighters/{id}/stats", plan: "pro" }, { path: "/v1/ufc/fighters/{id}/dna", plan: "pro" }]}
-        workspace={`/workspace?tool=fighter&id=${SHOW_FIGHTER}`} json={fighterShow.raw} jsonPath={fighterShow.paths.detail} jsonNote="subset: images[] and history[] shortened" pbeLabel="See the live PropBetEdge fighter page →">
+        workspace={`/workspace?tool=fighter&id=${SHOW_FIGHTER}`} json={fighterShow.raw} jsonPath={fighterShow.paths.detail} jsonNote="subset: images[] and history[] shortened" pbe={pbeFighter} pbeLabel={links.fighter ? "View " + fighterShow.fighter.name + " on PropBetEdge UFC →" : "View fighters on PropBetEdge UFC →"}>
         <FighterPreview fighter={fighterShow.fighter} size="hero" showCareer />
         <div style="height:16px"></div>
         <FightDnaPreview snapshot={fighterShow.dna} title="Fight DNA" keys={["sig_landed_per_min", "sig_accuracy", "sig_defense", "knockdowns_per_15", "td_attempts_per_15", "pace_retention_r3_vs_r1"]} />
@@ -112,7 +121,7 @@ const jsonLd = [
       </div>
       <Demo eyebrow="Current card · rendered from the response" title="The next card, end to end" intro="Event, ordered bouts, card positions, both fighters with rights-cleared media, and the matchup read for the co-main." captured={fresh.capturedAt}
         endpoints={[{ path: "/v1/ufc/events?status=upcoming", plan: "developer" }, { path: "/v1/ufc/events/{id}/card", plan: "developer" }, { path: "/v1/ufc/fighters/{id}", plan: "developer" }, { path: "/v1/ufc/matchups/{a}/{b}/dna", plan: "ultra" }]}
-        workspace="/workspace?tool=card" json={event.raw} jsonPath={event.path} jsonNote="subset: 2 of 13 bouts, images[] omitted" pbeLabel="See the live PropBetEdge Fight Week →">
+        workspace="/workspace?tool=card" json={event.raw} jsonPath={event.path} jsonNote="subset: 2 of 13 bouts, images[] omitted" pbe={pbeEvent} pbeLabel="See this card on PropBetEdge UFC Fight Week →">
         <EventCardPreview event={event} limit={8} />
         <div slot="aside">
           {womens.matchup ? (
@@ -138,7 +147,7 @@ const jsonLd = [
       </div>
       <Demo eyebrow={`${flagship.weight_class ? flagship.weight_class.replace(/_/g, " ").toLowerCase() : "matchup"} · ${flagship.label}${flagship.on_current_card ? " · on the current card" : ""}`} title={`${FA.name} vs ${FB.name}`} intro={`${flagship.meta.comparable} of ${flagship.meta.comparisons} metrics comparable · ${flagship.insights.length} insights above threshold · stance context ${flagship.stance_context.context.replace(/_/g, " ")}`} captured={fresh.capturedAt} single
         endpoints={[{ path: "/v1/ufc/matchups/{a}/{b}/dna", plan: "ultra" }, { path: "/v1/ufc/fighters/{id}", plan: "developer" }, { path: "/v1/ufc/fighters/{id}/splits", plan: "pro" }]}
-        workspace={`/workspace?tool=matchup&a=${FA_ID}&b=${FB_ID}`} json={flagship.raw} jsonPath={flagship.path} jsonNote="subset: 3 of 18 comparisons, 2 of 12 insights" pbeLabel="See the live PropBetEdge matchup →">
+        workspace={`/workspace?tool=matchup&a=${FA_ID}&b=${FB_ID}`} json={flagship.raw} jsonPath={flagship.path} jsonNote="subset: 3 of 18 comparisons, 2 of 12 insights" pbe={pbeMatchup} pbeLabel={links.matchup ? "View this matchup on PropBetEdge UFC →" : "See Fight Week on PropBetEdge UFC →"}>
         <MatchupPreview matchup={flagship} />
       </Demo>
     </div>
@@ -165,10 +174,93 @@ const jsonLd = [
               <a class="btn secondary" href={`/workspace?tool=rankings&division=${mw.division.key}`}>Open in Workspace →</a>
               <JsonDrawer json={mw.raw} path={mw.path} title="Rankings response" note="subset: 3 entries" label="View JSON →" />
             </div>
-            <a class="pbe-link" href="https://ufc.propbetedge.ai/rankings" rel="noopener"><span class="m">PropBetEdge UFC</span> See the live rankings product →</a>
+            <a class="pbe-link" href={links.rankings} rel="noopener"><span class="m">PropBetEdge UFC</span> View the live rankings product →</a>
           </div>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- 5b. PRODUCT PROOF -->
+  <section class="section band-gold" id="production">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow gold">Product proof</p>
+          <h2>The engine behind <span class="gold-em">a real UFC product.</span></h2>
+          <p class="lede">PropBetEdge UFC is a production fight-intelligence application built on the same underlying UFC data and Fight DNA layer this API exposes. These are its four core surfaces, composed here from the same snapshot the demos above render.</p>
+        </div>
+        <a class="btn gold" href={links.site} rel="noopener">Explore PropBetEdge UFC →</a>
+      </div>
+
+      <div class="proof-grid">
+        <a class="shot" href={pbeEvent} rel="noopener">
+          <div class="shot-bar"><span class="dot" aria-hidden="true"></span><span class="url">ufc.propbetedge.ai/fight-week</span></div>
+          <div class="shot-body">
+            <p class="shot-kicker">Fight Week</p>
+            <p class="shot-title">{event.event.name}</p>
+            <p class="shot-meta">{fmtDate(event.event.event_date)} · {event.bout_count} bouts · {event.event.city}{event.event.country ? ", " + event.event.country : ""}</p>
+            <div class="shot-faces">
+              {event.bouts.flatMap((b: any) => [b.fighter_a, b.fighter_b]).filter((f: any) => f?.primary_image?.thumb_url).slice(0, 6).map((f: any) => (
+                <span class="face"><img src={f.primary_image.thumb_url} alt="" width="72" height="72" loading="lazy" decoding="async" /></span>
+              ))}
+            </div>
+          </div>
+          <span class="shot-cta">View on PropBetEdge UFC →</span>
+        </a>
+
+        <a class="shot" href={pbeFighter} rel="noopener">
+          <div class="shot-bar"><span class="dot" aria-hidden="true"></span><span class="url">ufc.propbetedge.ai/fighters</span></div>
+          <div class="shot-body fighter-shot">
+            {fighterShow.fighter.primary_image?.card_url && <img class="shot-portrait" src={fighterShow.fighter.primary_image.card_url} alt="" width="220" height="275" loading="lazy" decoding="async" />}
+            <div>
+              <p class="shot-kicker">Fighter profile</p>
+              <p class="shot-title">{fighterShow.fighter.name}</p>
+              <p class="shot-meta">{fighterShow.fighter.record_w}-{fighterShow.fighter.record_l}{fighterShow.fighter.record_d ? "-" + fighterShow.fighter.record_d : ""} · {fighterShow.dna.sample_stat_bouts} stat-covered bouts</p>
+              <div class="shot-bars">
+                {/* first three metrics this fighter actually has coverage for; a zero would read as a broken cell */}
+                {["sig_landed_per_min", "sig_accuracy", "sig_defense", "td_landed_per_15", "control_share", "finish_rate", "knockdowns_per_15"]
+                  .map((k) => ({ k, m: (fighterShow.dna as any)?.metrics?.[k] }))
+                  .filter((x: any) => x.m && x.m.value !== null && x.m.value !== undefined && x.m.value !== 0)
+                  .slice(0, 3)
+                  .map((x: any) => <div class="shot-bar-row"><span>{x.k.replace(/_/g, " ")}</span><b>{fmtNumber(x.m.value, 2)}</b></div>)}
+              </div>
+            </div>
+          </div>
+          <span class="shot-cta">View on PropBetEdge UFC →</span>
+        </a>
+
+        <a class="shot" href={pbeMatchup} rel="noopener">
+          <div class="shot-bar"><span class="dot" aria-hidden="true"></span><span class="url">ufc.propbetedge.ai/fights</span></div>
+          <div class="shot-body">
+            <p class="shot-kicker">Matchup DNA</p>
+            <p class="shot-title">{FA.name} <span class="vs-mini">vs</span> {FB.name}</p>
+            <p class="shot-meta">{flagship.meta.comparable} of {flagship.meta.comparisons} metrics comparable · {flagship.insights.length} insights</p>
+            <div class="shot-bars">
+              {flagship.comparisons.filter((c: any) => c.comparable).slice(0, 3).map((c: any) => (
+                <div class="shot-bar-row"><span>{c.label}</span><b>{fmtNumber(c.a?.value, 2)} / {fmtNumber(c.b?.value, 2)}</b></div>
+              ))}
+            </div>
+          </div>
+          <span class="shot-cta">View on PropBetEdge UFC →</span>
+        </a>
+
+        <a class="shot" href={links.rankings} rel="noopener">
+          <div class="shot-bar"><span class="dot" aria-hidden="true"></span><span class="url">ufc.propbetedge.ai/rankings</span></div>
+          <div class="shot-body">
+            <p class="shot-kicker">Rankings</p>
+            <p class="shot-title">{mw.division.label}</p>
+            <p class="shot-meta">{mw.source} snapshot {fmtDate(mw.snapshot_date)}</p>
+            <div class="shot-rank">
+              {mw.division.champion && <div class="shot-rank-row champ"><span class="r">C</span><span class="n">{mw.division.champion.name}</span></div>}
+              {mw.division.entries.slice(0, 4).map((e: any) => <div class="shot-rank-row"><span class="r">{e.rank}</span><span class="n">{e.name}</span></div>)}
+            </div>
+          </div>
+          <span class="shot-cta">View on PropBetEdge UFC →</span>
+        </a>
+      </div>
+
+      <p class="small muted" style="margin-top:18px">Built on the same UFC intelligence layer. PropBetEdge UFC is a PropTechUSA network product; surfaces shown here are its own application features, not a claim that every element is served by the commercial API.</p>
     </div>
   </section>
 
@@ -282,13 +374,13 @@ const jsonLd = [
       <img src={FB.primary_image?.card_url} alt="" width="800" height="1000" loading="lazy" decoding="async" />
     </div>
     <div class="wrap">
-      <p class="eyebrow plain" style="justify-content:center">The engine behind a world-class UFC product</p>
-      <h2>Every fighter. Every card.<br /><span class="gold-em">Every round. One API.</span></h2>
-      <p class="lede center" style="margin:0 auto 26px">PropBetEdge UFC is one production application built on this intelligence layer. Build yours.</p>
+      <p class="eyebrow plain" style="justify-content:center">The engine behind a real UFC product</p>
+      <h2>You've seen the API.<br /><span class="gold-em">Now see what it builds.</span></h2>
+      <p class="lede center" style="margin:0 auto 26px">PropBetEdge UFC is a production fight-intelligence application built on the same UFC intelligence layer. Build yours on the same foundation.</p>
       <div class="actions-row" style="justify-content:center">
+        <a class="btn gold" href={links.site} rel="noopener">Explore PropBetEdge UFC →</a>
         <a class="btn primary" href="/pricing">Get API access</a>
         <a class="btn secondary" href="/workspace">Open Workspace</a>
-        <a class="btn ghost" href="https://ufc.propbetedge.ai" rel="noopener">See it in production →</a>
       </div>
       <p class="credit">{[fighterShow.fighter.primary_image?.attribution_text, FB.primary_image?.attribution_text].filter(Boolean).join(" · ")}</p>
     </div>

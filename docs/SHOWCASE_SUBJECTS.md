@@ -41,3 +41,49 @@ the hero and an original silhouette elsewhere, never a stock photograph.
 licence is public domain, the credit points at the official White House Flickr account, and the description
 records it as an official White House photo taken at UFC 314. `AUDIT_HOLD` in `media.ts` is the mechanism for any
 future asset whose attribution needs checking before it appears in marketing.
+
+## Cross-links to PropBetEdge UFC
+
+`ufc.proptechusa.ai` is the API and engine. `ufc.propbetedge.ai` is the production application built
+on the same UFC intelligence layer. The site says exactly that and no more: it never claims the
+consumer product is exclusively powered by the commercial API, and it adds no schema.org markup
+asserting ownership or affiliation beyond the real PropTechUSA / PropBetEdge relationship. All
+cross-links are ordinary crawlable anchors with no `target`, no `download`, and no interstitial.
+
+### How a link is resolved (no hard-coded slugs)
+
+`scripts/refresh-showcase.mjs` writes `product_links` into the generated snapshot on every refresh:
+
+| key | resolution |
+| --- | --- |
+| `rankings`, `fight_week`, `fighters_index`, `events_index` | fixed routes on the consumer site |
+| `fighter` | `/fighters/<name>-<slug_id>`, using the `slug_id` the canonical API itself returns |
+| `matchup`, `hero_fight` | `/fights/<a>-vs-<b>-<event-slug>-<date>`, where the event slug comes from the resolved event URL |
+| `event`, `event_pregame` | `/events/…` and `/pregame/…` matched on the event date |
+| `rankings_champion` | the champion's `slug_id`, resolved with one extra fighter lookup |
+
+Resolution order is sitemap first, then a bounded liveness check. The consumer sitemap is a *subset*
+of the site (about 1,000 fighter URLs against a larger and growing archive), so a page can be live
+and unlisted; Sean Strickland's profile is one such case. A candidate URL built from canonical
+identifiers is therefore confirmed with a single request, capped at 8 probes per refresh against one
+first-party host. Anything that does not answer 200 becomes `null`, and the UI falls back to a
+section index. **A guessed slug is never published.**
+
+If the consumer site is unreachable at refresh time the refresh still succeeds: deep links degrade to
+section indexes and the snapshot is still written. A cross-link failure never fails the build.
+
+### Where the links appear
+
+| surface | destination |
+| --- | --- |
+| Hero, third CTA | consumer home |
+| Product proof section, four tiles | Fight Week, fighter, matchup, rankings |
+| Fighter / Fight Week / Matchup / Rankings demos | the closest matching consumer surface |
+| Docs build guides (fighter, card, compare, rankings, Fight Week) | Production example callout |
+| Workspace result panel | Fight Week, fighter, matchup or rankings for the current tool |
+| Footer, Network column | PropBetEdge UFC, PropBetEdge, PropTechUSA |
+| Final CTA | Explore PropBetEdge UFC |
+
+The Workspace builds its fighter link client-side from the `slug_id` in the response, and only uses a
+matchup deep link for the pair the snapshot already verified; everything else falls back to Fight Week
+or a section index.

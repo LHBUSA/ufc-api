@@ -2,6 +2,7 @@
 import Base from "../layouts/Base.astro";
 import gen from "../generated/entitlements.json";
 import ex from "../generated/examples.json";
+import show from "../generated/showcase.json";
 const plans = gen.plans.plans;
 const sc = ex.showcase;
 const art = {
@@ -10,6 +11,11 @@ const art = {
   champ: { name: sc.rankings_womens_flyweight.division.champion.name, img: sc.rankings_womens_flyweight.division.champion.primary_image?.card_url || null },
   event: { name: sc.event.event.name, date: sc.event.event.event_date, bouts: sc.event.bout_count, a: sc.event.bouts[0]?.fighter_a?.primary_image?.card_url || null, b: sc.event.bouts[0]?.fighter_b?.primary_image?.card_url || null },
 };
+/* Cross-links to PropBetEdge UFC, the production application on the same UFC intelligence layer.
+   Fixed routes and the snapshot's verified deep links come from the refresh; a fighter page is built
+   from the canonical slug_id the API itself returns, and anything unresolvable falls back to a section
+   index rather than guessing a slug. */
+const PRODUCT = { ...show.product_links, snapshot_matchup: show.matchup.fighters.map((f: any) => f.id) };
 const jsonLd = [{ "@context": "https://schema.org", "@type": "WebApplication", name: "UFC Intelligence API Workspace", url: "https://ufc.proptechusa.ai/workspace", applicationCategory: "DeveloperApplication", operatingSystem: "Any", isPartOf: { "@id": "https://ufc.proptechusa.ai/#website" }, description: "In-browser developer workspace: search fighters, run Fight DNA and Matchup DNA, render cards and rankings, inspect requests and copy code." }];
 ---
 <Base title="Workspace | PropTechUSA UFC Intelligence API" description="Test the UFC Intelligence API in your browser: fighter explorer, Matchup DNA builder, current card, rankings, Fight DNA, request inspector with copyable cURL, JavaScript and Python." path="/workspace" jsonLd={jsonLd} breadcrumbs={[{ name: "Workspace", path: "/workspace" }]}>
@@ -42,7 +48,7 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "WebApplication", n
       </select>
       <div class="ws-tool" id="ws-tool"></div>
       <div class="ws-result" id="ws-result" hidden>
-        <div class="ws-tabs" role="tablist"><button role="tab" aria-selected="true" data-view="preview">Preview</button><button role="tab" aria-selected="false" data-view="json">JSON</button><span style="margin-left:auto" class="actions-row"><button class="btn ghost" id="ws-copy-json" type="button">Copy JSON</button><button class="btn ghost" id="ws-dl-json" type="button">Download</button></span></div>
+        <div class="ws-tabs" role="tablist"><button role="tab" aria-selected="true" data-view="preview">Preview</button><button role="tab" aria-selected="false" data-view="json">JSON</button><span style="margin-left:auto" class="actions-row"><a class="btn ghost ws-product" id="ws-product" href="https://ufc.propbetedge.ai" rel="noopener" hidden>View live product →</a><button class="btn ghost" id="ws-copy-json" type="button">Copy JSON</button><button class="btn ghost" id="ws-dl-json" type="button">Download</button></span></div>
         <div class="ws-out" id="ws-preview"></div>
         <pre class="ws-json" id="ws-jsonpre" hidden></pre>
         <div class="card flat" style="padding:14px">
@@ -56,7 +62,7 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "WebApplication", n
     </div>
   </div>
 
-  <script define:vars={{ PLAN_NAMES: Object.fromEntries(Object.entries(plans).map(([k, v]) => [k, (v as any).name])), ART: art }}>
+  <script define:vars={{ PLAN_NAMES: Object.fromEntries(Object.entries(plans).map(([k, v]) => [k, (v as any).name])), ART: art, PRODUCT }}>
     /* ===== UFC Workspace (client) — the key is stored in localStorage only and sent solely to this origin's /v1 and /dashboard/api routes. Never logged. ===== */
     const $ = (id) => document.getElementById(id);
     const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
@@ -119,7 +125,34 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "WebApplication", n
       $("i-rate").textContent = l.q && l.qMax ? `${Number(l.q).toLocaleString("en-US")} / ${l.qMax === "unlimited" ? "∞" : Number(l.qMax).toLocaleString("en-US")}` : l.rl ? `${l.rl}/${l.rlMax} per min` : "—";
       $("i-rid").textContent = l.rid || "—";
       $("ws-jsonpre").textContent = JSON.stringify(l.body, null, 2);
+      productLink(l);
       showView("preview");
+    }
+
+    /* Secondary, always after the API actions: point at the matching surface of the production
+       application. A fighter page is addressed by the canonical slug_id the API returns; a matchup
+       deep link is only used for the pair the snapshot already verified. Everything else falls back
+       to a section index, so this never emits a guessed slug. */
+    function pbeSlug(name) { return String(name || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""); }
+    function productLink(l) {
+      const el = $("ws-product");
+      if (!el) return;
+      const d = l && l.body && l.body.data;
+      let href = null, label = "View live product →";
+      if (tool === "card" || tool === "events") { href = PRODUCT.fight_week; label = "View Fight Week →"; }
+      else if (tool === "rankings") { href = PRODUCT.rankings; label = "View rankings →"; }
+      else if (tool === "fighter" || tool === "dna") {
+        const f = d && (d.fighter || d);
+        href = f && f.slug_id && f.name ? `${PRODUCT.site}/fighters/${pbeSlug(f.name)}-${f.slug_id}` : PRODUCT.fighters_index;
+        label = f && f.slug_id ? "View fighter on PropBetEdge UFC →" : "View fighters →";
+      } else if (tool === "matchup") {
+        const ids = d && Array.isArray(d.fighters) ? d.fighters.map((f) => f.id) : [];
+        const same = PRODUCT.matchup && ids.length === 2 && PRODUCT.snapshot_matchup.every((id) => ids.includes(id));
+        href = same ? PRODUCT.matchup : PRODUCT.fight_week;
+        label = same ? "View this matchup →" : "View Fight Week →";
+      }
+      if (!href) { el.hidden = true; return; }
+      el.href = href; el.textContent = label; el.hidden = false;
     }
     function showView(v) { document.querySelectorAll("[data-view]").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.view === v))); $("ws-preview").hidden = v !== "preview"; $("ws-jsonpre").hidden = v !== "json"; }
     document.querySelectorAll("[data-view]").forEach((b) => b.addEventListener("click", () => showView(b.dataset.view)));
@@ -261,7 +294,7 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "WebApplication", n
         $("run-c").addEventListener("click", async () => { let p = $("c-path").value.trim(); if (!p.startsWith("/v1/")) p = "/v1/ufc" + (p.startsWith("/") ? p : "/" + p); const l = await api(p); out(handle(l, (d) => generic(d))); });
       } },
     };
-    function open(name) { tool = tools[name] ? name : "home"; document.querySelectorAll("#rail [data-tool]").forEach((b) => b.setAttribute("aria-current", String(b.dataset.tool === tool))); $("rail-select").value = tool; $("ws-result").hidden = true; $("ws-preview").innerHTML = ""; last = null; tools[tool].render($("ws-tool")); }
+    function open(name) { tool = tools[name] ? name : "home"; document.querySelectorAll("#rail [data-tool]").forEach((b) => b.setAttribute("aria-current", String(b.dataset.tool === tool))); $("rail-select").value = tool; $("ws-result").hidden = true; $("ws-preview").innerHTML = ""; last = null; { const pl = $("ws-product"); if (pl) pl.hidden = true; } tools[tool].render($("ws-tool")); }
     document.querySelectorAll("#rail [data-tool]").forEach((b) => b.addEventListener("click", () => { history.replaceState(null, "", `/workspace?tool=${b.dataset.tool}`); open(b.dataset.tool); }));
     $("rail-select").addEventListener("change", (e) => { history.replaceState(null, "", `/workspace?tool=${e.target.value}`); open(e.target.value); });
     open(new URLSearchParams(location.search).get("tool") || "home");

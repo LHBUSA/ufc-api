@@ -1,0 +1,13 @@
+---
+/* "PRODUCTION EXAMPLE": points a build guide at the matching surface of PropBetEdge UFC, the
+   production application built on the same UFC intelligence layer. The href is resolved and
+   liveness-checked at refresh time (scripts/refresh-showcase.mjs), so no slug is hard-coded and a
+   dead deep link falls back to a section index before it ever reaches the page. */
+export interface Props { href: string; surface: string; note?: string; }
+const { href, surface, note } = Astro.props;
+---
+<div class="prod-example">
+  <p class="eyebrow gold">Production example</p>
+  <p>See how this is used in a real product: <a href={href} rel="noopener">{surface} on PropBetEdge UFC →</a></p>
+  {note && <p class="small muted">{note}</p>}
+</div>

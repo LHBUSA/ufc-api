@@ -241,6 +241,103 @@ const prov = provCandidates.sort((a, b) => b.score - a.score)[0] || null;
 if (prov) note(`provenance: ${prov.fighter} ${prov.metric.metric_key} = ${prov.metric.value} (${prov.metric.confidence}, ${prov.metric.sample_rounds} rounds)`);
 
 /* ---------- 7. assemble ---------- */
+/* ---------- 7.5 consumer product links (verified against the live sitemap, never guessed) ----------
+   ufc.proptechusa.ai is the API; ufc.propbetedge.ai is the production application built on the same
+   UFC intelligence layer. Deep links are resolved by matching this snapshot's subjects against the
+   consumer sitemap, so a slug is only ever emitted when that page actually exists. If the sitemap is
+   unreachable the refresh still succeeds and every link falls back to a section index that is part of
+   the site's fixed route set, so the site can never render a dead deep link. */
+const PBE = "https://ufc.propbetedge.ai";
+const slugify = (n) => String(n || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+let sitemap = [];
+let sitemapStatus = "unavailable";
+try {
+  const ac = new AbortController();
+  const t = setTimeout(() => ac.abort(), 15000);
+  const r = await fetch(`${PBE}/sitemap.xml`, { headers: { accept: "application/xml", "user-agent": headers["user-agent"] }, signal: ac.signal });
+  clearTimeout(t);
+  if (r.ok) {
+    const xml = await r.text();
+    sitemap = [...xml.matchAll(/<loc>\s*([^<\s]+)\s*<\/loc>/g)].map((m) => m[1]);
+    sitemapStatus = sitemap.length ? `ok (${sitemap.length} urls)` : "empty";
+  } else sitemapStatus = `http ${r.status}`;
+} catch (e) { sitemapStatus = `error: ${String(e.message || e).slice(0, 60)}`; }
+note(`consumer sitemap ${sitemapStatus}`);
+
+const has = (u) => sitemap.includes(u);
+const pick = (pred) => sitemap.find(pred) || null;
+
+/* The consumer sitemap is a SUBSET of the site: it lists ~1000 fighters while the archive holds more,
+   so a page can be live and unlisted. Sitemap match is therefore the fast path, and a candidate URL
+   built from canonical identifiers is confirmed with a single bounded request before it is published.
+   Anything that does not answer 200 becomes null and the UI falls back to a section index. This is a
+   handful of requests per refresh against one first-party host, not open-ended scraping, and a failure
+   only downgrades a deep link — it never fails the refresh or blocks the build. */
+let probes = 0;
+const verify = async (url) => {
+  if (!url) return null;
+  if (has(url)) return url;
+  if (probes >= 8) return null;
+  probes++;
+  for (const method of ["HEAD", "GET"]) {
+    try {
+      const ac = new AbortController();
+      const t = setTimeout(() => ac.abort(), 8000);
+      const r = await fetch(url, { method, redirect: "follow", headers: { "user-agent": headers["user-agent"] }, signal: ac.signal });
+      clearTimeout(t);
+      if (r.ok) return url;
+      if (r.status !== 405 && r.status !== 501) return null; /* a real 404 stays null */
+    } catch { return null; }
+  }
+  return null;
+};
+
+/* a fighter page is keyed by the same slug_id the canonical API exposes */
+const fighterUrl = async (f) => {
+  if (!f?.slug_id || !f?.name) return null;
+  const listed = pick((u) => u.startsWith(`${PBE}/fighters/`) && u.endsWith(`-${f.slug_id}`));
+  return listed || (await verify(`${PBE}/fighters/${slugify(f.name)}-${f.slug_id}`));
+};
+/* a fight page is <a>-vs-<b>-<event-slug>-<date>; require both names and the event date so it cannot cross-match */
+const fightUrl = async (a, b, date, eventSlug) => {
+  if (!a?.name || !b?.name || !date) return null;
+  const [x, y] = [slugify(a.name), slugify(b.name)];
+  const listed = pick((u) => u.startsWith(`${PBE}/fights/`) && u.endsWith(`-${date}`) && u.includes(x) && u.includes(y));
+  return listed || (eventSlug ? await verify(`${PBE}/fights/${x}-vs-${y}-${eventSlug}`) : null);
+};
+const eventUrl = async (ev, kind) => {
+  if (!ev?.event_date) return null;
+  const stem = slugify(ev.name).split("-").slice(0, 3).join("-");
+  const listed = pick((u) => u.startsWith(`${PBE}/${kind}/`) && u.endsWith(`-${ev.event_date}`) && u.includes(stem));
+  return listed || (await verify(`${PBE}/${kind}/${slugify(ev.name)}-${ev.event_date}`));
+};
+
+const ev = card.data.event;
+const heroBout = bouts.find((b) => b.card_position === "main") || bouts[0] || null;
+const eventLink = await eventUrl(ev, "events");
+/* the fight slug embeds the event slug; take it from the resolved event URL so it is never invented */
+const eventSlug = eventLink ? eventLink.split("/").pop() : null;
+const champDetail = rankPick.dv.champion?.fighter_id ? await get(`/v1/ufc/fighters/${rankPick.dv.champion.fighter_id}`) : null;
+
+const product_links = {
+  captured_at,
+  site: PBE,
+  sitemap_status: sitemapStatus,
+  /* fixed routes on the consumer site */
+  rankings: `${PBE}/rankings`,
+  fight_week: `${PBE}/fight-week`,
+  fighters_index: `${PBE}/fighters`,
+  events_index: `${PBE}/events`,
+  /* deep links: null when the consumer site has no such page, so the UI falls back instead of 404ing */
+  fighter: await fighterUrl(fighterPick.fighter),
+  matchup: await fightUrl(matchupPick.m.data.fighters[0], matchupPick.m.data.fighters[1], ev.event_date, eventSlug),
+  event: eventLink,
+  event_pregame: await eventUrl(ev, "pregame"),
+  hero_fight: heroBout ? await fightUrl(heroBout.fighter_a, heroBout.fighter_b, ev.event_date, eventSlug) : null,
+  rankings_champion: champDetail?.ok ? await fighterUrl(champDetail.data) : null,
+};
+note(`product links (${probes} liveness probes): ` + Object.entries(product_links).filter(([k]) => !['captured_at','site','sitemap_status'].includes(k)).map(([k, v]) => `${k}=${v ? 'yes' : 'no'}`).join(' '));
+
 const showcase = {
   $note: "GENERATED PUBLIC SHOWCASE SNAPSHOT — do not hand-edit. Written by scripts/refresh-showcase.mjs from the canonical API. Test fixtures live in upstream/fixtures/ and are a separate, deterministic set.",
   generated_at: captured_at,
@@ -304,6 +401,7 @@ const showcase = {
     matchup: womensMatchup,
     rankings: womensRank.ok && womensRank.data.divisions?.[0] ? (() => { const dv = womensRank.data.divisions[0]; const map = womensMedia?.ok ? womensMedia.data.media || {} : {}; return { ...wrap(womensRank), source: womensRank.data.source, source_url: womensRank.data.source_url, snapshot_date: womensRank.data.snapshot_date, division: { key: dv.key, label: dv.label, is_womens: dv.is_womens, champion: dv.champion ? { name: dv.champion.name, fighter_id: dv.champion.fighter_id, primary_image: compactImage(map[dv.champion.fighter_id] || null) } : null, entries: dv.entries.map((e) => ({ rank: e.rank, name: e.name, fighter_id: e.fighter_id, change: e.change, is_new: e.is_new, primary_image: compactImage(map[e.fighter_id] || null) })) } }; })() : null,
   },
+  product_links,
   provenance: prov ? { ...prov, captured_at, upstream_base: BASE } : null,
   registry: { definition_version: reg.data.definition_version, origin_labels: reg.data.origin_labels, confidence_tiers: reg.data.confidence_tiers, as_of_semantics: reg.data.as_of_semantics, families: Object.fromEntries(Object.entries(reg.data.families || {}).map(([k, v]) => [k, v.map((m) => ({ metric_key: m.metric_key, display_name: m.display_name, description: m.description, unit: m.unit, formula: m.formula, min_bouts: m.min_bouts, min_rounds: m.min_rounds, min_seconds: m.min_seconds }))])) },
   upstream_calls: calls,
@@ -331,6 +429,10 @@ if (showcase.matchup.fighters[0]?.id === showcase.matchup.fighters[1]?.id) probl
 if (!showcase.rankings.source || !showcase.rankings.snapshot_date) problems.push("rankings missing source or snapshot_date");
 if (!showcase.rankings.division.entries.length) problems.push("rankings division has no entries");
 if (showcase.provenance && !showcase.provenance.metric.definition_version) problems.push("provenance metric has no definition_version");
+for (const [k, v] of Object.entries(showcase.product_links)) {
+  if (v === null || k === "captured_at" || k === "sitemap_status") continue;
+  if (typeof v !== "string" || !v.startsWith("https://ufc.propbetedge.ai")) problems.push(`product_links.${k} is not a consumer-site URL (${v})`);
+}
 if (!showcase.api_version) problems.push("no api_version reported");
 if (Math.abs(Date.now() - Date.parse(showcase.generated_at)) > 10 * 60 * 1000) problems.push("generated_at is not current");
 if (problems.length) fail();

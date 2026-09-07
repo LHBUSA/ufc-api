@@ -11,12 +11,16 @@ import EventCardPreview from "../../components/EventCardPreview.astro";
 import RankingsPreview from "../../components/RankingsPreview.astro";
 import gen from "../../generated/entitlements.json";
 import ex from "../../generated/examples.json";
+import show from "../../generated/showcase.json";
+import ProductionExample from "../../components/ProductionExample.astro";
 import { fmtDate, fmtNumber } from "../../lib/hl";
 
 const plans = gen.plans.plans;
 const order = gen.plans.plan_order;
 const contract = gen.contract;
 const matrix = gen.matrix;
+/* Cross-links to the production application; resolved and liveness-checked at refresh time. */
+const links = show.product_links;
 const reg = ex.dna_registry;
 const sc = ex.showcase;
 const S = sc.hero.fighter.id, FIOROT = sc.fiorot.fighter.id, GRASSO = sc.grasso.fighter.id, EVENT = sc.event.event.id;
@@ -202,6 +206,7 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "TechArticle", head
           <li><b>Fight DNA</b> (Pro): <code>GET /v1/ufc/fighters/{`{id}`}/dna</code> → render metrics with their confidence; show the sample line; hide nothing.</li>
         </ol>
         <p>Result: the <a href="/#fighter-profile">fighter profile demo</a> on the homepage, rendered from exactly these responses. Try it live in the <a href={`/workspace?tool=fighter&id=${FIOROT}`}>Workspace</a>.</p>
+        <ProductionExample href={links.fighter || links.fighters_index} surface="A fighter profile" note="Fighter pages on the production application are built from the same fighter, stats and Fight DNA responses documented above." />
       </section>
 
       <section id="guide-card">
@@ -213,6 +218,7 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "TechArticle", head
           <li>Optional: <code>GET /v1/ufc/events/{`{id}`}/videos</code> for the official fight-week video timeline (link out, never rehost).</li>
         </ol>
         <p>See <a href="/#fight-week">Fight Week</a> on the homepage or run <a href="/workspace?tool=card">Current card</a> in the Workspace.</p>
+        <ProductionExample href={links.fight_week} surface="Fight Week" note="The production Fight Week view is composed from the event card response, per-bout fighters and their media." />
       </section>
 
       <section id="guide-compare">
@@ -224,6 +230,7 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "TechArticle", head
           <li>Render <code>insights[]</code> as the read, each with its confidence and sample; surface <code>warnings[]</code> so users see what was <em>not</em> claimed.</li>
         </ol>
         <p>Live: <a href={`/workspace?tool=matchup&a=${FIOROT}&b=${GRASSO}`}>Workspace matchup builder</a>.</p>
+        <ProductionExample href={links.matchup || links.fight_week} surface="A matchup page" note="Matchup pages render comparisons[], insights[] and warnings[] exactly as returned, with non-comparable rows shown as em-dashes." />
       </section>
 
       <section id="guide-rankings">
@@ -234,6 +241,7 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "TechArticle", head
           <li>Portraits: collect <code>fighter.id</code> values and call <code>GET /v1/ufc/fighters/media?ids=a,b,c</code> (≤150) once; render credits.</li>
           <li>Show <code>source</code> / <code>source_url</code> (ufc.com) and <code>snapshot_date</code>.</li>
         </ol>
+        <ProductionExample href={links.rankings} surface="Rankings" note="The production rankings screen renders the same official snapshot, with portraits from one bulk media call." />
       </section>
 
       <section id="guide-fight-week">
@@ -244,7 +252,7 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "TechArticle", head
           <li>Intelligence: <code>/fighters/{`{id}`}/dna</code> (Pro) for each side; <code>/matchups/{`{a}`}/{`{b}`}/dna</code> (Ultra) for the read; <code>/events/{`{id}`}/intelligence</code> (Ultra) for the ledger view across the card.</li>
           <li>Context: <code>/rankings</code> for implications, <code>/events/{`{id}`}/videos</code> for official media, <code>/news</code> for PropBetEdge editorial.</li>
         </ol>
-        <p>PropBetEdge UFC's <a href="https://ufc.propbetedge.ai" rel="noopener">Fight Week</a> is one production implementation of this flow.</p>
+        <ProductionExample href={links.fight_week} surface="Fight Week" note="PropBetEdge UFC's Fight Week is one production implementation of this exact flow: card, faces, per-side Fight DNA, the matchup read and ranking implications." />
       </section>
 
       <section id="endpoints">

@@ -1,6 +1,6 @@
 {
   "$note": "GENERATED PUBLIC SHOWCASE SNAPSHOT — do not hand-edit. Written by scripts/refresh-showcase.mjs from the canonical API. Test fixtures live in upstream/fixtures/ and are a separate, deterministic set.",
-  "generated_at": "2026-09-07T15:38:54.548Z",
+  "generated_at": "2026-09-07T15:56:12.775Z",
   "upstream_base": "https://ufc-api.propbetedge.ai",
   "api_version": "2026-09-06.3",
   "fight_dna_definition_version": 1,
@@ -9,23 +9,23 @@
     "aging_hours": 6
   },
   "counts": {
-    "captured_at": "2026-09-07T15:38:54.548Z",
+    "captured_at": "2026-09-07T15:56:12.775Z",
     "upstream_base": "https://ufc-api.propbetedge.ai",
     "path": "/v1/ufc/counts",
     "status": 200,
     "api_version": "2026-09-06.3",
-    "fighters": 1392,
+    "fighters": 1437,
     "events": 898,
-    "bouts": 1646,
-    "results": 1562,
-    "round_stat_rows": 5004,
+    "bouts": 1795,
+    "results": 1714,
+    "round_stat_rows": 5724,
     "articles": 28,
     "images": 188,
     "fighters_with_media": 188,
-    "rounds": 5004
+    "rounds": 5724
   },
   "event": {
-    "captured_at": "2026-09-07T15:38:54.548Z",
+    "captured_at": "2026-09-07T15:56:12.775Z",
     "upstream_base": "https://ufc-api.propbetedge.ai",
     "path": "/v1/ufc/events/1d0b22df-81e7-4e5b-8fa5-8e5d03c24c52/card?include=media,results",
     "status": 200,
@@ -196,7 +196,7 @@
       "meta": {
         "api": "PropSports UFC",
         "version": "2026-09-06.3",
-        "request_id": "39558a1d-e79e-4891-88e0-50ba206fe64a",
+        "request_id": "57e95bc2-7608-4217-b819-466d69e21485",
         "include": [
           "media",
           "results"
@@ -1242,7 +1242,7 @@
     ]
   },
   "fighter": {
-    "captured_at": "2026-09-07T15:38:54.548Z",
+    "captured_at": "2026-09-07T15:56:12.775Z",
     "upstream_base": "https://ufc-api.propbetedge.ai",
     "path": "/v1/ufc/fighters/1fa71f4b-3f7d-4705-ba00-1f6bcf397b9a?include=ranking,next,history&history_limit=6",
     "status": 200,
@@ -1612,13 +1612,13 @@
       "meta": {
         "api": "PropSports UFC",
         "version": "2026-09-06.3",
-        "request_id": "7545a011-46e6-4931-96c3-e71b04e7f5a5",
+        "request_id": "97c8f511-daa4-4b86-a963-e83b42f41d71",
         "include": [
           "ranking",
           "next",
           "history"
         ],
-        "history_count": 4,
+        "history_count": 5,
         "access_tier": "public"
       }
     },
@@ -2313,7 +2313,7 @@
       "meta": {
         "api": "PropSports UFC",
         "version": "2026-09-06.3",
-        "request_id": "5c24f464-6578-48a2-8d63-ad5e688946e9",
+        "request_id": "57dc08d8-b017-47b5-ba3c-c74fdc2ae4e9",
         "requested_as_of": null,
         "resolved_as_of": "2026-09-06",
         "definition_version": 1,
@@ -2453,6 +2453,24 @@
         "outcome": "W",
         "result": {
           "method": "DEC_U",
+          "round": 5,
+          "time": null
+        },
+        "weight_class": "FLYWEIGHT"
+      },
+      {
+        "bout_id": "eefd181c-c3cc-47cf-a5c5-b137ccbcc9bf",
+        "event": {
+          "name": "UFC 290: Volkanovski vs. Rodriguez",
+          "event_date": "2023-07-08"
+        },
+        "opponent": {
+          "id": "13eebfea-dbd0-4110-a41a-200b8a73051d",
+          "name": "Alexandre Pantoja"
+        },
+        "outcome": "L",
+        "result": {
+          "method": "DEC_S",
           "round": 5,
           "time": null
         },
@@ -2910,29 +2928,29 @@
       "origin_label": "PBE DERIVED"
     },
     "career_rates": {
-      "sig_str_landed_per_min": 3.08,
-      "sig_str_accuracy": 0.4903,
-      "total_str_accuracy": 0.5561,
-      "td_per_15min": 0.26,
-      "td_accuracy": 0.0769,
-      "sub_att_per_15min": 0.26,
+      "sig_str_landed_per_min": 3.93,
+      "sig_str_accuracy": 0.5347,
+      "total_str_accuracy": 0.5844,
+      "td_per_15min": 0.55,
+      "td_accuracy": 0.1765,
+      "sub_att_per_15min": 0.18,
       "kd_per_15min": 0,
-      "ctrl_share": 0.1539,
-      "head_share": 0.6667,
-      "body_share": 0.1864,
-      "leg_share": 0.1469,
-      "distance_share": 0.9209,
-      "clinch_share": 0.0678,
-      "ground_share": 0.0113
+      "ctrl_share": 0.1559,
+      "head_share": 0.7747,
+      "body_share": 0.142,
+      "leg_share": 0.0833,
+      "distance_share": 0.8981,
+      "clinch_share": 0.0741,
+      "ground_share": 0.0278
     },
     "career_provenance": {
       "source": "ufcstats_round_stats",
       "method": "Totals are sums of per-round UFC Stats rows for this fighter. Rates use elapsed fight time from the recorded result (final round + clock), or rounds x 5:00 when no result exists.",
-      "bouts_with_stats": 3,
-      "rounds": 12,
-      "fight_time_sec": 3444,
+      "bouts_with_stats": 4,
+      "rounds": 17,
+      "fight_time_sec": 4944,
       "fight_time_basis": {
-        "result": 3,
+        "result": 4,
         "rounds_x_5min": 0
       },
       "coverage_note": "Only bouts with UFC Stats round rows are included; coverage may be partial and these are not as-of model features."
@@ -2949,7 +2967,7 @@
     }
   },
   "matchup": {
-    "captured_at": "2026-09-07T15:38:54.548Z",
+    "captured_at": "2026-09-07T15:56:12.775Z",
     "upstream_base": "https://ufc-api.propbetedge.ai",
     "path": "/v1/ufc/matchups/be739985-e574-4859-8953-afeddb0ca33a/149aacfb-fdfb-4e38-90ba-c7cabea11acc/dna",
     "status": 200,
@@ -3863,7 +3881,7 @@
       "meta": {
         "api": "PropSports UFC",
         "version": "2026-09-06.3",
-        "request_id": "bd90c9b6-9062-4aed-80d5-639a208992cb",
+        "request_id": "681bb5ef-0a34-4bcc-9fa8-7143143b7eb4",
         "requested_as_of": null,
         "resolved_as_of": {
           "a": "2026-09-06",
@@ -5451,7 +5469,7 @@
     }
   },
   "rankings": {
-    "captured_at": "2026-09-07T15:38:54.548Z",
+    "captured_at": "2026-09-07T15:56:12.775Z",
     "upstream_base": "https://ufc-api.propbetedge.ai",
     "path": "/v1/ufc/rankings?division=MIDDLEWEIGHT&womens=false",
     "status": 200,
@@ -5528,7 +5546,7 @@
       "meta": {
         "api": "PropSports UFC",
         "version": "2026-09-06.3",
-        "request_id": "9df1edd0-1457-4719-90b4-6f32bf67b78c",
+        "request_id": "10ebd204-dc46-488a-ae13-02054e2312bf",
         "store": "table",
         "divisions": 1,
         "division": "MIDDLEWEIGHT",
@@ -5829,7 +5847,7 @@
   },
   "womens": {
     "matchup": {
-      "captured_at": "2026-09-07T15:38:54.548Z",
+      "captured_at": "2026-09-07T15:56:12.775Z",
       "upstream_base": "https://ufc-api.propbetedge.ai",
       "path": "/v1/ufc/matchups/2c9c2a88-aec1-4bf0-9b16-3ce58adf6fd6/1d296292-4969-43a8-9948-cd0a76a642ce/dna",
       "status": 200,
@@ -5956,7 +5974,7 @@
       "comparisons": 18
     },
     "rankings": {
-      "captured_at": "2026-09-07T15:38:54.548Z",
+      "captured_at": "2026-09-07T15:56:12.775Z",
       "upstream_base": "https://ufc-api.propbetedge.ai",
       "path": "/v1/ufc/rankings?division=FLYWEIGHT&womens=true",
       "status": 200,
@@ -6164,6 +6182,21 @@
       }
     }
   },
+  "product_links": {
+    "captured_at": "2026-09-07T15:56:12.775Z",
+    "site": "https://ufc.propbetedge.ai",
+    "sitemap_status": "ok (2120 urls)",
+    "rankings": "https://ufc.propbetedge.ai/rankings",
+    "fight_week": "https://ufc.propbetedge.ai/fight-week",
+    "fighters_index": "https://ufc.propbetedge.ai/fighters",
+    "events_index": "https://ufc.propbetedge.ai/events",
+    "fighter": "https://ufc.propbetedge.ai/fighters/brandon-moreno-3027545",
+    "matchup": "https://ufc.propbetedge.ai/fights/waldo-cortes-acosta-vs-curtis-blaydes-noche-ufc-silva-vs-delgado-2026-09-12",
+    "event": "https://ufc.propbetedge.ai/events/noche-ufc-silva-vs-delgado-2026-09-12",
+    "event_pregame": "https://ufc.propbetedge.ai/pregame/noche-ufc-silva-vs-delgado-2026-09-12",
+    "hero_fight": "https://ufc.propbetedge.ai/fights/jean-silva-vs-jose-miguel-delgado-noche-ufc-silva-vs-delgado-2026-09-12",
+    "rankings_champion": "https://ufc.propbetedge.ai/fighters/sean-strickland-3093653"
+  },
   "provenance": {
     "fighter": "Waldo Cortes Acosta",
     "image": false,
@@ -6194,7 +6227,7 @@
     },
     "path": "/v1/ufc/fighters/be739985-e574-4859-8953-afeddb0ca33a/dna",
     "score": 59,
-    "captured_at": "2026-09-07T15:38:54.548Z",
+    "captured_at": "2026-09-07T15:56:12.775Z",
     "upstream_base": "https://ufc-api.propbetedge.ai"
   },
   "registry": {
@@ -6827,5 +6860,5 @@
       ]
     }
   },
-  "upstream_calls": 65
+  "upstream_calls": 66
 }
