@@ -90,7 +90,7 @@ export default {
     const isAdmin = path === "/admin" || path.startsWith("/admin/");
     const isStripeWebhook = path === billing.webhook.path;
 
-    if (request.method === "OPTIONS" && isApi) return new Response(null, { status: 204, headers: { ...corsHeaders("public"), "X-Request-Id": ctx.requestId } });
+    if (request.method === "OPTIONS" && (isApi || isDashboardApi)) return new Response(null, { status: 204, headers: { ...corsHeaders(isDashboardApi ? "dashboard" : "public"), "X-Request-Id": ctx.requestId } });
 
     try {
       if (path === "/health") {
@@ -102,7 +102,7 @@ export default {
       }
       if (isAdmin) return await adminRouter(request, env, ctx, url);
       if (isDashboardApi) {
-        if (!["GET", "POST"].includes(request.method)) return fail(ctx, 405, "method_not_allowed", "Only GET and POST are supported.", undefined, {}, "private");
+        if (!["GET", "POST"].includes(request.method)) return fail(ctx, 405, "method_not_allowed", "Only GET and POST are supported.", undefined, {}, "dashboard");
         return await dashboardRouter(request, env, ctx, url);
       }
       if (isApi) {
@@ -112,7 +112,7 @@ export default {
       if (env.ASSETS) return env.ASSETS.fetch(request);
       return fail(ctx, 404, "route_not_found", "Not found.", undefined, {}, "private");
     } catch (err) {
-      return fromError(ctx, err, isApi ? "public" : "private");
+      return fromError(ctx, err, isApi ? "public" : isDashboardApi ? "dashboard" : "private");
     }
   },
 };

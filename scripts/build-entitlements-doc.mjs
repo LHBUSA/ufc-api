@@ -11,6 +11,7 @@ const ent = JSON.parse(readFileSync(join(ROOT, "config/entitlements.json"), "utf
 const rapid = JSON.parse(readFileSync(join(ROOT, "config/rapidapi.json"), "utf8"));
 const contract = JSON.parse(readFileSync(join(ROOT, "upstream/ufc-contract.json"), "utf8"));
 const billing = JSON.parse(readFileSync(join(ROOT, "config/billing.json"), "utf8"));
+const gateway = JSON.parse(readFileSync(join(ROOT, "config/gateway.json"), "utf8"));
 
 const planHas = (plan, feature) => { const f = plans.plans[plan]?.features || []; return f.includes("*") || f.includes(feature); };
 const minPlan = (feature) => plans.plan_order.find((p) => planHas(p, feature)) || null;
@@ -76,6 +77,6 @@ ${gates.join("\n")}
 `;
 writeFileSync(join(ROOT, "docs", "UFC_API_ENTITLEMENTS.md"), md);
 mkdirSync(join(ROOT, "apps", "web", "src", "generated"), { recursive: true });
-writeFileSync(join(ROOT, "apps", "web", "src", "generated", "entitlements.json"), JSON.stringify({ generated_at: new Date().toISOString(), plans, entitlements: ent, rapidapi: rapid, billing: { self_serve_checkout: billing.self_serve_checkout, product_name: billing.product_name, plans: billing.plans, tax: billing.tax, customer_portal: billing.customer_portal }, contract: { ...contract, endpoints: undefined, metric_object_sample: contract.metric_object_sample }, matrix: ent.endpoints.map((e) => ({ ...e, minimum_plan: minPlan(e.feature), plans: Object.fromEntries(cols.map((c) => [c, planHas(c, e.feature)])) })) }, null, 2));
+writeFileSync(join(ROOT, "apps", "web", "src", "generated", "entitlements.json"), JSON.stringify({ generated_at: new Date().toISOString(), plans, entitlements: ent, rapidapi: rapid, gateway: { api_origin_fallback: gateway.api_origin_fallback, commercial_host: gateway.commercial_host, support_email: gateway.support_email }, billing: { self_serve_checkout: billing.self_serve_checkout, product_name: billing.product_name, plans: billing.plans, tax: billing.tax, customer_portal: billing.customer_portal }, contract: { ...contract, endpoints: undefined, metric_object_sample: contract.metric_object_sample }, matrix: ent.endpoints.map((e) => ({ ...e, minimum_plan: minPlan(e.feature), plans: Object.fromEntries(cols.map((c) => [c, planHas(c, e.feature)])) })) }, null, 2));
 writeFileSync(join(ROOT, "apps", "web", "src", "generated", "examples.json"), JSON.stringify(portalExamples(), null, 2));
 console.log(`docs/UFC_API_ENTITLEMENTS.md: ${ent.endpoints.length} endpoints × ${cols.length} plans, ${ent.param_gates.length} parameter gates`);

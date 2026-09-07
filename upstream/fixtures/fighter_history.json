@@ -1,5 +1,5 @@
 {
-  "captured_at": "2026-09-07T14:27:59.388Z",
+  "captured_at": "2026-09-07T15:18:22.761Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/fighters/ec94d296-2db3-4e0d-be6a-46de4f480672/history?limit=3",
   "status": 200,
@@ -347,7 +347,7 @@
     "meta": {
       "api": "PropSports UFC",
       "version": "2026-09-06.3",
-      "request_id": "b336d225-ef13-49df-99e2-fe4dacf1205c",
+      "request_id": "98c04fc9-7b5a-4f46-8c7e-da46c844adba",
       "access_tier": "public"
     }
   }

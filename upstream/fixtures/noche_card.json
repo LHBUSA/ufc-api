@@ -1,5 +1,5 @@
 {
-  "captured_at": "2026-09-07T14:27:59.388Z",
+  "captured_at": "2026-09-07T15:18:22.761Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/events/1d0b22df-81e7-4e5b-8fa5-8e5d03c24c52/card",
   "status": 200,
@@ -1043,7 +1043,7 @@
     "meta": {
       "api": "PropSports UFC",
       "version": "2026-09-06.3",
-      "request_id": "475833d3-aff3-4419-adb9-f3a0c30b7489",
+      "request_id": "9ff18c79-ee61-4832-b2d5-1a45c9d7b9ab",
       "include": [],
       "bouts": 13,
       "access_tier": "public"

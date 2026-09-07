@@ -1,5 +1,5 @@
 {
-  "captured_at": "2026-09-07T14:27:59.388Z",
+  "captured_at": "2026-09-07T15:18:22.761Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/fighters/media?ids=4008721e-66c0-429e-b904-51d0d0a7e0d0,56d860de-6ba5-4e97-a889-2129951e52cf,2c9c2a88-aec1-4bf0-9b16-3ce58adf6fd6,1d296292-4969-43a8-9948-cd0a76a642ce,6c613851-d11b-4ee6-97d2-bdde0a467d32,fc84c7be-0db5-44a6-88da-c4f74af0e86c,2a139533-8a7d-4d6a-802e-b49660209bc6,51fbc8ad-d3cf-4c14-9f58-df8ac1838323,c66c4189-2a2e-4a64-a688-d2b77e7ee01c,7757ac44-3ded-4440-b444-01cdad3bf7d1,580ce473-c18c-4e53-941e-1fbf91576653,38ea7e9b-b88c-4a18-9ae8-feaa0672b5b4",
   "status": 200,
@@ -105,7 +105,7 @@
     "meta": {
       "api": "PropSports UFC",
       "version": "2026-09-06.3",
-      "request_id": "e5f6308a-87ff-4b09-9052-baf06434bb55",
+      "request_id": "0e8f01f5-ffa4-4a7a-ad01-7308741a53fe",
       "requested": 12,
       "found": 6,
       "access_tier": "public"

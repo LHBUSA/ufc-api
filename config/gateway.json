@@ -5,6 +5,8 @@
   "commercial_host": "https://ufc.proptechusa.ai",
   "upstream_base_url": "https://ufc-api.propbetedge.ai",
   "consumer_demo_host": "https://ufc.propbetedge.ai",
+  "$api_origin_note": "The portal calls the gateway same-origin when the gateway serves the page. When the portal is served by a static host (e.g. the Vercel deployment of apps/web/dist), the client falls back to this origin, which must be a deployment of gateway/. Keep it pointing at a live gateway.",
+  "api_origin_fallback": "https://proptechusa-ufc-api.sales-fd3.workers.dev",
   "docs_url": "https://ufc.proptechusa.ai/docs",
   "pricing_url": "https://ufc.proptechusa.ai/pricing",
   "support_email": "sales@proptechusa.ai",

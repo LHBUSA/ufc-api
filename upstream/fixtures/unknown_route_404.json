@@ -1,5 +1,5 @@
 {
-  "captured_at": "2026-09-07T14:27:59.388Z",
+  "captured_at": "2026-09-07T15:18:22.761Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/does-not-exist",
   "status": 404,
@@ -14,7 +14,7 @@
     "meta": {
       "api": "PropSports UFC",
       "version": "2026-09-06.3",
-      "request_id": "ecf5f605-81f4-4c2e-8f62-5631b152a39c"
+      "request_id": "522fbb5d-9e79-445d-a023-07ebfe4b483d"
     }
   }
 }

@@ -1,5 +1,5 @@
 {
-  "captured_at": "2026-09-07T14:27:59.388Z",
+  "captured_at": "2026-09-07T15:18:22.761Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/fighters/eed368a5-484b-412f-9d2c-a4fd6d24d019?include=ranking,next,history&history_limit=5",
   "status": 200,
@@ -357,7 +357,7 @@
         },
         {
           "id": "905d8f09-f749-4021-a777-44eb34c8b134",
-          "ufcstats_id": null,
+          "ufcstats_id": "de1a3734be60e6a1",
           "espn_competition_id": "401766298",
           "event_id": "898bc885-4f4d-4bc4-8e50-094e3221f0a6",
           "weight_class": "FEATHERWEIGHT",
@@ -413,7 +413,7 @@
             "judge_3": null,
             "referee": "Mike Beltran",
             "time_sec": 288,
-            "has_stats": false,
+            "has_stats": true,
             "winner_id": "803fdd5d-02ce-4064-80f4-12a38e1a8593",
             "method_raw": "KO/TKO",
             "scorecards": null,
@@ -466,7 +466,7 @@
         },
         {
           "id": "83a61ec9-59ee-4d18-94a8-4c9d485280f6",
-          "ufcstats_id": null,
+          "ufcstats_id": "8c540eb4afe8c43e",
           "espn_competition_id": "401761546",
           "event_id": "37d16261-c923-4a0d-9d9a-f19cf36382a2",
           "weight_class": "FEATHERWEIGHT",
@@ -522,7 +522,7 @@
             "judge_3": null,
             "referee": "Mike Beltran",
             "time_sec": 232,
-            "has_stats": false,
+            "has_stats": true,
             "winner_id": "eed368a5-484b-412f-9d2c-a4fd6d24d019",
             "method_raw": "Submission",
             "scorecards": null,
@@ -665,7 +665,7 @@
     "meta": {
       "api": "PropSports UFC",
       "version": "2026-09-06.3",
-      "request_id": "cce117d0-b48b-46f7-87e0-afb2ad79db21",
+      "request_id": "511d2b6d-e0cb-495d-9aff-637a3bf52f94",
       "include": [
         "ranking",
         "next",

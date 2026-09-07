@@ -1,5 +1,5 @@
 {
-  "captured_at": "2026-09-07T14:27:59.388Z",
+  "captured_at": "2026-09-07T15:18:22.761Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/events?status=upcoming&limit=3",
   "status": 200,
@@ -56,7 +56,7 @@
     "meta": {
       "api": "PropSports UFC",
       "version": "2026-09-06.3",
-      "request_id": "ffed1fe7-5808-431f-9c89-6701a187d4f7",
+      "request_id": "299c1248-929c-4612-aa4c-f221e5f1d01a",
       "count": 3,
       "total": 17,
       "status": "upcoming",

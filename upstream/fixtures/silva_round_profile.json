@@ -1,5 +1,5 @@
 {
-  "captured_at": "2026-09-07T14:27:59.388Z",
+  "captured_at": "2026-09-07T15:18:22.761Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/fighters/eed368a5-484b-412f-9d2c-a4fd6d24d019/round-profile",
   "status": 200,
@@ -127,7 +127,7 @@
     "meta": {
       "api": "PropSports UFC",
       "version": "2026-09-06.3",
-      "request_id": "92894525-4063-46c7-8c83-2ea102945c9a",
+      "request_id": "9b18080a-fdd8-4f39-a031-aade6ebddde1",
       "requested_as_of": null,
       "resolved_as_of": "2026-09-06",
       "definition_version": 1,

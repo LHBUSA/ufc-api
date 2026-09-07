@@ -1,5 +1,5 @@
 {
-  "captured_at": "2026-09-07T14:27:59.388Z",
+  "captured_at": "2026-09-07T15:18:22.761Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/fighters/ec94d296-2db3-4e0d-be6a-46de4f480672/splits?opponent_stance=SOUTHPAW",
   "status": 200,
@@ -345,7 +345,7 @@
     "meta": {
       "api": "PropSports UFC",
       "version": "2026-09-06.3",
-      "request_id": "a4d80a0f-c3c4-4468-ae42-0aefddadc65a",
+      "request_id": "6a6bbab8-bc9f-4d1e-8a63-f2268a7f7b11",
       "requested_as_of": null,
       "resolved_as_of": "2026-09-06",
       "definition_version": 1,

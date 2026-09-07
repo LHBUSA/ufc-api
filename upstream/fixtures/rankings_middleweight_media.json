@@ -1,0 +1,158 @@
+{
+  "captured_at": "2026-09-07T15:18:22.761Z",
+  "base": "https://ufc-api.propbetedge.ai",
+  "path": "/v1/ufc/fighters/media?ids=ec94d296-2db3-4e0d-be6a-46de4f480672,82f23ba8-2053-4f0f-88e3-8216893e2f28,9a3b2a15-27d8-4554-9217-42ef2dd5d25c,5c028189-a57d-45ff-a868-f86a724b94df,ba405ece-13e8-409e-997f-fb0557035f21,e2c3582d-104d-4005-83d5-e086269f0d92,5f0d2c64-9ab0-4764-8b51-59d1c96b5ece,2d93f8f3-ccaa-420c-b8d5-f446da57bec5,60491150-2bf5-43c0-bdac-73118b5d3937,b24ade25-45e1-4393-9a53-c59094236403,e1e5aab9-51a6-4d21-989e-5b25f313e408,d861b989-7c43-4c14-9dc4-b7dfd264045f",
+  "status": 200,
+  "api_version": "2026-09-06.3",
+  "body": {
+    "ok": true,
+    "data": {
+      "media": {
+        "ec94d296-2db3-4e0d-be6a-46de4f480672": {
+          "id": "006e6554-f441-4892-8a49-30409d01e52e",
+          "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/ec94d296-2db3-4e0d-be6a-46de4f480672/portrait.jpg",
+          "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/ec94d296-2db3-4e0d-be6a-46de4f480672/card.jpg",
+          "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/ec94d296-2db3-4e0d-be6a-46de4f480672/thumb.jpg",
+          "author": "MMAnytt",
+          "license": "CC BY-SA 4.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Sean_Strickland_at_UFN_200.png",
+          "kind": "wikimedia",
+          "attribution_text": "MMAnytt, CC BY-SA 4.0, via Wikimedia Commons",
+          "rights_label": "CC BY-SA 4.0"
+        },
+        "82f23ba8-2053-4f0f-88e3-8216893e2f28": {
+          "id": "f78a5cde-b382-415e-9d86-64a3a10e4669",
+          "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/82f23ba8-2053-4f0f-88e3-8216893e2f28/portrait.jpg",
+          "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/82f23ba8-2053-4f0f-88e3-8216893e2f28/card.jpg",
+          "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/82f23ba8-2053-4f0f-88e3-8216893e2f28/thumb.jpg",
+          "author": "MMAnytt",
+          "license": "CC BY 3.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Khamzat_Chimaev_2022.png",
+          "kind": "wikimedia",
+          "attribution_text": "MMAnytt, CC BY 3.0, via Wikimedia Commons",
+          "rights_label": "CC BY 3.0"
+        },
+        "9a3b2a15-27d8-4554-9217-42ef2dd5d25c": {
+          "id": "e58546e6-fab5-4dca-b24c-5a9773398670",
+          "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/9a3b2a15-27d8-4554-9217-42ef2dd5d25c/portrait.jpg",
+          "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/9a3b2a15-27d8-4554-9217-42ef2dd5d25c/card.jpg",
+          "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/9a3b2a15-27d8-4554-9217-42ef2dd5d25c/thumb.jpg",
+          "author": "User:Philippe3017",
+          "license": "CC0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:IMG-Dricus-Duplessis(cropped).jpg",
+          "kind": "wikimedia",
+          "attribution_text": "User:Philippe3017, CC0, via Wikimedia Commons",
+          "rights_label": "CC0"
+        },
+        "5c028189-a57d-45ff-a868-f86a724b94df": {
+          "id": "22cc3ebb-2f58-4762-8787-b97fac471b66",
+          "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/5c028189-a57d-45ff-a868-f86a724b94df/portrait.jpg",
+          "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/5c028189-a57d-45ff-a868-f86a724b94df/card.jpg",
+          "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/5c028189-a57d-45ff-a868-f86a724b94df/thumb.jpg",
+          "author": "ZACK",
+          "license": "CC BY 3.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Nassourdine_Imavov_2024.png",
+          "kind": "wikimedia",
+          "attribution_text": "ZACK, CC BY 3.0, via Wikimedia Commons",
+          "rights_label": "CC BY 3.0"
+        },
+        "ba405ece-13e8-409e-997f-fb0557035f21": {
+          "id": "c2af30fc-00fa-4faa-9f7b-6466ddcda137",
+          "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/ba405ece-13e8-409e-997f-fb0557035f21/portrait.jpg",
+          "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/ba405ece-13e8-409e-997f-fb0557035f21/card.jpg",
+          "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/ba405ece-13e8-409e-997f-fb0557035f21/thumb.jpg",
+          "author": "WEIGHING IN",
+          "license": "CC BY 4.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:BrendanAllen.png",
+          "kind": "wikimedia",
+          "attribution_text": "WEIGHING IN, CC BY 4.0, via Wikimedia Commons",
+          "rights_label": "CC BY 4.0"
+        },
+        "e2c3582d-104d-4005-83d5-e086269f0d92": {
+          "id": "2fb5676d-80d5-4437-b71c-8832061f1fec",
+          "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/e2c3582d-104d-4005-83d5-e086269f0d92/portrait.jpg",
+          "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/e2c3582d-104d-4005-83d5-e086269f0d92/card.jpg",
+          "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/e2c3582d-104d-4005-83d5-e086269f0d92/thumb.jpg",
+          "author": "BDA - Batalha Da Aldeia",
+          "license": "CC BY 3.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Borralho_en_Future_FC.png",
+          "kind": "wikimedia",
+          "attribution_text": "BDA - Batalha Da Aldeia, CC BY 3.0, via Wikimedia Commons",
+          "rights_label": "CC BY 3.0"
+        },
+        "5f0d2c64-9ab0-4764-8b51-59d1c96b5ece": {
+          "id": "4434d07f-ff32-4272-9dd3-cb7b6a724568",
+          "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/5f0d2c64-9ab0-4764-8b51-59d1c96b5ece/portrait.jpg",
+          "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/5f0d2c64-9ab0-4764-8b51-59d1c96b5ece/card.jpg",
+          "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/5f0d2c64-9ab0-4764-8b51-59d1c96b5ece/thumb.jpg",
+          "author": "Checkin' Ringside",
+          "license": "CC BY 4.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:JoePyfer.jpg",
+          "kind": "wikimedia",
+          "attribution_text": "Checkin' Ringside, CC BY 4.0, via Wikimedia Commons",
+          "rights_label": "CC BY 4.0"
+        },
+        "2d93f8f3-ccaa-420c-b8d5-f446da57bec5": {
+          "id": "af71553a-d0c7-479c-b996-407ac9eb1ef2",
+          "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/2d93f8f3-ccaa-420c-b8d5-f446da57bec5/portrait.jpg",
+          "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/2d93f8f3-ccaa-420c-b8d5-f446da57bec5/card.jpg",
+          "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/2d93f8f3-ccaa-420c-b8d5-f446da57bec5/thumb.jpg",
+          "author": "Show Me The Money",
+          "license": "CC BY 3.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:GregoryRodrigues.png",
+          "kind": "wikimedia",
+          "attribution_text": "Show Me The Money, CC BY 3.0, via Wikimedia Commons",
+          "rights_label": "CC BY 3.0"
+        },
+        "60491150-2bf5-43c0-bdac-73118b5d3937": null,
+        "b24ade25-45e1-4393-9a53-c59094236403": {
+          "id": "9bfb7abb-1992-483a-b6b2-36f0a2ff64cb",
+          "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/b24ade25-45e1-4393-9a53-c59094236403/portrait.jpg",
+          "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/b24ade25-45e1-4393-9a53-c59094236403/card.jpg",
+          "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/b24ade25-45e1-4393-9a53-c59094236403/thumb.jpg",
+          "author": "Ewornod",
+          "license": "CC BY-SA 4.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Israel_Adesanya_2014.jpg",
+          "kind": "wikimedia",
+          "attribution_text": "Ewornod, CC BY-SA 4.0, via Wikimedia Commons",
+          "rights_label": "CC BY-SA 4.0"
+        },
+        "e1e5aab9-51a6-4d21-989e-5b25f313e408": null,
+        "d861b989-7c43-4c14-9dc4-b7dfd264045f": {
+          "id": "764148d5-8d52-4d80-9a96-f1de53be02f9",
+          "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/d861b989-7c43-4c14-9dc4-b7dfd264045f/portrait.jpg",
+          "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/d861b989-7c43-4c14-9dc4-b7dfd264045f/card.jpg",
+          "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/d861b989-7c43-4c14-9dc4-b7dfd264045f/thumb.jpg",
+          "author": "MMAnytt",
+          "license": "CC BY 3.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Jared_Cannonier_at_UFC_Fight_Night_160_in_Copenhagen.jpg",
+          "kind": "wikimedia",
+          "attribution_text": "MMAnytt, CC BY 3.0, via Wikimedia Commons",
+          "rights_label": "CC BY 3.0"
+        }
+      },
+      "ids": [
+        "ec94d296-2db3-4e0d-be6a-46de4f480672",
+        "82f23ba8-2053-4f0f-88e3-8216893e2f28",
+        "9a3b2a15-27d8-4554-9217-42ef2dd5d25c",
+        "5c028189-a57d-45ff-a868-f86a724b94df",
+        "ba405ece-13e8-409e-997f-fb0557035f21",
+        "e2c3582d-104d-4005-83d5-e086269f0d92",
+        "5f0d2c64-9ab0-4764-8b51-59d1c96b5ece",
+        "2d93f8f3-ccaa-420c-b8d5-f446da57bec5",
+        "60491150-2bf5-43c0-bdac-73118b5d3937",
+        "b24ade25-45e1-4393-9a53-c59094236403",
+        "e1e5aab9-51a6-4d21-989e-5b25f313e408",
+        "d861b989-7c43-4c14-9dc4-b7dfd264045f"
+      ]
+    },
+    "meta": {
+      "api": "PropSports UFC",
+      "version": "2026-09-06.3",
+      "request_id": "1e6806ec-6631-423a-8604-422e1860ac51",
+      "requested": 12,
+      "found": 10,
+      "access_tier": "public"
+    }
+  }
+}

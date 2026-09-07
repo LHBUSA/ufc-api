@@ -11,20 +11,29 @@ import EventCardPreview from "../components/EventCardPreview.astro";
 import RankingsPreview from "../components/RankingsPreview.astro";
 import ReceiptPreview from "../components/ReceiptPreview.astro";
 import gen from "../generated/entitlements.json";
-import ex from "../generated/examples.json";
+import show from "../generated/showcase.json";
 import { fmtDate, fmtNumber } from "../lib/hl";
+import { freshness } from "../lib/freshness";
 
 const plans = gen.plans.plans;
 const order = gen.plans.plan_order;
 const contract = gen.contract;
-const counts = ex.counts_full;
-const reg = ex.dna_registry;
-const rec = ex.receipts;
-const sc = ex.showcase;
-const comain = sc.comain, fiorot = sc.fiorot, grasso = sc.grasso, event = sc.event, wfly = sc.rankings_womens_flyweight, hero = sc.hero;
-const A = comain.fighters[0], B = comain.fighters[1];
-const EVENT_ID = event.event.id, FIOROT = A.id, GRASSO = B.id;
-const roundStatBouts = ex.showcase.hero ? null : null;
+/* Every data-bearing block below renders the generated showcase snapshot (apps/web/src/generated/showcase.json),
+   refreshed on a schedule by scripts/refresh-showcase.mjs. Subjects are auto-selected on real coverage with
+   men's divisions leading the primary composition; women's divisions stay on the card strip, rankings and docs. */
+const fresh = freshness(show.generated_at);
+const counts = show.counts;
+const reg = show.registry;
+const event = show.event;
+const mainBout = event.bouts.reduce((m: any, b: any) => (b.bout_order > m.bout_order ? b : m), event.bouts[0]);
+const HA = mainBout.fighter_a, HB = mainBout.fighter_b;
+const fighterShow = show.fighter;
+const flagship = show.matchup;
+const FA = flagship.fighters[0], FB = flagship.fighters[1];
+const mw = show.rankings;
+const womens = show.womens;
+const rec = show.provenance;
+const EVENT_ID = event.event.id, SHOW_FIGHTER = fighterShow.fighter.id, FA_ID = FA.id, FB_ID = FB.id;
 const fam = (k: string) => (reg?.families?.[k] || []);
 const famCard = (t: string, k: string, blurb: string, picks: [string, string][]) => ({ t, blurb, keys: fam(k).map((m: any) => m.metric_key), picks });
 const families = [
@@ -35,6 +44,8 @@ const families = [
   famCard("Round DNA", "pace", "Whether round-one pace survives into rounds two and three, championship-round delta, defensive drift.", [["pace_retention_r3_vs_r1", "Pace retention R3/R1"], ["championship_round_delta", "Championship-round delta"], ["defensive_drift_r3_vs_r1", "Defensive drift"]]),
   famCard("Context DNA", "context", "Records under specific conditions: short notice, three- and five-round bouts, title fights, main events.", [["five_round_record", "Five-round record"], ["title_bout_record", "Title-bout record"], ["short_notice_record", "Short-notice record"]]),
 ];
+const metricCount = Object.values(reg?.families || {}).reduce((n: number, f: any) => n + f.length, 0);
+const divisionOf = (f: any) => { const p = (f.ranking?.positions || []).filter((x: any) => !x.is_p4p)[0]; return p ? p.label : null; };
 const jsonLd = [
   { "@context": "https://schema.org", "@type": "SoftwareApplication", "@id": "https://ufc.proptechusa.ai/#app", name: "PropTechUSA UFC Intelligence API", applicationCategory: "DeveloperApplication", operatingSystem: "Any", url: "https://ufc.proptechusa.ai", description: "Developer-ready UFC event, fighter, fight-card and round-level data with proprietary PropBetEdge Fight DNA and matchup intelligence.", softwareVersion: contract.api_version, publisher: { "@id": "https://proptechusa.ai/#organization" }, offers: { "@type": "AggregateOffer", priceCurrency: "USD", lowPrice: 79, highPrice: 1499, offerCount: 4, url: "https://ufc.proptechusa.ai/pricing" } },
   { "@context": "https://schema.org", "@type": "Product", "@id": "https://ufc.proptechusa.ai/#product", name: "PropTechUSA UFC Intelligence API", description: "Normalized UFC data plus proprietary PropBetEdge Fight DNA and Matchup DNA, delivered through one developer API.", brand: { "@type": "Brand", name: "PropTechUSA" }, image: "https://ufc.proptechusa.ai/og.png", offers: order.filter((k) => plans[k as keyof typeof plans].price_usd_month !== null).map((k) => ({ "@type": "Offer", name: `${plans[k as keyof typeof plans].name} plan`, price: plans[k as keyof typeof plans].price_usd_month, priceCurrency: "USD", availability: "https://schema.org/InStock", url: `https://ufc.proptechusa.ai/pricing#plan-${k}` })) },
@@ -63,8 +74,8 @@ const jsonLd = [
         </div>
       </div>
       <div>
-        <FightPoster a={A} b={B} eventName={event.event.name} eventDate={event.event.event_date} venue={event.event.venue} city={event.event.city} region={event.event.region}
-          label="Co-main · Women's flyweight" badge="Fight week" meta={`${event.bout_count} bouts · ${event.event.card_status}`}
+        <FightPoster a={HA} b={HB} eventName={event.event.name} eventDate={event.event.event_date} venue={event.event.venue} city={event.event.city} region={event.event.region} tall
+          label={`Main event · ${mainBout.weight_class.replace(/_/g, " ").toLowerCase()} · ${mainBout.scheduled_rounds} rounds`} badge="Fight week" meta={`${event.bout_count} bouts · ${event.event.card_status}`}
           endpoints={[{ path: `/v1/ufc/events/${"{id}"}/card` }, { path: `/v1/ufc/fighters/${"{id}"}` }, { path: `/v1/ufc/matchups/${"{a}"}/${"{b}"}/dna` }]}
           status={{ code: 200, ms: 42, plan: "Ultra" }} />
       </div>
@@ -75,18 +86,18 @@ const jsonLd = [
   <section class="section band-deep" id="fighter-profile">
     <div class="wrap">
       <div class="section-head">
-        <div><p class="eyebrow">Fighter API</p><h2>A complete fighter page, from four calls.</h2><p class="lede">Identity, record, ranking, rights-cleared media, career stats and proprietary Fight DNA.</p></div>
-        <a class="btn secondary" href={`/workspace?tool=fighter&id=${FIOROT}`}>Build this profile →</a>
+        <div><p class="eyebrow">Fighter API</p><h2>A complete fighter page,<br /><span class="gold-em">from four calls.</span></h2><p class="lede">Identity, record, ranking, rights-cleared media, career stats and proprietary Fight DNA.</p></div>
+        <a class="btn secondary" href={`/workspace?tool=fighter&id=${SHOW_FIGHTER}`}>Build this profile →</a>
       </div>
-      <Demo eyebrow={`${fiorot.fighter.name} · Women's flyweight`} title={fiorot.fighter.name} intro={`Next: ${fiorot.fighter.next_bout?.event?.name} · ${fmtDate(fiorot.fighter.next_bout?.event?.event_date)}`} captured={fmtDate(fiorot.captured_at)}
+      <Demo eyebrow={`${divisionOf(fighterShow.fighter) || "Fighter"}${(fighterShow.fighter.ranking?.positions || []).filter((p: any) => !p.is_p4p)[0]?.rank === 0 ? " champion" : (fighterShow.fighter.ranking?.positions || []).filter((p: any) => !p.is_p4p)[0] ? " #" + (fighterShow.fighter.ranking?.positions || []).filter((p: any) => !p.is_p4p)[0].rank : ""} · selected on live coverage`} title={fighterShow.fighter.name} intro={`${fighterShow.fighter.record_w}-${fighterShow.fighter.record_l} · ${fighterShow.dna.sample_stat_bouts} stat-covered bouts · ${fighterShow.dna.sample_rounds} rounds · ${fmtNumber(fighterShow.dna.sample_seconds / 60, 0)} observed minutes`} captured={fresh.capturedAt}
         endpoints={[{ path: "/v1/ufc/fighters/{id}", plan: "developer" }, { path: "/v1/ufc/fighters/{id}/history", plan: "developer" }, { path: "/v1/ufc/fighters/{id}/stats", plan: "pro" }, { path: "/v1/ufc/fighters/{id}/dna", plan: "pro" }]}
-        workspace={`/workspace?tool=fighter&id=${FIOROT}`} json={ex.fiorot_detail.body} jsonPath={fiorot.paths.detail} jsonNote="subset: images[] and history[] shortened" pbeLabel="See the live PropBetEdge fighter page →">
-        <FighterPreview fighter={fiorot.fighter} size="hero" showCareer />
+        workspace={`/workspace?tool=fighter&id=${SHOW_FIGHTER}`} json={fighterShow.raw} jsonPath={fighterShow.paths.detail} jsonNote="subset: images[] and history[] shortened" pbeLabel="See the live PropBetEdge fighter page →">
+        <FighterPreview fighter={fighterShow.fighter} size="hero" showCareer />
         <div style="height:16px"></div>
-        <FightDnaPreview snapshot={fiorot.dna} title="Fight DNA" keys={["sig_landed_per_min", "sig_accuracy", "sig_defense", "td_attempts_per_15", "finish_rate", "ko_finish_rate"]} />
+        <FightDnaPreview snapshot={fighterShow.dna} title="Fight DNA" keys={["sig_landed_per_min", "sig_accuracy", "sig_defense", "knockdowns_per_15", "td_attempts_per_15", "pace_retention_r3_vs_r1"]} />
         <div slot="aside" class="powered">
           <p class="eyebrow">Recent bouts <span class="chip source">Source</span></p>
-          <ul class="hist-list">{fiorot.history.slice(0, 4).map((h: any) => <li><span class:list={["outcome", h.outcome || "none"]}>{h.outcome || "—"}</span><span><b>{h.opponent?.name || "TBA"}</b><br /><span class="small muted">{h.event?.name}</span></span><span class="small muted">{h.result?.method || "scheduled"}</span></li>)}</ul>
+          <ul class="hist-list">{fighterShow.history.slice(0, 5).map((h: any) => <li><span class:list={["outcome", h.outcome || "none"]}>{h.outcome || "—"}</span><span><b>{h.opponent?.name || "TBA"}</b><br /><span class="small muted">{h.event?.name}</span></span><span class="small muted">{h.result?.method || "scheduled"}</span></li>)}</ul>
         </div>
       </Demo>
     </div>
@@ -99,15 +110,20 @@ const jsonLd = [
         <div><p class="eyebrow">Fight Week API</p><h2>Build Fight Week.</h2><p class="lede">The current event, main card, fighter faces and matchup intelligence — the whole fight-week surface from four endpoints.</p></div>
         <a class="btn secondary" href="/workspace?tool=card">Open in Workspace →</a>
       </div>
-      <Demo eyebrow="Current card · rendered from the response" title="The next card, end to end" intro="Event, ordered bouts, card positions, both fighters with rights-cleared media, and the matchup read for the co-main." captured={fmtDate(event.captured_at)}
+      <Demo eyebrow="Current card · rendered from the response" title="The next card, end to end" intro="Event, ordered bouts, card positions, both fighters with rights-cleared media, and the matchup read for the co-main." captured={fresh.capturedAt}
         endpoints={[{ path: "/v1/ufc/events?status=upcoming", plan: "developer" }, { path: "/v1/ufc/events/{id}/card", plan: "developer" }, { path: "/v1/ufc/fighters/{id}", plan: "developer" }, { path: "/v1/ufc/matchups/{a}/{b}/dna", plan: "ultra" }]}
-        workspace="/workspace?tool=card" json={ex.noche_card.body} jsonPath={event.path} jsonNote="subset: 2 of 13 bouts, images[] omitted" pbeLabel="See the live PropBetEdge Fight Week →">
+        workspace="/workspace?tool=card" json={event.raw} jsonPath={event.path} jsonNote="subset: 2 of 13 bouts, images[] omitted" pbeLabel="See the live PropBetEdge Fight Week →">
         <EventCardPreview event={event} limit={8} />
         <div slot="aside">
-          <div class="powered" style="margin-bottom:12px">
-            <p class="eyebrow">Fight read <span class="chip derived">PBE derived</span></p>
-            <ul style="margin-bottom:0">{comain.insights.slice(0, 3).map((i: any) => <li style="display:block;color:var(--dim);font-family:var(--font-ui);font-size:13px;line-height:1.5">{i.explanation}</li>)}</ul>
-          </div>
+          {womens.matchup ? (
+            <div class="powered" style="margin-bottom:12px">
+              <p class="eyebrow">{womens.matchup.label} · {womens.matchup.weight_class.replace(/_/g, " ").toLowerCase()} <span class="chip derived">PBE derived</span></p>
+              <p class="small muted" style="margin:0 0 10px">{womens.matchup.fighters[0].name} vs {womens.matchup.fighters[1].name} — every division on the card resolves through the same endpoints.</p>
+              <ul style="margin-bottom:0">{womens.matchup.insights.slice(0, 2).map((i: any) => <li style="display:block;color:var(--dim);font-family:var(--font-ui);font-size:13px;line-height:1.5">{i.explanation}</li>)}</ul>
+            </div>
+          ) : (
+            <div class="powered" style="margin-bottom:12px"><p class="eyebrow">Every division</p><p class="small muted" style="margin:0">This card has no women's bout scheduled. Every division resolves through the same endpoints; see the <a href="/workspace?tool=rankings">Workspace rankings tool</a>.</p></div>
+          )}
         </div>
       </Demo>
     </div>
@@ -118,12 +134,12 @@ const jsonLd = [
     <div class="wrap">
       <div class="section-head">
         <div><p class="eyebrow">Matchup DNA API <span class="chip plan-ultra">Ultra</span></p><h2>Two fighters in.<br /><span class="gold-em">Matchup intelligence out.</span></h2><p class="lede">Each fighter measured against the opponent actually in front of them. Insights fire only above documented thresholds; everything else is a named warning.</p></div>
-        <a class="btn secondary" href={`/workspace?tool=matchup&a=${FIOROT}&b=${GRASSO}`}>Open in Workspace →</a>
+        <a class="btn secondary" href={`/workspace?tool=matchup&a=${FA_ID}&b=${FB_ID}`}>Open in Workspace →</a>
       </div>
-      <Demo eyebrow="Co-main event" title={`${A.name} vs ${B.name}`} intro={`${event.event.name} · stance context: ${comain.stance_context.context.replace(/_/g, " ")} · ${comain.meta.comparable} of ${comain.meta.comparisons} metrics comparable`} captured={fmtDate(comain.captured_at)} single
+      <Demo eyebrow={`${flagship.weight_class ? flagship.weight_class.replace(/_/g, " ").toLowerCase() : "matchup"} · ${flagship.label}${flagship.on_current_card ? " · on the current card" : ""}`} title={`${FA.name} vs ${FB.name}`} intro={`${flagship.meta.comparable} of ${flagship.meta.comparisons} metrics comparable · ${flagship.insights.length} insights above threshold · stance context ${flagship.stance_context.context.replace(/_/g, " ")}`} captured={fresh.capturedAt} single
         endpoints={[{ path: "/v1/ufc/matchups/{a}/{b}/dna", plan: "ultra" }, { path: "/v1/ufc/fighters/{id}", plan: "developer" }, { path: "/v1/ufc/fighters/{id}/splits", plan: "pro" }]}
-        workspace={`/workspace?tool=matchup&a=${FIOROT}&b=${GRASSO}`} json={ex.matchup_comain.body} jsonPath={comain.path} jsonNote="subset: 3 of 18 comparisons, 2 of 5 insights" pbeLabel="See the live PropBetEdge matchup →">
-        <MatchupPreview matchup={comain} />
+        workspace={`/workspace?tool=matchup&a=${FA_ID}&b=${FB_ID}`} json={flagship.raw} jsonPath={flagship.path} jsonNote="subset: 3 of 18 comparisons, 2 of 12 insights" pbeLabel="See the live PropBetEdge matchup →">
+        <MatchupPreview matchup={flagship} />
       </Demo>
     </div>
   </section>
@@ -132,22 +148,22 @@ const jsonLd = [
   <section class="section" id="rankings">
     <div class="wrap">
       <div class="section-head">
-        <div><p class="eyebrow">Rankings API</p><h2>Champion, top 15, movement.</h2><p class="lede">The verified ufc.com snapshot, linked to canonical fighter ids so every row opens a profile, Fight DNA or a matchup. Portraits come from one bulk media call.</p></div>
-        <a class="btn secondary" href="/workspace?tool=rankings">Open in Workspace →</a>
+        <div><p class="eyebrow">Rankings API · {mw.division.label}</p><h2>Champion, top 15, movement.</h2><p class="lede">The verified ufc.com snapshot, linked to canonical fighter ids so every row opens a profile, Fight DNA or a matchup. Portraits come from one bulk media call. Every men's and women's division resolves the same way.</p></div>
+        <a class="btn secondary" href={`/workspace?tool=rankings&division=${mw.division.key}`}>Open in Workspace →</a>
       </div>
       <div class="demo">
         <div class="demo-body">
-          <RankingsPreview rankings={wfly} limit={8} />
+          <RankingsPreview rankings={mw} limit={8} />
           <div class="powered">
             <p class="eyebrow">Powered by</p>
             <ul>
-              <li><span class="m">GET</span><span>/v1/ufc/rankings?division=FLYWEIGHT&amp;womens=true</span><span class="chip plan-developer">Developer+</span></li>
+              <li><span class="m">GET</span><span>{mw.path.replace("/v1/ufc", "")}</span><span class="chip plan-developer">Developer+</span></li>
               <li><span class="m">GET</span><span>/v1/ufc/fighters/media?ids=…</span><span class="chip plan-developer">Developer+</span></li>
               <li><span class="m">GET</span><span>/v1/ufc/fighters/{"{id}"}?include=ranking</span><span class="chip plan-developer">Developer+</span></li>
             </ul>
             <div class="actions-row">
-              <a class="btn secondary" href="/workspace?tool=rankings">Open in Workspace →</a>
-              <JsonDrawer json={ex.rankings_womens_flyweight.body} path={wfly.path} title="Rankings response" note="subset: 3 entries" label="View JSON →" />
+              <a class="btn secondary" href={`/workspace?tool=rankings&division=${mw.division.key}`}>Open in Workspace →</a>
+              <JsonDrawer json={mw.raw} path={mw.path} title="Rankings response" note="subset: 3 entries" label="View JSON →" />
             </div>
             <a class="pbe-link" href="https://ufc.propbetedge.ai/rankings" rel="noopener"><span class="m">PropBetEdge UFC</span> See the live rankings product →</a>
           </div>
@@ -160,7 +176,7 @@ const jsonLd = [
   <section class="section band-deep" id="fight-dna">
     <div class="wrap">
       <div class="section-head">
-        <div><p class="eyebrow">Proprietary intelligence</p><h2>Raw stats tell you what happened.<br /><span class="gold-em">Fight DNA shows the pattern.</span></h2><p class="lede">Event-dated bout and round history rebuilt into as-of fighter intelligence: stance matchups, striking, grappling, finishing, round progression and context. Six families, {Object.values(reg?.families || {}).reduce((n: number, f: any) => n + f.length, 0)} versioned metrics.</p></div>
+        <div><p class="eyebrow">Proprietary intelligence</p><h2>Raw stats tell you what happened.<br /><span class="gold-em">Fight DNA shows the pattern.</span></h2><p class="lede">Event-dated bout and round history rebuilt into as-of fighter intelligence: stance matchups, striking, grappling, finishing, round progression and context. Six families, {metricCount} versioned metrics.</p></div>
         <a class="btn secondary" href="/learn/fight-dna">Methodology →</a>
       </div>
       <div class="dna-grid">
@@ -186,9 +202,9 @@ const jsonLd = [
         {rec && <ReceiptPreview fighter={rec.fighter} metric={rec.metric} />}
         <div>
           <p class="lede">This is a verbatim <code>MetricObject</code> from the live API, not a marketing number. A low sample is reported as a low sample. A zero denominator is a <code>null</code> with <code>confidence: "insufficient"</code>, never a fake zero.</p>
-          <ApiRequest path={`/v1/ufc/fighters/${hero.fighter.id}/dna`} plan="pro" compact />
+          <ApiRequest path={fighterShow.paths.dna} plan="pro" compact />
           <div class="actions-row" style="margin-top:14px">
-            <JsonDrawer json={ex.fighter_dna.body} path={`/v1/ufc/fighters/${hero.fighter.id}/dna`} title="Fighter Fight DNA response" note={`live · captured ${fmtDate(ex.fighter_dna.captured_at)} · subset`} label="View full response →" />
+            <JsonDrawer json={fighterShow.raw_dna} path={fighterShow.paths.dna} title="Fighter Fight DNA response" note={`captured ${fresh.capturedAt} · subset`} label="View full response →" />
             <a class="btn ghost" href="/learn/fight-dna#provenance">How confidence is computed →</a>
           </div>
         </div>
@@ -206,10 +222,10 @@ const jsonLd = [
       <div class="build-grid">
         {[
           ["Current Fight Week", "One click: the next event and its full card, rendered.", "/v1/ufc/events/{id}/card", "developer", "/workspace?tool=card"],
-          ["Explore a fighter", "Search by name, then Overview, History, Stats, Fight DNA and Media tabs.", "/v1/ufc/fighters/{id}…", "developer", `/workspace?tool=fighter&id=${FIOROT}`],
-          ["Compare fighters", "Pick two fighters and render the full matchup card with insights.", "/v1/ufc/matchups/{a}/{b}/dna", "ultra", `/workspace?tool=matchup&a=${FIOROT}&b=${GRASSO}`],
-          ["View rankings", "Champion and top 15 with portraits, in every division.", "/v1/ufc/rankings", "developer", "/workspace?tool=rankings"],
-          ["Test Fight DNA", "Snapshot, stance splits, round and finish profiles, with as-of dates.", "/v1/ufc/fighters/{id}/dna", "pro", `/workspace?tool=dna&id=${FIOROT}`],
+          ["Explore a fighter", "Search by name, then Overview, History, Stats, Fight DNA and Media tabs.", "/v1/ufc/fighters/{id}…", "developer", `/workspace?tool=fighter&id=${SHOW_FIGHTER}`],
+          ["Compare fighters", "Pick two fighters and render the full matchup card with insights.", "/v1/ufc/matchups/{a}/{b}/dna", "ultra", `/workspace?tool=matchup&a=${FA_ID}&b=${FB_ID}`],
+          ["View rankings", "Champion and top 15 with portraits, in every division.", "/v1/ufc/rankings", "developer", `/workspace?tool=rankings&division=${mw.division.key}`],
+          ["Test Fight DNA", "Snapshot, stance splits, round and finish profiles, with as-of dates.", "/v1/ufc/fighters/{id}/dna", "pro", `/workspace?tool=dna&id=${SHOW_FIGHTER}`],
           ["Any endpoint", "Request builder with rendered preview, JSON and code snippets.", "/v1/ufc/*", "developer", "/workspace?tool=custom"],
         ].map(([t, p, ep, plan, href]: any) => (
           <a class="build" href={href} style="text-decoration:none">
@@ -219,6 +235,24 @@ const jsonLd = [
           </a>
         ))}
       </div>
+    </div>
+  </section>
+
+  <!-- 8b. PRICING TRANSITION -->
+  <section class="transition">
+    <div class="art" aria-hidden="true">
+      <img src={FA.primary_image?.card_url} alt="" width="800" height="1000" loading="lazy" decoding="async" />
+      <img src={FB.primary_image?.card_url} alt="" width="800" height="1000" loading="lazy" decoding="async" />
+    </div>
+    <div class="wrap">
+      <p class="eyebrow plain" style="justify-content:center">Matchup DNA</p>
+      <h2>Two fighters. One matchup.<br /><span class="gold-em">Sixty derived metrics. One API.</span></h2>
+      <p class="lede center">{FA.name} versus {FB.name} resolves to {flagship.meta.comparable} comparable metrics and {flagship.insights.length} threshold-cleared reads, each with its own sample and confidence.</p>
+      <div class="actions-row" style="justify-content:center">
+        <a class="btn primary" href="/pricing">See plans</a>
+        <a class="btn secondary" href={`/workspace?tool=matchup&a=${FA_ID}&b=${FB_ID}`}>Run it in Workspace</a>
+      </div>
+      <p class="credit">{[FA.primary_image?.attribution_text, FB.primary_image?.attribution_text].filter(Boolean).join(" · ")}</p>
     </div>
   </section>
 
@@ -242,8 +276,11 @@ const jsonLd = [
   </section>
 
   <!-- 10. FINAL -->
-  <section class="final-cta">
-    <div class="hero-fence" aria-hidden="true"></div>
+  <section class="final-cta transition">
+    <div class="art" aria-hidden="true">
+      <img src={fighterShow.fighter.primary_image?.card_url} alt="" width="800" height="1000" loading="lazy" decoding="async" />
+      <img src={FB.primary_image?.card_url} alt="" width="800" height="1000" loading="lazy" decoding="async" />
+    </div>
     <div class="wrap">
       <p class="eyebrow plain" style="justify-content:center">The engine behind a world-class UFC product</p>
       <h2>Every fighter. Every card.<br /><span class="gold-em">Every round. One API.</span></h2>
@@ -253,6 +290,7 @@ const jsonLd = [
         <a class="btn secondary" href="/workspace">Open Workspace</a>
         <a class="btn ghost" href="https://ufc.propbetedge.ai" rel="noopener">See it in production →</a>
       </div>
+      <p class="credit">{[fighterShow.fighter.primary_image?.attribution_text, FB.primary_image?.attribution_text].filter(Boolean).join(" · ")}</p>
     </div>
   </section>
 </Base>

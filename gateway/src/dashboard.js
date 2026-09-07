@@ -24,7 +24,7 @@ export async function dashboardRouter(request, env, ctx, url) {
   if (path === "/dashboard/api/checkout" && request.method === "GET") {
     const sessionId = url.searchParams.get("session_id") || "";
     await guardDashboardRate(env, `checkout:${sessionId.slice(0, 40)}`);
-    return ok(ctx, await checkoutState(env, sessionId), { self_serve_checkout: billing.self_serve_checkout }, {}, "private");
+    return ok(ctx, await checkoutState(env, sessionId), { self_serve_checkout: billing.self_serve_checkout }, {}, "dashboard");
   }
 
   const identity = await authenticateDirect(request, env);
@@ -50,7 +50,7 @@ export async function dashboardRouter(request, env, ctx, url) {
       recent_requests: usage.recent,
       api: { version: upstreamContract.api_version, gateway_version: GATEWAY.gateway_version, fight_dna_definition_version: upstreamContract.fight_dna_definition_version, base_url: env.PUBLIC_HOST || GATEWAY.commercial_host },
       links: { docs: "/docs", pricing: "/pricing", openapi: "/openapi.json", support: `mailto:${GATEWAY.support_email}` },
-    }, {}, {}, "private");
+    }, {}, {}, "dashboard");
   }
 
   if (path === "/dashboard/api/rotate" && request.method === "POST") {
@@ -65,12 +65,12 @@ export async function dashboardRouter(request, env, ctx, url) {
       const bill = cus ? await env.API_KEYS.get(`stripe_customer:${cus}`, { type: "json" }) : null;
       if (bill) { bill.api_key_id = issued.record.id; bill.updated_at = new Date().toISOString(); await env.API_KEYS.put(`stripe_customer:${cus}`, JSON.stringify(bill)); }
     }
-    return ok(ctx, { key: issued.key, record: issued.record, previous: publicKeyView(record), warning: "Store the new key now. The old key stopped working immediately." }, {}, {}, "private");
+    return ok(ctx, { key: issued.key, record: issued.record, previous: publicKeyView(record), warning: "Store the new key now. The old key stopped working immediately." }, {}, {}, "dashboard");
   }
 
   if (path === "/dashboard/api/portal" && request.method === "POST") {
     const returnUrl = (env.PUBLIC_HOST || GATEWAY.commercial_host).replace(/\/$/, "") + billing.customer_portal.return_path;
-    return ok(ctx, await portalSession(env, record, returnUrl), {}, {}, "private");
+    return ok(ctx, await portalSession(env, record, returnUrl), {}, {}, "dashboard");
   }
 
   throw new GatewayError(404, "route_not_found", "Dashboard route not found.");

@@ -35,6 +35,11 @@ const DELGADO = "55ef67ad-88fe-4f7a-b4cb-dc9a10c12feb";
 /* Co-main used for the portal showcases: both fighters carry CC BY 3.0 portraits and are ranked. */
 const FIOROT = "2c9c2a88-aec1-4bf0-9b16-3ce58adf6fd6";
 const GRASSO = "1d296292-4969-43a8-9948-cd0a76a642ce";
+/* Male-led marketing subjects (chosen on real coverage, see docs/SHOWCASE_SUBJECTS.md):
+   Gaethje = lightweight champion for the Fighter API demo; Strickland vs Rodrigues = middleweight
+   champion vs #7, the best-comparing male pair in the archive (17/18 metrics non-null on both sides). */
+const GAETHJE = "91218960-ded4-4375-890a-f3208575b374";
+const RODRIGUES = "2d93f8f3-ccaa-420c-b8d5-f446da57bec5";
 
 const FIXTURES = {
   index: "/v1/ufc",
@@ -65,6 +70,7 @@ const FIXTURES = {
   noche_event: `/v1/ufc/events/${NOCHE_EVENT}`,
   rankings_featherweight: "/v1/ufc/rankings?division=FEATHERWEIGHT",
   rankings_flyweight: "/v1/ufc/rankings?division=FLYWEIGHT",
+  rankings_lightweight: "/v1/ufc/rankings?division=LIGHTWEIGHT",
   ...(SILVA ? {
     silva_detail: `/v1/ufc/fighters/${SILVA}?include=ranking,next,history&history_limit=5`,
     silva_stats: `/v1/ufc/fighters/${SILVA}/stats`,
@@ -81,6 +87,12 @@ const FIXTURES = {
   grasso_dna: `/v1/ufc/fighters/${GRASSO}/dna`,
   grasso_stats: `/v1/ufc/fighters/${GRASSO}/stats`,
   matchup_comain: `/v1/ufc/matchups/${FIOROT}/${GRASSO}/dna`,
+  gaethje_detail: `/v1/ufc/fighters/${GAETHJE}?include=ranking,next,history&history_limit=6`,
+  gaethje_dna: `/v1/ufc/fighters/${GAETHJE}/dna`,
+  gaethje_stats: `/v1/ufc/fighters/${GAETHJE}/stats`,
+  rodrigues_detail: `/v1/ufc/fighters/${RODRIGUES}?include=ranking,next`,
+  rodrigues_dna: `/v1/ufc/fighters/${RODRIGUES}/dna`,
+  matchup_mw: `/v1/ufc/matchups/${STRICKLAND}/${RODRIGUES}/dna`,
   rankings_womens_flyweight: "/v1/ufc/rankings?division=FLYWEIGHT&womens=true",
   ...(SILVA && DELGADO ? { delgado_detail: `/v1/ufc/fighters/${DELGADO}?include=ranking`, delgado_dna: `/v1/ufc/fighters/${DELGADO}/dna`, matchup_noche: `/v1/ufc/matchups/${SILVA}/${DELGADO}/dna` } : {}),
 };
@@ -102,7 +114,7 @@ for (const [name, path] of Object.entries(FIXTURES)) {
 }
 
 /* second pass: bulk media for the ranked fighters we render (needs ids from the rankings response) */
-for (const [name, src] of [["rankings_womens_flyweight_media", "rankings_womens_flyweight"], ["rankings_featherweight_media", "rankings_featherweight"]]) {
+for (const [name, src] of [["rankings_middleweight_media", "rankings_middleweight"], ["rankings_lightweight_media", "rankings_lightweight"], ["rankings_womens_flyweight_media", "rankings_womens_flyweight"], ["rankings_featherweight_media", "rankings_featherweight"]]) {
   const div = results[src]?.body?.data?.divisions?.[0];
   if (!div) continue;
   const ids = [div.champion?.fighter_id, ...div.entries.map((e) => e.fighter_id)].filter(Boolean).slice(0, 12);

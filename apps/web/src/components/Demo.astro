@@ -5,15 +5,18 @@ export interface Props {
   eyebrow: string; title: string; intro?: string;
   endpoints: { path: string; plan: string; label?: string }[];
   workspace?: string; json?: unknown; jsonPath?: string; jsonNote?: string; captured?: string;
+  /* "live": values come from the generated showcase snapshot, refreshed on the published cadence.
+     "example": values come from a pinned documentation fixture and do not move. */
+  source?: "live" | "example";
   pbe?: string; pbeLabel?: string; single?: boolean; id?: string;
 }
-const { eyebrow, title, intro, endpoints, workspace, json, jsonPath, jsonNote, captured, pbe = "https://ufc.propbetedge.ai", pbeLabel = "See the live PropBetEdge implementation →", single = false, id } = Astro.props;
+const { eyebrow, title, intro, endpoints, workspace, json, jsonPath, jsonNote, captured, source = "live", pbe = "https://ufc.propbetedge.ai", pbeLabel = "See the live PropBetEdge implementation →", single = false, id } = Astro.props;
 const planLabel = (p: string) => (p === "first_party" ? "First-party" : p.charAt(0).toUpperCase() + p.slice(1) + (p === "enterprise" ? "" : "+"));
 ---
 <div class="demo" id={id}>
   <div class="demo-head">
     <div><p class="eyebrow">{eyebrow}</p><h3>{title}</h3>{intro && <p class="muted" style="margin:6px 0 0;max-width:60ch">{intro}</p>}</div>
-    {captured && <div class="mono small muted">live response · captured {captured}</div>}
+    {captured && <div class="mono small muted">{source === "live" ? "live capture" : "schema example"} · {captured}</div>}
   </div>
   <div class:list={["demo-body", { single }]}>
     <div style="min-width:0"><slot /></div>

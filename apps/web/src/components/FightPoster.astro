@@ -1,5 +1,6 @@
 ---
-/* Fight poster: the consumer product's next-event card, with a developer layer underneath. */
+/* Fight poster: the consumer product's next-event card, with a developer layer underneath.
+   A fighter without a rights-cleared portrait gets an angular cage name-lockup, never a generic silhouette. */
 import { marketingImage, fmtRecord, titleCase } from "../lib/media";
 import { fmtDate } from "../lib/hl";
 export interface Props {
@@ -8,18 +9,32 @@ export interface Props {
   label?: string; badge?: string; meta?: string;
   endpoints?: { path: string; plan?: string }[];
   status?: { code: number; ms: number; plan?: string } | null;
+  tall?: boolean;
 }
-const { a, b, eventName, eventDate, venue, city, region, label = "Next card", badge = "Fight week", meta, endpoints = [], status = null } = Astro.props;
+const { a, b, eventName, eventDate, venue, city, region, label = "Next card", badge = "Fight week", meta, endpoints = [], status = null, tall = false } = Astro.props;
 const ia = marketingImage(a.primary_image, a.name), ib = marketingImage(b.primary_image, b.name);
 const rank = (f: any) => { const p = (f.ranking?.positions || []).filter((x: any) => !x.is_p4p)[0]; return p ? (p.rank === 0 || p.is_champion ? "Champion" : `#${p.rank} ${titleCase(p.label)}`) : null; };
+const initials = (n: string) => n.split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join("");
 const credits = [ia.credit, ib.credit].filter(Boolean);
 const place = [venue, city, region].filter(Boolean).join(" · ");
+const sides = [{ f: a, img: ia, cls: "a" }, { f: b, img: ib, cls: "b" }];
 ---
-<div class="poster">
+<div class:list={["poster", { tall }]}>
   <div class="poster-top"><span>{label}</span><span class="chip derived">{badge}</span></div>
   <div class="poster-faces">
-    <div class="face a"><img src={ia.src} srcset={ia.srcset} sizes="(max-width: 1000px) 50vw, 300px" width={ia.width} height={ia.height} alt={ia.alt} loading="eager" decoding="async" /></div>
-    <div class="face b"><img src={ib.src} srcset={ib.srcset} sizes="(max-width: 1000px) 50vw, 300px" width={ib.width} height={ib.height} alt={ib.alt} loading="eager" decoding="async" /></div>
+    {sides.map(({ f, img, cls }) => img.approved ? (
+      <div class:list={["face", cls]}><img src={img.src} srcset={img.srcset} sizes="(max-width: 1000px) 50vw, 320px" width={img.width} height={img.height} alt={img.alt} loading="eager" decoding="async" /></div>
+    ) : (
+      <div class:list={["face", cls, "lockup"]} aria-label={f.name}>
+        <svg class="cage" viewBox="0 0 160 200" aria-hidden="true" preserveAspectRatio="none">
+          <path d="M40 6h80l34 34v120l-34 34H40L6 160V40z" fill="none" stroke="currentColor" stroke-opacity=".28" stroke-width="1.5" />
+          <path d="M55 22h50l28 28v100l-28 28H55L27 150V50z" fill="none" stroke="currentColor" stroke-opacity=".14" stroke-width="1" />
+          <path d="M80 6v188M6 100h148" stroke="currentColor" stroke-opacity=".08" stroke-width="1" />
+        </svg>
+        <span class="ini">{initials(f.name)}</span>
+        <span class="lk">No cleared portrait</span>
+      </div>
+    ))}
     <div class="poster-vs">VS</div>
     <div class="poster-names">
       <div><div class="n">{a.name}</div><div class="r">{fmtRecord(a)}{rank(a) && <> · {rank(a)}</>}</div></div>

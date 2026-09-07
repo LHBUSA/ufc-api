@@ -27,6 +27,7 @@ const billing = gen.billing;
         <button class="btn secondary" id="copy" type="button">Copy key</button>
       </div>
       <p class="status-line" id="status" role="status"></p>
+      <p class="small muted" id="api-origin" hidden style="margin:8px 0 0"></p>
     </div>
 
     <div id="panel" hidden>
@@ -113,17 +114,22 @@ const billing = gen.billing;
     const when = (iso: string | null) => (iso ? new Date(iso).toISOString().replace("T", " ").slice(0, 19) + "Z" : "—");
     const day = (iso: string | null) => (iso ? new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" }) : "—");
     const escapeHtml = (s: string) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c] as string));
+    (async () => {
+      const a = (window as any).__ufcApi;
+      if (a.remote()) { const n = $("api-origin"); n.hidden = false; n.innerHTML = `This page is served from a static host, so it calls the API gateway at <code>${a.fallback}</code>.`; }
+    })();
     let currentKey = "";
     try { currentKey = sessionStorage.getItem("ufc_api_key") || ""; } catch {}
     const input = $("key") as HTMLInputElement;
     if (currentKey) input.value = currentKey;
 
     async function api(path: string, method = "GET") {
-      const res = await fetch(path, { method, headers: { authorization: `Bearer ${currentKey}` } });
-      const body = await res.json();
-      if (!body.ok) throw new Error(`${body.error?.code}: ${body.error?.message}`);
+      const { body } = await (window as any).__ufcApi.call(path, { method, headers: { authorization: `Bearer ${currentKey}` } });
+      if (!body.ok) { const e: any = new Error(`${body.error?.code}: ${body.error?.message}`); e.code = body.error?.code; e.requestId = body.meta?.request_id; throw e; }
       return body.data;
     }
+    const busy = (el: any, on: boolean, label?: string) => { if (!el) return; if (on) { el.dataset.label = el.dataset.label || el.textContent || ""; el.disabled = true; el.textContent = label || "Working…"; } else { el.disabled = false; if (el.dataset.label) el.textContent = el.dataset.label; } };
+    const errText = (e: any) => (e?.code === "gateway_unavailable" || e?.code === "gateway_unreachable" ? e.message : `${e?.message || e}${e?.requestId ? " · request " + e.requestId : ""}`);
     const copy = async (text: string, okMsg: string) => { try { await navigator.clipboard.writeText(text); status(okMsg); } catch { status("Clipboard unavailable; copy manually.", true); } };
 
     function render(d: any) {
@@ -161,9 +167,10 @@ const billing = gen.billing;
     async function load() {
       currentKey = input.value.trim();
       if (!currentKey) return status("Paste an API key first.", true);
-      status("Loading…");
+      busy($("load"), true, "Loading…"); status("Loading…");
       try { const d = await api("/dashboard/api/me"); try { sessionStorage.setItem("ufc_api_key", currentKey); } catch {} render(d); status(`Loaded ${d.key.display} at ${when(new Date().toISOString())}`); }
-      catch (e: any) { $("panel").hidden = true; status(e.message, true); }
+      catch (e: any) { $("panel").hidden = true; status(errText(e), true); }
+      finally { busy($("load"), false); }
     }
     $("load").addEventListener("click", load);
     input.addEventListener("keydown", (e) => { if (e.key === "Enter") load(); });
@@ -172,22 +179,24 @@ const billing = gen.billing;
     $("rotate").addEventListener("click", () => { $("rotate-confirm").hidden = false; });
     $("rotate-no").addEventListener("click", () => { $("rotate-confirm").hidden = true; });
     $("rotate-yes").addEventListener("click", async () => {
-      $("rotate-confirm").hidden = true; status("Rotating…");
+      $("rotate-confirm").hidden = true; busy($("rotate"), true, "Rotating…"); status("Rotating…");
       try { const d = await api("/dashboard/api/rotate", "POST"); $("new-key").textContent = d.key; $("rotated").hidden = false; currentKey = d.key; input.value = d.key; try { sessionStorage.setItem("ufc_api_key", d.key); } catch {} status("Rotated. The old key is revoked."); await load(); }
-      catch (e: any) { status(e.message, true); }
+      catch (e: any) { status(errText(e), true); }
+      finally { busy($("rotate"), false); }
     });
     $("copy-new").addEventListener("click", () => copy($("new-key").textContent || "", "New key copied."));
     $("quick-run").addEventListener("click", async () => {
-      const qs = $("quick-status"); qs.textContent = "Running…"; qs.classList.remove("err");
-      try { const t0 = performance.now(); const res = await fetch("/v1/ufc", { headers: { authorization: `Bearer ${currentKey}` } }); const body = await res.json(); const out = $("quick-out"); out.textContent = JSON.stringify(body, null, 2); out.hidden = false; qs.textContent = `${res.status} in ${Math.round(performance.now() - t0)} ms · plan ${res.headers.get("x-plan") || "—"} · quota remaining ${res.headers.get("x-quota-remaining") || "—"} · request ${res.headers.get("x-request-id") || ""}`; try { localStorage.setItem("ufc_ws_key", currentKey); } catch {} }
-      catch (e: any) { qs.textContent = e.message; qs.classList.add("err"); }
+      const qs = $("quick-status"); qs.textContent = "Running…"; qs.classList.remove("err"); busy($("quick-run"), true, "Running…");
+      try { const t0 = performance.now(); const { res, body } = await (window as any).__ufcApi.call("/v1/ufc", { headers: { authorization: `Bearer ${currentKey}` } }); const out = $("quick-out"); out.textContent = JSON.stringify(body, null, 2); out.hidden = false; qs.textContent = `${res.status} in ${Math.round(performance.now() - t0)} ms · plan ${res.headers.get("x-plan") || "—"} · quota remaining ${res.headers.get("x-quota-remaining") || "—"} · request ${res.headers.get("x-request-id") || ""}`; try { localStorage.setItem("ufc_ws_key", currentKey); } catch {} }
+      catch (e: any) { qs.textContent = errText(e); qs.classList.add("err"); }
+      finally { busy($("quick-run"), false); }
     });
     /* hand the key to the Workspace (same origin, localStorage only) */
     const wsLinks = () => { try { if (currentKey) localStorage.setItem("ufc_ws_key", currentKey); } catch {} };
     $("open-ws").addEventListener("click", wsLinks);
     $("portal").addEventListener("click", async () => {
-      const ps = $("portal-status"); ps.textContent = "Opening Stripe customer portal…"; ps.classList.remove("err");
-      try { const d = await api("/dashboard/api/portal", "POST"); window.location.href = d.url; } catch (e: any) { ps.textContent = e.message; ps.classList.add("err"); }
+      const ps = $("portal-status"); ps.textContent = "Opening Stripe customer portal…"; ps.classList.remove("err"); busy($("portal"), true, "Opening…");
+      try { const d = await api("/dashboard/api/portal", "POST"); window.location.href = d.url; } catch (e: any) { ps.textContent = errText(e); ps.classList.add("err"); } finally { busy($("portal"), false); }
     });
 
     /* Post-checkout success state (Stripe redirects here with ?checkout=success&session_id=cs_…). Polls provisioning; reveals the key once. */
@@ -199,8 +208,7 @@ const billing = gen.billing;
       const poll = async () => {
         tries++;
         try {
-          const res = await fetch(`/dashboard/api/checkout?session_id=${encodeURIComponent(sid)}`);
-          const body = await res.json();
+          const { body } = await (window as any).__ufcApi.call(`/dashboard/api/checkout?session_id=${encodeURIComponent(sid)}`);
           const d = body.ok ? body.data : null;
           if (!d) { $("checkout-msg").textContent = body.error?.message || "Your API access is being activated. Refresh in a moment."; return; }
           if (d.status === "active") {
@@ -211,7 +219,7 @@ const billing = gen.billing;
           if (d.status === "review_required") { $("checkout-msg").textContent = d.message; return; }
           $("checkout-msg").textContent = d.message || "Your API access is being activated. Refresh in a moment.";
           if (tries < 10) setTimeout(poll, 3000);
-        } catch { if (tries < 10) setTimeout(poll, 3000); }
+        } catch (e: any) { $("checkout-msg").textContent = errText(e); if (e?.code !== "gateway_unavailable" && tries < 10) setTimeout(poll, 3000); }
       };
       poll();
       $("checkout-copy").addEventListener("click", () => copy($("checkout-key-value").textContent || "", "Key copied. Store it somewhere safe."));

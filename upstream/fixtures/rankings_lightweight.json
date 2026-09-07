@@ -1,0 +1,241 @@
+{
+  "captured_at": "2026-09-07T15:18:22.761Z",
+  "base": "https://ufc-api.propbetedge.ai",
+  "path": "/v1/ufc/rankings?division=LIGHTWEIGHT",
+  "status": 200,
+  "api_version": "2026-09-06.3",
+  "body": {
+    "ok": true,
+    "data": {
+      "source": "ufc.com official rankings",
+      "source_url": "https://www.ufc.com/rankings",
+      "snapshot_date": "2026-09-06",
+      "captured_at": "2026-09-06T16:10:07.916+00:00",
+      "divisions": [
+        {
+          "key": "LIGHTWEIGHT",
+          "label": "Lightweight",
+          "is_womens": false,
+          "is_p4p": false,
+          "champion": {
+            "name": "Justin Gaethje",
+            "ufc_slug": "justin-gaethje",
+            "fighter_id": "91218960-ded4-4375-890a-f3208575b374",
+            "fighter": {
+              "id": "91218960-ded4-4375-890a-f3208575b374",
+              "name": "Justin Gaethje",
+              "slug_id": "3022345"
+            }
+          },
+          "entries": [
+            {
+              "rank": 1,
+              "name": "Ilia Topuria",
+              "ufc_slug": "ilia-topuria",
+              "fighter_id": "0c629145-29ee-4d40-b060-2d6476164ea8",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "0c629145-29ee-4d40-b060-2d6476164ea8",
+                "name": "Ilia Topuria",
+                "slug_id": "4350812"
+              }
+            },
+            {
+              "rank": 2,
+              "name": "Arman Tsarukyan",
+              "ufc_slug": "arman-tsarukyan",
+              "fighter_id": "d74e3922-beb0-433d-bde9-412affc97ea8",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "d74e3922-beb0-433d-bde9-412affc97ea8",
+                "name": "Arman Tsarukyan",
+                "slug_id": "4419372"
+              }
+            },
+            {
+              "rank": 3,
+              "name": "Charles Oliveira",
+              "ufc_slug": "charles-oliveira",
+              "fighter_id": "d1b6a9d1-2c1a-4194-a801-9b1f229beed2",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "d1b6a9d1-2c1a-4194-a801-9b1f229beed2",
+                "name": "Charles Oliveira",
+                "slug_id": "2504169"
+              }
+            },
+            {
+              "rank": 4,
+              "name": "Max Holloway",
+              "ufc_slug": "max-holloway",
+              "fighter_id": "3f27ab3c-099d-4e7a-8beb-43e73f0866fd",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "3f27ab3c-099d-4e7a-8beb-43e73f0866fd",
+                "name": "Max Holloway",
+                "slug_id": "2614933"
+              }
+            },
+            {
+              "rank": 5,
+              "name": "Paddy Pimblett",
+              "ufc_slug": "paddy-pimblett",
+              "fighter_id": "d5490b09-be72-41d7-aeda-facb5a165d59",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "d5490b09-be72-41d7-aeda-facb5a165d59",
+                "name": "Paddy Pimblett",
+                "slug_id": "4008549"
+              }
+            },
+            {
+              "rank": 6,
+              "name": "Benoît Saint Denis",
+              "ufc_slug": "benoit-saint-denis",
+              "fighter_id": "a5a60b14-f32d-4daa-9ade-a43ea98fa26b",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "a5a60b14-f32d-4daa-9ade-a43ea98fa26b",
+                "name": "Benoît Saint Denis",
+                "slug_id": "4895362"
+              }
+            },
+            {
+              "rank": 7,
+              "name": "Mauricio Ruffy",
+              "ufc_slug": "mauricio-ruffy",
+              "fighter_id": "38d76024-e211-4429-bb77-0f6e3c2016cc",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "38d76024-e211-4429-bb77-0f6e3c2016cc",
+                "name": "Mauricio Ruffy",
+                "slug_id": "5122238"
+              }
+            },
+            {
+              "rank": 8,
+              "name": "Quillan Salkilld",
+              "ufc_slug": "quillan-salkilld",
+              "fighter_id": "d9245b3c-009c-4d20-8c8e-c2a917ef77b1",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "d9245b3c-009c-4d20-8c8e-c2a917ef77b1",
+                "name": "Quillan Salkilld",
+                "slug_id": "5157667"
+              }
+            },
+            {
+              "rank": 9,
+              "name": "Mateusz Gamrot",
+              "ufc_slug": "mateusz-gamrot",
+              "fighter_id": "dec5c1ae-15a8-4fcd-97d9-0e94d0f6201a",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "dec5c1ae-15a8-4fcd-97d9-0e94d0f6201a",
+                "name": "Mateusz Gamrot",
+                "slug_id": "3068125"
+              }
+            },
+            {
+              "rank": 10,
+              "name": "Dan Hooker",
+              "ufc_slug": "dan-hooker",
+              "fighter_id": "5c8d6aaf-28fb-49ad-8ffd-4f161c508728",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "5c8d6aaf-28fb-49ad-8ffd-4f161c508728",
+                "name": "Dan Hooker",
+                "slug_id": "3109135"
+              }
+            },
+            {
+              "rank": 11,
+              "name": "Renato Moicano",
+              "ufc_slug": "renato-moicano",
+              "fighter_id": "0ad21862-f001-403e-9c4d-c4565235eda1",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "0ad21862-f001-403e-9c4d-c4565235eda1",
+                "name": "Renato Moicano",
+                "slug_id": "3028863"
+              }
+            },
+            {
+              "rank": 12,
+              "name": "Rafael Fiziev",
+              "ufc_slug": "rafael-fiziev",
+              "fighter_id": "17563ab2-dbac-4366-861f-917628a0a4b1",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "17563ab2-dbac-4366-861f-917628a0a4b1",
+                "name": "Rafael Fiziev",
+                "slug_id": "4339488"
+              }
+            },
+            {
+              "rank": 13,
+              "name": "Tom Nolan",
+              "ufc_slug": "tom-nolan",
+              "fighter_id": "7217b6c6-54f7-4406-8d46-1feace582fcc",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "7217b6c6-54f7-4406-8d46-1feace582fcc",
+                "name": "Tom Nolan",
+                "slug_id": "5144007"
+              }
+            },
+            {
+              "rank": 14,
+              "name": "Beneil Dariush",
+              "ufc_slug": "beneil-dariush",
+              "fighter_id": "38a41e2d-6a12-41c2-9bc3-c9e48484018b",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "38a41e2d-6a12-41c2-9bc3-c9e48484018b",
+                "name": "Beneil Dariush",
+                "slug_id": "3085551"
+              }
+            },
+            {
+              "rank": 15,
+              "name": "Manuel Torres",
+              "ufc_slug": "manuel-torres",
+              "fighter_id": "5c693f77-4858-4e0c-966c-773e802d2202",
+              "change": 0,
+              "is_new": false,
+              "fighter": {
+                "id": "5c693f77-4858-4e0c-966c-773e802d2202",
+                "name": "Manuel Torres",
+                "slug_id": "4896616"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "meta": {
+      "api": "PropSports UFC",
+      "version": "2026-09-06.3",
+      "request_id": "fedb9948-4bf7-437f-a15f-9c52c8e3b87d",
+      "store": "table",
+      "divisions": 1,
+      "division": "LIGHTWEIGHT",
+      "womens": null,
+      "access_tier": "public"
+    }
+  }
+}

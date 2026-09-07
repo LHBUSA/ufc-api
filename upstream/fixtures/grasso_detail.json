@@ -1,5 +1,5 @@
 {
-  "captured_at": "2026-09-07T14:27:59.388Z",
+  "captured_at": "2026-09-07T15:18:22.761Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/fighters/1d296292-4969-43a8-9948-cd0a76a642ce?include=ranking,next,history&history_limit=5",
   "status": 200,
@@ -378,7 +378,7 @@
         },
         {
           "id": "4742666f-4317-41e7-be67-cc07b8ed58d3",
-          "ufcstats_id": null,
+          "ufcstats_id": "0f53eb509d0ffeb9",
           "espn_competition_id": "401757597",
           "event_id": "4476b606-c0e0-4538-8605-f39178c9b14f",
           "weight_class": "FLYWEIGHT",
@@ -429,15 +429,28 @@
             "round": 3,
             "method": "DEC_U",
             "bout_id": "4742666f-4317-41e7-be67-cc07b8ed58d3",
-            "judge_1": null,
-            "judge_2": null,
-            "judge_3": null,
+            "judge_1": "Chris Lee",
+            "judge_2": "David Therien",
+            "judge_3": "Jerin Valel",
             "referee": "Erick Philippeaux",
             "time_sec": 300,
-            "has_stats": false,
+            "has_stats": true,
             "winner_id": "56d860de-6ba5-4e97-a889-2129951e52cf",
             "method_raw": "Decision - Unanimous",
-            "scorecards": null,
+            "scorecards": [
+              {
+                "judge": "Chris Lee",
+                "score": "27-30"
+              },
+              {
+                "judge": "David Therien",
+                "score": "27-30"
+              },
+              {
+                "judge": "Jerin Valel",
+                "score": "27-30"
+              }
+            ],
             "captured_at": "2026-09-06T13:45:15.621+00:00",
             "time_format": "3 Rnd (5-5-5)",
             "finish_detail": null,
@@ -490,7 +503,7 @@
     "meta": {
       "api": "PropSports UFC",
       "version": "2026-09-06.3",
-      "request_id": "dea6ce51-e498-49a8-b442-aa3efb15ecab",
+      "request_id": "a407e970-c630-4522-94f6-dc3e08c4a64c",
       "include": [
         "ranking",
         "next",

@@ -14,6 +14,19 @@ export function meta(ctx, extra = {}) {
 }
 
 export function corsHeaders(kind = "public") {
+  /* The dashboard API authenticates with an explicit Authorization header, never a cookie, so a wildcard
+     origin carries no CSRF risk: a cross-site page cannot attach the customer's key. It needs CORS because
+     the portal can be served from a static host (Vercel) while the gateway lives on another origin. */
+  if (kind === "dashboard") {
+    const c = GATEWAY.cors_public_api;
+    return {
+      "Access-Control-Allow-Origin": c.origin,
+      "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
+      "Access-Control-Allow-Headers": c.headers,
+      "Access-Control-Expose-Headers": c.expose,
+      "Access-Control-Max-Age": "600",
+    };
+  }
   if (kind !== "public") return {};
   const c = GATEWAY.cors_public_api;
   return {

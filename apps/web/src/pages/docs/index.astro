@@ -54,7 +54,7 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "TechArticle", head
     <div class="docs-body">
       <p class="eyebrow">Documentation</p>
       <h1 style="font-size:clamp(2rem,4vw,3rem)">UFC Intelligence API</h1>
-      <p class="lede">Base URL <code>https://ufc.proptechusa.ai</code>. Data contract <code>{contract.api_version}</code>, Fight DNA definitions v{contract.fight_dna_definition_version}. Every response is <code>{`{ ok, data, meta }`}</code> or <code>{`{ ok:false, data:null, error, meta }`}</code>. Every example below is a live response captured {captured}, shown as a compact excerpt with the full payload one click away. Each important endpoint shows <b>request → response → what you can build</b>.</p>
+      <p class="lede">Base URL <code>https://ufc.proptechusa.ai</code>. Data contract <code>{contract.api_version}</code>, Fight DNA definitions v{contract.fight_dna_definition_version}. Every response is <code>{`{ ok, data, meta }`}</code> or <code>{`{ ok:false, data:null, error, meta }`}</code>. Every example below is a <b>schema example</b>: a real response captured from the canonical API on {captured} and pinned here, so the shape, field names and semantics you read are exactly what you receive. Pinned examples do not move. For values on the published refresh cadence, see the <a href="/">live demos on the home page</a>, which carry their own capture time and freshness state. Each important endpoint shows <b>request → response → what you can build</b>.</p>
 
       <section id="quickstart">
         <h2>Quickstart <span class={`chip plan-${minPlan("events")}`}>{planName(minPlan("events"))}+</span></h2>

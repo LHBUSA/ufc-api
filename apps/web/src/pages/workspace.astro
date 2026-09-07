@@ -35,6 +35,7 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "WebApplication", n
         <button class="btn primary" id="ws-connect" type="button">Connect</button>
         <span class="ws-status" id="ws-status">Not connected</span>
         <a class="small" href="/pricing" id="ws-getkey">Need a key?</a>
+        <p class="small muted" id="ws-note" hidden style="flex:1 1 100%;margin:4px 0 0"></p>
       </div>
       <select class="ws-rail-select" id="rail-select" aria-label="Workspace tool">
         <option value="home">Workspace home</option><option value="card">Current Fight Week</option><option value="fighter">Fighters</option><option value="events">Events</option><option value="rankings">Rankings</option><option value="dna">Fight DNA</option><option value="matchup">Matchup DNA</option><option value="custom">Request builder</option>
@@ -62,6 +63,7 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "WebApplication", n
     const SIL = "/brand/fighter-silhouette.svg";
     const ORIGIN = location.origin;
     let KEY = ""; try { KEY = localStorage.getItem("ufc_ws_key") || ""; } catch {}
+    setTimeout(async () => { try { if (window.__ufcApi.remote()) note(`This page is served from a static host, so requests go to the gateway at ${window.__ufcApi.fallback}.`); } catch {} }, 0);
     let planKey = null; let last = null; let tool = "card"; let pick = { a: null, b: null, f: null, d: null }; let cache = {};
     const num = (v, d = 2) => (v === null || v === undefined ? "—" : Number(v).toLocaleString("en-US", { maximumFractionDigits: d }));
     const pct = (v) => (v === null || v === undefined ? "—" : Math.round(v * 100) + "%");
@@ -79,23 +81,34 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "WebApplication", n
       if (!KEY) return setStatus("Paste a key", "bad");
       setStatus("Connecting…");
       try {
-        const r = await fetch("/dashboard/api/me", { headers: { authorization: `Bearer ${KEY}` } });
-        const b = await r.json();
-        if (!b.ok) { planKey = null; setStatus("Invalid key", "bad"); return; }
+        const { body: b } = await window.__ufcApi.call("/dashboard/api/me", { headers: { authorization: `Bearer ${KEY}` } });
+        if (!b.ok) { planKey = null; setStatus(b.error && b.error.code === "api_key_suspended" ? "Key suspended" : "Invalid key", "bad"); note((b.error && b.error.message) || "The key was rejected."); return; }
         planKey = b.data.plan.key; try { localStorage.setItem("ufc_ws_key", KEY); } catch {}
-        setStatus(`Connected · ${b.data.plan.name} plan`, "ok"); $("ws-getkey").hidden = true;
-      } catch { setStatus("Connection failed", "bad"); }
+        setStatus(`Connected · ${b.data.plan.name} plan`, "ok"); $("ws-getkey").hidden = true; note("");
+      } catch (e) { setStatus("Gateway unreachable", "bad"); note(e.message); }
     }
     $("ws-connect").addEventListener("click", connect);
     $("ws-key").addEventListener("keydown", (e) => { if (e.key === "Enter") connect(); });
     if (KEY) { $("ws-key").value = KEY; connect(); }
 
+    function note(msg) { const n = $("ws-note"); if (!n) return; n.textContent = msg || ""; n.hidden = !msg; }
+    function loading(label) { $("ws-result").hidden = false; $("ws-preview").innerHTML = `<div class="ws-empty">${esc(label || "Running request…")}</div>`; }
     async function api(path) {
-      if (!KEY) { setStatus("Connect a key first", "bad"); throw new Error("no_key"); }
+      if (!KEY) { setStatus("Connect a key first", "bad"); note("Paste your API key above, then run again."); throw new Error("no_key"); }
+      loading(`GET ${path}`);
       const t0 = performance.now();
-      const r = await fetch(ORIGIN + path, { headers: { authorization: `Bearer ${KEY}`, accept: "application/json" } });
+      let r, body;
+      try {
+        const out = await window.__ufcApi.call(path, { headers: { authorization: `Bearer ${KEY}`, accept: "application/json" } });
+        r = out.res; body = out.body;
+      } catch (e) {
+        $("ws-result").hidden = false;
+        $("ws-preview").innerHTML = `<div class="ws-err"><b>Gateway unavailable</b> — ${esc(e.message)}</div>`;
+        $("ws-jsonpre").textContent = JSON.stringify({ error: { code: e.code || "gateway_unreachable", message: e.message } }, null, 2);
+        note(e.message);
+        throw e;
+      }
       const ms = Math.round(performance.now() - t0);
-      const body = await r.json().catch(() => ({ ok: false, error: { code: "invalid_json", message: "Non-JSON response" } }));
       last = { path, status: r.status, ms, body, plan: r.headers.get("x-plan"), rl: r.headers.get("x-ratelimit-remaining"), rlMax: r.headers.get("x-ratelimit-limit"), q: r.headers.get("x-quota-remaining"), qMax: r.headers.get("x-quota-limit"), rid: r.headers.get("x-request-id") };
       inspect(last);
       return last;
@@ -113,7 +126,7 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "WebApplication", n
     $("ws-copy-json").addEventListener("click", async () => { try { await navigator.clipboard.writeText($("ws-jsonpre").textContent); $("i-msg").textContent = "JSON copied"; } catch {} });
     $("ws-dl-json").addEventListener("click", () => { const blob = new Blob([$("ws-jsonpre").textContent], { type: "application/json" }); const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "ufc-api-response.json"; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000); });
     document.querySelectorAll("[data-snip]").forEach((b) => b.addEventListener("click", async () => {
-      if (!last) return; const url = ORIGIN + last.path; const k = b.dataset.snip;
+      if (!last) return; const url = ((window.__ufcApi && window.__ufcApi._base) || ORIGIN) + last.path; const k = b.dataset.snip;
       const s = k === "curl" ? `curl -H "Authorization: Bearer $UFC_API_KEY" "${url}"` : k === "js" ? `const res = await fetch("${url}", { headers: { Authorization: \`Bearer \${process.env.UFC_API_KEY}\` } });\nconst { ok, data, meta } = await res.json();` : `import os, requests\nres = requests.get("${url}", headers={"Authorization": f"Bearer {os.environ['UFC_API_KEY']}"})\nbody = res.json()`;
       try { await navigator.clipboard.writeText(s); $("i-msg").textContent = "Snippet copied (uses $UFC_API_KEY, never your literal key)"; } catch {}
     }));
@@ -174,7 +187,7 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "WebApplication", n
       const wrap = document.createElement("div"); wrap.className = "ws-search";
       wrap.innerHTML = `<input type="text" autocomplete="off" placeholder="${esc(placeholder)}" aria-label="${esc(placeholder)}"><div class="ws-ac" hidden></div>`;
       const inp = wrap.querySelector("input"), ac = wrap.querySelector(".ws-ac"); let t;
-      inp.addEventListener("input", () => { clearTimeout(t); const q = inp.value.trim(); if (q.length < 2) { ac.hidden = true; return; } t = setTimeout(async () => { try { const r = await fetch(ORIGIN + `/v1/ufc/fighters?q=${encodeURIComponent(q)}&limit=8`, { headers: { authorization: `Bearer ${KEY}` } }); const b = await r.json(); if (!b.ok) { ac.innerHTML = `<button type="button" disabled>${esc(b.error?.message || "Search failed")}</button>`; ac.hidden = false; return; } const rows = b.data || []; ac.innerHTML = rows.length ? rows.map((f) => `<button type="button" data-id="${esc(f.id)}"><img src="${esc(img(f))}" alt=""><span><b>${esc(f.name)}</b><small>${rec(f)} · ${esc(tc(f.stance))} · ${f.is_active === false ? "inactive" : "active"}</small></span></button>`).join("") : `<button type="button" disabled>No fighters match “${esc(q)}”</button>`; ac.hidden = false; ac.querySelectorAll("button[data-id]").forEach((btn) => btn.addEventListener("click", () => { const f = rows.find((x) => x.id === btn.dataset.id); ac.hidden = true; inp.value = f.name; onPick(f); })); } catch { ac.hidden = true; } }, 220); });
+      inp.addEventListener("input", () => { clearTimeout(t); const q = inp.value.trim(); if (q.length < 2) { ac.hidden = true; return; } t = setTimeout(async () => { try { const { body: b } = await window.__ufcApi.call(`/v1/ufc/fighters?q=${encodeURIComponent(q)}&limit=8`, { headers: { authorization: `Bearer ${KEY}` } }); if (!b.ok) { ac.innerHTML = `<button type="button" disabled>${esc(b.error?.message || "Search failed")}</button>`; ac.hidden = false; return; } const rows = b.data || []; ac.innerHTML = rows.length ? rows.map((f) => `<button type="button" data-id="${esc(f.id)}"><img src="${esc(img(f))}" alt=""><span><b>${esc(f.name)}</b><small>${rec(f)} · ${esc(tc(f.stance))} · ${f.is_active === false ? "inactive" : "active"}</small></span></button>`).join("") : `<button type="button" disabled>No fighters match “${esc(q)}”</button>`; ac.hidden = false; ac.querySelectorAll("button[data-id]").forEach((btn) => btn.addEventListener("click", () => { const f = rows.find((x) => x.id === btn.dataset.id); ac.hidden = true; inp.value = f.name; onPick(f); })); } catch (e) { ac.innerHTML = `<button type="button" disabled>${esc(e.message)}</button>`; ac.hidden = false; } }, 220); });
       document.addEventListener("click", (e) => { if (!wrap.contains(e.target)) ac.hidden = true; });
       return wrap;
     }

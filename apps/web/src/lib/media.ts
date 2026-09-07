@@ -27,11 +27,12 @@ const APPROVED_KINDS = new Set(["wikimedia", "public_domain"]);
 export const SILHOUETTE = "/brand/fighter-silhouette.svg";
 
 /* Assets held back from marketing surfaces pending an upstream attribution audit. The API still returns them;
-   the portal renders the original silhouette instead so we never publish a credit we have not verified.
-   006e6554… is not listed: that is the Strickland portrait (MMAnytt, CC BY-SA 4.0) and is verified. */
-const AUDIT_HOLD = new Set<string>([
-  "776d6a0a-e701-4756-b789-912addfd276d", /* Jean Silva portrait: credited "The White House (U.S. Government work), Public domain" — attribution under upstream review */
-]);
+   the portal renders the fight-poster name lockup instead so we never publish a credit we have not verified.
+   Audited and released 2026-09-07:
+     776d6a0a… Jean Silva — commons.wikimedia.org/wiki/File:Jean_Silva_(54451587575).jpg resolves, artist
+     "The White House", licence "Public domain", credited to the official White House Flickr, described as an
+     official White House photo taken at UFC 314. Attribution verified; asset is in use. */
+const AUDIT_HOLD = new Set<string>([]);
 export function holdForAudit(id: string) { return AUDIT_HOLD.has(id); }
 
 export function marketingImage(img: ApiImage | null | undefined, name: string): MarketingImage {

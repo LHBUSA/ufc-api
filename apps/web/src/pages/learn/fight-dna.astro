@@ -103,7 +103,7 @@ const famBlocks = [
       <p class="mono small">{(mm?.comparisons || []).map((c: any) => c.key).join(" · ")}</p>
       <h3>Insight rules (version {mm?.insight_rules?.version})</h3>
       <Code json={mm?.insight_rules} title="meta.insight_rules" />
-      <h3>Live example: {mm?.fighters?.join(" vs ")}</h3>
+      <h3>Worked example: {mm?.fighters?.join(" vs ")}</h3>
       <ul>{(mm?.insights || []).map((i: any) => <li><strong>{i.label}</strong> — {i.explanation} <span class="chip">{i.confidence}</span></li>)}</ul>
       <p>And the warnings the same call produced, verbatim:</p>
       <ul>{(mm?.warnings || []).map((w: string) => <li class="small muted">{w}</li>)}</ul>

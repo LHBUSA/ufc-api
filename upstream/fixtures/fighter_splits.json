@@ -1,5 +1,5 @@
 {
-  "captured_at": "2026-09-07T14:27:59.388Z",
+  "captured_at": "2026-09-07T15:18:22.761Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/fighters/ec94d296-2db3-4e0d-be6a-46de4f480672/splits",
   "status": 200,
@@ -937,7 +937,7 @@
     "meta": {
       "api": "PropSports UFC",
       "version": "2026-09-06.3",
-      "request_id": "9d1d7f13-d763-406c-96c0-78f4af49217b",
+      "request_id": "21abb446-4b1a-4af6-9e36-bf8839f4fe40",
       "requested_as_of": null,
       "resolved_as_of": "2026-09-06",
       "definition_version": 1,

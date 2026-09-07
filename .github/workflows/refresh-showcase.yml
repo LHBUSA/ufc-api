@@ -1,0 +1,123 @@
+name: refresh-showcase
+
+# Keeps the public showcase snapshot in step with the canonical UFC API while the historical
+# backfill runs. Test fixtures under upstream/fixtures/ are deliberately NOT touched here:
+# they stay deterministic for the gateway tests and the contract drift guard.
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: "Why this run was triggered"
+        required: false
+        default: "manual"
+
+concurrency:
+  group: refresh-showcase
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ufc-intelligence-v1
+          fetch-depth: 1
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # The canonical API is public today. UPSTREAM_API_KEY is read from the environment only if the
+      # upstream ever requires one; it is never written into the snapshot or shipped to the browser.
+      - name: Refresh the public showcase snapshot
+        env:
+          UPSTREAM_API_KEY: ${{ secrets.UPSTREAM_API_KEY }}
+        run: node scripts/refresh-showcase.mjs
+
+      # A malformed or regressive upstream response fails the step above and leaves the last good
+      # snapshot in place, so the site keeps rendering real data and the run goes red.
+      - name: Verify the snapshot still builds the site
+        run: npm run build
+
+      - name: Commit only when the payload actually changed
+        id: commit
+        run: |
+          git config user.name "propbetedge-bot"
+          git config user.email "sales@localhomebuyersusa.com"
+          # generated_at moves every run; ignore a diff that is only timestamps.
+          if git diff --quiet -- apps/web/src/generated/showcase.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"; echo "no diff"; exit 0
+          fi
+          BEFORE=$(git show HEAD:apps/web/src/generated/showcase.json | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{const j=JSON.parse(s);delete j.generated_at;delete j.upstream_calls;console.log(JSON.stringify(j).replace(/"captured_at":"[^"]*"/g,""))})')
+          AFTER=$(node -e 'const j=require("./apps/web/src/generated/showcase.json");delete j.generated_at;delete j.upstream_calls;console.log(JSON.stringify(j).replace(/"captured_at":"[^"]*"/g,""))')
+          if [ "$BEFORE" = "$AFTER" ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"; echo "only timestamps changed; skipping commit"; git checkout -- apps/web/src/generated/showcase.json; exit 0
+          fi
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+          COUNTS=$(node -e 'const c=require("./apps/web/src/generated/showcase.json").counts;console.log(`${c.fighters} fighters, ${c.events} events, ${c.bouts} bouts, ${c.round_stat_rows} round rows`)')
+          SUBJECTS=$(node -e 'const s=require("./apps/web/src/generated/showcase.json");console.log(`${s.event.event.name} · ${s.fighter.fighter.name} · ${s.matchup.fighters.map(f=>f.name).join(" vs ")} · ${s.rankings.division.label}`)')
+          git add apps/web/src/generated/showcase.json
+          git commit -m "showcase: refresh from canonical API
+
+          $COUNTS
+          $SUBJECTS"
+          git push origin ufc-intelligence-v1
+
+      # Publishing. A commit alone does not necessarily reach the public hosts:
+      #   - Cloudflare Worker: assets ship with a Worker deployment, so deploy when a token exists.
+      #   - Vercel: every push to ufc-intelligence-v1 builds a PREVIEW. Production (ufc.proptechusa.ai)
+      #     is only updated by promotion, so a deploy hook pointed at the production branch is required.
+      # Both are optional and skipped with a notice when the secret is absent, so the refresh itself
+      # never fails because publishing is not configured yet.
+      - name: Publish the refreshed snapshot to the Worker host
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ]; then
+            echo "::notice::CLOUDFLARE_API_TOKEN not set; skipping Worker deploy. The committed snapshot ships on the next manual deploy."
+            exit 0
+          fi
+          npx wrangler deploy --config gateway/wrangler.toml
+
+      - name: Publish the refreshed snapshot to the Vercel production host
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          VERCEL_DEPLOY_HOOK_URL: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
+        run: |
+          if [ -z "$VERCEL_DEPLOY_HOOK_URL" ]; then
+            echo "::notice::VERCEL_DEPLOY_HOOK_URL not set; ufc.proptechusa.ai will keep serving the last promoted build. Set the project's production branch to ufc-intelligence-v1, or add a production deploy hook as this secret."
+            exit 0
+          fi
+          code=$(curl -s -o /dev/null -w "%{http_code}" -X POST "$VERCEL_DEPLOY_HOOK_URL")
+          echo "deploy hook responded $code"
+          [ "$code" -ge 200 ] && [ "$code" -lt 300 ]
+
+      - name: Summary
+        run: |
+          node -e '
+            const s = require("./apps/web/src/generated/showcase.json");
+            const c = s.counts;
+            console.log(`## Showcase refresh\n`);
+            console.log(`- changed: ${process.env.CHANGED}`);
+            console.log(`- generated_at: ${s.generated_at}`);
+            console.log(`- api ${s.api_version}, Fight DNA v${s.fight_dna_definition_version}`);
+            console.log(`- counts: ${c.fighters} fighters · ${c.events} events · ${c.bouts} bouts · ${c.results} results · ${c.round_stat_rows} round rows`);
+            console.log(`- event: ${s.event.event.name} (${s.event.event.event_date})`);
+            console.log(`- fighter: ${s.fighter.fighter.name}`);
+            console.log(`- matchup: ${s.matchup.fighters.map(f => f.name).join(" vs ")} (${s.matchup.meta.comparable}/${s.matchup.meta.comparisons} comparable)`);
+            console.log(`- rankings: ${s.rankings.division.label}`);
+          ' >> "$GITHUB_STEP_SUMMARY"
+        env:
+          CHANGED: ${{ steps.commit.outputs.changed }}

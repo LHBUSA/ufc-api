@@ -1,5 +1,5 @@
 {
-  "captured_at": "2026-09-07T14:27:59.388Z",
+  "captured_at": "2026-09-07T15:18:22.761Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/rankings?division=FLYWEIGHT&womens=true",
   "status": 200,
@@ -230,7 +230,7 @@
     "meta": {
       "api": "PropSports UFC",
       "version": "2026-09-06.3",
-      "request_id": "f1faacfe-7dcd-4e0a-8400-1444c7c6a0a8",
+      "request_id": "5857801e-845e-4455-a8f9-c5ad203a520f",
       "store": "table",
       "divisions": 1,
       "division": "FLYWEIGHT",

@@ -1,7 +1,9 @@
 ---
 import "../styles/pbe.css";
 import gen from "../generated/entitlements.json";
-import ex from "../generated/examples.json";
+import show from "../generated/showcase.json";
+import { freshness } from "../lib/freshness";
+const API_FALLBACK = gen.gateway?.api_origin_fallback || "";
 
 export interface Props {
   title: string;
@@ -14,9 +16,10 @@ export interface Props {
 const { title, description, path = "/", ogType = "website", jsonLd = [], breadcrumbs = [] } = Astro.props;
 const site = "https://ufc.proptechusa.ai";
 const canonical = site + (path === "/" ? "/" : path);
-const contract = gen.contract;
-const counts = ex.counts_full;
-const nextEvent = ex.showcase.event;
+/* Every number in the strip comes from the generated showcase snapshot, never a hard-coded literal. */
+const counts = show.counts;
+const nextEvent = show.event;
+const fresh = freshness(show.generated_at);
 const nav = [
   { href: "/", label: "Overview", exact: true },
   { href: "/docs", label: "Docs" },
@@ -64,7 +67,46 @@ const fmt = (n: number) => n.toLocaleString("en-US");
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
-    <meta name="x-api-version" content={contract.api_version} />
+    <meta name="x-api-version" content={show.api_version} />
+    <meta name="x-showcase-generated" content={show.generated_at} />
+    <script is:inline define:vars={{ API_FALLBACK }}>
+      /* One API client for the whole portal, defined in <head> so page scripts can rely on it.
+         The gateway serves this page on its own origin, where /v1 and /dashboard/api are relative paths.
+         When the portal is served by a static host (the Vercel build of apps/web/dist) those routes do not
+         exist here, so calls go to the configured gateway origin instead, which sends CORS headers.
+         The host check is deterministic: no probe request, so no 404 noise in the console. */
+      (function () {
+        var origin = window.location.origin;
+        var isLocalGateway = /^https?:\/\/(localhost|127\.0\.0\.1):8787$/.test(origin);
+        var base = (API_FALLBACK && origin === API_FALLBACK) || isLocalGateway || !API_FALLBACK ? "" : API_FALLBACK;
+        window.__ufcApi = {
+          _base: base,
+          fallback: API_FALLBACK,
+          base: function () { return this._base; },
+          remote: function () { return this._base !== ""; },
+          /* Resolves to { res, body }. Throws a tagged Error when the origin has no gateway or returns non-JSON,
+             so a caller can render a real message instead of leaving a panel blank. */
+          call: async function (path, init) {
+            var url = this._base + path;
+            var res;
+            try {
+              res = await fetch(url, init);
+            } catch (e) {
+              var err = new Error("Could not reach the API gateway at " + (this._base || origin) + ". Check your connection and try again.");
+              err.code = "gateway_unreachable";
+              throw err;
+            }
+            var ct = res.headers.get("content-type") || "";
+            if (ct.indexOf("application/json") === -1) {
+              var err2 = new Error("No API gateway is answering at " + (this._base || origin) + " (HTTP " + res.status + "). Open the gateway host directly, or point api_origin_fallback in config/gateway.json at a live gateway.");
+              err2.code = "gateway_unavailable"; err2.status = res.status;
+              throw err2;
+            }
+            return { res: res, body: await res.json() };
+          },
+        };
+      })();
+    </script>
     {baseLd.map((ld) => <script type="application/ld+json" set:html={JSON.stringify(ld)} />)}
     <slot name="head" />
   </head>
@@ -85,20 +127,40 @@ const fmt = (n: number) => n.toLocaleString("en-US");
         </nav>
       </div>
     </header>
-    <div class="ticker" aria-label="API status">
+    <div class:list={["ticker", `fresh-${fresh.state}`]} aria-label="API status and data freshness">
       <div class="wrap">
-        <span class="lbl">API live</span>
+        <span class="lbl">{fresh.state === "stale" ? "Snapshot stale" : "API live"}</span>
         <div class="items">
-          <span>Contract <b>{contract.api_version}</b></span>
-          <span>Fight DNA <b>v{contract.fight_dna_definition_version}</b></span>
+          <span>Contract <b>{show.api_version}</b></span>
+          <span>Fight DNA <b>v{show.fight_dna_definition_version}</b></span>
           <span><b>{fmt(counts.fighters)}</b> fighters</span>
           <span><b>{fmt(counts.events)}</b> events</span>
+          <span><b>{fmt(counts.bouts)}</b> bouts</span>
           <span><b>{fmt(counts.round_stat_rows)}</b> rounds of stats</span>
           <span>Next card <b>{nextEvent.event.name}</b> · {nextEvent.event.event_date}</span>
         </div>
+        <span class="freshness" data-generated={show.generated_at} title={`Showcase snapshot captured ${fresh.capturedAt}`}>Updated <b>{fresh.label}</b></span>
         <a href="/docs">Docs →</a>
       </div>
     </div>
+    <script is:inline>
+      /* Recompute "updated x ago" in the visitor's browser so a cached page never overstates freshness. */
+      (function () {
+        var el = document.querySelector(".freshness[data-generated]");
+        if (!el) return;
+        var t = Date.parse(el.getAttribute("data-generated"));
+        if (!t) return;
+        var mins = Math.max(0, Math.round((Date.now() - t) / 60000));
+        var label = mins < 1 ? "just now" : mins < 60 ? mins + " min ago" : mins < 1440 ? Math.floor(mins / 60) + " h ago" : Math.floor(mins / 1440) + " d ago";
+        el.querySelector("b").textContent = label;
+        var strip = el.closest(".ticker");
+        var state = mins <= 60 ? "fresh" : mins <= 360 ? "aging" : "stale";
+        strip.classList.remove("fresh-fresh", "fresh-aging", "fresh-stale");
+        strip.classList.add("fresh-" + state);
+        var lbl = strip.querySelector(".lbl");
+        if (lbl) lbl.textContent = state === "stale" ? "Snapshot stale" : "API live";
+      })();
+    </script>
     <main>
       <slot />
     </main>
@@ -108,7 +170,7 @@ const fmt = (n: number) => n.toLocaleString("en-US");
           <div class="fbrand">
             <img src="/brand/ufc-api-logo-wide.svg" width="400" height="52" alt="PropTechUSA UFC Intelligence API, powered by PropBetEdge Fight DNA" style="max-width:100%;height:auto;margin-bottom:12px" loading="lazy" />
             <p>The engine behind world-class UFC products. Normalized events, fighters, cards, results and round-level statistics, plus proprietary PropBetEdge Fight DNA and Matchup DNA.</p>
-            <p class="mono" style="font-size:11px;color:var(--subtle)">Contract {contract.api_version} · Fight DNA definitions v{contract.fight_dna_definition_version}</p>
+            <p class="mono" style="font-size:11px;color:var(--subtle)">Contract {show.api_version} · Fight DNA definitions v{show.fight_dna_definition_version} · showcase captured {fresh.capturedAt}</p>
           </div>
           <div>
             <h4>Product</h4>

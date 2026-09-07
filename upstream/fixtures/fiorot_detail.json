@@ -1,5 +1,5 @@
 {
-  "captured_at": "2026-09-07T14:27:59.388Z",
+  "captured_at": "2026-09-07T15:18:22.761Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/fighters/2c9c2a88-aec1-4bf0-9b16-3ce58adf6fd6?include=ranking,next,history&history_limit=5",
   "status": 200,
@@ -389,13 +389,13 @@
         },
         {
           "id": "fe401f7f-a9cd-4cf6-a6f0-9b4ae06b6738",
-          "ufcstats_id": null,
+          "ufcstats_id": "9e9d1764a015f313",
           "espn_competition_id": "401760319",
           "event_id": "4476b606-c0e0-4538-8605-f39178c9b14f",
           "weight_class": "FLYWEIGHT",
           "weight_class_raw": "Women's Flyweight",
           "is_womens": true,
-          "is_title": false,
+          "is_title": true,
           "scheduled_rounds": 5,
           "card_position": "main",
           "bout_order": 11,
@@ -440,15 +440,28 @@
             "round": 5,
             "method": "DEC_U",
             "bout_id": "fe401f7f-a9cd-4cf6-a6f0-9b4ae06b6738",
-            "judge_1": null,
-            "judge_2": null,
-            "judge_3": null,
+            "judge_1": "Sal D'amato",
+            "judge_2": "Guy Girard",
+            "judge_3": "Chris Lee",
             "referee": "Marc Goddard",
             "time_sec": 300,
-            "has_stats": false,
+            "has_stats": true,
             "winner_id": "4008721e-66c0-429e-b904-51d0d0a7e0d0",
             "method_raw": "Decision - Unanimous",
-            "scorecards": null,
+            "scorecards": [
+              {
+                "judge": "Sal D'amato",
+                "score": "47-48"
+              },
+              {
+                "judge": "Guy Girard",
+                "score": "47-48"
+              },
+              {
+                "judge": "Chris Lee",
+                "score": "47-48"
+              }
+            ],
             "captured_at": "2026-09-06T13:45:17.39+00:00",
             "time_format": "5 Rnd (5-5-5-5-5)",
             "finish_detail": null,
@@ -501,7 +514,7 @@
     "meta": {
       "api": "PropSports UFC",
       "version": "2026-09-06.3",
-      "request_id": "a77f2d11-d8a5-49fd-91df-6b6fd3227cd2",
+      "request_id": "ea40960e-eaf1-4048-ad39-c4c2b09c271c",
       "include": [
         "ranking",
         "next",

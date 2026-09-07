@@ -1,0 +1,169 @@
+{
+  "captured_at": "2026-09-07T15:18:22.761Z",
+  "base": "https://ufc-api.propbetedge.ai",
+  "path": "/v1/ufc/fighters/media?ids=91218960-ded4-4375-890a-f3208575b374,0c629145-29ee-4d40-b060-2d6476164ea8,d74e3922-beb0-433d-bde9-412affc97ea8,d1b6a9d1-2c1a-4194-a801-9b1f229beed2,3f27ab3c-099d-4e7a-8beb-43e73f0866fd,d5490b09-be72-41d7-aeda-facb5a165d59,a5a60b14-f32d-4daa-9ade-a43ea98fa26b,38d76024-e211-4429-bb77-0f6e3c2016cc,d9245b3c-009c-4d20-8c8e-c2a917ef77b1,dec5c1ae-15a8-4fcd-97d9-0e94d0f6201a,5c8d6aaf-28fb-49ad-8ffd-4f161c508728,0ad21862-f001-403e-9c4d-c4565235eda1",
+  "status": 200,
+  "api_version": "2026-09-06.3",
+  "body": {
+    "ok": true,
+    "data": {
+      "media": {
+        "91218960-ded4-4375-890a-f3208575b374": {
+          "id": "c64e812e-6adb-44ff-ada8-ce6e4be470ef",
+          "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/91218960-ded4-4375-890a-f3208575b374/portrait.jpg",
+          "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/91218960-ded4-4375-890a-f3208575b374/card.jpg",
+          "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/91218960-ded4-4375-890a-f3208575b374/thumb.jpg",
+          "author": "The White House",
+          "license": "Public domain",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Justin_Gaethje_in_the_Oval_Office_(while_President_Donald_J._Trump_is_holding_a_meeting_with_UFC_fighters).jpg",
+          "kind": "wikimedia",
+          "attribution_text": "The White House (U.S. Government work), Public domain, via Wikimedia Commons",
+          "rights_label": "Public domain"
+        },
+        "0c629145-29ee-4d40-b060-2d6476164ea8": {
+          "id": "97cee51d-5624-4671-b0f4-d275c7389cb9",
+          "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/0c629145-29ee-4d40-b060-2d6476164ea8/portrait.jpg",
+          "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/0c629145-29ee-4d40-b060-2d6476164ea8/card.jpg",
+          "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/0c629145-29ee-4d40-b060-2d6476164ea8/thumb.jpg",
+          "author": "The White House",
+          "license": "Public domain",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Ilia_Topuria_in_the_Oval_Office_(while_President_Donald_J._Trump_is_holding_a_meeting_with_UFC_fighters).jpg",
+          "kind": "wikimedia",
+          "attribution_text": "The White House (U.S. Government work), Public domain, via Wikimedia Commons",
+          "rights_label": "Public domain"
+        },
+        "d74e3922-beb0-433d-bde9-412affc97ea8": {
+          "id": "b4d420fc-6101-479c-a7d8-6d6a7944a7e2",
+          "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/d74e3922-beb0-433d-bde9-412affc97ea8/portrait.jpg",
+          "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/d74e3922-beb0-433d-bde9-412affc97ea8/card.jpg",
+          "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/d74e3922-beb0-433d-bde9-412affc97ea8/thumb.jpg",
+          "author": "Chamatkar Sandhu",
+          "license": "CC BY 3.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Arman_Tsarukyan_2024.png",
+          "kind": "wikimedia",
+          "attribution_text": "Chamatkar Sandhu, CC BY 3.0, via Wikimedia Commons",
+          "rights_label": "CC BY 3.0"
+        },
+        "d1b6a9d1-2c1a-4194-a801-9b1f229beed2": {
+          "id": "2be0dbee-d5c4-431c-a319-948678157c11",
+          "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/d1b6a9d1-2c1a-4194-a801-9b1f229beed2/portrait.jpg",
+          "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/d1b6a9d1-2c1a-4194-a801-9b1f229beed2/card.jpg",
+          "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/d1b6a9d1-2c1a-4194-a801-9b1f229beed2/thumb.jpg",
+          "author": "Renan Silva",
+          "license": "CC0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Charles_Oliveira_do_Bronxs.jpg",
+          "kind": "wikimedia",
+          "attribution_text": "Renan Silva, CC0, via Wikimedia Commons",
+          "rights_label": "CC0"
+        },
+        "3f27ab3c-099d-4e7a-8beb-43e73f0866fd": {
+          "id": "edcc8dd9-6d76-42f3-b002-ea06cabf3535",
+          "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/3f27ab3c-099d-4e7a-8beb-43e73f0866fd/portrait.jpg",
+          "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/3f27ab3c-099d-4e7a-8beb-43e73f0866fd/card.jpg",
+          "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/3f27ab3c-099d-4e7a-8beb-43e73f0866fd/thumb.jpg",
+          "author": "Cpl. Samantha Sanchez",
+          "license": "Public domain",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Blue_Angels%27_VIP_Rider_Max_Holloway_(1)_(cropped).jpg",
+          "kind": "wikimedia",
+          "attribution_text": "Cpl. Samantha Sanchez (U.S. Government work), Public domain, via Wikimedia Commons",
+          "rights_label": "Public domain"
+        },
+        "d5490b09-be72-41d7-aeda-facb5a165d59": {
+          "id": "934c7523-fc7a-4d6d-8b5e-770e79a857c3",
+          "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/d5490b09-be72-41d7-aeda-facb5a165d59/portrait.jpg",
+          "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/d5490b09-be72-41d7-aeda-facb5a165d59/card.jpg",
+          "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/d5490b09-be72-41d7-aeda-facb5a165d59/thumb.jpg",
+          "author": "James English",
+          "license": "CC BY 3.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:UFC_Star_Paddy_The_Baddy_Pimblett_tells_his_story_(cropped).jpg",
+          "kind": "wikimedia",
+          "attribution_text": "James English, CC BY 3.0, via Wikimedia Commons",
+          "rights_label": "CC BY 3.0"
+        },
+        "a5a60b14-f32d-4daa-9ade-a43ea98fa26b": {
+          "id": "f2ef0aad-7b89-4a9a-ac26-ca092997fe10",
+          "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/a5a60b14-f32d-4daa-9ade-a43ea98fa26b/portrait.jpg",
+          "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/a5a60b14-f32d-4daa-9ade-a43ea98fa26b/card.jpg",
+          "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/a5a60b14-f32d-4daa-9ade-a43ea98fa26b/thumb.jpg",
+          "author": "ZACK",
+          "license": "CC BY 3.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Benoit_Saint_Denis_2023.png",
+          "kind": "wikimedia",
+          "attribution_text": "ZACK, CC BY 3.0, via Wikimedia Commons",
+          "rights_label": "CC BY 3.0"
+        },
+        "38d76024-e211-4429-bb77-0f6e3c2016cc": {
+          "id": "06430ce3-cc13-46d4-bda5-e6f1cfef3ad2",
+          "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/38d76024-e211-4429-bb77-0f6e3c2016cc/portrait.jpg",
+          "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/38d76024-e211-4429-bb77-0f6e3c2016cc/card.jpg",
+          "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/38d76024-e211-4429-bb77-0f6e3c2016cc/thumb.jpg",
+          "author": "The White House",
+          "license": "Public domain",
+          "source_url": "https://commons.wikimedia.org/wiki/File:UFC_Freedom_250_press_conference_at_the_Lincoln_Memorial_in_Washington,_D.C.,_Friday,_June_12,_2026_-_22(cropped).jpg",
+          "kind": "wikimedia",
+          "attribution_text": "The White House (U.S. Government work), Public domain, via Wikimedia Commons",
+          "rights_label": "Public domain"
+        },
+        "d9245b3c-009c-4d20-8c8e-c2a917ef77b1": null,
+        "dec5c1ae-15a8-4fcd-97d9-0e94d0f6201a": {
+          "id": "7115c8a3-724c-4c35-8de4-80afc77cd0aa",
+          "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/dec5c1ae-15a8-4fcd-97d9-0e94d0f6201a/portrait.jpg",
+          "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/dec5c1ae-15a8-4fcd-97d9-0e94d0f6201a/card.jpg",
+          "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/dec5c1ae-15a8-4fcd-97d9-0e94d0f6201a/thumb.jpg",
+          "author": "Roger Gor",
+          "license": "CC BY 3.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Mateusz_Gamrot.jpg",
+          "kind": "wikimedia",
+          "attribution_text": "Roger Gor, CC BY 3.0, via Wikimedia Commons",
+          "rights_label": "CC BY 3.0"
+        },
+        "5c8d6aaf-28fb-49ad-8ffd-4f161c508728": {
+          "id": "05b02093-5664-43f7-9835-0e470d39d3f7",
+          "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/5c8d6aaf-28fb-49ad-8ffd-4f161c508728/portrait.jpg",
+          "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/5c8d6aaf-28fb-49ad-8ffd-4f161c508728/card.jpg",
+          "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/5c8d6aaf-28fb-49ad-8ffd-4f161c508728/thumb.jpg",
+          "author": "Fight Bros NZ",
+          "license": "CC BY 3.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:DanHooker2016.png",
+          "kind": "wikimedia",
+          "attribution_text": "Fight Bros NZ, CC BY 3.0, via Wikimedia Commons",
+          "rights_label": "CC BY 3.0"
+        },
+        "0ad21862-f001-403e-9c4d-c4565235eda1": {
+          "id": "7e7c23c5-4348-498a-89eb-bda7f52f9f01",
+          "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/0ad21862-f001-403e-9c4d-c4565235eda1/portrait.jpg",
+          "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/0ad21862-f001-403e-9c4d-c4565235eda1/card.jpg",
+          "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/0ad21862-f001-403e-9c4d-c4565235eda1/thumb.jpg",
+          "author": "Show Me The Money",
+          "license": "CC BY 3.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Renato_Moicano_2024.png",
+          "kind": "wikimedia",
+          "attribution_text": "Show Me The Money, CC BY 3.0, via Wikimedia Commons",
+          "rights_label": "CC BY 3.0"
+        }
+      },
+      "ids": [
+        "91218960-ded4-4375-890a-f3208575b374",
+        "0c629145-29ee-4d40-b060-2d6476164ea8",
+        "d74e3922-beb0-433d-bde9-412affc97ea8",
+        "d1b6a9d1-2c1a-4194-a801-9b1f229beed2",
+        "3f27ab3c-099d-4e7a-8beb-43e73f0866fd",
+        "d5490b09-be72-41d7-aeda-facb5a165d59",
+        "a5a60b14-f32d-4daa-9ade-a43ea98fa26b",
+        "38d76024-e211-4429-bb77-0f6e3c2016cc",
+        "d9245b3c-009c-4d20-8c8e-c2a917ef77b1",
+        "dec5c1ae-15a8-4fcd-97d9-0e94d0f6201a",
+        "5c8d6aaf-28fb-49ad-8ffd-4f161c508728",
+        "0ad21862-f001-403e-9c4d-c4565235eda1"
+      ]
+    },
+    "meta": {
+      "api": "PropSports UFC",
+      "version": "2026-09-06.3",
+      "request_id": "a01f450d-6ffc-42cc-9ede-e3938001ae63",
+      "requested": 12,
+      "found": 11,
+      "access_tier": "public"
+    }
+  }
+}

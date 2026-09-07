@@ -1,5 +1,5 @@
 {
-  "captured_at": "2026-09-07T14:27:59.388Z",
+  "captured_at": "2026-09-07T15:18:22.761Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/matchups/2c9c2a88-aec1-4bf0-9b16-3ce58adf6fd6/1d296292-4969-43a8-9948-cd0a76a642ce/dna",
   "status": 200,
@@ -5689,7 +5689,7 @@
     "meta": {
       "api": "PropSports UFC",
       "version": "2026-09-06.3",
-      "request_id": "08d10144-b61f-4cba-8e47-4fe02c6524c9",
+      "request_id": "e7687a49-24eb-4b44-918f-cd179da9746f",
       "requested_as_of": null,
       "resolved_as_of": {
         "a": "2026-09-06",

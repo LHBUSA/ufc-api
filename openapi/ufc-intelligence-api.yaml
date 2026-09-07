@@ -152,7 +152,7 @@ paths:
                     meta:
                       api: PropSports UFC
                       version: 2026-09-06.3
-                      request_id: c0de9aa1-f262-4816-8f30-75cb4e72ad23
+                      request_id: ae64b06b-d635-47f1-b07d-48b3dc66b823
                       access_tier: public
         "401":
           $ref: "#/components/responses/Unauthorized"
@@ -257,7 +257,7 @@ paths:
                     meta:
                       api: PropSports UFC
                       version: 2026-09-06.3
-                      request_id: fc7fb3b9-e33e-4039-aa98-68253483ce5e
+                      request_id: 299c1248-929c-4612-aa4c-f221e5f1d01a
                       count: 3
                       total: 17
                       status: upcoming
@@ -298,6 +298,30 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/SuccessEnvelope"
+              examples:
+                live:
+                  summary: Live response captured 2026-09-07 (/v1/ufc/events/1d0b22df-81e7-4e5b-8fa5-8e5d03c24c52)
+                  value:
+                    ok: true
+                    data:
+                      id: 1d0b22df-81e7-4e5b-8fa5-8e5d03c24c52
+                      ufcstats_id: 638cfec7ec559d6e
+                      espn_event_id: "600060772"
+                      name: "Noche UFC: Silva vs. Delgado"
+                      event_date: 2026-09-12
+                      venue: Desert Diamond Arena
+                      city: Glendale
+                      region: AZ
+                      country: USA
+                      commission: null
+                      is_ppv: null
+                      card_status: announced
+                      updated_at: 2026-09-07T06:03:41.716+00:00
+                    meta:
+                      api: PropSports UFC
+                      version: 2026-09-06.3
+                      request_id: d4a9a109-e1c7-420c-9665-c918448d7a68
+                      access_tier: public
         "401":
           $ref: "#/components/responses/Unauthorized"
         "403":
@@ -340,6 +364,152 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/SuccessEnvelope"
+              examples:
+                live:
+                  summary: Live response captured 2026-09-07 (/v1/ufc/events/1d0b22df-81e7-4e5b-8fa5-8e5d03c24c52/card)
+                  value:
+                    ok: true
+                    data:
+                      event:
+                        id: 1d0b22df-81e7-4e5b-8fa5-8e5d03c24c52
+                        ufcstats_id: 638cfec7ec559d6e
+                        espn_event_id: "600060772"
+                        name: "Noche UFC: Silva vs. Delgado"
+                        event_date: 2026-09-12
+                        venue: Desert Diamond Arena
+                        city: Glendale
+                        region: AZ
+                        country: USA
+                        commission: null
+                        is_ppv: null
+                        card_status: announced
+                        updated_at: 2026-09-07T06:03:41.716+00:00
+                      bouts:
+                        - id: 89e38074-f431-4bc3-b51e-fe42058e60d0
+                          ufcstats_id: null
+                          espn_competition_id: "401914462"
+                          event_id: 1d0b22df-81e7-4e5b-8fa5-8e5d03c24c52
+                          weight_class: FEATHERWEIGHT
+                          weight_class_raw: Featherweight
+                          is_womens: false
+                          is_title: false
+                          scheduled_rounds: 5
+                          card_position: main
+                          bout_order: 13
+                          status: announced
+                          replaced_bout_id: null
+                          short_notice_days: null
+                          fighter_a:
+                            id: eed368a5-484b-412f-9d2c-a4fd6d24d019
+                            dob: 1996-12-27
+                            name: Jean Silva
+                            stance: ORTHODOX
+                            nickname: Lord
+                            reach_in: 69
+                            record_d: 0
+                            record_l: 3
+                            record_w: 17
+                            height_in: 67
+                            is_active: true
+                            record_nc: null
+                            weight_lbs: 146
+                            ufcstats_id: 52ef95b5860fb28c
+                            espn_athlete_id: "5145766"
+                            primary_image:
+                              id: 776d6a0a-e701-4756-b789-912addfd276d
+                              image_url: https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/eed368a5-484b-412f-9d2c-a4fd6d24d019/portrait.jpg
+                              card_url: https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/eed368a5-484b-412f-9d2c-a4fd6d24d019/card.jpg
+                              thumb_url: https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/eed368a5-484b-412f-9d2c-a4fd6d24d019/thumb.jpg
+                              author: The White House
+                              license: Public domain
+                              source_url: https://commons.wikimedia.org/wiki/File:Jean_Silva_(54451587575).jpg
+                              kind: wikimedia
+                              attribution_text: The White House (U.S. Government work), Public domain, via Wikimedia Commons
+                              rights_label: Public domain
+                          fighter_b:
+                            id: 55ef67ad-88fe-4f7a-b4cb-dc9a10c12feb
+                            dob: 1998-04-21
+                            name: Jose Miguel Delgado
+                            stance: SWITCH
+                            nickname: null
+                            reach_in: 73
+                            record_d: 0
+                            record_l: 2
+                            record_w: 12
+                            height_in: 71
+                            is_active: true
+                            record_nc: 0
+                            weight_lbs: 146
+                            ufcstats_id: 7d6ceff6747f2de2
+                            espn_athlete_id: "5223435"
+                            primary_image: null
+                          result: null
+                        - id: 7300eba4-285f-4030-9f3f-216fa376f451
+                          ufcstats_id: 1aa008d8597a73b8
+                          espn_competition_id: "401897731"
+                          event_id: 1d0b22df-81e7-4e5b-8fa5-8e5d03c24c52
+                          weight_class: FLYWEIGHT
+                          weight_class_raw: Flyweight
+                          is_womens: false
+                          is_title: false
+                          scheduled_rounds: 3
+                          card_position: main
+                          bout_order: 12
+                          status: announced
+                          replaced_bout_id: null
+                          short_notice_days: null
+                          fighter_a:
+                            id: 1fa71f4b-3f7d-4705-ba00-1f6bcf397b9a
+                            dob: 1993-12-07
+                            name: Brandon Moreno
+                            stance: ORTHODOX
+                            nickname: The Assassin Baby
+                            reach_in: 70
+                            record_d: 2
+                            record_l: 10
+                            record_w: 23
+                            height_in: 67
+                            is_active: true
+                            record_nc: 0
+                            weight_lbs: 125
+                            ufcstats_id: 792be9a24df82ed6
+                            espn_athlete_id: "3027545"
+                            primary_image:
+                              id: 940b4873-af29-4d7e-a94d-aaa986a5f4e8
+                              image_url: https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/1fa71f4b-3f7d-4705-ba00-1f6bcf397b9a/portrait.jpg
+                              card_url: https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/1fa71f4b-3f7d-4705-ba00-1f6bcf397b9a/card.jpg
+                              thumb_url: https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/1fa71f4b-3f7d-4705-ba00-1f6bcf397b9a/thumb.jpg
+                              author: DiarioMMA
+                              license: CC BY-SA 4.0
+                              source_url: https://commons.wikimedia.org/wiki/File:Brandon_Moreno_February_2021.jpg
+                              kind: wikimedia
+                              attribution_text: DiarioMMA, CC BY-SA 4.0, via Wikimedia Commons
+                              rights_label: CC BY-SA 4.0
+                          fighter_b:
+                            id: 5be77aa0-2a5b-4a31-90b8-5f5b7513e0e7
+                            dob: 1994-08-22
+                            name: Joseph Morales
+                            stance: SWITCH
+                            nickname: Bopo
+                            reach_in: 68
+                            record_d: 0
+                            record_l: 2
+                            record_w: 15
+                            height_in: 66
+                            is_active: true
+                            record_nc: 0
+                            weight_lbs: 125
+                            ufcstats_id: 2fe9032955c2e013
+                            espn_athlete_id: "4238229"
+                            primary_image: null
+                          result: null
+                    meta:
+                      api: PropSports UFC
+                      version: 2026-09-06.3
+                      request_id: 9ff18c79-ee61-4832-b2d5-1a45c9d7b9ab
+                      include: []
+                      bouts: 13
+                      access_tier: public
         "400":
           $ref: "#/components/responses/Error"
         "401":
@@ -719,7 +889,7 @@ paths:
                     meta:
                       api: PropSports UFC
                       version: 2026-09-06.3
-                      request_id: ed20330a-3f22-4616-82da-cad5d36a10d1
+                      request_id: e45207f5-caba-4ac6-a5b4-f4bacb0c9c85
                       include:
                         - ranking
                         - next
@@ -1084,7 +1254,7 @@ paths:
                     meta:
                       api: PropSports UFC
                       version: 2026-09-06.3
-                      request_id: 2779fe1d-ebb9-40fa-99b0-f8a163984943
+                      request_id: 98c04fc9-7b5a-4f46-8c7e-da46c844adba
                       access_tier: public
         "401":
           $ref: "#/components/responses/Unauthorized"
@@ -1470,7 +1640,7 @@ paths:
                     meta:
                       api: PropSports UFC
                       version: 2026-09-06.3
-                      request_id: 09112f13-4219-4857-96a2-cb141ad187cf
+                      request_id: 5deee28a-98f1-48dc-a89c-fdaf9ea5d029
                       access_tier: public
         "401":
           $ref: "#/components/responses/Unauthorized"
@@ -2488,7 +2658,7 @@ paths:
                     meta:
                       api: PropSports UFC
                       version: 2026-09-06.3
-                      request_id: 59d545ac-19fe-4cc1-9d5b-1cadd1d6e52f
+                      request_id: bb5b2e51-f863-477d-aeb2-94486fb9fcd9
                       requested_as_of: null
                       resolved_as_of: 2026-09-06
                       definition_version: 1
@@ -2524,7 +2694,7 @@ paths:
                     meta:
                       api: PropSports UFC
                       version: 2026-09-06.3
-                      request_id: 2777d9f5-5951-429c-b72e-514a05073292
+                      request_id: 475fa213-d202-4353-a79d-d31519c3b4a3
         "429":
           $ref: "#/components/responses/TooManyRequests"
         "502":
@@ -2873,7 +3043,7 @@ paths:
                     meta:
                       api: PropSports UFC
                       version: 2026-09-06.3
-                      request_id: 9ea5fef9-916c-45f9-99c4-5fd9745b55aa
+                      request_id: 21abb446-4b1a-4af6-9e36-bf8839f4fe40
                       requested_as_of: null
                       resolved_as_of: 2026-09-06
                       definition_version: 1
@@ -3296,7 +3466,7 @@ paths:
                     meta:
                       api: PropSports UFC
                       version: 2026-09-06.3
-                      request_id: 71b2c372-04b6-4100-aa4d-f0622a24a43a
+                      request_id: 9e125062-1f50-4bba-8537-94cdac090af8
                       requested_as_of: null
                       resolved_as_of: 2026-09-06
                       definition_version: 1
@@ -3517,7 +3687,7 @@ paths:
                     meta:
                       api: PropSports UFC
                       version: 2026-09-06.3
-                      request_id: 856adc0b-e6c3-4874-8b29-673343b8e768
+                      request_id: 31a4f4a6-0fd2-4fed-86c6-d19455c143e0
                       requested_as_of: null
                       resolved_as_of: 2026-09-06
                       definition_version: 1
@@ -3620,7 +3790,7 @@ paths:
                     meta:
                       api: PropSports UFC
                       version: 2026-09-06.3
-                      request_id: 32dc23c2-7cf8-4df5-a57b-ef5322796a13
+                      request_id: ab0b0aa4-3054-44d6-a46a-97875d58b943
                       requested_as_of: null
                       resolved_as_of: 2026-09-06
                       definition_version: 1
@@ -4115,7 +4285,7 @@ paths:
                     meta:
                       api: PropSports UFC
                       version: 2026-09-06.3
-                      request_id: 3a22d20d-c1ef-4dc2-9543-f00e79a2f777
+                      request_id: d93a62d5-bfc9-4f92-9599-0d12b3704898
                       requested_as_of: null
                       resolved_as_of:
                         a: 2026-09-06
@@ -4222,198 +4392,222 @@ paths:
                   value:
                     ok: true
                     data:
-                      - bout_id: cd8c325b-d342-4606-9269-94f4cce877a2
-                        winner_id: ebc1b218-f1fb-4f18-bd29-a1690910499f
-                        method: KO_TKO
-                        method_raw: KO/TKO
-                        round: 1
-                        time_sec: 155
-                        time_format: 5 Rnd (5-5-5-5-5)
-                        referee: Marc Goddard
-                        judge_1: null
-                        judge_2: null
-                        judge_3: null
-                        scorecards: null
-                        finish_detail: Punch
-                        result_source: ufcstats
-                        has_stats: true
-                        captured_at: 2026-09-07T06:03:32.664+00:00
-                        bout:
-                          id: cd8c325b-d342-4606-9269-94f4cce877a2
-                          ufcstats_id: bba8c0ab999b9e6f
-                          espn_competition_id: "401875226"
-                          event_id: 0edba201-82f9-4525-85e4-3034b7bc09f7
-                          weight_class: LIGHTWEIGHT
-                          weight_class_raw: Lightweight
-                          is_womens: false
-                          is_title: false
-                          scheduled_rounds: 5
-                          card_position: main
-                          bout_order: 14
-                          status: complete
-                          replaced_bout_id: null
-                          short_notice_days: null
-                          fighter_a:
-                            id: 5c8d6aaf-28fb-49ad-8ffd-4f161c508728
-                            dob: 1990-02-13
-                            name: Dan Hooker
-                            stance: SWITCH
-                            nickname: The Hangman
-                            reach_in: 75
-                            record_d: 0
-                            record_l: 15
-                            record_w: 24
-                            height_in: 72
-                            is_active: true
-                            record_nc: 0
-                            weight_lbs: 155
-                            ufcstats_id: 193b9d1858bc4df3
-                            espn_athlete_id: "3109135"
-                          fighter_b:
-                            id: ebc1b218-f1fb-4f18-bd29-a1690910499f
-                            dob: 1997-12-04
-                            name: Salahdine Parnasse
-                            stance: SOUTHPAW
-                            nickname: Lion Of Atlas
-                            reach_in: 71.5
-                            record_d: 0
-                            record_l: 2
-                            record_w: 24
-                            height_in: 70
-                            is_active: true
-                            record_nc: 0
-                            weight_lbs: 155
-                            ufcstats_id: b3cb9dfccff3be76
-                            espn_athlete_id: "4312859"
-                          result:
-                            round: 1
-                            method: KO_TKO
-                            bout_id: cd8c325b-d342-4606-9269-94f4cce877a2
-                            judge_1: null
-                            judge_2: null
-                            judge_3: null
-                            referee: Marc Goddard
-                            time_sec: 155
-                            has_stats: true
-                            winner_id: ebc1b218-f1fb-4f18-bd29-a1690910499f
-                            method_raw: KO/TKO
-                            scorecards: null
-                            captured_at: 2026-09-07T06:03:32.664+00:00
-                            time_format: 5 Rnd (5-5-5-5-5)
-                            finish_detail: Punch
-                            result_source: ufcstats
-                          event:
-                            id: 0edba201-82f9-4525-85e4-3034b7bc09f7
-                            city: Paris
-                            name: "UFC Fight Night: Hooker vs. Parnasse"
-                            venue: Accor Arena
-                            is_ppv: null
-                            region: null
-                            country: France
-                            commission: null
-                            event_date: 2026-09-05
-                            updated_at: 2026-09-07T06:03:01.933+00:00
-                            card_status: complete
-                            ufcstats_id: 2144954270be834d
-                            espn_event_id: "600059993"
-                      - bout_id: a4bac0b2-0071-461f-8e68-ac9916444340
-                        winner_id: b338d8f1-d9c0-4652-a6bd-de75704ffcee
-                        method: KO_TKO
-                        method_raw: KO/TKO
-                        round: 1
-                        time_sec: 100
+                      - bout_id: f1b4d094-6c94-4769-b815-84be1cd7313d
+                        winner_id: c66c4189-2a2e-4a64-a688-d2b77e7ee01c
+                        method: DEC_U
+                        method_raw: Decision - Unanimous
+                        round: 3
+                        time_sec: 300
                         time_format: 3 Rnd (5-5-5)
-                        referee: Herb Dean
-                        judge_1: null
-                        judge_2: null
-                        judge_3: null
-                        scorecards: null
-                        finish_detail: Punch
+                        referee: Gasper Oliver
+                        judge_1: Jon Bilyk
+                        judge_2: Maimunah Querido
+                        judge_3: Tony Tamburrino
+                        scorecards:
+                          - judge: Jon Bilyk
+                            score: 27-30
+                          - judge: Maimunah Querido
+                            score: 27-30
+                          - judge: Tony Tamburrino
+                            score: 27-30
+                        finish_detail: null
                         result_source: ufcstats
                         has_stats: true
-                        captured_at: 2026-09-07T06:03:31.138+00:00
+                        captured_at: 2026-09-07T15:12:36.958409+00:00
                         bout:
-                          id: a4bac0b2-0071-461f-8e68-ac9916444340
-                          ufcstats_id: 55f698e5c4ed2c47
-                          espn_competition_id: "401911286"
-                          event_id: 0edba201-82f9-4525-85e4-3034b7bc09f7
-                          weight_class: LIGHTWEIGHT
-                          weight_class_raw: Lightweight
-                          is_womens: false
+                          id: f1b4d094-6c94-4769-b815-84be1cd7313d
+                          ufcstats_id: d078e9046aa86307
+                          espn_competition_id: null
+                          event_id: 48934126-83b1-4736-b4ca-6cdd4446d951
+                          weight_class: FLYWEIGHT
+                          weight_class_raw: Women's Flyweight
+                          is_womens: true
                           is_title: false
                           scheduled_rounds: 3
-                          card_position: main
-                          bout_order: 13
+                          card_position: null
+                          bout_order: 4
                           status: complete
                           replaced_bout_id: null
                           short_notice_days: null
                           fighter_a:
-                            id: 14a47802-4922-4156-ad28-6d3e35666485
-                            dob: 1997-03-21
-                            name: Farés Ziam
-                            stance: ORTHODOX
-                            nickname: Smile Killer
-                            reach_in: 75
-                            record_d: 0
-                            record_l: 6
-                            record_w: 18
-                            height_in: 73
-                            is_active: true
-                            record_nc: 0
-                            weight_lbs: 155
-                            ufcstats_id: 1e4f273069fb9e85
-                            espn_athlete_id: "4083018"
-                          fighter_b:
-                            id: b338d8f1-d9c0-4652-a6bd-de75704ffcee
-                            dob: 1997-09-17
-                            name: Axel Sola
+                            id: c66c4189-2a2e-4a64-a688-d2b77e7ee01c
+                            dob: 1992-05-15
+                            name: Wang Cong
                             stance: SOUTHPAW
-                            nickname: null
-                            reach_in: 74
-                            record_d: 1
+                            nickname: The Joker
+                            reach_in: 65.5
+                            record_d: 0
                             record_l: 1
-                            record_w: 13
-                            height_in: 72
+                            record_w: 10
+                            height_in: 66
                             is_active: true
                             record_nc: 0
-                            weight_lbs: 155
-                            ufcstats_id: 1d2d98ddd05b38fb
-                            espn_athlete_id: "5245078"
+                            weight_lbs: 125
+                            ufcstats_id: 2997e7fe3c9d3d4a
+                            espn_athlete_id: "4215200"
+                          fighter_b:
+                            id: 96f07308-7d38-458b-afd9-69cd292c9a77
+                            dob: 1994-01-26
+                            name: Ariane da Silva
+                            stance: ORTHODOX
+                            nickname: Queen of Violence
+                            reach_in: 67
+                            record_d: 0
+                            record_l: 11
+                            record_w: 17
+                            height_in: 66
+                            is_active: null
+                            record_nc: 0
+                            weight_lbs: 125
+                            ufcstats_id: 6551c64fbcd1a467
+                            espn_athlete_id: null
                           result:
-                            round: 1
-                            method: KO_TKO
-                            bout_id: a4bac0b2-0071-461f-8e68-ac9916444340
-                            judge_1: null
-                            judge_2: null
-                            judge_3: null
-                            referee: Herb Dean
-                            time_sec: 100
+                            round: 3
+                            method: DEC_U
+                            bout_id: f1b4d094-6c94-4769-b815-84be1cd7313d
+                            judge_1: Jon Bilyk
+                            judge_2: Maimunah Querido
+                            judge_3: Tony Tamburrino
+                            referee: Gasper Oliver
+                            time_sec: 300
                             has_stats: true
-                            winner_id: b338d8f1-d9c0-4652-a6bd-de75704ffcee
-                            method_raw: KO/TKO
-                            scorecards: null
-                            captured_at: 2026-09-07T06:03:31.138+00:00
+                            winner_id: c66c4189-2a2e-4a64-a688-d2b77e7ee01c
+                            method_raw: Decision - Unanimous
+                            scorecards:
+                              - judge: Jon Bilyk
+                                score: 27-30
+                              - judge: Maimunah Querido
+                                score: 27-30
+                              - judge: Tony Tamburrino
+                                score: 27-30
+                            captured_at: 2026-09-07T15:12:36.958409+00:00
                             time_format: 3 Rnd (5-5-5)
-                            finish_detail: Punch
+                            finish_detail: null
                             result_source: ufcstats
                           event:
-                            id: 0edba201-82f9-4525-85e4-3034b7bc09f7
-                            city: Paris
-                            name: "UFC Fight Night: Hooker vs. Parnasse"
-                            venue: Accor Arena
+                            id: 48934126-83b1-4736-b4ca-6cdd4446d951
+                            city: Newark
+                            name: "UFC 316: Dvalishvili vs. O'Malley 2"
+                            venue: Prudential Center
+                            is_ppv: null
+                            region: New Jersey
+                            country: USA
+                            commission: null
+                            event_date: 2025-06-07
+                            updated_at: 2026-09-06T13:55:19.059327+00:00
+                            card_status: complete
+                            ufcstats_id: 18c49685296c60e6
+                            espn_event_id: "600053672"
+                      - bout_id: 0252e8f4-9a02-4d44-93cf-83c0934f3233
+                        winner_id: bd6b1d04-ba2d-427e-b03b-d27276f6e90d
+                        method: DEC_U
+                        method_raw: Decision - Unanimous
+                        round: 3
+                        time_sec: 300
+                        time_format: 3 Rnd (5-5-5)
+                        referee: Lukasz Bosacki
+                        judge_1: Ben Cartlidge
+                        judge_2: Eric Colon
+                        judge_3: Darryl Ransom
+                        scorecards:
+                          - judge: Ben Cartlidge
+                            score: 27-30
+                          - judge: Eric Colon
+                            score: 27-30
+                          - judge: Darryl Ransom
+                            score: 27-30
+                        finish_detail: null
+                        result_source: ufcstats
+                        has_stats: true
+                        captured_at: 2026-09-07T15:08:00.143305+00:00
+                        bout:
+                          id: 0252e8f4-9a02-4d44-93cf-83c0934f3233
+                          ufcstats_id: 2bfc0212f2cae65b
+                          espn_competition_id: null
+                          event_id: d24a7c8b-8b3b-48c9-b4f1-ac3bc5b26310
+                          weight_class: BANTAMWEIGHT
+                          weight_class_raw: Women's Bantamweight
+                          is_womens: true
+                          is_title: false
+                          scheduled_rounds: 3
+                          card_position: null
+                          bout_order: 3
+                          status: complete
+                          replaced_bout_id: null
+                          short_notice_days: null
+                          fighter_a:
+                            id: bd6b1d04-ba2d-427e-b03b-d27276f6e90d
+                            dob: 1998-12-30
+                            name: Klaudia Sygula
+                            stance: ORTHODOX
+                            nickname: null
+                            reach_in: 69
+                            record_d: 0
+                            record_l: 2
+                            record_w: 8
+                            height_in: 68
+                            is_active: null
+                            record_nc: 0
+                            weight_lbs: 135
+                            ufcstats_id: 9f5e3c20ce40b344
+                            espn_athlete_id: null
+                          fighter_b:
+                            id: fd70809a-f906-48c2-ac6e-f6fa71ffcdfa
+                            dob: 1990-06-27
+                            name: Irina Alekseeva
+                            stance: ORTHODOX
+                            nickname: Russian Ronda
+                            reach_in: 67
+                            record_d: 0
+                            record_l: 4
+                            record_w: 5
+                            height_in: 68
+                            is_active: true
+                            record_nc: 0
+                            weight_lbs: 135
+                            ufcstats_id: 103e2e33a60683e1
+                            espn_athlete_id: "4711407"
+                          result:
+                            round: 3
+                            method: DEC_U
+                            bout_id: 0252e8f4-9a02-4d44-93cf-83c0934f3233
+                            judge_1: Ben Cartlidge
+                            judge_2: Eric Colon
+                            judge_3: Darryl Ransom
+                            referee: Lukasz Bosacki
+                            time_sec: 300
+                            has_stats: true
+                            winner_id: bd6b1d04-ba2d-427e-b03b-d27276f6e90d
+                            method_raw: Decision - Unanimous
+                            scorecards:
+                              - judge: Ben Cartlidge
+                                score: 27-30
+                              - judge: Eric Colon
+                                score: 27-30
+                              - judge: Darryl Ransom
+                                score: 27-30
+                            captured_at: 2026-09-07T15:08:00.143305+00:00
+                            time_format: 3 Rnd (5-5-5)
+                            finish_detail: null
+                            result_source: ufcstats
+                          event:
+                            id: d24a7c8b-8b3b-48c9-b4f1-ac3bc5b26310
+                            city: Baku
+                            name: "UFC Fight Night: Hill vs. Rountree Jr."
+                            venue: Baku Crystal Hall
                             is_ppv: null
                             region: null
-                            country: France
+                            country: Azerbaijan
                             commission: null
-                            event_date: 2026-09-05
-                            updated_at: 2026-09-07T06:03:01.933+00:00
+                            event_date: 2025-06-21
+                            updated_at: 2026-09-06T13:55:23.346591+00:00
                             card_status: complete
-                            ufcstats_id: 2144954270be834d
-                            espn_event_id: "600059993"
+                            ufcstats_id: 400c7b43c86d27d3
+                            espn_event_id: "600053795"
                     meta:
                       api: PropSports UFC
                       version: 2026-09-06.3
-                      request_id: 79ab8957-b78c-4605-b265-5c0f65ac4a7d
+                      request_id: 2225ef16-af1a-44c0-afa4-541bfc992826
                       count: 2
                       access_tier: public
         "401":
@@ -4520,7 +4714,7 @@ paths:
                     meta:
                       api: PropSports UFC
                       version: 2026-09-06.3
-                      request_id: eaf8f415-92cf-49de-9a28-2b88fd03e9e1
+                      request_id: 9d06f3ab-a250-4eca-83b2-d8d3a60127cf
                       store: table
                       divisions: 1
                       division: MIDDLEWEIGHT
@@ -4700,7 +4894,7 @@ paths:
                     meta:
                       api: PropSports UFC
                       version: 2026-09-06.3
-                      request_id: a67555df-b481-48b5-964a-27a9d1b2ddf6
+                      request_id: 06b6f804-1341-4d2a-90e7-3fb3a8843678
                       count: 2
                       total: 28
                       offset: 0
@@ -4923,7 +5117,7 @@ paths:
                     meta:
                       api: PropSports UFC
                       version: 2026-09-06.3
-                      request_id: 64033681-6772-4118-ab57-4a397b6be527
+                      request_id: ed59255d-df96-4784-8665-ffac80262cf9
                       access_tier: public
         "400":
           $ref: "#/components/responses/Error"
@@ -4966,19 +5160,19 @@ paths:
                   value:
                     ok: true
                     data:
-                      fighters: 1323
+                      fighters: 1345
                       events: 898
-                      bouts: 1465
-                      results: 1380
-                      round_stat_rows: 2566
+                      bouts: 1489
+                      results: 1404
+                      round_stat_rows: 3598
                       articles: 28
-                      images: 174
-                      fighters_with_media: 174
-                      rounds: 2566
+                      images: 188
+                      fighters_with_media: 188
+                      rounds: 3598
                     meta:
                       api: PropSports UFC
                       version: 2026-09-06.3
-                      request_id: 64a5270a-6e8c-412e-8bab-4a594c5a5de4
+                      request_id: 265964d2-def8-4ae6-be60-4082f3bc8cf8
                       access_tier: public
         "401":
           $ref: "#/components/responses/Unauthorized"
@@ -5109,7 +5303,7 @@ paths:
                     meta:
                       api: PropSports UFC
                       version: 2026-09-06.3
-                      request_id: 8af15986-56f0-43d0-96ea-ca297853764f
+                      request_id: d8f228dd-c396-4ad7-90df-6563d94af75c
                       count: 2
                       total: 63
                       limit: 2
@@ -5255,7 +5449,7 @@ paths:
                     meta:
                       api: PropSports UFC
                       version: 2026-09-06.3
-                      request_id: 004bd991-f9ae-4f5c-bf8f-4eb4e49cd688
+                      request_id: bb220d95-bc07-4f1a-b35e-a298ccd51a2c
                       count: 60
                       families: 6
                       definition_version: 1
@@ -5470,7 +5664,7 @@ paths:
                     meta:
                       api: PropSports UFC
                       version: 2026-09-06.3
-                      request_id: d8e8bfc5-fb6a-4cec-a24f-12315425ef84
+                      request_id: 458fa56c-a4cb-4e3c-a3fb-8205d6887a38
                       mode: snapshot
                       metric: sig_landed_per_min
                       metric_requested: sig_landed_per_min

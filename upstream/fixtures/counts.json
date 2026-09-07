@@ -1,5 +1,5 @@
 {
-  "captured_at": "2026-09-07T14:27:59.388Z",
+  "captured_at": "2026-09-07T15:18:22.761Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/counts",
   "status": 200,
@@ -7,20 +7,20 @@
   "body": {
     "ok": true,
     "data": {
-      "fighters": 1323,
+      "fighters": 1345,
       "events": 898,
-      "bouts": 1465,
-      "results": 1380,
-      "round_stat_rows": 2566,
+      "bouts": 1489,
+      "results": 1404,
+      "round_stat_rows": 3598,
       "articles": 28,
-      "images": 174,
-      "fighters_with_media": 174,
-      "rounds": 2566
+      "images": 188,
+      "fighters_with_media": 188,
+      "rounds": 3598
     },
     "meta": {
       "api": "PropSports UFC",
       "version": "2026-09-06.3",
-      "request_id": "d670bbac-38dd-44e2-b3af-e938b0870d88",
+      "request_id": "265964d2-def8-4ae6-be60-4082f3bc8cf8",
       "access_tier": "public"
     }
   }

@@ -629,3 +629,35 @@ th { font-family: var(--font-data); font-weight: 600; font-size: var(--fs-micro)
 .docs-body .json-body code { color: var(--paper-2); background: none; border: 0; }
 .docs-body .dna-panel, .docs-body .vs, .docs-body .card-preview, .docs-body .demo { color: var(--paper); }
 .docs-body .demo .fighter-name, .docs-body .dna-panel .dna-metric b { color: var(--paper); }
+
+/* poster: name lockup for a fighter with no rights-cleared portrait (never a generic silhouette) */
+.poster-faces .face.lockup { position: relative; display: grid; place-items: center; color: var(--gold); background: radial-gradient(120% 90% at 50% 20%, rgba(212,175,55,.12), rgba(10,8,6,.98) 68%); }
+.poster-faces .face.lockup .cage { position: absolute; inset: 0; width: 100%; height: 100%; }
+.poster-faces .face.lockup .ini { position: relative; font-family: var(--font-display); font-size: clamp(46px, 7vw, 76px); font-weight: 700; line-height: 1; color: rgba(245,241,235,.16); letter-spacing: -0.03em; }
+.poster-faces .face.lockup .lk { position: absolute; bottom: 14%; left: 0; right: 0; text-align: center; font-family: var(--font-data); font-size: 8px; letter-spacing: var(--ls-micro); text-transform: uppercase; color: var(--subtle); }
+.poster.tall .poster-faces { min-height: 330px; }
+@media (max-width: 520px) { .poster.tall .poster-faces { min-height: 240px; } }
+
+/* pricing transition band */
+.transition { position: relative; overflow: hidden; border-top: 1px solid var(--line-faint); border-bottom: 1px solid var(--line-faint); }
+.transition .art { position: absolute; inset: 0; display: grid; grid-template-columns: 1fr 1fr; opacity: .3; }
+.transition .art img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 14%; }
+.transition .art img:first-child { mask-image: linear-gradient(90deg, #000 25%, transparent 92%); -webkit-mask-image: linear-gradient(90deg, #000 25%, transparent 92%); }
+.transition .art img:last-child { mask-image: linear-gradient(270deg, #000 25%, transparent 92%); -webkit-mask-image: linear-gradient(270deg, #000 25%, transparent 92%); }
+.transition::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(13,11,8,.72), rgba(13,11,8,.94)); }
+.transition .wrap { position: relative; z-index: 2; text-align: center; padding-top: clamp(48px, 7vw, 92px); padding-bottom: clamp(48px, 7vw, 92px); }
+.transition h2 { font-size: clamp(28px, 4.2vw, 52px); line-height: 1.02; margin: 0 0 14px; }
+.transition .lede { margin: 0 auto 22px; }
+.transition .credit { margin-top: 18px; }
+
+/* freshness states on the status strip */
+.ticker .freshness { font-family: var(--font-data); font-size: 9px; letter-spacing: var(--ls-micro); text-transform: uppercase; color: var(--subtle); flex: none; white-space: nowrap; margin-left: auto; }
+.ticker .freshness b { color: var(--dim); font-weight: 600; }
+.ticker a { margin-left: 16px; }
+.ticker.fresh-aging .lbl::before { background: var(--gold); box-shadow: 0 0 6px var(--gold); }
+.ticker.fresh-aging .freshness b { color: var(--gold); }
+.ticker.fresh-stale { background: rgba(193,39,61,.10); border-bottom-color: rgba(193,39,61,.35); }
+.ticker.fresh-stale .lbl { color: var(--crimson-bright); }
+.ticker.fresh-stale .lbl::before { background: var(--crimson-bright); box-shadow: 0 0 6px var(--crimson); }
+.ticker.fresh-stale .freshness b { color: var(--crimson-bright); }
+@media (max-width: 900px) { .ticker .freshness { display: none; } }

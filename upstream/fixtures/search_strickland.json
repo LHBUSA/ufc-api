@@ -1,5 +1,5 @@
 {
-  "captured_at": "2026-09-07T14:27:59.388Z",
+  "captured_at": "2026-09-07T15:18:22.761Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/search?q=strickland&limit=3",
   "status": 200,
@@ -92,7 +92,7 @@
     "meta": {
       "api": "PropSports UFC",
       "version": "2026-09-06.3",
-      "request_id": "7bce8ce6-795e-4621-871f-132e40d2ebb2",
+      "request_id": "ed59255d-df96-4784-8665-ffac80262cf9",
       "access_tier": "public"
     }
   }

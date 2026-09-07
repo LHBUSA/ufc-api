@@ -1,15 +1,23 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 96" width="320" height="96" role="img" aria-label="PropTechUSA UFC Intelligence API">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 72" width="320" height="72" role="img" aria-label="PropTechUSA UFC Intelligence API">
   <title>PropTechUSA UFC Intelligence API</title>
-  <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#12874a"/><stop offset="1" stop-color="#0b5330"/></linearGradient>
+  <g transform="translate(2 4)"><defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#221d15"/>
+      <stop offset="1" stop-color="#0b0906"/>
+    </linearGradient>
   </defs>
-  <g transform="translate(0 0)">
-    <path d="M30 4h36l26 26v36L66 92H30L4 66V30z" fill="url(#g)"/>
-    <path d="M33 11h30l22 22v30L63 85H33L11 63V33z" fill="none" stroke="#fbfaf6" stroke-opacity="0.22" stroke-width="1.5"/>
-    <g stroke="#fbfaf6" stroke-opacity="0.35" stroke-width="1.2" fill="none"><path d="M24 48h48M48 24v48"/><path d="M31 31l34 34M65 31L31 65"/></g>
-    <g fill="#fbfaf6"><circle cx="48" cy="24" r="3.2"/><circle cx="48" cy="72" r="3.2"/><circle cx="24" cy="48" r="3.2"/><circle cx="72" cy="48" r="3.2"/><circle cx="31" cy="31" r="2.4"/><circle cx="65" cy="65" r="2.4"/><circle cx="65" cy="31" r="2.4"/><circle cx="31" cy="65" r="2.4"/></g>
-    <circle cx="48" cy="48" r="10.5" fill="#101613"/><circle cx="48" cy="48" r="10.5" fill="none" stroke="#d4a648" stroke-width="1.5" stroke-dasharray="4 3"/><circle cx="48" cy="48" r="5" fill="#d4a648"/>
-  </g>
-  <text x="112" y="44" font-family="'JetBrains Mono', ui-monospace, Menlo, monospace" font-size="19" font-weight="700" letter-spacing="3.5" fill="#f5f1eb">PROPTECHUSA</text>
-  <text x="112" y="68" font-family="Inter, system-ui, sans-serif" font-size="15" font-weight="500" letter-spacing="0.5" fill="#b8b3a8">UFC Intelligence API</text>
+  <path d="M20 2h24l18 18v24L44 62H20L2 44V20z" fill="url(#g)"/>
+  <path d="M20 3.6h24l17.4 17.4v22L44 60.4H20L3.6 43V21z" fill="none" stroke="#d4af37" stroke-width="3.2"/>
+  <!-- left striker: bold wedge driving right -->
+  <path d="M9 18l17 12.5-17 12.5z" fill="#f5f1eb"/>
+  <path d="M9 18l17 12.5-17 12.5z" fill="none" stroke="#f5f1eb" stroke-width="3" stroke-linejoin="round"/>
+  <!-- right striker: mirrored wedge driving left, set back in bronze -->
+  <path d="M55 18L38 30.5 55 43z" fill="#a08348"/>
+  <path d="M55 18L38 30.5 55 43z" fill="none" stroke="#a08348" stroke-width="3" stroke-linejoin="round"/>
+  <!-- collision node -->
+  <circle cx="32" cy="30.5" r="6.4" fill="#0b0906"/>
+  <circle cx="32" cy="30.5" r="5" fill="#d4af37"/>
+</g>
+  <text x="78" y="30" font-family="'Playfair Display', Georgia, serif" font-size="21" font-weight="700" fill="#f5f1eb">UFC Intelligence API</text>
+  <text x="79" y="49" font-family="'JetBrains Mono', ui-monospace, Menlo, monospace" font-size="9.5" letter-spacing="3" fill="#8e8a80">PROPTECHUSA SPORTS DATA</text>
 </svg>
