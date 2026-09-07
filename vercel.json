@@ -1,4 +1,9 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "buildCommand": "npm run build",
-  "outputDirectory": "apps/web/dist"
+  "outputDirectory": "apps/web/dist",
+
+  "//": "The Astro build uses format:'file', so pages are emitted as docs.html, pricing.html and dashboard.html rather than docs/index.html. Vercel serves a plain output directory literally, so without cleanUrls every extensionless route except / returned 404 - only / resolved, by the index.html directory convention. cleanUrls makes /docs serve docs.html and redirects /docs.html to /docs, which matches the site's own internal links and its trailingSlash:'never' setting.",
+  "cleanUrls": true,
+  "trailingSlash": false
 }
