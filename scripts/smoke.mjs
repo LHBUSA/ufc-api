@@ -59,7 +59,9 @@ if (KEYS.pro) {
   const [g, c] = await Promise.all([get(HOST, `/v1/ufc/fighters/${S}/dna`, auth("pro")), get(CANON, `/v1/ufc/fighters/${S}/dna`)]);
   rec("pro: Fight DNA parity with canonical", g.status === 200 && JSON.stringify(stripMeta(g.body)) === JSON.stringify(stripMeta(c.body)), `as_of ${g.body?.data?.snapshot?.as_of_date} sig/min ${g.body?.data?.snapshot?.metrics?.sig_landed_per_min?.value}`);
   for (const fam of ["splits?opponent_stance=SOUTHPAW", "round-profile", "finish-profile", "position-profile"]) { const r = await get(HOST, `/v1/ufc/fighters/${S}/${fam}`, auth("pro")); rec(`pro: ${fam.split("?")[0]}`, r.status === 200 && r.body?.ok === true, fam === "position-profile" ? `status=${r.body?.data?.status}` : ""); }
-  const asof = await get(HOST, `/v1/ufc/fighters/${S}/dna?as_of=2024-01-01`, auth("pro"));
+  /* must predate the FIRST snapshot: the archive keeps growing backwards, so this date has to stay
+     older than the backfill reaches (2024-01-01 resolved once the backfill passed it). */
+  const asof = await get(HOST, `/v1/ufc/fighters/${S}/dna?as_of=2014-01-01`, auth("pro"));
   rec("pro: DNA as-of before first snapshot → 404 dna_not_available (truthful)", asof.status === 404 && asof.body?.error?.code === "dna_not_available");
   const asof2 = await get(HOST, `/v1/ufc/fighters/${S}/dna?as_of=2026-09-07`, auth("pro"));
   rec("pro: DNA as-of resolves", asof2.status === 200 && asof2.body?.meta?.resolved_as_of, `resolved ${asof2.body?.meta?.resolved_as_of}`);
@@ -73,7 +75,7 @@ if (KEYS.pro) {
 if (KEYS.ultra) {
   const [g, c] = await Promise.all([get(HOST, `/v1/ufc/matchups/${S}/${D}/dna`, auth("ultra")), get(CANON, `/v1/ufc/matchups/${S}/${D}/dna`)]);
   rec("ultra: Matchup DNA parity with canonical", g.status === 200 && JSON.stringify(stripMeta(g.body)) === JSON.stringify(stripMeta(c.body)), `comparisons=${g.body?.data?.comparisons?.length} insights=${g.body?.data?.insights?.length} warnings=${g.body?.data?.warnings?.length}`);
-  const asof = await get(HOST, `/v1/ufc/matchups/${S}/${D}/dna?as_of=2025-01-01`, auth("ultra"));
+  const asof = await get(HOST, `/v1/ufc/matchups/${S}/${D}/dna?as_of=2014-01-01`, auth("ultra"));
   rec("ultra: Matchup as-of unavailable → 404 dna_not_available", asof.status === 404 && asof.body?.error?.code === "dna_not_available");
   const q = await get(HOST, "/v1/ufc/dna/query?metric=pace_retention_r3_vs_r1&min=0.9&min_confidence=low&limit=3", auth("ultra"));
   rec("ultra: dna/query", q.status === 200 && Array.isArray(q.body?.data));
