@@ -30,6 +30,7 @@ const S = sc.hero.fighter.id, FIOROT = sc.fiorot.fighter.id, GRASSO = sc.grasso.
 const planName = (k: string | null) => (k ? plans[k as keyof typeof plans]?.name : "Enterprise");
 const minPlan = (key: string) => matrix.find((x) => x.key === key)?.minimum_plan || "enterprise";
 const captured = fmtDate(ex.fighter_dna.captured_at);
+const apiBase = (gen as any).gateway?.api_base_url || "";
 /* Fight-week fact examples: pinned fixtures, same as every other schema example on this page. */
 const wiEx = (ex as any).noche_weigh_ins ?? null;
 const wiData = wiEx?.body?.data ?? null;
@@ -71,7 +72,7 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "TechArticle", head
     <div class="docs-body">
       <p class="eyebrow">Documentation</p>
       <h1 style="font-size:clamp(2rem,4vw,3rem)">UFC Intelligence API</h1>
-      <p class="lede">Base URL <code>https://ufc.proptechusa.ai</code>. Data contract <code>{contract.api_version}</code>, Fight DNA definitions v{contract.fight_dna_definition_version}. Every response is <code>{`{ ok, data, meta }`}</code> or <code>{`{ ok:false, data:null, error, meta }`}</code>. Every example below is a <b>schema example</b>: a real response captured from the canonical API on {captured} and pinned here, so the shape, field names and semantics you read are exactly what you receive. Pinned examples do not move. For values on the published refresh cadence, see the <a href="/">live demos on the home page</a>, which carry their own capture time and freshness state. Each important endpoint shows <b>request → response → what you can build</b>.</p>
+      <p class="lede">Base URL <code>{apiBase}</code> — this site is the documentation and account host and does not serve the API. Data contract <code>{contract.api_version}</code>, Fight DNA definitions v{contract.fight_dna_definition_version}. Every response is <code>{`{ ok, data, meta }`}</code> or <code>{`{ ok:false, data:null, error, meta }`}</code>. Every example below is a <b>schema example</b>: a real response captured from the canonical API on {captured} and pinned here, so the shape, field names and semantics you read are exactly what you receive. Pinned examples do not move. For values on the published refresh cadence, see the <a href="/">live demos on the home page</a>, which carry their own capture time and freshness state. Each important endpoint shows <b>request → response → what you can build</b>.</p>
       <div class="callout">New in <code>2026-09-11.1</code>, on every plan: <a href="#weigh-ins">official weigh-ins</a> with their full source history, and <a href="#availability">availability, card changes and fighter status</a>. Additive only — no field was removed or renamed.</div>
 
       <section id="quickstart">
@@ -88,7 +89,7 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "TechArticle", head
 
       <section id="authentication">
         <h2>Authentication</h2>
-        <Code shell={`curl -H "Authorization: Bearer $UFC_API_KEY" https://ufc.proptechusa.ai/v1/ufc\n# equivalent\ncurl -H "X-API-Key: $UFC_API_KEY" https://ufc.proptechusa.ai/v1/ufc`} title="auth" />
+        <Code shell={`curl -H "Authorization: Bearer $UFC_API_KEY" ${apiBase}/v1/ufc\n# equivalent\ncurl -H "X-API-Key: $UFC_API_KEY" ${apiBase}/v1/ufc`} title="auth" />
         <ul>
           <li>Bearer token (preferred) or <code>X-API-Key</code>. The key id (12 characters after <code>pt_ufc_live_</code>) is safe to log; the secret is not.</li>
           <li>Call from your server or edge function. CORS is enabled for tooling, not as a credential model; never ship a key in browser code.</li>
@@ -410,7 +411,7 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "TechArticle", head
 
       <section id="schemas">
         <h2>Schemas and OpenAPI</h2>
-        <p>The commercial contract is generated from the canonical API's OpenAPI plus the entitlement config, so data schemas (<code>MetricObject</code>, <code>StanceSplit</code>, <code>DnaSnapshot</code>, <code>MatchupDna</code>, <code>Video</code>, <code>PrimaryImage</code>, envelopes) are byte-identical to upstream and every operation carries <code>x-plan</code> and <code>x-origin</code>. Servers: <code>https://ufc.proptechusa.ai</code> (commercial) and <code>https://ufc-api.propbetedge.ai</code> (canonical, first-party). Import <a href="/openapi.json">openapi.json</a> into your client generator, or browse the <a href="/docs/reference">interactive reference</a>.</p>
+        <p>The commercial contract is generated from the canonical API's OpenAPI plus the entitlement config, so data schemas (<code>MetricObject</code>, <code>StanceSplit</code>, <code>DnaSnapshot</code>, <code>MatchupDna</code>, <code>Video</code>, <code>PrimaryImage</code>, envelopes) are byte-identical to upstream and every operation carries <code>x-plan</code> and <code>x-origin</code>. Servers: <code>{apiBase}</code> (commercial gateway) and <code>https://ufc-api.propbetedge.ai</code> (canonical, first-party). This documentation site is a separate static host and serves no API routes. Import <a href="/openapi.json">openapi.json</a> into your client generator, or browse the <a href="/docs/reference">interactive reference</a>.</p>
       </section>
     </div>
   </div>

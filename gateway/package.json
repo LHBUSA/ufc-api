@@ -8,7 +8,6 @@
     "test": "node --import ./test/loader.mjs --test \"test/*.test.mjs\"",
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
-    "deploy:production": "wrangler deploy --env production",
     "tail": "wrangler tail"
   },
   "devDependencies": {

@@ -1,8 +1,11 @@
 ---
 /* Compact request panel: GET path, plan badge, concise cURL / JavaScript / Python tabs (4-6 lines, wrapped, copy button). */
 import { hlShell } from "../lib/hl";
+import gen from "../generated/entitlements.json";
+/* The copyable snippet must call the host that actually serves /v1 — the gateway, not the docs site. */
+const API_BASE = (gen as any).gateway?.api_base_url || "";
 export interface Props { path: string; plan?: string | null; host?: string; note?: string; compact?: boolean; }
-const { path, plan = null, host = "https://ufc.proptechusa.ai", note, compact = false } = Astro.props;
+const { path, plan = null, host = API_BASE, note, compact = false } = Astro.props;
 const url = host + path;
 const id = "r" + Math.random().toString(36).slice(2, 8);
 const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");

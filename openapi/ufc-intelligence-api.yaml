@@ -10,6 +10,9 @@ info:
 
     This is the commercial distribution contract for the PropTechUSA UFC Intelligence API. It exposes a plan-gated subset of the canonical PropBetEdge UFC API (data-contract version `2026-09-11.1`, Fight DNA definition version 1). Response bodies are identical to the canonical API; the gateway adds authentication, entitlement, quota and rate-limit headers only.
 
+    ### Base URL
+    `https://proptechusa-ufc-api.sales-fd3.workers.dev` serves every `/v1/ufc/*` route. https://ufc.proptechusa.ai is the documentation and account site; it does not serve the API.
+
     ### Authentication
     `Authorization: Bearer pt_ufc_live_…` (or `X-API-Key`). Keys are issued per plan; the secret is shown once.
 
@@ -49,8 +52,8 @@ info:
     api_version: 2026-09-11.1
     fight_dna_definition_version: 1
 servers:
-  - url: https://ufc.proptechusa.ai
-    description: "Commercial host (preferred): PropTechUSA UFC Intelligence API gateway"
+  - url: https://proptechusa-ufc-api.sales-fd3.workers.dev
+    description: Commercial API gateway (preferred). Authentication, entitlements and quotas live here.
   - url: https://ufc-api.propbetedge.ai
     description: Canonical / first-party host (PropBetEdge). Same contract; backwards compatible.
 security:

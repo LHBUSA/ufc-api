@@ -7,7 +7,7 @@
 | Owns | ingest, `ufc_*` data model, identity resolution, UFC Stats normalization, rankings ingest, weigh-in and availability collection, Fight DNA builder and definitions, Matchup DNA, Fight State Ledger, media provenance, canonical Worker API, consumer site | commercial gateway, portal, docs, pricing, entitlements, API keys, metering, telemetry, RapidAPI adapter, commercial OpenAPI, rights matrix |
 | Computes UFC intelligence | yes | **never** |
 | Reads Supabase | yes (service role, server-side) | **never** |
-| Hosts | `ufc-api.propbetedge.ai`, `ufc.propbetedge.ai` | `ufc.proptechusa.ai` |
+| Hosts | `ufc-api.propbetedge.ai`, `ufc.propbetedge.ai` | API: `proptechusa-ufc-api.sales-fd3.workers.dev` (Worker, production). Portal: `ufc.proptechusa.ai` (Vercel, no API routes) |
 
 ## Request path (`/v1/ufc/*`)
 
@@ -37,7 +37,7 @@ client ─► Worker fetch()
 | KV `API_KEYS` | `key:<key_id>` → record {secret_hash, customer, plan, channel, status, expires_at, overrides}; `customer:<id>` | raw secrets never stored; key id is the lookup identifier |
 | Durable Object `UsageCounter` | counters (`w:<minute>`, `m:<YYYY-MM>`, `denied:*`), recent requests, last_used_at | one object per key id or `rapidapi:<user>`; exact counts |
 | Analytics Engine `ufc_api_usage` | one point per request | query with the SQL API (docs/OBSERVABILITY.md) |
-| Static assets | `apps/web/dist` | portal, `/openapi.json` |
+| Static assets | `apps/web/dist` | built by this repo and deployed to **Vercel**; the Worker also carries a copy as its `ASSETS` binding |
 
 ## Configuration (no scattered constants)
 

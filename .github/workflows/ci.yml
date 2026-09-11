@@ -43,3 +43,5 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run contract:check:live
+      # Third-party text resold inside commercial responses must stay a short statement of fact.
+      - run: npm run excerpt:audit

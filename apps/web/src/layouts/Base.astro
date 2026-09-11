@@ -3,7 +3,7 @@ import "../styles/pbe.css";
 import gen from "../generated/entitlements.json";
 import show from "../generated/showcase.json";
 import { freshness } from "../lib/freshness";
-const API_FALLBACK = gen.gateway?.api_origin_fallback || "";
+const API_FALLBACK = gen.gateway?.api_base_url || "";
 
 export interface Props {
   title: string;
@@ -110,7 +110,7 @@ const fmt = (n: number) => n.toLocaleString("en-US");
             }
             var ct = res.headers.get("content-type") || "";
             if (ct.indexOf("application/json") === -1) {
-              var err2 = new Error("No API gateway is answering at " + (this._base || origin) + " (HTTP " + res.status + "). Open the gateway host directly, or point api_origin_fallback in config/gateway.json at a live gateway.");
+              var err2 = new Error("No API gateway is answering at " + (this._base || origin) + " (HTTP " + res.status + "). Open the gateway host directly, or point api_base_url in config/gateway.json at a live gateway.");
               err2.code = "gateway_unavailable"; err2.status = res.status;
               throw err2;
             }

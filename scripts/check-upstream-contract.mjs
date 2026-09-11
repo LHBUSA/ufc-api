@@ -46,7 +46,7 @@ else {
     if (JSON.stringify(c.components?.schemas?.[s]) !== JSON.stringify(upstreamYaml.components.schemas[s])) fail(`commercial schema ${s} differs from upstream — do not fork data shapes`);
   }
   const servers = (c.servers || []).map((s) => s.url);
-  if (servers[0] !== gw.commercial_host) fail(`commercial OpenAPI first server must be ${gw.commercial_host}`);
+  if (servers[0] !== gw.api_base_url) fail(`commercial OpenAPI first server must be the gateway that serves /v1 (${gw.api_base_url}), not the documentation site`);
   if (!servers.includes(snapshot.upstream_base_url)) fail(`commercial OpenAPI must keep the canonical server ${snapshot.upstream_base_url}`);
   if (!String(c.info?.version || "").startsWith(snapshot.api_version)) fail(`commercial OpenAPI info.version (${c.info?.version}) is not derived from upstream api_version ${snapshot.api_version} — rebuild`);
   if (c.info?.["x-upstream"]?.commit !== snapshot.commit) fail("commercial OpenAPI x-upstream.commit differs from upstream/ufc-contract.json — rebuild");

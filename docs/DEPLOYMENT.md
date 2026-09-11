@@ -1,64 +1,87 @@
-# Deployment — ufc.proptechusa.ai
+# Deployment
 
-One Cloudflare Worker (`proptechusa-ufc-api`, account `fd3a233edadd0a60916413c1199f71ee`) serves the portal (static assets) and the gateway. Two environments in `gateway/wrangler.toml`:
+## Who serves what (verified 2026-09-11)
 
-| Env | Command | Host | DNS change |
+| Hostname | Serves | Owned by | Deployed by |
 | --- | --- | --- | --- |
-| preview (default) | `npm run deploy:preview` | `https://proptechusa-ufc-api.sales-fd3.workers.dev` | none |
-| production | `npm run deploy:production` | `https://ufc.proptechusa.ai` (custom domain) | **creates the DNS record** — run only after the gate below |
+| `ufc.proptechusa.ai` | the portal: `/`, `/docs`, `/pricing`, `/workspace`, `/dashboard`, `/legal`, `/openapi.json` | **Vercel** (project `ufc-api`, CNAME to `vercel-dns`) | git push / Vercel promotion |
+| `https://proptechusa-ufc-api.sales-fd3.workers.dev` | the **API**: `/v1/ufc/*`, `/health`, `/admin/*`, `/dashboard/api/*` | **Cloudflare Worker** `proptechusa-ufc-api` (account `fd3a233e…`) | `npm run deploy:gateway` |
+| `ufc-api.propbetedge.ai` | the canonical upstream API | LHBUSA/UFC | not this repo |
+| `ufc.propbetedge.ai` | the consumer application | LHBUSA/UFC (Vercel) | not this repo |
 
-## One-time setup
+**The workers.dev host is production.** Every paying customer, every copyable snippet in the docs and the
+Workspace's own requests go to it. The `GATEWAY_ENV = "preview"` var in `wrangler.toml` is a historical
+label, not a staging claim. There is no staging gateway.
+
+`config/gateway.json` carries both hosts and nothing hard-codes either one:
+
+- `api_base_url` — the gateway. OpenAPI `servers[0]`, the docs base URL, the cURL/JS/Python snippets and the
+  portal's browser client all read it.
+- `commercial_host` — the documentation and account site. Terms, docs and pricing links only.
+
+### The hostname trap this repo used to contain
+
+`gateway/wrangler.toml` had an `[env.production]` block with
+`routes = [{ pattern = "ufc.proptechusa.ai", custom_domain = true }]`, and `package.json` had a
+`deploy:production` script that used it. The zone `proptechusa.ai` is on Cloudflare DNS
+(`igor`/`sunny.ns.cloudflare.com`) while the `ufc` record is a CNAME to Vercel, so running that command
+would have registered the Custom Domain, **rewritten the DNS record, and moved the public site off
+Vercel**. The environment and both scripts are removed, and
+`tests/contract.test.mjs → "deployment safety"` fails the build if any of it returns.
+
+Putting the API on a PropTechUSA hostname later is a deliberate DNS decision, not a deploy flag. The two
+sane options, neither of which is done here: give the gateway its own name (e.g. `ufc-api.proptechusa.ai`)
+and point `api_base_url` at it, or put a Vercel rewrite in front of `/v1` and accept Vercel in the
+authenticated request path. Do not attach `ufc.proptechusa.ai` itself to a Worker.
+
+### Changing `GATEWAY_ENV`
+
+`gateway/src/stripe.js` ignores Stripe **test-mode** webhook events only when `GATEWAY_ENV === "production"`.
+With the current `"preview"` value the live gateway still processes test-mode events. Flipping the value to
+`"production"` is truthful but changes Stripe behaviour, so it is a deliberate change with its own
+verification, not a cleanup.
+
+## Gateway release
 
 ```bash
-npm install
-cd gateway
-npx wrangler secret put ADMIN_TOKEN                 # preview
-npx wrangler secret put RAPIDAPI_PROXY_SECRET       # preview (value from RapidAPI console; optional until listing exists)
-npx wrangler secret put ADMIN_TOKEN --env production
-npx wrangler secret put RAPIDAPI_PROXY_SECRET --env production
-# optional, only after the canonical host enables REQUIRE_API_KEY:
-npx wrangler secret put UPSTREAM_API_KEY --env production
+npm test && npm run openapi:lint && npm run contract:check:live     # gates
+npx wrangler deployments list --config gateway/wrangler.toml        # capture the current version id = rollback
+npm run deploy:gateway
 ```
 
-KV namespace `UFC_API_KEYS` (`91103613c6e2490c928e35b7c7d35121`) is shared by preview and production so keys issued once work on both hosts. Durable Object usage counters are per-Worker-environment.
+Then prove the deployed Worker with real keys:
 
-## Preview gate (must pass before production)
+```bash
+ADMIN_TOKEN=… node scripts/issue-key.mjs --host https://proptechusa-ufc-api.sales-fd3.workers.dev \
+  issue --customer "Smoke" --plan developer            # repeat for pro, ultra
+node scripts/smoke.mjs --host https://proptechusa-ufc-api.sales-fd3.workers.dev --dev … --pro … --ultra …
+curl -s https://proptechusa-ufc-api.sales-fd3.workers.dev/health   # api_version_target + gateway_version
+```
 
-1. `npm test` — gateway + repo tests green.
-2. `npm run openapi:lint` — commercial contract valid.
-3. `npm run contract:check:live` — no upstream drift.
-4. `npm run deploy:preview`.
-5. Issue test keys on preview: `ADMIN_TOKEN=… node scripts/issue-key.mjs --host https://proptechusa-ufc-api.sales-fd3.workers.dev issue --customer "Smoke" --plan developer` (repeat for pro, ultra).
-6. `node scripts/smoke.mjs --host https://proptechusa-ufc-api.sales-fd3.workers.dev --dev … --pro … --ultra …` — canonical parity, plan gates, as-of, unknown fighter, unavailable DNA, bad key, wrong plan, headers, portal pages.
-7. Visual QA at 1440 and 390: `/`, `/pricing`, `/docs`, `/learn/fight-dna`, `/dashboard`. No broken images, no horizontal overflow.
-8. Canonical host still healthy: `curl -sI https://ufc-api.propbetedge.ai/v1/ufc` (200, `X-API-Version` present). Nothing in this repo touches it.
+Rollback: `npx wrangler rollback <version-id> --config gateway/wrangler.toml`.
 
-## Production cutover — exact DNS steps for ufc.proptechusa.ai
+KV namespace `UFC_API_KEYS` (`91103613c6e2490c928e35b7c7d35121`) holds every issued key; Durable Object
+usage counters live with the Worker. Secrets (`ADMIN_TOKEN`, `RAPIDAPI_PROXY_SECRET`,
+`STRIPE_WEBHOOK_SECRET`, `STRIPE_SECRET_KEY`, optional `UPSTREAM_API_KEY`) are set once with
+`npx wrangler secret put <NAME>` from `gateway/`.
 
-`proptechusa.ai` is on Cloudflare DNS (nameservers `igor.ns.cloudflare.com`, `sunny.ns.cloudflare.com`). `ufc.proptechusa.ai` currently has **no record**. Two equivalent paths:
+## Portal release
 
-**Path A — Workers custom domain (recommended, automatic DNS):**
+The portal is a separate deploy and must go **after** the gateway: it documents the routes the gateway
+serves, so publishing it first would advertise endpoints that still answer `404 route_not_found`.
 
-1. In `gateway/`, run `npx wrangler deploy --env production`. Wrangler registers the Custom Domain `ufc.proptechusa.ai` on the Worker; Cloudflare creates the proxied DNS record and issues the certificate automatically (the zone must be in the same account; if the zone lives in another account, use Path B).
-2. Wait for the certificate (usually < 5 minutes): `curl -sI https://ufc.proptechusa.ai/health`.
-3. Run the smoke against production: `node scripts/smoke.mjs --host https://ufc.proptechusa.ai --dev … --pro … --ultra …`.
+1. Merge to `ufc-intelligence-v1`. Every push builds a Vercel **preview** (protected by Vercel auth).
+2. Production is only updated by promotion: `refresh-showcase.yml` reports
+   `VERCEL_DEPLOY_HOOK_URL not set`, so no push promotes itself. Promote from the Vercel dashboard, or add
+   the deploy hook as that secret.
+3. Visual QA at 1440 and 390 on `/`, `/docs`, `/pricing`, `/workspace`, `/dashboard`: no broken images, no
+   horizontal overflow.
 
-**Path B — manual DNS + route (if the zone is in a different Cloudflare account):**
+`refresh-showcase.yml` also reports `CLOUDFLARE_API_TOKEN not set`, so a showcase commit does not deploy the
+Worker either. Both publishing steps are manual today.
 
-1. Cloudflare dashboard → zone `proptechusa.ai` → DNS → Add record: type `AAAA`, name `ufc`, content `100::`, proxied (orange cloud). (A placeholder target is standard for Workers routes.)
-2. Workers & Pages → `proptechusa-ufc-api` → Settings → Domains & Routes → Add route `ufc.proptechusa.ai/*` (or add the Custom Domain from the same screen).
-3. Remove `routes` from `[env.production]` in `wrangler.toml` if the domain is managed from the dashboard, then `npx wrangler deploy --env production`.
-4. Verify as in Path A.
+## Contract changes
 
-**Do not** change `ufc-api.propbetedge.ai` (canonical, stays on the upstream Worker) or `ufc.propbetedge.ai` (Vercel consumer site). No redirects are configured from the old host; both hosts serve the same contract.
-
-## Rollback
-
-`npx wrangler rollback --env production` (previous Worker version) or `npx wrangler deployments list --env production` to pick one. Removing the custom domain from the Worker removes the route; the DNS record is deleted with it.
-
-## After cutover
-
-- Update `config/gateway.json → commercial_host` only if the hostname ever changes (it drives OpenAPI servers and docs).
-- Issue real customer keys with `scripts/issue-key.mjs --host https://ufc.proptechusa.ai`.
-- Point the RapidAPI listing base URL at `https://ufc.proptechusa.ai` (docs/RAPIDAPI_UFC_LAUNCH.md).
-- Add the consumer-site link (`Developers → UFC API`) on ufc.propbetedge.ai as a separate upstream change (see the final report).
+`config/entitlements.json` is the gateway's route allow-list and it is **bundled into the Worker**. Adding
+an endpoint there, or a new `upstream/ufc-contract.json`, only reaches customers on the next
+`npm run deploy:gateway`. Ship the gateway first, the portal second.

@@ -6,7 +6,8 @@ This repository is the **commercial product**: the gateway, developer portal, pr
 
 | | |
 | --- | --- |
-| Commercial host | `https://ufc.proptechusa.ai` (portal + gateway) |
+| Portal (docs, pricing, workspace, dashboard) | `https://ufc.proptechusa.ai` — **Vercel**; serves no API routes |
+| Commercial API base URL | `https://proptechusa-ufc-api.sales-fd3.workers.dev` — Cloudflare Worker `proptechusa-ufc-api`; **this is production** |
 | Canonical / first-party API | `https://ufc-api.propbetedge.ai` (unchanged, keeps working) |
 | Consumer demonstration | `https://ufc.propbetedge.ai` (PropBetEdge UFC) |
 | Upstream authority | [LHBUSA/UFC](https://github.com/LHBUSA/UFC) `main` @ `c2eaa8f` — see [`upstream/ufc-contract.json`](upstream/ufc-contract.json) |
@@ -30,14 +31,19 @@ This repository is the **commercial product**: the gateway, developer portal, pr
    │    meter     (Durable Object: per-minute + monthly)        │
    │    attribute (Analytics Engine: channel / plan / route)    │
    │    forward   → canonical API, add commercial headers      │
-   │  apps/web/  Astro static portal served as Worker assets   │
    └───────────────┬─────────────────┬─────────────────┬───────┘
                    ▼                 ▼                 ▼
-        ufc.proptechusa.ai        RapidAPI        Enterprise / direct
-        /  /docs  /pricing     (same API,        (custom keys, overrides)
-        /learn/fight-dna        channel-mapped
-        /dashboard  /openapi.json   plans)
-        /v1/ufc/*
+   proptechusa-ufc-api           RapidAPI        Enterprise / direct
+     .sales-fd3.workers.dev   (same API,        (custom keys, overrides)
+     /v1/ufc/*  /health        channel-mapped
+     /admin/*  /dashboard/api      plans)
+
+   ┌──────────────────── apps/web (Astro) ────────────────────┐
+   │  built to apps/web/dist and deployed to VERCEL           │
+   │  ufc.proptechusa.ai  /  /docs  /pricing  /workspace      │
+   │  /learn/fight-dna  /dashboard  /openapi.json  /legal     │
+   │  calls the gateway cross-origin (config api_base_url)    │
+   └──────────────────────────────────────────────────────────┘
 ```
 
 Layers stay separate on purpose: Fight DNA computes intelligence (upstream), the canonical API serves it (upstream), this gateway authenticates and meters access, Stripe / RapidAPI charge customers.
@@ -75,8 +81,8 @@ Worker bindings (`gateway/wrangler.toml`): `API_KEYS` (KV), `USAGE_COUNTER` (Dur
 | Variable / secret | Where | Purpose |
 | --- | --- | --- |
 | `UPSTREAM_BASE_URL` | var | canonical API origin (`https://ufc-api.propbetedge.ai`) |
-| `PUBLIC_HOST` | var | this deployment's public origin |
-| `GATEWAY_ENV` | var | `preview` / `production` |
+| `PUBLIC_HOST` | var | this deployment's public origin (the workers.dev gateway) |
+| `GATEWAY_ENV` | var | historical label, currently `preview`, on what is in fact the production gateway. Read by `stripe.js` (test-mode events) — see docs/DEPLOYMENT.md before changing |
 | `ADMIN_TOKEN` | secret | admin key-issuance API (`/admin/*`) and `scripts/issue-key.mjs` |
 | `RAPIDAPI_PROXY_SECRET` | secret | value from the RapidAPI provider console; enables the RapidAPI channel |
 | `UPSTREAM_API_KEY` | secret (optional) | forwarded as `X-API-Key` once the canonical host enables `REQUIRE_API_KEY` |
@@ -125,7 +131,7 @@ RapidAPI is a distribution channel for the same API. The RapidAPI proxy calls th
 
 ## Deployment
 
-Preview (workers.dev, no DNS change): `npm run deploy:preview`. Production (attaches `ufc.proptechusa.ai`): `npm run deploy:production`, only after the gate in [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).
+Two independent deploys, gateway first: `npm run deploy:gateway` ships the Worker (this is production — there is no staging gateway), and the portal ships to Vercel by merge + promotion. `ufc.proptechusa.ai` is a Vercel hostname and must never be attached to the Worker; a test fails the build if that configuration returns. Full runbook: [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).
 
 ## Legal
 

@@ -60,7 +60,7 @@ Fight DNA (PRO+): `/v1/ufc/fighters/{id}/stats`, `/v1/ufc/fighters/{id}/dna`, `/
 Matchup + Fight Week (ULTRA+): `/v1/ufc/matchups/{fighterA}/{fighterB}/dna`, `/v1/ufc/dna/query`, `/v1/ufc/bouts/{id}/ledger`, `/v1/ufc/events/{id}/intelligence`
 Not listed on RapidAPI: `/v1/ufc/wire` (third-party headlines; Enterprise / first-party only pending rights review).
 
-Import `openapi/ufc-intelligence-api.yaml` into the RapidAPI console to create the endpoint definitions; every operation carries `x-plan`.
+Import `openapi/ufc-intelligence-api.yaml` into the RapidAPI console to create the endpoint definitions; every operation carries `x-plan`. The listing base URL is `servers[0]` in that file (the gateway on workers.dev), **not** the documentation site.
 
 ## Example requests
 

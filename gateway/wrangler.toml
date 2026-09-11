@@ -54,30 +54,18 @@ dataset = "ufc_api_usage"
 enabled = true
 
 # ---------------------------------------------------------------------------
-[env.production]
-name = "proptechusa-ufc-api"
-workers_dev = false
-preview_urls = false
-routes = [
-  { pattern = "ufc.proptechusa.ai", custom_domain = true }
-]
-
-[env.production.vars]
-GATEWAY_ENV = "production"
-UPSTREAM_BASE_URL = "https://ufc-api.propbetedge.ai"
-PUBLIC_HOST = "https://ufc.proptechusa.ai"
-
-[[env.production.kv_namespaces]]
-binding = "API_KEYS"
-id = "91103613c6e2490c928e35b7c7d35121"
-
-[[env.production.durable_objects.bindings]]
-name = "USAGE_COUNTER"
-class_name = "UsageCounter"
-
-[[env.production.analytics_engine_datasets]]
-binding = "USAGE"
-dataset = "ufc_api_usage"
-
-[env.production.observability]
-enabled = true
+# THERE IS NO SECOND ENVIRONMENT, AND ufc.proptechusa.ai IS NOT OURS TO CLAIM.
+#
+# This default environment IS the production gateway. It serves every customer
+# request at https://proptechusa-ufc-api.sales-fd3.workers.dev (the `preview`
+# value of GATEWAY_ENV below is historical; see docs/DEPLOYMENT.md before
+# changing it, because gateway/src/stripe.js reads it).
+#
+# ufc.proptechusa.ai is the Vercel-hosted portal: the zone proptechusa.ai is on
+# Cloudflare DNS and the record is a CNAME to vercel-dns. An [env.production]
+# block with `routes = [{ pattern = "ufc.proptechusa.ai", custom_domain = true }]`
+# used to live here. Deploying it would have registered the Custom Domain and
+# REWRITTEN that DNS record, moving the public site off Vercel. It is removed on
+# purpose, together with the deploy:production scripts, and tests/contract.test.mjs
+# fails the build if either comes back. Routing that hostname is a deliberate DNS
+# decision, never a side effect of a deploy command.

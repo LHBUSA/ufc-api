@@ -19,9 +19,9 @@
     "generate": "npm run openapi:build && npm run entitlements:doc",
     "build": "npm run generate && npm run build --workspace=apps/web",
     "dev": "npm run build --workspace=apps/web && npm run dev --workspace=gateway",
-    "deploy:preview": "npm run build && npm run deploy --workspace=gateway",
-    "deploy:production": "npm run build && npm run deploy:production --workspace=gateway",
+    "deploy:gateway": "npm run build && npm run deploy --workspace=gateway",
     "smoke": "node scripts/smoke.mjs",
+    "excerpt:audit": "node scripts/audit-excerpts.mjs",
     "media:audit": "node scripts/audit-media-parity.mjs --set default",
     "media:audit:ci": "node scripts/audit-media-parity.mjs --set default --ci",
     "issue-key": "node scripts/issue-key.mjs"

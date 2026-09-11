@@ -57,6 +57,9 @@ const description = `**UFC data infrastructure for developers — not another od
 
 This is the commercial distribution contract for the PropTechUSA UFC Intelligence API. It exposes a plan-gated subset of the canonical PropBetEdge UFC API (data-contract version \`${contract.api_version}\`, Fight DNA definition version ${contract.fight_dna_definition_version}). Response bodies are identical to the canonical API; the gateway adds authentication, entitlement, quota and rate-limit headers only.
 
+### Base URL
+\`${gw.api_base_url}\` serves every \`/v1/ufc/*\` route. ${gw.commercial_host} is the documentation and account site; it does not serve the API.
+
 ### Authentication
 \`Authorization: Bearer pt_ufc_live_…\` (or \`X-API-Key\`). Keys are issued per plan; the secret is shown once.
 
@@ -93,7 +96,7 @@ const doc = {
     "x-upstream": { repository: contract.repository, branch: contract.branch, commit: contract.commit, api_version: contract.api_version, fight_dna_definition_version: contract.fight_dna_definition_version },
   },
   servers: [
-    { url: gw.commercial_host, description: "Commercial host (preferred): PropTechUSA UFC Intelligence API gateway" },
+    { url: gw.api_base_url, description: "Commercial API gateway (preferred). Authentication, entitlements and quotas live here." },
     { url: contract.upstream_base_url, description: "Canonical / first-party host (PropBetEdge). Same contract; backwards compatible." },
   ],
   security: [{ BearerAuth: [] }, { ApiKeyAuth: [] }],
