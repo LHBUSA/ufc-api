@@ -1,0 +1,26 @@
+{
+  "captured_at": "2026-09-11T21:47:17.890Z",
+  "base": "https://ufc-api.propbetedge.ai",
+  "path": "/v1/ufc/fighters/eed368a5-484b-412f-9d2c-a4fd6d24d019/status",
+  "status": 200,
+  "api_version": "2026-09-11.1",
+  "body": {
+    "ok": true,
+    "data": {
+      "fighter": {
+        "id": "eed368a5-484b-412f-9d2c-a4fd6d24d019",
+        "name": "Jean Silva"
+      },
+      "current": null,
+      "current_note": "No availability event on file. This is the absence of a report, not a confirmation of fitness.",
+      "history": []
+    },
+    "meta": {
+      "api": "PropSports UFC",
+      "version": "2026-09-11.1",
+      "request_id": "3a8288ba-d543-443d-8297-1f5ffff2857a",
+      "count": 0,
+      "access_tier": "public"
+    }
+  }
+}

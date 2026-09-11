@@ -1,7 +1,7 @@
 {
   "$note": "Runtime gateway settings that are neither secrets nor plan-specific.",
   "product_name": "PropTechUSA UFC Intelligence API",
-  "gateway_version": "2026-09-07.1",
+  "gateway_version": "2026-09-11.1",
   "commercial_host": "https://ufc.proptechusa.ai",
   "upstream_base_url": "https://ufc-api.propbetedge.ai",
   "consumer_demo_host": "https://ufc.propbetedge.ai",

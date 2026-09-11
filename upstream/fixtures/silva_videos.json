@@ -1,9 +1,9 @@
 {
-  "captured_at": "2026-09-07T15:18:22.761Z",
+  "captured_at": "2026-09-11T21:47:17.890Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/fighters/eed368a5-484b-412f-9d2c-a4fd6d24d019/videos?limit=3",
   "status": 200,
-  "api_version": "2026-09-06.3",
+  "api_version": "2026-09-11.1",
   "body": {
     "ok": true,
     "data": {
@@ -33,80 +33,14 @@
       },
       "videos": [
         {
-          "id": "c7e07888-bd3e-4391-ada6-a5960050bf13",
+          "id": "b228a5ba-110d-4696-9faf-7b5167ce1886",
           "provider": "youtube",
-          "provider_video_id": "cs-T1Qgb-sk",
-          "url": "https://www.youtube.com/watch?v=cs-T1Qgb-sk",
-          "embed_url": "https://www.youtube-nocookie.com/embed/cs-T1Qgb-sk",
-          "thumbnail_url": "https://i4.ytimg.com/vi/cs-T1Qgb-sk/hqdefault.jpg",
-          "title": "Noche UFC: Silva vs Delgado - September 12th | Fight Promo",
-          "published_at": "2026-09-06T17:30:29+00:00",
-          "duration_sec": null,
-          "embeddable": true,
-          "live_broadcast_state": null,
-          "video_type": "fight_preview",
-          "video_type_label": "Fight preview",
-          "channel": {
-            "id": "UCvgfXK4nTYKudb0rFR6noLA",
-            "name": "UFC",
-            "verified": true
-          },
-          "links": {
-            "event_id": "1d0b22df-81e7-4e5b-8fa5-8e5d03c24c52",
-            "bout_id": null,
-            "article_id": null,
-            "fighter_ids": [
-              "55ef67ad-88fe-4f7a-b4cb-dc9a10c12feb",
-              "eed368a5-484b-412f-9d2c-a4fd6d24d019"
-            ]
-          },
-          "resolver_confidence": "medium",
-          "attribution": "YouTube · UFC",
-          "captured_at": "2026-09-07T01:29:49.112112+00:00",
-          "updated_at": "2026-09-07T01:29:46.802+00:00"
-        },
-        {
-          "id": "6414a679-4331-463a-a5dd-7a02920e0fc4",
-          "provider": "youtube",
-          "provider_video_id": "tOlqX0v8BX4",
-          "url": "https://www.youtube.com/watch?v=tOlqX0v8BX4",
-          "embed_url": "https://www.youtube-nocookie.com/embed/tOlqX0v8BX4",
-          "thumbnail_url": "https://i1.ytimg.com/vi/tOlqX0v8BX4/hqdefault.jpg",
-          "title": "#NocheUFC Maratón: Silva vs Delgado",
-          "published_at": "2026-09-06T15:00:06+00:00",
-          "duration_sec": null,
-          "embeddable": true,
-          "live_broadcast_state": null,
-          "video_type": "full_fight",
-          "video_type_label": "Full fight",
-          "channel": {
-            "id": "UCYXJFtx4SUkrb2p_8mhLPzQ",
-            "name": "UFC Espanol",
-            "verified": true
-          },
-          "links": {
-            "event_id": "1d0b22df-81e7-4e5b-8fa5-8e5d03c24c52",
-            "bout_id": "89e38074-f431-4bc3-b51e-fe42058e60d0",
-            "article_id": "b10fc93a-680a-42be-9be1-e70b8d62c01b",
-            "fighter_ids": [
-              "55ef67ad-88fe-4f7a-b4cb-dc9a10c12feb",
-              "eed368a5-484b-412f-9d2c-a4fd6d24d019"
-            ]
-          },
-          "resolver_confidence": "high",
-          "attribution": "YouTube · UFC Espanol",
-          "captured_at": "2026-09-06T16:50:23.798101+00:00",
-          "updated_at": "2026-09-06T16:50:37.39+00:00"
-        },
-        {
-          "id": "c9f7e55f-01e6-4ec1-8d84-e2409a9e75a2",
-          "provider": "youtube",
-          "provider_video_id": "cr-yfqITLE8",
-          "url": "https://www.youtube.com/watch?v=cr-yfqITLE8",
-          "embed_url": "https://www.youtube-nocookie.com/embed/cr-yfqITLE8",
-          "thumbnail_url": "https://i4.ytimg.com/vi/cr-yfqITLE8/hqdefault.jpg",
-          "title": "Noche UFC: Silva x Delgado | 12 de Setembro | Só no Paramount+",
-          "published_at": "2026-09-06T13:00:16+00:00",
+          "provider_video_id": "8k1sWuNhjnY",
+          "url": "https://www.youtube.com/watch?v=8k1sWuNhjnY",
+          "embed_url": "https://www.youtube-nocookie.com/embed/8k1sWuNhjnY",
+          "thumbnail_url": "https://i1.ytimg.com/vi/8k1sWuNhjnY/hqdefault.jpg",
+          "title": "Um dia, dois eventos grandiosos! Jean Silva e Djorden Santos falam sobre o #NocheUFC e #GarciaBenn!",
+          "published_at": "2026-09-11T21:00:21+00:00",
           "duration_sec": null,
           "embeddable": true,
           "live_broadcast_state": null,
@@ -119,26 +53,91 @@
           },
           "links": {
             "event_id": "1d0b22df-81e7-4e5b-8fa5-8e5d03c24c52",
+            "bout_id": null,
+            "article_id": null,
+            "fighter_ids": [
+              "8096c960-3c6a-4c43-a003-8d0b610fea9a",
+              "eed368a5-484b-412f-9d2c-a4fd6d24d019"
+            ]
+          },
+          "resolver_confidence": "medium",
+          "attribution": "YouTube · UFC Brasil",
+          "captured_at": "2026-09-11T21:13:06.658339+00:00",
+          "updated_at": "2026-09-11T21:13:02.277+00:00"
+        },
+        {
+          "id": "d04d5599-6c14-4807-b444-0c1583e6c46a",
+          "provider": "youtube",
+          "provider_video_id": "Hh9icPderiM",
+          "url": "https://www.youtube.com/watch?v=Hh9icPderiM",
+          "embed_url": "https://www.youtube-nocookie.com/embed/Hh9icPderiM",
+          "thumbnail_url": "https://i1.ytimg.com/vi/Hh9icPderiM/hqdefault.jpg",
+          "title": "Silva vs Delgado Weigh-Ins | Noche UFC",
+          "published_at": "2026-09-11T19:18:39+00:00",
+          "duration_sec": null,
+          "embeddable": true,
+          "live_broadcast_state": null,
+          "video_type": "weigh_in",
+          "video_type_label": "Weigh-in",
+          "channel": {
+            "id": "UCvgfXK4nTYKudb0rFR6noLA",
+            "name": "UFC",
+            "verified": true
+          },
+          "links": {
+            "event_id": "1d0b22df-81e7-4e5b-8fa5-8e5d03c24c52",
             "bout_id": "89e38074-f431-4bc3-b51e-fe42058e60d0",
-            "article_id": "b10fc93a-680a-42be-9be1-e70b8d62c01b",
+            "article_id": null,
             "fighter_ids": [
               "55ef67ad-88fe-4f7a-b4cb-dc9a10c12feb",
               "eed368a5-484b-412f-9d2c-a4fd6d24d019"
             ]
           },
           "resolver_confidence": "high",
-          "attribution": "YouTube · UFC Brasil",
-          "captured_at": "2026-09-06T16:50:20.370285+00:00",
-          "updated_at": "2026-09-06T16:50:37.39+00:00"
+          "attribution": "YouTube · UFC",
+          "captured_at": "2026-09-11T19:43:20.544594+00:00",
+          "updated_at": "2026-09-11T19:43:15.476+00:00"
+        },
+        {
+          "id": "ae644ccf-6555-4a43-9359-1beeb0f45da4",
+          "provider": "youtube",
+          "provider_video_id": "EvS1cIbvObg",
+          "url": "https://www.youtube.com/watch?v=EvS1cIbvObg",
+          "embed_url": "https://www.youtube-nocookie.com/embed/EvS1cIbvObg",
+          "thumbnail_url": "https://i2.ytimg.com/vi/EvS1cIbvObg/hqdefault.jpg",
+          "title": "#NocheUFC Evento Completo: Lopes vs. Silva",
+          "published_at": "2026-09-11T19:00:06+00:00",
+          "duration_sec": null,
+          "embeddable": true,
+          "live_broadcast_state": null,
+          "video_type": "full_fight",
+          "video_type_label": "Full fight",
+          "channel": {
+            "id": "UCYXJFtx4SUkrb2p_8mhLPzQ",
+            "name": "UFC Espanol",
+            "verified": true
+          },
+          "links": {
+            "event_id": "1d0b22df-81e7-4e5b-8fa5-8e5d03c24c52",
+            "bout_id": null,
+            "article_id": null,
+            "fighter_ids": [
+              "eed368a5-484b-412f-9d2c-a4fd6d24d019"
+            ]
+          },
+          "resolver_confidence": "medium",
+          "attribution": "YouTube · UFC Espanol",
+          "captured_at": "2026-09-06T16:50:23.798101+00:00",
+          "updated_at": "2026-09-11T19:13:15.511+00:00"
         }
       ]
     },
     "meta": {
       "api": "PropSports UFC",
-      "version": "2026-09-06.3",
-      "request_id": "53292463-bd4a-4f61-8ef4-d62aeead0c8e",
+      "version": "2026-09-11.1",
+      "request_id": "65f58cd9-5e6c-4c2e-9089-2ba753c2b8f9",
       "count": 3,
-      "total": 4,
+      "total": 38,
       "limit": 3,
       "type": null,
       "published_only": true,

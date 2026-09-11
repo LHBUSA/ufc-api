@@ -1,9 +1,9 @@
 {
-  "captured_at": "2026-09-07T15:18:22.761Z",
+  "captured_at": "2026-09-11T21:47:17.890Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/events/1d0b22df-81e7-4e5b-8fa5-8e5d03c24c52/card",
   "status": 200,
-  "api_version": "2026-09-06.3",
+  "api_version": "2026-09-11.1",
   "body": {
     "ok": true,
     "data": {
@@ -20,7 +20,7 @@
         "commission": null,
         "is_ppv": null,
         "card_status": "announced",
-        "updated_at": "2026-09-07T06:03:41.716+00:00"
+        "updated_at": "2026-09-11T06:02:29.394+00:00"
       },
       "bouts": [
         {
@@ -538,8 +538,8 @@
           "ufcstats_id": "f154037892b9fb94",
           "espn_competition_id": "401897732",
           "event_id": "1d0b22df-81e7-4e5b-8fa5-8e5d03c24c52",
-          "weight_class": "FLYWEIGHT",
-          "weight_class_raw": "Flyweight",
+          "weight_class": "CATCHWEIGHT",
+          "weight_class_raw": "Catch Weight",
           "is_womens": false,
           "is_title": false,
           "scheduled_rounds": 3,
@@ -1042,8 +1042,8 @@
     },
     "meta": {
       "api": "PropSports UFC",
-      "version": "2026-09-06.3",
-      "request_id": "9ff18c79-ee61-4832-b2d5-1a45c9d7b9ab",
+      "version": "2026-09-11.1",
+      "request_id": "9cabc799-0122-478d-a9bd-f3960e5baaa4",
       "include": [],
       "bouts": 13,
       "access_tier": "public"

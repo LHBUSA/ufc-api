@@ -1,16 +1,16 @@
 {
-  "captured_at": "2026-09-07T15:18:22.761Z",
+  "captured_at": "2026-09-11T21:47:17.890Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/rankings?division=MIDDLEWEIGHT",
   "status": 200,
-  "api_version": "2026-09-06.3",
+  "api_version": "2026-09-11.1",
   "body": {
     "ok": true,
     "data": {
       "source": "ufc.com official rankings",
       "source_url": "https://www.ufc.com/rankings",
-      "snapshot_date": "2026-09-06",
-      "captured_at": "2026-09-06T16:10:07.916+00:00",
+      "snapshot_date": "2026-09-10",
+      "captured_at": "2026-09-10T12:15:02.152+00:00",
       "divisions": [
         {
           "key": "MIDDLEWEIGHT",
@@ -173,36 +173,10 @@
             },
             {
               "rank": 12,
-              "name": "Ikram Aliskerov",
-              "ufc_slug": "ikram-aliskerov",
-              "fighter_id": "0cb1c2d5-9ffa-4599-a232-5a9a8f4e8e56",
-              "change": 0,
-              "is_new": false,
-              "fighter": {
-                "id": "0cb1c2d5-9ffa-4599-a232-5a9a8f4e8e56",
-                "name": "Ikram Aliskerov",
-                "slug_id": "4684776"
-              }
-            },
-            {
-              "rank": 13,
-              "name": "Bo Nickal",
-              "ufc_slug": "bo-nickal",
-              "fighter_id": "ecc4cdfc-bfbf-4283-b665-f3a62801d9da",
-              "change": 0,
-              "is_new": false,
-              "fighter": {
-                "id": "ecc4cdfc-bfbf-4283-b665-f3a62801d9da",
-                "name": "Bo Nickal",
-                "slug_id": "5061870"
-              }
-            },
-            {
-              "rank": 14,
               "name": "Abus Magomedov",
               "ufc_slug": "abus-magomedov",
               "fighter_id": "c91fbe3e-bc17-414d-a78e-b7095a2d24b5",
-              "change": 0,
+              "change": 2,
               "is_new": false,
               "fighter": {
                 "id": "c91fbe3e-bc17-414d-a78e-b7095a2d24b5",
@@ -211,16 +185,42 @@
               }
             },
             {
-              "rank": 15,
-              "name": "Michael Venom Page",
-              "ufc_slug": "michael-page",
-              "fighter_id": "940796ad-7733-4992-95c0-91031101fef7",
-              "change": 0,
+              "rank": 13,
+              "name": "Ikram Aliskerov",
+              "ufc_slug": "ikram-aliskerov",
+              "fighter_id": "0cb1c2d5-9ffa-4599-a232-5a9a8f4e8e56",
+              "change": -1,
               "is_new": false,
               "fighter": {
-                "id": "940796ad-7733-4992-95c0-91031101fef7",
-                "name": "Michael Page",
-                "slug_id": "3022067"
+                "id": "0cb1c2d5-9ffa-4599-a232-5a9a8f4e8e56",
+                "name": "Ikram Aliskerov",
+                "slug_id": "4684776"
+              }
+            },
+            {
+              "rank": 14,
+              "name": "Bo Nickal",
+              "ufc_slug": "bo-nickal",
+              "fighter_id": "ecc4cdfc-bfbf-4283-b665-f3a62801d9da",
+              "change": -1,
+              "is_new": false,
+              "fighter": {
+                "id": "ecc4cdfc-bfbf-4283-b665-f3a62801d9da",
+                "name": "Bo Nickal",
+                "slug_id": "5061870"
+              }
+            },
+            {
+              "rank": 15,
+              "name": "Shara Magomedov",
+              "ufc_slug": "shara-magomedov",
+              "fighter_id": "d9134a0b-07f2-4f1a-a92a-fe1a3db68795",
+              "change": null,
+              "is_new": true,
+              "fighter": {
+                "id": "d9134a0b-07f2-4f1a-a92a-fe1a3db68795",
+                "name": "Shara Magomedov",
+                "slug_id": "4421784"
               }
             }
           ]
@@ -229,8 +229,8 @@
     },
     "meta": {
       "api": "PropSports UFC",
-      "version": "2026-09-06.3",
-      "request_id": "9d06f3ab-a250-4eca-83b2-d8d3a60127cf",
+      "version": "2026-09-11.1",
+      "request_id": "04e6aeae-7ed1-4bd1-9a29-0353562253a9",
       "store": "table",
       "divisions": 1,
       "division": "MIDDLEWEIGHT",

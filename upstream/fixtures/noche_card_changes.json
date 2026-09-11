@@ -1,0 +1,25 @@
+{
+  "captured_at": "2026-09-11T21:47:17.890Z",
+  "base": "https://ufc-api.propbetedge.ai",
+  "path": "/v1/ufc/events/1d0b22df-81e7-4e5b-8fa5-8e5d03c24c52/card-changes",
+  "status": 200,
+  "api_version": "2026-09-11.1",
+  "body": {
+    "ok": true,
+    "data": {
+      "event": {
+        "id": "1d0b22df-81e7-4e5b-8fa5-8e5d03c24c52",
+        "name": "Noche UFC: Silva vs. Delgado",
+        "event_date": "2026-09-12"
+      },
+      "changes": []
+    },
+    "meta": {
+      "api": "PropSports UFC",
+      "version": "2026-09-11.1",
+      "request_id": "bcdb7b24-96d5-4de9-a1f8-e1e9cfb78498",
+      "count": 0,
+      "access_tier": "public"
+    }
+  }
+}

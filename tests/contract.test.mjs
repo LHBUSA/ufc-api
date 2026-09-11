@@ -29,7 +29,7 @@ test("entitlements: unique keys/paths, every endpoint feature labelled, every pa
 test("upstream provenance file is complete", () => {
   for (const k of ["repository", "branch", "commit", "api_version", "fight_dna_definition_version", "endpoint_paths", "metric_object_keys"]) assert.ok(contract[k] !== undefined && contract[k] !== null, k);
   assert.equal(contract.repository, "LHBUSA/UFC");
-  assert.equal(contract.branch, "ufc-fight-dna-v1");
+  assert.equal(contract.branch, "main");
   assert.match(contract.commit, /^[0-9a-f]{40}$/);
   assert.equal(contract.fight_dna_definition_version, 1);
 });

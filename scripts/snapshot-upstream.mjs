@@ -20,7 +20,8 @@ const opt = (name, dflt) => { const i = args.indexOf(name); return i >= 0 ? args
 const gateway = JSON.parse(readFileSync(join(ROOT, "config", "gateway.json"), "utf8"));
 const BASE = (opt("--base", process.env.UPSTREAM_BASE_URL || gateway.upstream_base_url)).replace(/\/$/, "");
 const SHA = opt("--sha", process.env.UPSTREAM_SHA || null);
-const BRANCH = opt("--branch", "ufc-fight-dna-v1");
+/* Since API 2026-09-11.1 the live canonical Worker is built from LHBUSA/UFC main. */
+const BRANCH = opt("--branch", "main");
 const OUT = join(ROOT, "upstream");
 const FIX = join(OUT, "fixtures");
 mkdirSync(FIX, { recursive: true });
@@ -57,7 +58,8 @@ const FIXTURES = {
   dna_metrics: "/v1/ufc/dna/metrics",
   dna_query: "/v1/ufc/dna/query?metric=sig_landed_per_min&min_confidence=medium&limit=3",
   fighter_dna: `/v1/ufc/fighters/${STRICKLAND}/dna`,
-  fighter_dna_asof_404: `/v1/ufc/fighters/${STRICKLAND}/dna?as_of=2024-01-01`,
+  /* must predate the first snapshot: the backfill reached 2024 by 2026-09-11, so 2024-01-01 now resolves */
+  fighter_dna_asof_404: `/v1/ufc/fighters/${STRICKLAND}/dna?as_of=2014-01-01`,
   fighter_splits: `/v1/ufc/fighters/${STRICKLAND}/splits`,
   fighter_splits_southpaw: `/v1/ufc/fighters/${STRICKLAND}/splits?opponent_stance=SOUTHPAW`,
   fighter_round_profile: `/v1/ufc/fighters/${STRICKLAND}/round-profile`,
@@ -95,10 +97,25 @@ const FIXTURES = {
   matchup_mw: `/v1/ufc/matchups/${STRICKLAND}/${RODRIGUES}/dna`,
   rankings_womens_flyweight: "/v1/ufc/rankings?division=FLYWEIGHT&womens=true",
   ...(SILVA && DELGADO ? { delgado_detail: `/v1/ufc/fighters/${DELGADO}?include=ranking`, delgado_dna: `/v1/ufc/fighters/${DELGADO}/dna`, matchup_noche: `/v1/ufc/matchups/${SILVA}/${DELGADO}/dna` } : {}),
+  /* Fight-week state (2026-09-11.1): official weigh-ins with source history, sourced availability events,
+     card changes and fighter status. Noche UFC weighed in on 2026-09-11 with every reading confirmed by UFC.com. */
+  noche_weigh_ins: `/v1/ufc/events/${NOCHE_EVENT}/weigh-ins?include=history`,
+  weigh_ins_missed: "/v1/ufc/weigh-ins?status=missed&limit=3",
+  injuries_active: "/v1/ufc/injuries?active=true&limit=5",
+  noche_card_changes: `/v1/ufc/events/${NOCHE_EVENT}/card-changes`,
+  silva_status: `/v1/ufc/fighters/${SILVA}/status`,
+  noche_intelligence: `/v1/ufc/events/${NOCHE_EVENT}/intelligence`,
 };
 
 async function get(path) {
-  const res = await fetch(BASE + path, { headers: { accept: "application/json", "user-agent": "proptechusa-ufc-api/snapshot" } });
+  /* A 5xx is a transient upstream failure (e.g. the dna/query statement timeout), never a fixture: retry it
+     a bounded number of times so a verbatim 200 is captured, and keep the 5xx only if it persists. */
+  let res;
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    res = await fetch(BASE + path, { headers: { accept: "application/json", "user-agent": "proptechusa-ufc-api/snapshot" } });
+    if (res.status < 500) break;
+    if (attempt < 3) { await res.arrayBuffer(); console.log(`     ${res.status} on ${path}, retrying (${attempt}/2)`); }
+  }
   const text = await res.text();
   let body = null; try { body = JSON.parse(text); } catch { body = { raw: text.slice(0, 2000) }; }
   return { status: res.status, headers: Object.fromEntries(res.headers), body };

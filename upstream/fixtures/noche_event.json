@@ -1,9 +1,9 @@
 {
-  "captured_at": "2026-09-07T15:18:22.761Z",
+  "captured_at": "2026-09-11T21:47:17.890Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/events/1d0b22df-81e7-4e5b-8fa5-8e5d03c24c52",
   "status": 200,
-  "api_version": "2026-09-06.3",
+  "api_version": "2026-09-11.1",
   "body": {
     "ok": true,
     "data": {
@@ -19,12 +19,12 @@
       "commission": null,
       "is_ppv": null,
       "card_status": "announced",
-      "updated_at": "2026-09-07T06:03:41.716+00:00"
+      "updated_at": "2026-09-11T06:02:29.394+00:00"
     },
     "meta": {
       "api": "PropSports UFC",
-      "version": "2026-09-06.3",
-      "request_id": "d4a9a109-e1c7-420c-9665-c918448d7a68",
+      "version": "2026-09-11.1",
+      "request_id": "f829afcc-0fc4-4eba-851c-1fafb6081dcb",
       "access_tier": "public"
     }
   }

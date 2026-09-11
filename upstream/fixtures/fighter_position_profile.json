@@ -1,9 +1,9 @@
 {
-  "captured_at": "2026-09-07T15:18:22.761Z",
+  "captured_at": "2026-09-11T21:47:17.890Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/fighters/ec94d296-2db3-4e0d-be6a-46de4f480672/position-profile",
   "status": 200,
-  "api_version": "2026-09-06.3",
+  "api_version": "2026-09-11.1",
   "body": {
     "ok": true,
     "data": {
@@ -33,17 +33,17 @@
         "stance": "ORTHODOX",
         "is_active": true
       },
-      "as_of_date": "2026-09-06",
+      "as_of_date": "2026-09-10",
       "definition_version": 1,
       "origin": "pbe_derived",
       "sample": {
-        "sample_bouts": 3,
-        "sample_completed_bouts": 3,
-        "sample_stat_bouts": 2,
-        "sample_rounds": 8,
-        "sample_seconds": 2243,
-        "sample_minutes": 37.4,
-        "coverage_status": "low"
+        "sample_bouts": 25,
+        "sample_completed_bouts": 25,
+        "sample_stat_bouts": 25,
+        "sample_rounds": 84,
+        "sample_seconds": 24399,
+        "sample_minutes": 406.7,
+        "coverage_status": "high"
       },
       "available": false,
       "status": "licensed_data_not_available",
@@ -52,10 +52,10 @@
     },
     "meta": {
       "api": "PropSports UFC",
-      "version": "2026-09-06.3",
-      "request_id": "ab0b0aa4-3054-44d6-a46a-97875d58b943",
+      "version": "2026-09-11.1",
+      "request_id": "83fa1b47-0e6e-4436-bb7e-f40d443e8036",
       "requested_as_of": null,
-      "resolved_as_of": "2026-09-06",
+      "resolved_as_of": "2026-09-10",
       "definition_version": 1,
       "as_of_semantics": "as_of_date is exclusive: the snapshot dated D contains bouts with event_date < D, so a bout fought on D is excluded by the snapshot dated D. ?as_of=D resolves to the latest stored snapshot with as_of_date <= D, which therefore never contains a bout fought on or after D.",
       "origin": "pbe_derived",

@@ -39,7 +39,7 @@ before(() => {
       if (u.pathname === "/v1/billing_portal/sessions") { const form = new URLSearchParams(init.body); return new Response(JSON.stringify({ url: `https://billing.stripe.com/p/session/test_${form.get("customer")}`, return_url: form.get("return_url") }), { status: 200, headers: { "content-type": "application/json" } }); }
       return new Response("{}", { status: 404 });
     }
-    if (u.host === "upstream.test") return new Response(JSON.stringify(u.pathname.includes("/matchups/") ? { ok: true, data: { comparisons: [] }, meta: {} } : u.pathname.endsWith("/dna") ? fighterDna.body : { ok: true, data: { fighters: 1 }, meta: {} }), { status: 200, headers: { "content-type": "application/json; charset=utf-8", "x-api-version": "2026-09-06.3", "x-request-id": "up-1", "cache-control": "public, max-age=60" } });
+    if (u.host === "upstream.test") return new Response(JSON.stringify(u.pathname.includes("/matchups/") ? { ok: true, data: { comparisons: [] }, meta: {} } : u.pathname.endsWith("/dna") ? fighterDna.body : { ok: true, data: { fighters: 1 }, meta: {} }), { status: 200, headers: { "content-type": "application/json; charset=utf-8", "x-api-version": "2026-09-11.1", "x-request-id": "up-1", "cache-control": "public, max-age=60" } });
     return new Response("{}", { status: 500 });
   };
 });

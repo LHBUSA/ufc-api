@@ -1,0 +1,2341 @@
+{
+  "captured_at": "2026-09-11T21:47:17.890Z",
+  "base": "https://ufc-api.propbetedge.ai",
+  "path": "/v1/ufc/events/1d0b22df-81e7-4e5b-8fa5-8e5d03c24c52/intelligence",
+  "status": 200,
+  "api_version": "2026-09-11.1",
+  "body": {
+    "ok": true,
+    "data": {
+      "event": {
+        "id": "1d0b22df-81e7-4e5b-8fa5-8e5d03c24c52",
+        "name": "Noche UFC: Silva vs. Delgado",
+        "event_date": "2026-09-12",
+        "venue": "Desert Diamond Arena",
+        "city": "Glendale",
+        "region": "AZ",
+        "country": "USA",
+        "card_status": "announced",
+        "espn_event_id": "600060772",
+        "ufcstats_id": "638cfec7ec559d6e",
+        "scheduled_start": "2026-09-12T18:00:00+00:00",
+        "hours_to_start": 20.21
+      },
+      "bouts": [
+        {
+          "bout": {
+            "id": "89e38074-f431-4bc3-b51e-fe42058e60d0",
+            "status": "announced",
+            "bout_order": 13,
+            "card_position": "main",
+            "weight_class": "FEATHERWEIGHT",
+            "scheduled_rounds": 5,
+            "is_title": false,
+            "fighter_a": {
+              "id": "eed368a5-484b-412f-9d2c-a4fd6d24d019",
+              "name": "Jean Silva",
+              "nickname": "Lord",
+              "ufcstats_id": "52ef95b5860fb28c",
+              "espn_athlete_id": "5145766",
+              "slug_id": "5145766",
+              "record_w": 17,
+              "record_l": 3,
+              "record_d": 0,
+              "record_nc": null,
+              "primary_image": {
+                "id": "776d6a0a-e701-4756-b789-912addfd276d",
+                "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/eed368a5-484b-412f-9d2c-a4fd6d24d019/portrait.jpg",
+                "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/eed368a5-484b-412f-9d2c-a4fd6d24d019/card.jpg",
+                "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/eed368a5-484b-412f-9d2c-a4fd6d24d019/thumb.jpg",
+                "author": "The White House",
+                "license": "Public domain",
+                "source_url": "https://commons.wikimedia.org/wiki/File:Jean_Silva_(54451587575).jpg",
+                "kind": "wikimedia",
+                "attribution_text": "The White House (U.S. Government work), Public domain, via Wikimedia Commons",
+                "rights_label": "Public domain"
+              }
+            },
+            "fighter_b": {
+              "id": "55ef67ad-88fe-4f7a-b4cb-dc9a10c12feb",
+              "name": "Jose Miguel Delgado",
+              "nickname": null,
+              "ufcstats_id": "7d6ceff6747f2de2",
+              "espn_athlete_id": "5223435",
+              "slug_id": "5223435",
+              "record_w": 12,
+              "record_l": 2,
+              "record_d": 0,
+              "record_nc": 0,
+              "primary_image": null
+            },
+            "has_result": false
+          },
+          "ledger_status": "ok",
+          "latest": {
+            "id": "49fd5be4-9a97-4f80-b8f7-4692fb781216",
+            "checkpoint": "t_minus_24h",
+            "captured_at": "2026-09-11T18:23:15.33+00:00",
+            "ledger_version": 1,
+            "scheduled_start": "2026-09-12T18:00:00+00:00",
+            "hours_to_start_at_capture": 23.61
+          },
+          "hours_to_start": 20.21,
+          "checkpoints": [
+            "t_minus_24h",
+            "post_weigh_in",
+            "ad_hoc",
+            "t_minus_72h"
+          ],
+          "snapshots": 7,
+          "bout_state": {
+            "event": {
+              "city": "Glendale",
+              "name": "Noche UFC: Silva vs. Delgado",
+              "venue": "Desert Diamond Arena",
+              "region": "AZ",
+              "country": "USA",
+              "card_status": "announced"
+            },
+            "status": "announced",
+            "is_title": false,
+            "is_womens": false,
+            "bout_order": 13,
+            "ufcstats_id": null,
+            "weight_class": "FEATHERWEIGHT",
+            "card_position": "main",
+            "is_main_event": true,
+            "replaced_bout_id": null,
+            "scheduled_rounds": 5,
+            "weight_class_raw": "Featherweight",
+            "short_notice_days": null,
+            "espn_competition_id": "401914462"
+          },
+          "fighters": {
+            "a": {
+              "id": "eed368a5-484b-412f-9d2c-a4fd6d24d019",
+              "name": "Jean Silva",
+              "slug_id": "5145766",
+              "stance": "ORTHODOX",
+              "record": {
+                "d": 0,
+                "l": 3,
+                "w": 17,
+                "nc": null
+              },
+              "rankings": [
+                {
+                  "rank": 6,
+                  "is_p4p": false,
+                  "division": "FEATHERWEIGHT",
+                  "is_womens": false
+                }
+              ]
+            },
+            "b": {
+              "id": "55ef67ad-88fe-4f7a-b4cb-dc9a10c12feb",
+              "name": "Jose Miguel Delgado",
+              "slug_id": "5223435",
+              "stance": "SWITCH",
+              "record": {
+                "d": 0,
+                "l": 2,
+                "w": 12,
+                "nc": 0
+              },
+              "rankings": null
+            },
+            "stance_context": "switch_involved"
+          },
+          "has_dna": {
+            "a": true,
+            "b": true
+          },
+          "dna": {
+            "a": {
+              "status": "ok",
+              "as_of_date": "2026-09-10",
+              "definition_version": 1
+            },
+            "b": {
+              "status": "ok",
+              "as_of_date": "2026-09-10",
+              "definition_version": 1
+            }
+          },
+          "wire_count": 37,
+          "result": {
+            "status": "pending"
+          },
+          "sources": {
+            "weigh_in": "unavailable",
+            "odds": "unavailable",
+            "market": "unavailable",
+            "model": "unavailable"
+          },
+          "diff": {
+            "newer": {
+              "id": "49fd5be4-9a97-4f80-b8f7-4692fb781216",
+              "checkpoint": "t_minus_24h",
+              "captured_at": "2026-09-11T18:23:15.33+00:00"
+            },
+            "older": {
+              "id": "797de844-0c37-4bd2-9715-24b34df79d3c",
+              "checkpoint": "post_weigh_in",
+              "captured_at": "2026-09-11T16:23:15.331+00:00"
+            },
+            "hours_between": 2,
+            "changed": [
+              "wire.count"
+            ],
+            "changes": [
+              {
+                "path": "wire.count",
+                "from": 35,
+                "to": 37
+              }
+            ]
+          },
+          "card_shock": {
+            "status": "not_computed",
+            "reason": "card_shock_engine_not_built"
+          }
+        },
+        {
+          "bout": {
+            "id": "7300eba4-285f-4030-9f3f-216fa376f451",
+            "status": "announced",
+            "bout_order": 12,
+            "card_position": "main",
+            "weight_class": "FLYWEIGHT",
+            "scheduled_rounds": 3,
+            "is_title": false,
+            "fighter_a": {
+              "id": "1fa71f4b-3f7d-4705-ba00-1f6bcf397b9a",
+              "name": "Brandon Moreno",
+              "nickname": "The Assassin Baby",
+              "ufcstats_id": "792be9a24df82ed6",
+              "espn_athlete_id": "3027545",
+              "slug_id": "3027545",
+              "record_w": 23,
+              "record_l": 10,
+              "record_d": 2,
+              "record_nc": 0,
+              "primary_image": {
+                "id": "940b4873-af29-4d7e-a94d-aaa986a5f4e8",
+                "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/1fa71f4b-3f7d-4705-ba00-1f6bcf397b9a/portrait.jpg",
+                "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/1fa71f4b-3f7d-4705-ba00-1f6bcf397b9a/card.jpg",
+                "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/1fa71f4b-3f7d-4705-ba00-1f6bcf397b9a/thumb.jpg",
+                "author": "DiarioMMA",
+                "license": "CC BY-SA 4.0",
+                "source_url": "https://commons.wikimedia.org/wiki/File:Brandon_Moreno_February_2021.jpg",
+                "kind": "wikimedia",
+                "attribution_text": "DiarioMMA, CC BY-SA 4.0, via Wikimedia Commons",
+                "rights_label": "CC BY-SA 4.0"
+              }
+            },
+            "fighter_b": {
+              "id": "5be77aa0-2a5b-4a31-90b8-5f5b7513e0e7",
+              "name": "Joseph Morales",
+              "nickname": "Bopo",
+              "ufcstats_id": "2fe9032955c2e013",
+              "espn_athlete_id": "4238229",
+              "slug_id": "4238229",
+              "record_w": 15,
+              "record_l": 2,
+              "record_d": 0,
+              "record_nc": 0,
+              "primary_image": null
+            },
+            "has_result": false
+          },
+          "ledger_status": "ok",
+          "latest": {
+            "id": "d6e483b1-a29b-4067-8ff8-5dc6c8142f65",
+            "checkpoint": "t_minus_24h",
+            "captured_at": "2026-09-11T18:23:15.33+00:00",
+            "ledger_version": 1,
+            "scheduled_start": "2026-09-12T18:00:00+00:00",
+            "hours_to_start_at_capture": 23.61
+          },
+          "hours_to_start": 20.21,
+          "checkpoints": [
+            "t_minus_24h",
+            "post_weigh_in",
+            "ad_hoc",
+            "t_minus_72h"
+          ],
+          "snapshots": 7,
+          "bout_state": {
+            "event": {
+              "city": "Glendale",
+              "name": "Noche UFC: Silva vs. Delgado",
+              "venue": "Desert Diamond Arena",
+              "region": "AZ",
+              "country": "USA",
+              "card_status": "announced"
+            },
+            "status": "announced",
+            "is_title": false,
+            "is_womens": false,
+            "bout_order": 12,
+            "ufcstats_id": "1aa008d8597a73b8",
+            "weight_class": "FLYWEIGHT",
+            "card_position": "main",
+            "is_main_event": false,
+            "replaced_bout_id": null,
+            "scheduled_rounds": 3,
+            "weight_class_raw": "Flyweight",
+            "short_notice_days": null,
+            "espn_competition_id": "401897731"
+          },
+          "fighters": {
+            "a": {
+              "id": "1fa71f4b-3f7d-4705-ba00-1f6bcf397b9a",
+              "name": "Brandon Moreno",
+              "slug_id": "3027545",
+              "stance": "ORTHODOX",
+              "record": {
+                "d": 2,
+                "l": 10,
+                "w": 23,
+                "nc": 0
+              },
+              "rankings": [
+                {
+                  "rank": 8,
+                  "is_p4p": false,
+                  "division": "FLYWEIGHT",
+                  "is_womens": false
+                }
+              ]
+            },
+            "b": {
+              "id": "5be77aa0-2a5b-4a31-90b8-5f5b7513e0e7",
+              "name": "Joseph Morales",
+              "slug_id": "4238229",
+              "stance": "SWITCH",
+              "record": {
+                "d": 0,
+                "l": 2,
+                "w": 15,
+                "nc": 0
+              },
+              "rankings": null
+            },
+            "stance_context": "switch_involved"
+          },
+          "has_dna": {
+            "a": true,
+            "b": true
+          },
+          "dna": {
+            "a": {
+              "status": "ok",
+              "as_of_date": "2026-09-11",
+              "definition_version": 1
+            },
+            "b": {
+              "status": "ok",
+              "as_of_date": "2026-09-10",
+              "definition_version": 1
+            }
+          },
+          "wire_count": 30,
+          "result": {
+            "status": "pending"
+          },
+          "sources": {
+            "weigh_in": "unavailable",
+            "odds": "unavailable",
+            "market": "unavailable",
+            "model": "unavailable"
+          },
+          "diff": {
+            "newer": {
+              "id": "d6e483b1-a29b-4067-8ff8-5dc6c8142f65",
+              "checkpoint": "t_minus_24h",
+              "captured_at": "2026-09-11T18:23:15.33+00:00"
+            },
+            "older": {
+              "id": "15e9554d-bcf2-4f49-b2c7-e10a7f6c5f0e",
+              "checkpoint": "post_weigh_in",
+              "captured_at": "2026-09-11T16:23:15.331+00:00"
+            },
+            "hours_between": 2,
+            "changed": [
+              "wire.count"
+            ],
+            "changes": [
+              {
+                "path": "wire.count",
+                "from": 28,
+                "to": 30
+              }
+            ]
+          },
+          "card_shock": {
+            "status": "not_computed",
+            "reason": "card_shock_engine_not_built"
+          }
+        },
+        {
+          "bout": {
+            "id": "7b85e0fd-5f0c-47e8-bec1-78af8a82d4dc",
+            "status": "announced",
+            "bout_order": 11,
+            "card_position": "main",
+            "weight_class": "FEATHERWEIGHT",
+            "scheduled_rounds": 3,
+            "is_title": false,
+            "fighter_a": {
+              "id": "b5bceb9a-635e-4b9f-8426-ca8ea0339ddf",
+              "name": "Tommy McMillen",
+              "nickname": "Gun",
+              "ufcstats_id": "6b0a6def604de298",
+              "espn_athlete_id": "5212849",
+              "slug_id": "5212849",
+              "record_w": 11,
+              "record_l": 0,
+              "record_d": 0,
+              "record_nc": 0,
+              "primary_image": null
+            },
+            "fighter_b": {
+              "id": "b91270c0-d6e8-4021-b6b2-a96e2d542a51",
+              "name": "Marwan Rahiki",
+              "nickname": "Freaky",
+              "ufcstats_id": "6eedb757f13b9978",
+              "espn_athlete_id": "5302274",
+              "slug_id": "5302274",
+              "record_w": 9,
+              "record_l": 0,
+              "record_d": 0,
+              "record_nc": 0,
+              "primary_image": null
+            },
+            "has_result": false
+          },
+          "ledger_status": "ok",
+          "latest": {
+            "id": "58705ec7-9947-4676-8cc9-cd10ace38413",
+            "checkpoint": "t_minus_24h",
+            "captured_at": "2026-09-11T18:23:15.33+00:00",
+            "ledger_version": 1,
+            "scheduled_start": "2026-09-12T18:00:00+00:00",
+            "hours_to_start_at_capture": 23.61
+          },
+          "hours_to_start": 20.21,
+          "checkpoints": [
+            "t_minus_24h",
+            "post_weigh_in",
+            "ad_hoc",
+            "t_minus_72h"
+          ],
+          "snapshots": 7,
+          "bout_state": {
+            "event": {
+              "city": "Glendale",
+              "name": "Noche UFC: Silva vs. Delgado",
+              "venue": "Desert Diamond Arena",
+              "region": "AZ",
+              "country": "USA",
+              "card_status": "announced"
+            },
+            "status": "announced",
+            "is_title": false,
+            "is_womens": false,
+            "bout_order": 11,
+            "ufcstats_id": "1fca7dfa9e1e15cb",
+            "weight_class": "FEATHERWEIGHT",
+            "card_position": "main",
+            "is_main_event": false,
+            "replaced_bout_id": null,
+            "scheduled_rounds": 3,
+            "weight_class_raw": "Featherweight",
+            "short_notice_days": null,
+            "espn_competition_id": "401908491"
+          },
+          "fighters": {
+            "a": {
+              "id": "b5bceb9a-635e-4b9f-8426-ca8ea0339ddf",
+              "name": "Tommy McMillen",
+              "slug_id": "5212849",
+              "stance": "ORTHODOX",
+              "record": {
+                "d": 0,
+                "l": 0,
+                "w": 11,
+                "nc": 0
+              },
+              "rankings": null
+            },
+            "b": {
+              "id": "b91270c0-d6e8-4021-b6b2-a96e2d542a51",
+              "name": "Marwan Rahiki",
+              "slug_id": "5302274",
+              "stance": "ORTHODOX",
+              "record": {
+                "d": 0,
+                "l": 0,
+                "w": 9,
+                "nc": 0
+              },
+              "rankings": null
+            },
+            "stance_context": "same"
+          },
+          "has_dna": {
+            "a": true,
+            "b": true
+          },
+          "dna": {
+            "a": {
+              "status": "ok",
+              "as_of_date": "2026-09-10",
+              "definition_version": 1
+            },
+            "b": {
+              "status": "ok",
+              "as_of_date": "2026-09-10",
+              "definition_version": 1
+            }
+          },
+          "wire_count": 36,
+          "result": {
+            "status": "pending"
+          },
+          "sources": {
+            "weigh_in": "unavailable",
+            "odds": "unavailable",
+            "market": "unavailable",
+            "model": "unavailable"
+          },
+          "diff": {
+            "newer": {
+              "id": "58705ec7-9947-4676-8cc9-cd10ace38413",
+              "checkpoint": "t_minus_24h",
+              "captured_at": "2026-09-11T18:23:15.33+00:00"
+            },
+            "older": {
+              "id": "c85bc018-a157-4070-84c5-9b30a3b4b4bc",
+              "checkpoint": "post_weigh_in",
+              "captured_at": "2026-09-11T16:23:15.331+00:00"
+            },
+            "hours_between": 2,
+            "changed": [
+              "wire.count"
+            ],
+            "changes": [
+              {
+                "path": "wire.count",
+                "from": 35,
+                "to": 36
+              }
+            ]
+          },
+          "card_shock": {
+            "status": "not_computed",
+            "reason": "card_shock_engine_not_built"
+          }
+        },
+        {
+          "bout": {
+            "id": "c5ab710f-9440-4142-b87f-d2de30c1780d",
+            "status": "announced",
+            "bout_order": 10,
+            "card_position": "main",
+            "weight_class": "FLYWEIGHT",
+            "scheduled_rounds": 3,
+            "is_title": false,
+            "fighter_a": {
+              "id": "2c9c2a88-aec1-4bf0-9b16-3ce58adf6fd6",
+              "name": "Manon Fiorot",
+              "nickname": "The Beast",
+              "ufcstats_id": "34ff304266360297",
+              "espn_athlete_id": "4608674",
+              "slug_id": "4608674",
+              "record_w": 13,
+              "record_l": 2,
+              "record_d": 0,
+              "record_nc": 0,
+              "primary_image": {
+                "id": "61827143-8f84-4f0d-8e06-53486dcc22ac",
+                "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/2c9c2a88-aec1-4bf0-9b16-3ce58adf6fd6/portrait.jpg",
+                "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/2c9c2a88-aec1-4bf0-9b16-3ce58adf6fd6/card.jpg",
+                "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/2c9c2a88-aec1-4bf0-9b16-3ce58adf6fd6/thumb.jpg",
+                "author": "Lucie Bertaud",
+                "license": "CC BY 3.0",
+                "source_url": "https://commons.wikimedia.org/wiki/File:MANON_FIOROT_ET_ALDRIC_CASSATA,_LE_COUPLE_GOAL_DU_MMA_-_MMA_EXTRA_ROUND_-22_-_YouTube_-_0-28-31_(cropped).jpg",
+                "kind": "wikimedia",
+                "attribution_text": "Lucie Bertaud, CC BY 3.0, via Wikimedia Commons",
+                "rights_label": "CC BY 3.0"
+              }
+            },
+            "fighter_b": {
+              "id": "1d296292-4969-43a8-9948-cd0a76a642ce",
+              "name": "Alexa Grasso",
+              "nickname": null,
+              "ufcstats_id": "e8b731feff72294b",
+              "espn_athlete_id": "3136287",
+              "slug_id": "3136287",
+              "record_w": 17,
+              "record_l": 5,
+              "record_d": 1,
+              "record_nc": 0,
+              "primary_image": {
+                "id": "85e0a287-fae3-43d1-be20-0fa490c01fb8",
+                "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/1d296292-4969-43a8-9948-cd0a76a642ce/portrait.jpg",
+                "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/1d296292-4969-43a8-9948-cd0a76a642ce/card.jpg",
+                "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/1d296292-4969-43a8-9948-cd0a76a642ce/thumb.jpg",
+                "author": "Alexa Lopez Col",
+                "license": "CC BY 3.0",
+                "source_url": "https://commons.wikimedia.org/wiki/File:Alexa_Grasso_2023_03.png",
+                "kind": "wikimedia",
+                "attribution_text": "Alexa Lopez Col, CC BY 3.0, via Wikimedia Commons",
+                "rights_label": "CC BY 3.0"
+              }
+            },
+            "has_result": false
+          },
+          "ledger_status": "ok",
+          "latest": {
+            "id": "98ea189a-5b28-4549-91f0-9ef08e9711a8",
+            "checkpoint": "t_minus_24h",
+            "captured_at": "2026-09-11T18:23:15.33+00:00",
+            "ledger_version": 1,
+            "scheduled_start": "2026-09-12T18:00:00+00:00",
+            "hours_to_start_at_capture": 23.61
+          },
+          "hours_to_start": 20.21,
+          "checkpoints": [
+            "t_minus_24h",
+            "post_weigh_in",
+            "ad_hoc",
+            "t_minus_72h"
+          ],
+          "snapshots": 7,
+          "bout_state": {
+            "event": {
+              "city": "Glendale",
+              "name": "Noche UFC: Silva vs. Delgado",
+              "venue": "Desert Diamond Arena",
+              "region": "AZ",
+              "country": "USA",
+              "card_status": "announced"
+            },
+            "status": "announced",
+            "is_title": false,
+            "is_womens": true,
+            "bout_order": 10,
+            "ufcstats_id": "d9712b45c094730e",
+            "weight_class": "FLYWEIGHT",
+            "card_position": "main",
+            "is_main_event": false,
+            "replaced_bout_id": null,
+            "scheduled_rounds": 3,
+            "weight_class_raw": "Women's Flyweight",
+            "short_notice_days": null,
+            "espn_competition_id": "401897734"
+          },
+          "fighters": {
+            "a": {
+              "id": "2c9c2a88-aec1-4bf0-9b16-3ce58adf6fd6",
+              "name": "Manon Fiorot",
+              "slug_id": "4608674",
+              "stance": "ORTHODOX",
+              "record": {
+                "d": 0,
+                "l": 2,
+                "w": 13,
+                "nc": 0
+              },
+              "rankings": [
+                {
+                  "rank": 6,
+                  "is_p4p": true,
+                  "division": "P4P",
+                  "is_womens": true
+                },
+                {
+                  "rank": 2,
+                  "is_p4p": false,
+                  "division": "FLYWEIGHT",
+                  "is_womens": true
+                }
+              ]
+            },
+            "b": {
+              "id": "1d296292-4969-43a8-9948-cd0a76a642ce",
+              "name": "Alexa Grasso",
+              "slug_id": "3136287",
+              "stance": "ORTHODOX",
+              "record": {
+                "d": 1,
+                "l": 5,
+                "w": 17,
+                "nc": 0
+              },
+              "rankings": [
+                {
+                  "rank": 7,
+                  "is_p4p": true,
+                  "division": "P4P",
+                  "is_womens": true
+                },
+                {
+                  "rank": 3,
+                  "is_p4p": false,
+                  "division": "FLYWEIGHT",
+                  "is_womens": true
+                }
+              ]
+            },
+            "stance_context": "same"
+          },
+          "has_dna": {
+            "a": true,
+            "b": true
+          },
+          "dna": {
+            "a": {
+              "status": "ok",
+              "as_of_date": "2026-09-10",
+              "definition_version": 1
+            },
+            "b": {
+              "status": "ok",
+              "as_of_date": "2026-09-11",
+              "definition_version": 1
+            }
+          },
+          "wire_count": 29,
+          "result": {
+            "status": "pending"
+          },
+          "sources": {
+            "weigh_in": "unavailable",
+            "odds": "unavailable",
+            "market": "unavailable",
+            "model": "unavailable"
+          },
+          "diff": {
+            "newer": {
+              "id": "98ea189a-5b28-4549-91f0-9ef08e9711a8",
+              "checkpoint": "t_minus_24h",
+              "captured_at": "2026-09-11T18:23:15.33+00:00"
+            },
+            "older": {
+              "id": "28af825b-3f96-4d04-b8ca-7e10568827db",
+              "checkpoint": "post_weigh_in",
+              "captured_at": "2026-09-11T16:23:15.331+00:00"
+            },
+            "hours_between": 2,
+            "changed": [
+              "wire.count"
+            ],
+            "changes": [
+              {
+                "path": "wire.count",
+                "from": 28,
+                "to": 29
+              }
+            ]
+          },
+          "card_shock": {
+            "status": "not_computed",
+            "reason": "card_shock_engine_not_built"
+          }
+        },
+        {
+          "bout": {
+            "id": "fd77037b-684f-4065-89a7-bb9431976b84",
+            "status": "announced",
+            "bout_order": 9,
+            "card_position": "main",
+            "weight_class": "HEAVYWEIGHT",
+            "scheduled_rounds": 3,
+            "is_title": false,
+            "fighter_a": {
+              "id": "be739985-e574-4859-8953-afeddb0ca33a",
+              "name": "Waldo Cortes Acosta",
+              "nickname": "Salsa Boy",
+              "ufcstats_id": "fc08099550072fe4",
+              "espn_athlete_id": "4903365",
+              "slug_id": "4903365",
+              "record_w": 17,
+              "record_l": 3,
+              "record_d": 0,
+              "record_nc": 0,
+              "primary_image": null
+            },
+            "fighter_b": {
+              "id": "149aacfb-fdfb-4e38-90ba-c7cabea11acc",
+              "name": "Curtis Blaydes",
+              "nickname": "Razor",
+              "ufcstats_id": "fa6796c55d6c5440",
+              "espn_athlete_id": "3922557",
+              "slug_id": "3922557",
+              "record_w": 19,
+              "record_l": 6,
+              "record_d": 0,
+              "record_nc": 1,
+              "primary_image": {
+                "id": "c3e74dc8-cd8e-4eea-8322-21fb4f25c8b5",
+                "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/149aacfb-fdfb-4e38-90ba-c7cabea11acc/portrait.jpg",
+                "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/149aacfb-fdfb-4e38-90ba-c7cabea11acc/card.jpg",
+                "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/149aacfb-fdfb-4e38-90ba-c7cabea11acc/thumb.jpg",
+                "author": "MMA Zone",
+                "license": "CC BY 3.0",
+                "source_url": "https://commons.wikimedia.org/wiki/File:Curtis_Blaydes_at_UFC_221.png",
+                "kind": "wikimedia",
+                "attribution_text": "MMA Zone, CC BY 3.0, via Wikimedia Commons",
+                "rights_label": "CC BY 3.0"
+              }
+            },
+            "has_result": false
+          },
+          "ledger_status": "ok",
+          "latest": {
+            "id": "0c5464b7-87e5-437a-87af-415e06342c60",
+            "checkpoint": "t_minus_24h",
+            "captured_at": "2026-09-11T18:23:15.33+00:00",
+            "ledger_version": 1,
+            "scheduled_start": "2026-09-12T18:00:00+00:00",
+            "hours_to_start_at_capture": 23.61
+          },
+          "hours_to_start": 20.21,
+          "checkpoints": [
+            "t_minus_24h",
+            "post_weigh_in",
+            "ad_hoc",
+            "t_minus_72h"
+          ],
+          "snapshots": 7,
+          "bout_state": {
+            "event": {
+              "city": "Glendale",
+              "name": "Noche UFC: Silva vs. Delgado",
+              "venue": "Desert Diamond Arena",
+              "region": "AZ",
+              "country": "USA",
+              "card_status": "announced"
+            },
+            "status": "announced",
+            "is_title": false,
+            "is_womens": false,
+            "bout_order": 9,
+            "ufcstats_id": "606639bf387f60e2",
+            "weight_class": "HEAVYWEIGHT",
+            "card_position": "main",
+            "is_main_event": false,
+            "replaced_bout_id": null,
+            "scheduled_rounds": 3,
+            "weight_class_raw": "Heavyweight",
+            "short_notice_days": null,
+            "espn_competition_id": "401897733"
+          },
+          "fighters": {
+            "a": {
+              "id": "be739985-e574-4859-8953-afeddb0ca33a",
+              "name": "Waldo Cortes Acosta",
+              "slug_id": "4903365",
+              "stance": "ORTHODOX",
+              "record": {
+                "d": 0,
+                "l": 3,
+                "w": 17,
+                "nc": 0
+              },
+              "rankings": [
+                {
+                  "rank": 5,
+                  "is_p4p": false,
+                  "division": "HEAVYWEIGHT",
+                  "is_womens": false
+                }
+              ]
+            },
+            "b": {
+              "id": "149aacfb-fdfb-4e38-90ba-c7cabea11acc",
+              "name": "Curtis Blaydes",
+              "slug_id": "3922557",
+              "stance": "ORTHODOX",
+              "record": {
+                "d": 0,
+                "l": 6,
+                "w": 19,
+                "nc": 1
+              },
+              "rankings": [
+                {
+                  "rank": 6,
+                  "is_p4p": false,
+                  "division": "HEAVYWEIGHT",
+                  "is_womens": false
+                }
+              ]
+            },
+            "stance_context": "same"
+          },
+          "has_dna": {
+            "a": true,
+            "b": true
+          },
+          "dna": {
+            "a": {
+              "status": "ok",
+              "as_of_date": "2026-09-10",
+              "definition_version": 1
+            },
+            "b": {
+              "status": "ok",
+              "as_of_date": "2026-09-10",
+              "definition_version": 1
+            }
+          },
+          "wire_count": 28,
+          "result": {
+            "status": "pending"
+          },
+          "sources": {
+            "weigh_in": "unavailable",
+            "odds": "unavailable",
+            "market": "unavailable",
+            "model": "unavailable"
+          },
+          "diff": {
+            "newer": {
+              "id": "0c5464b7-87e5-437a-87af-415e06342c60",
+              "checkpoint": "t_minus_24h",
+              "captured_at": "2026-09-11T18:23:15.33+00:00"
+            },
+            "older": {
+              "id": "6661f153-2df7-4bff-8a68-4bbe74df4689",
+              "checkpoint": "post_weigh_in",
+              "captured_at": "2026-09-11T16:23:15.331+00:00"
+            },
+            "hours_between": 2,
+            "changed": [
+              "wire.count"
+            ],
+            "changes": [
+              {
+                "path": "wire.count",
+                "from": 27,
+                "to": 28
+              }
+            ]
+          },
+          "card_shock": {
+            "status": "not_computed",
+            "reason": "card_shock_engine_not_built"
+          }
+        },
+        {
+          "bout": {
+            "id": "577fcd7b-7841-4745-8f41-f7f3fa9aa042",
+            "status": "announced",
+            "bout_order": 8,
+            "card_position": "main",
+            "weight_class": "BANTAMWEIGHT",
+            "scheduled_rounds": 3,
+            "is_title": false,
+            "fighter_a": {
+              "id": "bf827666-1596-4e59-872b-0946a609bd1c",
+              "name": "David Martinez",
+              "nickname": "Black Spartan",
+              "ufcstats_id": "9a97acbfd5a08bfa",
+              "espn_athlete_id": "4503229",
+              "slug_id": "4503229",
+              "record_w": 14,
+              "record_l": 1,
+              "record_d": 0,
+              "record_nc": 0,
+              "primary_image": null
+            },
+            "fighter_b": {
+              "id": "5ff28789-3109-458f-a5b0-01dde12a48b6",
+              "name": "Dan Ige",
+              "nickname": "100K",
+              "ufcstats_id": "82a5152216251682",
+              "espn_athlete_id": "4074001",
+              "slug_id": "4074001",
+              "record_w": 19,
+              "record_l": 11,
+              "record_d": 0,
+              "record_nc": 0,
+              "primary_image": {
+                "id": "3cd89e2b-e662-4434-9cfd-3d65f8255bab",
+                "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/5ff28789-3109-458f-a5b0-01dde12a48b6/portrait.jpg",
+                "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/5ff28789-3109-458f-a5b0-01dde12a48b6/card.jpg",
+                "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/5ff28789-3109-458f-a5b0-01dde12a48b6/thumb.jpg",
+                "author": "MMAnytt",
+                "license": "CC BY 3.0",
+                "source_url": "https://commons.wikimedia.org/wiki/File:Dan_Ige_at_UFC_Fight_Night_147_in_London.jpg",
+                "kind": "wikimedia",
+                "attribution_text": "MMAnytt, CC BY 3.0, via Wikimedia Commons",
+                "rights_label": "CC BY 3.0"
+              }
+            },
+            "has_result": false
+          },
+          "ledger_status": "ok",
+          "latest": {
+            "id": "f71236b6-97a8-4576-a34d-0ce32ca451f7",
+            "checkpoint": "t_minus_24h",
+            "captured_at": "2026-09-11T18:23:15.33+00:00",
+            "ledger_version": 1,
+            "scheduled_start": "2026-09-12T18:00:00+00:00",
+            "hours_to_start_at_capture": 23.61
+          },
+          "hours_to_start": 20.21,
+          "checkpoints": [
+            "t_minus_24h",
+            "post_weigh_in",
+            "ad_hoc",
+            "t_minus_72h"
+          ],
+          "snapshots": 7,
+          "bout_state": {
+            "event": {
+              "city": "Glendale",
+              "name": "Noche UFC: Silva vs. Delgado",
+              "venue": "Desert Diamond Arena",
+              "region": "AZ",
+              "country": "USA",
+              "card_status": "announced"
+            },
+            "status": "announced",
+            "is_title": false,
+            "is_womens": false,
+            "bout_order": 8,
+            "ufcstats_id": "51caa91f68873cf5",
+            "weight_class": "BANTAMWEIGHT",
+            "card_position": "main",
+            "is_main_event": false,
+            "replaced_bout_id": null,
+            "scheduled_rounds": 3,
+            "weight_class_raw": "Bantamweight",
+            "short_notice_days": null,
+            "espn_competition_id": "401905192"
+          },
+          "fighters": {
+            "a": {
+              "id": "bf827666-1596-4e59-872b-0946a609bd1c",
+              "name": "David Martinez",
+              "slug_id": "4503229",
+              "stance": "ORTHODOX",
+              "record": {
+                "d": 0,
+                "l": 1,
+                "w": 14,
+                "nc": 0
+              },
+              "rankings": [
+                {
+                  "rank": 8,
+                  "is_p4p": false,
+                  "division": "BANTAMWEIGHT",
+                  "is_womens": false
+                }
+              ]
+            },
+            "b": {
+              "id": "5ff28789-3109-458f-a5b0-01dde12a48b6",
+              "name": "Dan Ige",
+              "slug_id": "4074001",
+              "stance": "ORTHODOX",
+              "record": {
+                "d": 0,
+                "l": 11,
+                "w": 19,
+                "nc": 0
+              },
+              "rankings": null
+            },
+            "stance_context": "same"
+          },
+          "has_dna": {
+            "a": true,
+            "b": true
+          },
+          "dna": {
+            "a": {
+              "status": "ok",
+              "as_of_date": "2026-09-10",
+              "definition_version": 1
+            },
+            "b": {
+              "status": "ok",
+              "as_of_date": "2026-09-10",
+              "definition_version": 1
+            }
+          },
+          "wire_count": 27,
+          "result": {
+            "status": "pending"
+          },
+          "sources": {
+            "weigh_in": "unavailable",
+            "odds": "unavailable",
+            "market": "unavailable",
+            "model": "unavailable"
+          },
+          "diff": {
+            "newer": {
+              "id": "f71236b6-97a8-4576-a34d-0ce32ca451f7",
+              "checkpoint": "t_minus_24h",
+              "captured_at": "2026-09-11T18:23:15.33+00:00"
+            },
+            "older": {
+              "id": "7d56d5dd-9e06-4ce6-8e06-37ec1c84f212",
+              "checkpoint": "post_weigh_in",
+              "captured_at": "2026-09-11T16:23:15.331+00:00"
+            },
+            "hours_between": 2,
+            "changed": [
+              "wire.count"
+            ],
+            "changes": [
+              {
+                "path": "wire.count",
+                "from": 25,
+                "to": 27
+              }
+            ]
+          },
+          "card_shock": {
+            "status": "not_computed",
+            "reason": "card_shock_engine_not_built"
+          }
+        },
+        {
+          "bout": {
+            "id": "ced47b19-7582-4def-b307-92fc16c57a0d",
+            "status": "announced",
+            "bout_order": 7,
+            "card_position": "prelim",
+            "weight_class": "CATCHWEIGHT",
+            "scheduled_rounds": 3,
+            "is_title": false,
+            "fighter_a": {
+              "id": "cbdc3e19-b826-44c5-83ac-3f48f4047b46",
+              "name": "Tim Elliott",
+              "nickname": null,
+              "ufcstats_id": "c96d9178c9ed9e62",
+              "espn_athlete_id": "2614020",
+              "slug_id": "2614020",
+              "record_w": 22,
+              "record_l": 14,
+              "record_d": 1,
+              "record_nc": 0,
+              "primary_image": null
+            },
+            "fighter_b": {
+              "id": "b1f2cea9-a1d3-423a-9227-d8572a54cb8d",
+              "name": "Édgar Cháirez",
+              "nickname": "Puro Chicali",
+              "ufcstats_id": "5ef94841c4bc3f86",
+              "espn_athlete_id": "5076027",
+              "slug_id": "5076027",
+              "record_w": 14,
+              "record_l": 6,
+              "record_d": 0,
+              "record_nc": 1,
+              "primary_image": {
+                "id": "2e8c76ee-c81f-4adf-8b41-79620ebe695a",
+                "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/b1f2cea9-a1d3-423a-9227-d8572a54cb8d/portrait.jpg",
+                "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/b1f2cea9-a1d3-423a-9227-d8572a54cb8d/card.jpg",
+                "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/b1f2cea9-a1d3-423a-9227-d8572a54cb8d/thumb.jpg",
+                "author": "LA LATA",
+                "license": "CC BY 3.0",
+                "source_url": "https://commons.wikimedia.org/wiki/File:Edgar_Chairez_2024.png",
+                "kind": "wikimedia",
+                "attribution_text": "LA LATA, CC BY 3.0, via Wikimedia Commons",
+                "rights_label": "CC BY 3.0"
+              }
+            },
+            "has_result": false
+          },
+          "ledger_status": "ok",
+          "latest": {
+            "id": "1ce788d6-f93f-4637-ae3c-57adf7beed20",
+            "checkpoint": "t_minus_24h",
+            "captured_at": "2026-09-11T18:23:15.33+00:00",
+            "ledger_version": 1,
+            "scheduled_start": "2026-09-12T18:00:00+00:00",
+            "hours_to_start_at_capture": 23.61
+          },
+          "hours_to_start": 20.21,
+          "checkpoints": [
+            "t_minus_24h",
+            "post_weigh_in",
+            "ad_hoc",
+            "t_minus_72h"
+          ],
+          "snapshots": 7,
+          "bout_state": {
+            "event": {
+              "city": "Glendale",
+              "name": "Noche UFC: Silva vs. Delgado",
+              "venue": "Desert Diamond Arena",
+              "region": "AZ",
+              "country": "USA",
+              "card_status": "announced"
+            },
+            "status": "announced",
+            "is_title": false,
+            "is_womens": false,
+            "bout_order": 7,
+            "ufcstats_id": "f154037892b9fb94",
+            "weight_class": "CATCHWEIGHT",
+            "card_position": "prelim",
+            "is_main_event": false,
+            "replaced_bout_id": null,
+            "scheduled_rounds": 3,
+            "weight_class_raw": "Catch Weight",
+            "short_notice_days": null,
+            "espn_competition_id": "401897732"
+          },
+          "fighters": {
+            "a": {
+              "id": "cbdc3e19-b826-44c5-83ac-3f48f4047b46",
+              "name": "Tim Elliott",
+              "slug_id": "2614020",
+              "stance": "SOUTHPAW",
+              "record": {
+                "d": 1,
+                "l": 14,
+                "w": 22,
+                "nc": 0
+              },
+              "rankings": [
+                {
+                  "rank": 12,
+                  "is_p4p": false,
+                  "division": "FLYWEIGHT",
+                  "is_womens": false
+                }
+              ]
+            },
+            "b": {
+              "id": "b1f2cea9-a1d3-423a-9227-d8572a54cb8d",
+              "name": "Édgar Cháirez",
+              "slug_id": "5076027",
+              "stance": "ORTHODOX",
+              "record": {
+                "d": 0,
+                "l": 6,
+                "w": 14,
+                "nc": 1
+              },
+              "rankings": null
+            },
+            "stance_context": "open"
+          },
+          "has_dna": {
+            "a": true,
+            "b": true
+          },
+          "dna": {
+            "a": {
+              "status": "ok",
+              "as_of_date": "2026-09-10",
+              "definition_version": 1
+            },
+            "b": {
+              "status": "ok",
+              "as_of_date": "2026-09-10",
+              "definition_version": 1
+            }
+          },
+          "wire_count": 28,
+          "result": {
+            "status": "pending"
+          },
+          "sources": {
+            "weigh_in": "unavailable",
+            "odds": "unavailable",
+            "market": "unavailable",
+            "model": "unavailable"
+          },
+          "diff": {
+            "newer": {
+              "id": "1ce788d6-f93f-4637-ae3c-57adf7beed20",
+              "checkpoint": "t_minus_24h",
+              "captured_at": "2026-09-11T18:23:15.33+00:00"
+            },
+            "older": {
+              "id": "49747f26-0b18-40a6-9371-f8723967abdf",
+              "checkpoint": "post_weigh_in",
+              "captured_at": "2026-09-11T16:23:15.331+00:00"
+            },
+            "hours_between": 2,
+            "changed": [
+              "wire.count"
+            ],
+            "changes": [
+              {
+                "path": "wire.count",
+                "from": 27,
+                "to": 28
+              }
+            ]
+          },
+          "card_shock": {
+            "status": "not_computed",
+            "reason": "card_shock_engine_not_built"
+          }
+        },
+        {
+          "bout": {
+            "id": "91485168-733a-4123-b8e1-bba091cb0ac8",
+            "status": "announced",
+            "bout_order": 6,
+            "card_position": "prelim",
+            "weight_class": "WELTERWEIGHT",
+            "scheduled_rounds": 3,
+            "is_title": false,
+            "fighter_a": {
+              "id": "2650d370-e47d-4b07-b4cb-35c4ecf6168b",
+              "name": "Ignacio Bahamondes",
+              "nickname": "La Jaula",
+              "ufcstats_id": "e4a47b07044ddd72",
+              "espn_athlete_id": "4038116",
+              "slug_id": "4038116",
+              "record_w": 17,
+              "record_l": 7,
+              "record_d": 0,
+              "record_nc": 0,
+              "primary_image": null
+            },
+            "fighter_b": {
+              "id": "4bfd2b1a-1b23-4d96-9825-b2d5aa8b91bb",
+              "name": "Muslim Salikhov",
+              "nickname": "King of Kung Fu",
+              "ufcstats_id": "447f9858ae78f921",
+              "espn_athlete_id": "3132513",
+              "slug_id": "3132513",
+              "record_w": 22,
+              "record_l": 6,
+              "record_d": 0,
+              "record_nc": 0,
+              "primary_image": {
+                "id": "09aec568-66e1-4a20-88fa-167036eda9ec",
+                "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/4bfd2b1a-1b23-4d96-9825-b2d5aa8b91bb/portrait.jpg",
+                "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/4bfd2b1a-1b23-4d96-9825-b2d5aa8b91bb/card.jpg",
+                "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/4bfd2b1a-1b23-4d96-9825-b2d5aa8b91bb/thumb.jpg",
+                "author": "Sportleader TV",
+                "license": "CC BY 3.0",
+                "source_url": "https://commons.wikimedia.org/wiki/File:Muslim_Salikhov.png",
+                "kind": "wikimedia",
+                "attribution_text": "Sportleader TV, CC BY 3.0, via Wikimedia Commons",
+                "rights_label": "CC BY 3.0"
+              }
+            },
+            "has_result": false
+          },
+          "ledger_status": "ok",
+          "latest": {
+            "id": "f9f6f7bd-3ef1-4db3-b599-c335a7b1a762",
+            "checkpoint": "t_minus_24h",
+            "captured_at": "2026-09-11T18:23:15.33+00:00",
+            "ledger_version": 1,
+            "scheduled_start": "2026-09-12T18:00:00+00:00",
+            "hours_to_start_at_capture": 23.61
+          },
+          "hours_to_start": 20.21,
+          "checkpoints": [
+            "t_minus_24h",
+            "post_weigh_in",
+            "ad_hoc",
+            "t_minus_72h"
+          ],
+          "snapshots": 7,
+          "bout_state": {
+            "event": {
+              "city": "Glendale",
+              "name": "Noche UFC: Silva vs. Delgado",
+              "venue": "Desert Diamond Arena",
+              "region": "AZ",
+              "country": "USA",
+              "card_status": "announced"
+            },
+            "status": "announced",
+            "is_title": false,
+            "is_womens": false,
+            "bout_order": 6,
+            "ufcstats_id": "046c22f769fd8300",
+            "weight_class": "WELTERWEIGHT",
+            "card_position": "prelim",
+            "is_main_event": false,
+            "replaced_bout_id": null,
+            "scheduled_rounds": 3,
+            "weight_class_raw": "Welterweight",
+            "short_notice_days": null,
+            "espn_competition_id": "401905193"
+          },
+          "fighters": {
+            "a": {
+              "id": "2650d370-e47d-4b07-b4cb-35c4ecf6168b",
+              "name": "Ignacio Bahamondes",
+              "slug_id": "4038116",
+              "stance": "ORTHODOX",
+              "record": {
+                "d": 0,
+                "l": 7,
+                "w": 17,
+                "nc": 0
+              },
+              "rankings": null
+            },
+            "b": {
+              "id": "4bfd2b1a-1b23-4d96-9825-b2d5aa8b91bb",
+              "name": "Muslim Salikhov",
+              "slug_id": "3132513",
+              "stance": "ORTHODOX",
+              "record": {
+                "d": 0,
+                "l": 6,
+                "w": 22,
+                "nc": 0
+              },
+              "rankings": null
+            },
+            "stance_context": "same"
+          },
+          "has_dna": {
+            "a": true,
+            "b": true
+          },
+          "dna": {
+            "a": {
+              "status": "ok",
+              "as_of_date": "2026-09-10",
+              "definition_version": 1
+            },
+            "b": {
+              "status": "ok",
+              "as_of_date": "2026-09-10",
+              "definition_version": 1
+            }
+          },
+          "wire_count": 25,
+          "result": {
+            "status": "pending"
+          },
+          "sources": {
+            "weigh_in": "unavailable",
+            "odds": "unavailable",
+            "market": "unavailable",
+            "model": "unavailable"
+          },
+          "diff": {
+            "newer": {
+              "id": "f9f6f7bd-3ef1-4db3-b599-c335a7b1a762",
+              "checkpoint": "t_minus_24h",
+              "captured_at": "2026-09-11T18:23:15.33+00:00"
+            },
+            "older": {
+              "id": "942b6f9a-6965-4fd3-b04d-f36f5d9d54b0",
+              "checkpoint": "post_weigh_in",
+              "captured_at": "2026-09-11T16:23:15.331+00:00"
+            },
+            "hours_between": 2,
+            "changed": [
+              "wire.count"
+            ],
+            "changes": [
+              {
+                "path": "wire.count",
+                "from": 24,
+                "to": 25
+              }
+            ]
+          },
+          "card_shock": {
+            "status": "not_computed",
+            "reason": "card_shock_engine_not_built"
+          }
+        },
+        {
+          "bout": {
+            "id": "3b91feaa-69d8-4eb8-a37a-3464b146210e",
+            "status": "announced",
+            "bout_order": 5,
+            "card_position": "prelim",
+            "weight_class": "MIDDLEWEIGHT",
+            "scheduled_rounds": 3,
+            "is_title": false,
+            "fighter_a": {
+              "id": "456a7363-571c-42d0-887c-e36746063358",
+              "name": "Yousri Belgaroui",
+              "nickname": null,
+              "ufcstats_id": "7674b836ce0698a0",
+              "espn_athlete_id": "5149815",
+              "slug_id": "5149815",
+              "record_w": 10,
+              "record_l": 3,
+              "record_d": 0,
+              "record_nc": null,
+              "primary_image": {
+                "id": "cfed9b70-3de5-43db-acbf-83e41f18975e",
+                "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/456a7363-571c-42d0-887c-e36746063358/portrait.jpg",
+                "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/456a7363-571c-42d0-887c-e36746063358/card.jpg",
+                "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/456a7363-571c-42d0-887c-e36746063358/thumb.jpg",
+                "author": "FIGHTPRESS-TV",
+                "license": "CC BY 3.0",
+                "source_url": "https://commons.wikimedia.org/wiki/File:Yousri_Belgaroui.jpg",
+                "kind": "wikimedia",
+                "attribution_text": null,
+                "rights_label": null
+              }
+            },
+            "fighter_b": {
+              "id": "8096c960-3c6a-4c43-a003-8d0b610fea9a",
+              "name": "Djorden Santos",
+              "nickname": "Shakur",
+              "ufcstats_id": "312f7d7b2b2f7de4",
+              "espn_athlete_id": "5211247",
+              "slug_id": "5211247",
+              "record_w": 11,
+              "record_l": 3,
+              "record_d": 0,
+              "record_nc": 0,
+              "primary_image": null
+            },
+            "has_result": false
+          },
+          "ledger_status": "ok",
+          "latest": {
+            "id": "393588fa-d2e7-446f-b89c-1e2cad2e0bd4",
+            "checkpoint": "t_minus_24h",
+            "captured_at": "2026-09-11T18:23:15.33+00:00",
+            "ledger_version": 1,
+            "scheduled_start": "2026-09-12T18:00:00+00:00",
+            "hours_to_start_at_capture": 23.61
+          },
+          "hours_to_start": 20.21,
+          "checkpoints": [
+            "t_minus_24h",
+            "post_weigh_in",
+            "ad_hoc",
+            "t_minus_72h"
+          ],
+          "snapshots": 7,
+          "bout_state": {
+            "event": {
+              "city": "Glendale",
+              "name": "Noche UFC: Silva vs. Delgado",
+              "venue": "Desert Diamond Arena",
+              "region": "AZ",
+              "country": "USA",
+              "card_status": "announced"
+            },
+            "status": "announced",
+            "is_title": false,
+            "is_womens": false,
+            "bout_order": 5,
+            "ufcstats_id": null,
+            "weight_class": "MIDDLEWEIGHT",
+            "card_position": "prelim",
+            "is_main_event": false,
+            "replaced_bout_id": null,
+            "scheduled_rounds": 3,
+            "weight_class_raw": "Middleweight",
+            "short_notice_days": null,
+            "espn_competition_id": "401914463"
+          },
+          "fighters": {
+            "a": {
+              "id": "456a7363-571c-42d0-887c-e36746063358",
+              "name": "Yousri Belgaroui",
+              "slug_id": "5149815",
+              "stance": "ORTHODOX",
+              "record": {
+                "d": 0,
+                "l": 3,
+                "w": 10,
+                "nc": null
+              },
+              "rankings": null
+            },
+            "b": {
+              "id": "8096c960-3c6a-4c43-a003-8d0b610fea9a",
+              "name": "Djorden Santos",
+              "slug_id": "5211247",
+              "stance": "ORTHODOX",
+              "record": {
+                "d": 0,
+                "l": 3,
+                "w": 11,
+                "nc": 0
+              },
+              "rankings": null
+            },
+            "stance_context": "same"
+          },
+          "has_dna": {
+            "a": true,
+            "b": true
+          },
+          "dna": {
+            "a": {
+              "status": "ok",
+              "as_of_date": "2026-09-10",
+              "definition_version": 1
+            },
+            "b": {
+              "status": "ok",
+              "as_of_date": "2026-09-10",
+              "definition_version": 1
+            }
+          },
+          "wire_count": 27,
+          "result": {
+            "status": "pending"
+          },
+          "sources": {
+            "weigh_in": "unavailable",
+            "odds": "unavailable",
+            "market": "unavailable",
+            "model": "unavailable"
+          },
+          "diff": {
+            "newer": {
+              "id": "393588fa-d2e7-446f-b89c-1e2cad2e0bd4",
+              "checkpoint": "t_minus_24h",
+              "captured_at": "2026-09-11T18:23:15.33+00:00"
+            },
+            "older": {
+              "id": "764c2f71-52e9-4a43-ab9a-4af6478a41dd",
+              "checkpoint": "post_weigh_in",
+              "captured_at": "2026-09-11T16:23:15.331+00:00"
+            },
+            "hours_between": 2,
+            "changed": [
+              "wire.count"
+            ],
+            "changes": [
+              {
+                "path": "wire.count",
+                "from": 26,
+                "to": 27
+              }
+            ]
+          },
+          "card_shock": {
+            "status": "not_computed",
+            "reason": "card_shock_engine_not_built"
+          }
+        },
+        {
+          "bout": {
+            "id": "e9f3da1c-42d3-4d64-aa9b-a999733804be",
+            "status": "announced",
+            "bout_order": 4,
+            "card_position": "prelim",
+            "weight_class": "LIGHTWEIGHT",
+            "scheduled_rounds": 3,
+            "is_title": false,
+            "fighter_a": {
+              "id": "4b0dc10c-a942-4c20-8212-5afe70424dcb",
+              "name": "Drakkar Klose",
+              "nickname": null,
+              "ufcstats_id": "7cbf7c78d3b34218",
+              "espn_athlete_id": "4079621",
+              "slug_id": "4079621",
+              "record_w": 16,
+              "record_l": 3,
+              "record_d": 1,
+              "record_nc": 0,
+              "primary_image": {
+                "id": "1243bbd5-9823-4a26-88a0-7b0ef670d1ed",
+                "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/4b0dc10c-a942-4c20-8212-5afe70424dcb/portrait.jpg",
+                "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/4b0dc10c-a942-4c20-8212-5afe70424dcb/card.jpg",
+                "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/4b0dc10c-a942-4c20-8212-5afe70424dcb/thumb.jpg",
+                "author": "Projectsmusic",
+                "license": "CC BY-SA 4.0",
+                "source_url": "https://commons.wikimedia.org/wiki/File:Drakkar_Klose_.jpg",
+                "kind": "wikimedia",
+                "attribution_text": "Projectsmusic, CC BY-SA 4.0, via Wikimedia Commons",
+                "rights_label": "CC BY-SA 4.0"
+              }
+            },
+            "fighter_b": {
+              "id": "08e58845-4ba5-4fcf-982f-2b47171d4dce",
+              "name": "Tommy Gantt",
+              "nickname": null,
+              "ufcstats_id": "de83f920fd302871",
+              "espn_athlete_id": "5307814",
+              "slug_id": "5307814",
+              "record_w": 12,
+              "record_l": 0,
+              "record_d": 0,
+              "record_nc": 1,
+              "primary_image": null
+            },
+            "has_result": false
+          },
+          "ledger_status": "ok",
+          "latest": {
+            "id": "c98410a3-ce89-4e58-adf3-4c5346db82cc",
+            "checkpoint": "t_minus_24h",
+            "captured_at": "2026-09-11T18:23:15.33+00:00",
+            "ledger_version": 1,
+            "scheduled_start": "2026-09-12T18:00:00+00:00",
+            "hours_to_start_at_capture": 23.61
+          },
+          "hours_to_start": 20.21,
+          "checkpoints": [
+            "t_minus_24h",
+            "post_weigh_in",
+            "ad_hoc",
+            "t_minus_72h"
+          ],
+          "snapshots": 7,
+          "bout_state": {
+            "event": {
+              "city": "Glendale",
+              "name": "Noche UFC: Silva vs. Delgado",
+              "venue": "Desert Diamond Arena",
+              "region": "AZ",
+              "country": "USA",
+              "card_status": "announced"
+            },
+            "status": "announced",
+            "is_title": false,
+            "is_womens": false,
+            "bout_order": 4,
+            "ufcstats_id": "0aa849ca85e4355a",
+            "weight_class": "LIGHTWEIGHT",
+            "card_position": "prelim",
+            "is_main_event": false,
+            "replaced_bout_id": null,
+            "scheduled_rounds": 3,
+            "weight_class_raw": "Lightweight",
+            "short_notice_days": null,
+            "espn_competition_id": "401916463"
+          },
+          "fighters": {
+            "a": {
+              "id": "4b0dc10c-a942-4c20-8212-5afe70424dcb",
+              "name": "Drakkar Klose",
+              "slug_id": "4079621",
+              "stance": "ORTHODOX",
+              "record": {
+                "d": 1,
+                "l": 3,
+                "w": 16,
+                "nc": 0
+              },
+              "rankings": null
+            },
+            "b": {
+              "id": "08e58845-4ba5-4fcf-982f-2b47171d4dce",
+              "name": "Tommy Gantt",
+              "slug_id": "5307814",
+              "stance": "ORTHODOX",
+              "record": {
+                "d": 0,
+                "l": 0,
+                "w": 12,
+                "nc": 1
+              },
+              "rankings": null
+            },
+            "stance_context": "same"
+          },
+          "has_dna": {
+            "a": true,
+            "b": true
+          },
+          "dna": {
+            "a": {
+              "status": "ok",
+              "as_of_date": "2026-09-10",
+              "definition_version": 1
+            },
+            "b": {
+              "status": "ok",
+              "as_of_date": "2026-09-10",
+              "definition_version": 1
+            }
+          },
+          "wire_count": 25,
+          "result": {
+            "status": "pending"
+          },
+          "sources": {
+            "weigh_in": "unavailable",
+            "odds": "unavailable",
+            "market": "unavailable",
+            "model": "unavailable"
+          },
+          "diff": {
+            "newer": {
+              "id": "c98410a3-ce89-4e58-adf3-4c5346db82cc",
+              "checkpoint": "t_minus_24h",
+              "captured_at": "2026-09-11T18:23:15.33+00:00"
+            },
+            "older": {
+              "id": "92ec4c8b-741a-4ec7-bf5e-66bbac8af2de",
+              "checkpoint": "post_weigh_in",
+              "captured_at": "2026-09-11T16:23:15.331+00:00"
+            },
+            "hours_between": 2,
+            "changed": [
+              "wire.count"
+            ],
+            "changes": [
+              {
+                "path": "wire.count",
+                "from": 24,
+                "to": 25
+              }
+            ]
+          },
+          "card_shock": {
+            "status": "not_computed",
+            "reason": "card_shock_engine_not_built"
+          }
+        },
+        {
+          "bout": {
+            "id": "b380c59b-c8fc-4635-b890-f33b848099e5",
+            "status": "announced",
+            "bout_order": 3,
+            "card_position": "prelim",
+            "weight_class": "LIGHTWEIGHT",
+            "scheduled_rounds": 3,
+            "is_title": false,
+            "fighter_a": {
+              "id": "0cdf91ce-3ba1-471c-a7d8-973c7cfc1059",
+              "name": "Rafa Garcia",
+              "nickname": "Gifted",
+              "ufcstats_id": "e132d47bd9efbbe0",
+              "espn_athlete_id": "4690549",
+              "slug_id": "4690549",
+              "record_w": 19,
+              "record_l": 4,
+              "record_d": 0,
+              "record_nc": 0,
+              "primary_image": null
+            },
+            "fighter_b": {
+              "id": "536374b2-125f-408a-a35a-2415fe227803",
+              "name": "Rongzhu",
+              "nickname": null,
+              "ufcstats_id": "a13d755965a4ec9f",
+              "espn_athlete_id": "4773371",
+              "slug_id": "4773371",
+              "record_w": 27,
+              "record_l": 6,
+              "record_d": 0,
+              "record_nc": 0,
+              "primary_image": null
+            },
+            "has_result": false
+          },
+          "ledger_status": "ok",
+          "latest": {
+            "id": "0ebd0196-a8c8-4de7-ba94-19fea8cdeb02",
+            "checkpoint": "t_minus_24h",
+            "captured_at": "2026-09-11T18:23:15.33+00:00",
+            "ledger_version": 1,
+            "scheduled_start": "2026-09-12T18:00:00+00:00",
+            "hours_to_start_at_capture": 23.61
+          },
+          "hours_to_start": 20.21,
+          "checkpoints": [
+            "t_minus_24h",
+            "post_weigh_in",
+            "ad_hoc",
+            "t_minus_72h"
+          ],
+          "snapshots": 7,
+          "bout_state": {
+            "event": {
+              "city": "Glendale",
+              "name": "Noche UFC: Silva vs. Delgado",
+              "venue": "Desert Diamond Arena",
+              "region": "AZ",
+              "country": "USA",
+              "card_status": "announced"
+            },
+            "status": "announced",
+            "is_title": false,
+            "is_womens": false,
+            "bout_order": 3,
+            "ufcstats_id": "d0d48877bf3724d1",
+            "weight_class": "LIGHTWEIGHT",
+            "card_position": "prelim",
+            "is_main_event": false,
+            "replaced_bout_id": null,
+            "scheduled_rounds": 3,
+            "weight_class_raw": "Lightweight",
+            "short_notice_days": null,
+            "espn_competition_id": "401913547"
+          },
+          "fighters": {
+            "a": {
+              "id": "0cdf91ce-3ba1-471c-a7d8-973c7cfc1059",
+              "name": "Rafa Garcia",
+              "slug_id": "4690549",
+              "stance": "ORTHODOX",
+              "record": {
+                "d": 0,
+                "l": 4,
+                "w": 19,
+                "nc": 0
+              },
+              "rankings": null
+            },
+            "b": {
+              "id": "536374b2-125f-408a-a35a-2415fe227803",
+              "name": "Rongzhu",
+              "slug_id": "4773371",
+              "stance": "ORTHODOX",
+              "record": {
+                "d": 0,
+                "l": 6,
+                "w": 27,
+                "nc": 0
+              },
+              "rankings": null
+            },
+            "stance_context": "same"
+          },
+          "has_dna": {
+            "a": true,
+            "b": true
+          },
+          "dna": {
+            "a": {
+              "status": "ok",
+              "as_of_date": "2026-09-10",
+              "definition_version": 1
+            },
+            "b": {
+              "status": "ok",
+              "as_of_date": "2026-09-10",
+              "definition_version": 1
+            }
+          },
+          "wire_count": 25,
+          "result": {
+            "status": "pending"
+          },
+          "sources": {
+            "weigh_in": "unavailable",
+            "odds": "unavailable",
+            "market": "unavailable",
+            "model": "unavailable"
+          },
+          "diff": {
+            "newer": {
+              "id": "0ebd0196-a8c8-4de7-ba94-19fea8cdeb02",
+              "checkpoint": "t_minus_24h",
+              "captured_at": "2026-09-11T18:23:15.33+00:00"
+            },
+            "older": {
+              "id": "f0fd3e2c-0167-4206-94a8-170ac1af8fa9",
+              "checkpoint": "post_weigh_in",
+              "captured_at": "2026-09-11T16:23:15.331+00:00"
+            },
+            "hours_between": 2,
+            "changed": [
+              "wire.count"
+            ],
+            "changes": [
+              {
+                "path": "wire.count",
+                "from": 24,
+                "to": 25
+              }
+            ]
+          },
+          "card_shock": {
+            "status": "not_computed",
+            "reason": "card_shock_engine_not_built"
+          }
+        },
+        {
+          "bout": {
+            "id": "9ad70054-1797-4bd2-ac0a-efb3523e41d4",
+            "status": "announced",
+            "bout_order": 2,
+            "card_position": "prelim",
+            "weight_class": "FEATHERWEIGHT",
+            "scheduled_rounds": 3,
+            "is_title": false,
+            "fighter_a": {
+              "id": "869107aa-7446-438a-992e-14699cdce495",
+              "name": "Sean King",
+              "nickname": null,
+              "ufcstats_id": "41523699f37d400c",
+              "espn_athlete_id": "5401058",
+              "slug_id": "5401058",
+              "record_w": 6,
+              "record_l": 0,
+              "record_d": 0,
+              "record_nc": 0,
+              "primary_image": null
+            },
+            "fighter_b": {
+              "id": "147cb6f3-841b-4172-b209-54287cefe06d",
+              "name": "Jessie Rosas",
+              "nickname": "Tachidito",
+              "ufcstats_id": "d1026588fa65693f",
+              "espn_athlete_id": "5387599",
+              "slug_id": "5387599",
+              "record_w": 8,
+              "record_l": 1,
+              "record_d": 0,
+              "record_nc": 0,
+              "primary_image": null
+            },
+            "has_result": false
+          },
+          "ledger_status": "ok",
+          "latest": {
+            "id": "1fa4ad8e-2bbb-4135-80d8-b728598a3088",
+            "checkpoint": "t_minus_24h",
+            "captured_at": "2026-09-11T18:23:15.33+00:00",
+            "ledger_version": 1,
+            "scheduled_start": "2026-09-12T18:00:00+00:00",
+            "hours_to_start_at_capture": 23.61
+          },
+          "hours_to_start": 20.21,
+          "checkpoints": [
+            "t_minus_24h",
+            "post_weigh_in",
+            "ad_hoc",
+            "t_minus_72h"
+          ],
+          "snapshots": 7,
+          "bout_state": {
+            "event": {
+              "city": "Glendale",
+              "name": "Noche UFC: Silva vs. Delgado",
+              "venue": "Desert Diamond Arena",
+              "region": "AZ",
+              "country": "USA",
+              "card_status": "announced"
+            },
+            "status": "announced",
+            "is_title": false,
+            "is_womens": false,
+            "bout_order": 2,
+            "ufcstats_id": "5a91827fe8c1dc26",
+            "weight_class": "FEATHERWEIGHT",
+            "card_position": "prelim",
+            "is_main_event": false,
+            "replaced_bout_id": null,
+            "scheduled_rounds": 3,
+            "weight_class_raw": "Featherweight",
+            "short_notice_days": null,
+            "espn_competition_id": "401916464"
+          },
+          "fighters": {
+            "a": {
+              "id": "869107aa-7446-438a-992e-14699cdce495",
+              "name": "Sean King",
+              "slug_id": "5401058",
+              "stance": "ORTHODOX",
+              "record": {
+                "d": 0,
+                "l": 0,
+                "w": 6,
+                "nc": 0
+              },
+              "rankings": null
+            },
+            "b": {
+              "id": "147cb6f3-841b-4172-b209-54287cefe06d",
+              "name": "Jessie Rosas",
+              "slug_id": "5387599",
+              "stance": "SOUTHPAW",
+              "record": {
+                "d": 0,
+                "l": 1,
+                "w": 8,
+                "nc": 0
+              },
+              "rankings": null
+            },
+            "stance_context": "open"
+          },
+          "has_dna": {
+            "a": false,
+            "b": false
+          },
+          "dna": {
+            "a": {
+              "status": "unavailable",
+              "as_of_date": null,
+              "definition_version": null
+            },
+            "b": {
+              "status": "unavailable",
+              "as_of_date": null,
+              "definition_version": null
+            }
+          },
+          "wire_count": 25,
+          "result": {
+            "status": "pending"
+          },
+          "sources": {
+            "weigh_in": "unavailable",
+            "odds": "unavailable",
+            "market": "unavailable",
+            "model": "unavailable"
+          },
+          "diff": {
+            "newer": {
+              "id": "1fa4ad8e-2bbb-4135-80d8-b728598a3088",
+              "checkpoint": "t_minus_24h",
+              "captured_at": "2026-09-11T18:23:15.33+00:00"
+            },
+            "older": {
+              "id": "447d6e9c-119d-4de8-a3ed-96a6774b093a",
+              "checkpoint": "post_weigh_in",
+              "captured_at": "2026-09-11T16:23:15.331+00:00"
+            },
+            "hours_between": 2,
+            "changed": [
+              "wire.count"
+            ],
+            "changes": [
+              {
+                "path": "wire.count",
+                "from": 24,
+                "to": 25
+              }
+            ]
+          },
+          "card_shock": {
+            "status": "not_computed",
+            "reason": "card_shock_engine_not_built"
+          }
+        },
+        {
+          "bout": {
+            "id": "c96f0685-8c23-4030-a79f-b379d89beaf2",
+            "status": "announced",
+            "bout_order": 1,
+            "card_position": "prelim",
+            "weight_class": "FLYWEIGHT",
+            "scheduled_rounds": 3,
+            "is_title": false,
+            "fighter_a": {
+              "id": "a4aa5dd9-7392-4275-ae6b-4e26d858195a",
+              "name": "JJ Aldrich",
+              "nickname": null,
+              "ufcstats_id": "6fd953151d981979",
+              "espn_athlete_id": "3136289",
+              "slug_id": "3136289",
+              "record_w": 15,
+              "record_l": 7,
+              "record_d": 0,
+              "record_nc": 0,
+              "primary_image": null
+            },
+            "fighter_b": {
+              "id": "7abfb35f-3072-411a-9320-3e0d654de663",
+              "name": "Regina Tarin",
+              "nickname": "Kill Bill",
+              "ufcstats_id": "9f5609dba6584ab2",
+              "espn_athlete_id": "5338118",
+              "slug_id": "5338118",
+              "record_w": 8,
+              "record_l": 0,
+              "record_d": 0,
+              "record_nc": 0,
+              "primary_image": null
+            },
+            "has_result": false
+          },
+          "ledger_status": "ok",
+          "latest": {
+            "id": "d8aa78c1-52cc-49d8-aa73-505a3fc6360a",
+            "checkpoint": "t_minus_24h",
+            "captured_at": "2026-09-11T18:23:15.33+00:00",
+            "ledger_version": 1,
+            "scheduled_start": "2026-09-12T18:00:00+00:00",
+            "hours_to_start_at_capture": 23.61
+          },
+          "hours_to_start": 20.21,
+          "checkpoints": [
+            "t_minus_24h",
+            "post_weigh_in",
+            "ad_hoc",
+            "t_minus_72h"
+          ],
+          "snapshots": 7,
+          "bout_state": {
+            "event": {
+              "city": "Glendale",
+              "name": "Noche UFC: Silva vs. Delgado",
+              "venue": "Desert Diamond Arena",
+              "region": "AZ",
+              "country": "USA",
+              "card_status": "announced"
+            },
+            "status": "announced",
+            "is_title": false,
+            "is_womens": true,
+            "bout_order": 1,
+            "ufcstats_id": "64da2e60f1b472fa",
+            "weight_class": "FLYWEIGHT",
+            "card_position": "prelim",
+            "is_main_event": false,
+            "replaced_bout_id": null,
+            "scheduled_rounds": 3,
+            "weight_class_raw": "Women's Flyweight",
+            "short_notice_days": null,
+            "espn_competition_id": "401897736"
+          },
+          "fighters": {
+            "a": {
+              "id": "a4aa5dd9-7392-4275-ae6b-4e26d858195a",
+              "name": "JJ Aldrich",
+              "slug_id": "3136289",
+              "stance": "SOUTHPAW",
+              "record": {
+                "d": 0,
+                "l": 7,
+                "w": 15,
+                "nc": 0
+              },
+              "rankings": [
+                {
+                  "rank": 15,
+                  "is_p4p": false,
+                  "division": "FLYWEIGHT",
+                  "is_womens": true
+                }
+              ]
+            },
+            "b": {
+              "id": "7abfb35f-3072-411a-9320-3e0d654de663",
+              "name": "Regina Tarin",
+              "slug_id": "5338118",
+              "stance": "SOUTHPAW",
+              "record": {
+                "d": 0,
+                "l": 0,
+                "w": 8,
+                "nc": 0
+              },
+              "rankings": null
+            },
+            "stance_context": "same"
+          },
+          "has_dna": {
+            "a": true,
+            "b": true
+          },
+          "dna": {
+            "a": {
+              "status": "ok",
+              "as_of_date": "2026-09-10",
+              "definition_version": 1
+            },
+            "b": {
+              "status": "ok",
+              "as_of_date": "2026-09-10",
+              "definition_version": 1
+            }
+          },
+          "wire_count": 26,
+          "result": {
+            "status": "pending"
+          },
+          "sources": {
+            "weigh_in": "unavailable",
+            "odds": "unavailable",
+            "market": "unavailable",
+            "model": "unavailable"
+          },
+          "diff": {
+            "newer": {
+              "id": "d8aa78c1-52cc-49d8-aa73-505a3fc6360a",
+              "checkpoint": "t_minus_24h",
+              "captured_at": "2026-09-11T18:23:15.33+00:00"
+            },
+            "older": {
+              "id": "71259e65-1e8c-4e17-ab37-653ef1bd13de",
+              "checkpoint": "post_weigh_in",
+              "captured_at": "2026-09-11T16:23:15.331+00:00"
+            },
+            "hours_between": 2,
+            "changed": [
+              "wire.count"
+            ],
+            "changes": [
+              {
+                "path": "wire.count",
+                "from": 25,
+                "to": 26
+              }
+            ]
+          },
+          "card_shock": {
+            "status": "not_computed",
+            "reason": "card_shock_engine_not_built"
+          }
+        }
+      ],
+      "card_shock": {
+        "status": "not_computed",
+        "reason": "card_shock_engine_not_built"
+      }
+    },
+    "meta": {
+      "api": "PropSports UFC",
+      "version": "2026-09-11.1",
+      "request_id": "3678664b-de5e-48dc-b1dd-9c7054e6f6e0",
+      "generated_at": "2026-09-11T21:47:30.877Z",
+      "bouts": 13,
+      "bouts_with_ledger": 13,
+      "snapshots": 91,
+      "snapshots_total": 91,
+      "truncated": false,
+      "checkpoints": {
+        "t_minus_72h": 13,
+        "t_minus_24h": 26,
+        "post_weigh_in": 13,
+        "ad_hoc": 39
+      },
+      "latest_captured_at": "2026-09-11T18:23:15.33+00:00",
+      "unavailable_sources": [
+        "weigh_in",
+        "odds",
+        "market",
+        "model"
+      ],
+      "source_status": {
+        "weigh_in": {
+          "unavailable": 13
+        },
+        "odds": {
+          "unavailable": 13
+        },
+        "market": {
+          "unavailable": 13
+        },
+        "model": {
+          "unavailable": 13
+        }
+      },
+      "card_shock": {
+        "status": "not_computed",
+        "reason": "card_shock_engine_not_built"
+      },
+      "diff_rules": "Deterministic shallow diff between consecutive snapshots, no interpretation: top-level keys of bout_state (keys ending in _updated_at ignored), fighters.a/b {id,name,slug_id,stance,record,rankings} and fighters.stance_context, top-level keys of rankings, dna.a/b {status,as_of_date,definition_version}, wire.count, weigh_in/odds/market/model/result .status. Values are compared as JSON.",
+      "access_tier": "public"
+    }
+  }
+}

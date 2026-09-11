@@ -41,7 +41,7 @@ export class FakeAnalytics {
 }
 
 /** Upstream fetch fake: serves canned bodies by path (search ignored unless keyed). */
-export function fakeUpstream(routes, { apiVersion = "2026-09-06.3" } = {}) {
+export function fakeUpstream(routes, { apiVersion = "2026-09-11.1" } = {}) {
   const calls = [];
   const fetchImpl = async (url, init) => {
     const u = new URL(url);

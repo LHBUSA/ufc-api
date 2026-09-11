@@ -7,6 +7,11 @@ import { execCtx, fakeUpstream, makeEnv } from "./fakes.mjs";
 import fighterDna from "../../upstream/fixtures/fighter_dna.json" with { type: "json" };
 import matchupDna from "../../upstream/fixtures/matchup_dna.json" with { type: "json" };
 import eventsUpcoming from "../../upstream/fixtures/events_upcoming.json" with { type: "json" };
+import nocheWeighIns from "../../upstream/fixtures/noche_weigh_ins.json" with { type: "json" };
+import weighInsMissed from "../../upstream/fixtures/weigh_ins_missed.json" with { type: "json" };
+import injuriesActive from "../../upstream/fixtures/injuries_active.json" with { type: "json" };
+import nocheCardChanges from "../../upstream/fixtures/noche_card_changes.json" with { type: "json" };
+import silvaStatus from "../../upstream/fixtures/silva_status.json" with { type: "json" };
 
 const S = "ec94d296-2db3-4e0d-be6a-46de4f480672";
 const D = "9a3b2a15-27d8-4554-9217-42ef2dd5d25c";
@@ -15,9 +20,15 @@ const routes = {
   "/v1/ufc/events": { body: eventsUpcoming.body },
   [`/v1/ufc/fighters/${S}/dna`]: { body: fighterDna.body, request_id: "up-dna" },
   [`/v1/ufc/matchups/${S}/${D}/dna`]: { body: matchupDna.body },
-  "/v1/ufc/fighters/00000000-0000-0000-0000-000000000000/dna": { status: 404, body: { ok: false, data: null, error: { code: "fighter_not_found", message: "UFC fighter not found." }, meta: { api: "PropSports UFC", version: "2026-09-06.3", request_id: "up-404f" } } },
+  "/v1/ufc/fighters/00000000-0000-0000-0000-000000000000/dna": { status: 404, body: { ok: false, data: null, error: { code: "fighter_not_found", message: "UFC fighter not found." }, meta: { api: "PropSports UFC", version: "2026-09-11.1", request_id: "up-404f" } } },
   "/v1/ufc/counts": { body: { ok: true, data: { fighters: 1 }, meta: {} } },
   "/v1/ufc/boom": { throw: "TimeoutError" },
+  /* 2026-09-11.1 fight-week facts, verbatim live fixtures */
+  [nocheWeighIns.path]: { body: nocheWeighIns.body, request_id: "up-wi" },
+  [weighInsMissed.path]: { body: weighInsMissed.body },
+  [injuriesActive.path]: { body: injuriesActive.body },
+  [nocheCardChanges.path]: { body: nocheCardChanges.body },
+  [silvaStatus.path]: { body: silvaStatus.body },
 };
 const up = fakeUpstream(routes);
 const realFetch = globalThis.fetch;
@@ -70,7 +81,7 @@ test("developer key: canonical body passes through unchanged with commercial hea
   assert.equal(res.headers.get("x-ratelimit-remaining"), "59");
   assert.equal(res.headers.get("x-quota-limit"), "25000");
   assert.equal(res.headers.get("x-quota-remaining"), "24999");
-  assert.equal(res.headers.get("x-api-version"), "2026-09-06.3");
+  assert.equal(res.headers.get("x-api-version"), "2026-09-11.1");
   assert.equal(res.headers.get("x-upstream-request-id"), "up-events");
   assert.ok(res.headers.get("x-request-id"));
   assert.equal(res.headers.get("cache-control"), "private, max-age=60");
@@ -93,6 +104,25 @@ test("developer key: Fight DNA → 403 plan_required (pro); Matchup DNA → 403 
   const nf = await worker.fetch(req("/v1/ufc/nope", bearer(dev.key)), env, execCtx);
   assert.equal(nf.status, 404); assert.equal((await nf.json()).error.code, "route_not_found");
   assert.equal(up.calls.length, calls, "denied requests never reach upstream");
+});
+
+test("developer key: the five 2026-09-11.1 fight-week fact routes pass through byte-for-byte", async () => {
+  const env = makeEnv();
+  const { dev } = await keysFor(env);
+  for (const f of [nocheWeighIns, weighInsMissed, injuriesActive, nocheCardChanges, silvaStatus]) {
+    const res = await worker.fetch(req(f.path, bearer(dev.key)), env, execCtx);
+    assert.equal(res.status, 200, f.path);
+    assert.deepEqual(await res.json(), f.body, `${f.path} body must be the canonical response`);
+    assert.equal(res.headers.get("x-plan"), "developer");
+    assert.equal(up.calls.at(-1).url, f.path, "query string is forwarded unchanged");
+  }
+  /* the derived fight-week state stays Ultra: no upstream call for a developer key */
+  const calls = up.calls.length;
+  for (const p of ["/v1/ufc/bouts/x/ledger", "/v1/ufc/events/x/intelligence"]) {
+    const d = await worker.fetch(req(p, bearer(dev.key)), env, execCtx);
+    assert.equal(d.status, 403, p); assert.equal((await d.json()).error.detail.required_plan, "ultra");
+  }
+  assert.equal(up.calls.length, calls);
 });
 
 test("include=stats gate: developer denied with parameter detail, pro allowed", async () => {
@@ -246,7 +276,7 @@ test("dashboard API: /me shows plan + usage without secrets; /rotate issues a ne
   const mb = await me.json();
   assert.equal(mb.data.key.plan, "pro"); assert.equal(mb.data.usage.used, 1); assert.equal(mb.data.usage.quota, 100000); assert.equal(mb.data.plan.limits.rate_limit_per_min, 180);
   assert.equal(JSON.stringify(mb).includes(pro.key), false, "raw key never echoed"); assert.equal(JSON.stringify(mb).includes("secret_hash"), false);
-  assert.equal(mb.data.api.version, "2026-09-06.3");
+  assert.equal(mb.data.api.version, "2026-09-11.1");
   const rot = await worker.fetch(req("/dashboard/api/rotate", bearer(pro.key), "POST"), env, execCtx);
   const rb = await rot.json();
   assert.match(rb.data.key, /^pt_ufc_live_/); assert.notEqual(rb.data.key, pro.key); assert.equal(rb.data.record.plan, "pro"); assert.equal(rb.data.record.rotated_from, pro.record.id);
@@ -258,7 +288,7 @@ test("dashboard API: /me shows plan + usage without secrets; /rotate issues a ne
 test("health is public; OPTIONS preflight on /v1 returns CORS; non-API paths go to static assets; POST on /v1 is 405", async () => {
   const env = makeEnv();
   const h = await worker.fetch(req("/health"), env, execCtx);
-  assert.equal(h.status, 200); assert.equal((await h.json()).data.api_version_target, "2026-09-06.3");
+  assert.equal(h.status, 200); assert.equal((await h.json()).data.api_version_target, "2026-09-11.1");
   const o = await worker.fetch(req("/v1/ufc/events", {}, "OPTIONS"), env, execCtx);
   assert.equal(o.status, 204); assert.equal(o.headers.get("access-control-allow-origin"), "*");
   const a = await worker.fetch(req("/pricing"), env, execCtx);

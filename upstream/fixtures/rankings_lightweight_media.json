@@ -1,9 +1,9 @@
 {
-  "captured_at": "2026-09-07T15:18:22.761Z",
+  "captured_at": "2026-09-11T21:47:17.890Z",
   "base": "https://ufc-api.propbetedge.ai",
-  "path": "/v1/ufc/fighters/media?ids=91218960-ded4-4375-890a-f3208575b374,0c629145-29ee-4d40-b060-2d6476164ea8,d74e3922-beb0-433d-bde9-412affc97ea8,d1b6a9d1-2c1a-4194-a801-9b1f229beed2,3f27ab3c-099d-4e7a-8beb-43e73f0866fd,d5490b09-be72-41d7-aeda-facb5a165d59,a5a60b14-f32d-4daa-9ade-a43ea98fa26b,38d76024-e211-4429-bb77-0f6e3c2016cc,d9245b3c-009c-4d20-8c8e-c2a917ef77b1,dec5c1ae-15a8-4fcd-97d9-0e94d0f6201a,5c8d6aaf-28fb-49ad-8ffd-4f161c508728,0ad21862-f001-403e-9c4d-c4565235eda1",
+  "path": "/v1/ufc/fighters/media?ids=91218960-ded4-4375-890a-f3208575b374,0c629145-29ee-4d40-b060-2d6476164ea8,d74e3922-beb0-433d-bde9-412affc97ea8,d1b6a9d1-2c1a-4194-a801-9b1f229beed2,3f27ab3c-099d-4e7a-8beb-43e73f0866fd,d5490b09-be72-41d7-aeda-facb5a165d59,a5a60b14-f32d-4daa-9ade-a43ea98fa26b,38d76024-e211-4429-bb77-0f6e3c2016cc,d9245b3c-009c-4d20-8c8e-c2a917ef77b1,ebc1b218-f1fb-4f18-bd29-a1690910499f,17563ab2-dbac-4366-861f-917628a0a4b1,dec5c1ae-15a8-4fcd-97d9-0e94d0f6201a",
   "status": 200,
-  "api_version": "2026-09-06.3",
+  "api_version": "2026-09-11.1",
   "body": {
     "ok": true,
     "data": {
@@ -105,6 +105,30 @@
           "rights_label": "Public domain"
         },
         "d9245b3c-009c-4d20-8c8e-c2a917ef77b1": null,
+        "ebc1b218-f1fb-4f18-bd29-a1690910499f": {
+          "id": "8d8dfedd-cce5-4e34-aa31-a4d346616dec",
+          "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/ebc1b218-f1fb-4f18-bd29-a1690910499f/portrait.jpg",
+          "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/ebc1b218-f1fb-4f18-bd29-a1690910499f/card.jpg",
+          "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/ebc1b218-f1fb-4f18-bd29-a1690910499f/thumb.jpg",
+          "author": "ZACK",
+          "license": "CC BY 3.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:ParnasseMMA2023.png",
+          "kind": "wikimedia",
+          "attribution_text": "ZACK, CC BY 3.0, via Wikimedia Commons",
+          "rights_label": "CC BY 3.0"
+        },
+        "17563ab2-dbac-4366-861f-917628a0a4b1": {
+          "id": "c3082ffe-889d-4cf8-a682-d2a5905286f1",
+          "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/17563ab2-dbac-4366-861f-917628a0a4b1/portrait.jpg",
+          "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/17563ab2-dbac-4366-861f-917628a0a4b1/card.jpg",
+          "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/17563ab2-dbac-4366-861f-917628a0a4b1/thumb.jpg",
+          "author": "SPORTS UZ",
+          "license": "CC BY 3.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Fiziev_2023.png",
+          "kind": "wikimedia",
+          "attribution_text": "SPORTS UZ, CC BY 3.0, via Wikimedia Commons",
+          "rights_label": "CC BY 3.0"
+        },
         "dec5c1ae-15a8-4fcd-97d9-0e94d0f6201a": {
           "id": "7115c8a3-724c-4c35-8de4-80afc77cd0aa",
           "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/dec5c1ae-15a8-4fcd-97d9-0e94d0f6201a/portrait.jpg",
@@ -115,30 +139,6 @@
           "source_url": "https://commons.wikimedia.org/wiki/File:Mateusz_Gamrot.jpg",
           "kind": "wikimedia",
           "attribution_text": "Roger Gor, CC BY 3.0, via Wikimedia Commons",
-          "rights_label": "CC BY 3.0"
-        },
-        "5c8d6aaf-28fb-49ad-8ffd-4f161c508728": {
-          "id": "05b02093-5664-43f7-9835-0e470d39d3f7",
-          "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/5c8d6aaf-28fb-49ad-8ffd-4f161c508728/portrait.jpg",
-          "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/5c8d6aaf-28fb-49ad-8ffd-4f161c508728/card.jpg",
-          "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/5c8d6aaf-28fb-49ad-8ffd-4f161c508728/thumb.jpg",
-          "author": "Fight Bros NZ",
-          "license": "CC BY 3.0",
-          "source_url": "https://commons.wikimedia.org/wiki/File:DanHooker2016.png",
-          "kind": "wikimedia",
-          "attribution_text": "Fight Bros NZ, CC BY 3.0, via Wikimedia Commons",
-          "rights_label": "CC BY 3.0"
-        },
-        "0ad21862-f001-403e-9c4d-c4565235eda1": {
-          "id": "7e7c23c5-4348-498a-89eb-bda7f52f9f01",
-          "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/0ad21862-f001-403e-9c4d-c4565235eda1/portrait.jpg",
-          "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/0ad21862-f001-403e-9c4d-c4565235eda1/card.jpg",
-          "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/0ad21862-f001-403e-9c4d-c4565235eda1/thumb.jpg",
-          "author": "Show Me The Money",
-          "license": "CC BY 3.0",
-          "source_url": "https://commons.wikimedia.org/wiki/File:Renato_Moicano_2024.png",
-          "kind": "wikimedia",
-          "attribution_text": "Show Me The Money, CC BY 3.0, via Wikimedia Commons",
           "rights_label": "CC BY 3.0"
         }
       },
@@ -152,15 +152,15 @@
         "a5a60b14-f32d-4daa-9ade-a43ea98fa26b",
         "38d76024-e211-4429-bb77-0f6e3c2016cc",
         "d9245b3c-009c-4d20-8c8e-c2a917ef77b1",
-        "dec5c1ae-15a8-4fcd-97d9-0e94d0f6201a",
-        "5c8d6aaf-28fb-49ad-8ffd-4f161c508728",
-        "0ad21862-f001-403e-9c4d-c4565235eda1"
+        "ebc1b218-f1fb-4f18-bd29-a1690910499f",
+        "17563ab2-dbac-4366-861f-917628a0a4b1",
+        "dec5c1ae-15a8-4fcd-97d9-0e94d0f6201a"
       ]
     },
     "meta": {
       "api": "PropSports UFC",
-      "version": "2026-09-06.3",
-      "request_id": "a01f450d-6ffc-42cc-9ede-e3938001ae63",
+      "version": "2026-09-11.1",
+      "request_id": "e74b4898-d723-4180-9ba9-50b98058f37d",
       "requested": 12,
       "found": 11,
       "access_tier": "public"

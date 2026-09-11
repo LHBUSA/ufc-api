@@ -1,27 +1,12 @@
 {
-  "captured_at": "2026-09-07T15:18:22.761Z",
+  "captured_at": "2026-09-11T21:47:17.890Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/events?status=upcoming&limit=3",
   "status": 200,
-  "api_version": "2026-09-06.3",
+  "api_version": "2026-09-11.1",
   "body": {
     "ok": true,
     "data": [
-      {
-        "id": "187505ab-636d-4f90-8d5f-d98ebfd1cd7c",
-        "ufcstats_id": null,
-        "espn_event_id": "600060736",
-        "name": "Dana White's Contender Series: Season 10, Week 5",
-        "event_date": "2026-09-08",
-        "venue": "Meta APEX",
-        "city": "Las Vegas",
-        "region": "NV",
-        "country": "USA",
-        "commission": null,
-        "is_ppv": null,
-        "card_status": "announced",
-        "updated_at": "2026-09-07T06:03:34.55+00:00"
-      },
       {
         "id": "1d0b22df-81e7-4e5b-8fa5-8e5d03c24c52",
         "ufcstats_id": "638cfec7ec559d6e",
@@ -35,7 +20,7 @@
         "commission": null,
         "is_ppv": null,
         "card_status": "announced",
-        "updated_at": "2026-09-07T06:03:41.716+00:00"
+        "updated_at": "2026-09-11T06:02:29.394+00:00"
       },
       {
         "id": "64bfa864-454c-4d0a-92e3-408f25598d6c",
@@ -50,15 +35,30 @@
         "commission": null,
         "is_ppv": null,
         "card_status": "announced",
-        "updated_at": "2026-09-07T06:03:57.561+00:00"
+        "updated_at": "2026-09-11T06:02:35.996+00:00"
+      },
+      {
+        "id": "221ca353-f623-4b66-98aa-3a504a418236",
+        "ufcstats_id": "8a0a35e7c74bebcc",
+        "espn_event_id": "600060963",
+        "name": "UFC 331: Van vs. Pantoja 2",
+        "event_date": "2026-09-19",
+        "venue": "crypto.com Arena",
+        "city": "Los Angeles",
+        "region": "CA",
+        "country": "USA",
+        "commission": null,
+        "is_ppv": null,
+        "card_status": "announced",
+        "updated_at": "2026-09-11T06:02:39.125+00:00"
       }
     ],
     "meta": {
       "api": "PropSports UFC",
-      "version": "2026-09-06.3",
-      "request_id": "299c1248-929c-4612-aa4c-f221e5f1d01a",
+      "version": "2026-09-11.1",
+      "request_id": "7197e37f-5914-43d5-b26f-1d7c06ab602f",
       "count": 3,
-      "total": 17,
+      "total": 16,
       "status": "upcoming",
       "date": null,
       "access_tier": "public"

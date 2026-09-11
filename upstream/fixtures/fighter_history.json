@@ -1,9 +1,9 @@
 {
-  "captured_at": "2026-09-07T15:18:22.761Z",
+  "captured_at": "2026-09-11T21:47:17.890Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/fighters/ec94d296-2db3-4e0d-be6a-46de4f480672/history?limit=3",
   "status": 200,
-  "api_version": "2026-09-06.3",
+  "api_version": "2026-09-11.1",
   "body": {
     "ok": true,
     "data": {
@@ -125,7 +125,7 @@
             "country": "USA",
             "commission": null,
             "event_date": "2026-05-09",
-            "updated_at": "2026-09-07T06:01:34.903+00:00",
+            "updated_at": "2026-09-11T06:01:40.402+00:00",
             "card_status": "complete",
             "ufcstats_id": "9eedac48b497de5a",
             "espn_event_id": "600058947"
@@ -223,7 +223,7 @@
             "country": "USA",
             "commission": null,
             "event_date": "2026-02-21",
-            "updated_at": "2026-09-07T06:01:12.886+00:00",
+            "updated_at": "2026-09-11T06:01:31.717+00:00",
             "card_status": "complete",
             "ufcstats_id": "79ab17db3b40831a",
             "espn_event_id": "600057329"
@@ -245,38 +245,21 @@
           "outcome": "W"
         },
         {
-          "id": "815fe985-9681-4106-b5f5-e3086125e036",
-          "ufcstats_id": null,
-          "espn_competition_id": "401729651",
-          "event_id": "4da5492f-1192-402d-9760-0647a385d392",
+          "id": "793a5875-b96c-4b9b-82b6-74ac3ecfe11c",
+          "ufcstats_id": "7f16e7725245bb2d",
+          "espn_competition_id": null,
+          "event_id": "174319b9-65c2-4349-8022-6f0734ef82c7",
           "weight_class": "MIDDLEWEIGHT",
           "weight_class_raw": "Middleweight",
           "is_womens": false,
-          "is_title": false,
+          "is_title": true,
           "scheduled_rounds": 5,
-          "card_position": "main",
+          "card_position": null,
           "bout_order": 12,
           "status": "complete",
           "replaced_bout_id": null,
           "short_notice_days": null,
           "fighter_a": {
-            "id": "9a3b2a15-27d8-4554-9217-42ef2dd5d25c",
-            "dob": "1994-01-14",
-            "name": "Dricus Du Plessis",
-            "stance": "SWITCH",
-            "nickname": "Stilknocks",
-            "reach_in": 76,
-            "record_d": 0,
-            "record_l": 3,
-            "record_w": 24,
-            "height_in": 73,
-            "is_active": true,
-            "record_nc": 0,
-            "weight_lbs": 185,
-            "ufcstats_id": "0d7b51c9d2649a6e",
-            "espn_athlete_id": "3166126"
-          },
-          "fighter_b": {
             "id": "ec94d296-2db3-4e0d-be6a-46de4f480672",
             "dob": "1991-02-27",
             "name": "Sean Strickland",
@@ -293,61 +276,91 @@
             "ufcstats_id": "0d8011111be000b2",
             "espn_athlete_id": "3093653"
           },
+          "fighter_b": {
+            "id": "b24ade25-45e1-4393-9a53-c59094236403",
+            "dob": "1989-07-22",
+            "name": "Israel Adesanya",
+            "stance": "SWITCH",
+            "nickname": "The Last Stylebender",
+            "reach_in": 80,
+            "record_d": 0,
+            "record_l": 6,
+            "record_w": 24,
+            "height_in": 76,
+            "is_active": true,
+            "record_nc": 0,
+            "weight_lbs": 185,
+            "ufcstats_id": "1338e2c7480bdf9e",
+            "espn_athlete_id": "4285679"
+          },
           "result": {
             "round": 5,
             "method": "DEC_U",
-            "bout_id": "815fe985-9681-4106-b5f5-e3086125e036",
-            "judge_1": null,
-            "judge_2": null,
-            "judge_3": null,
+            "bout_id": "793a5875-b96c-4b9b-82b6-74ac3ecfe11c",
+            "judge_1": "Eric Colon",
+            "judge_2": "David Lethaby",
+            "judge_3": "Clemens Werner",
             "referee": "Marc Goddard",
             "time_sec": 300,
-            "has_stats": false,
-            "winner_id": "9a3b2a15-27d8-4554-9217-42ef2dd5d25c",
+            "has_stats": true,
+            "winner_id": "ec94d296-2db3-4e0d-be6a-46de4f480672",
             "method_raw": "Decision - Unanimous",
-            "scorecards": null,
-            "captured_at": "2026-09-06T13:43:08.183+00:00",
+            "scorecards": [
+              {
+                "judge": "Eric Colon",
+                "score": "46-49"
+              },
+              {
+                "judge": "David Lethaby",
+                "score": "46-49"
+              },
+              {
+                "judge": "Clemens Werner",
+                "score": "46-49"
+              }
+            ],
+            "captured_at": "2026-09-07T15:39:28.006708+00:00",
             "time_format": "5 Rnd (5-5-5-5-5)",
             "finish_detail": null,
-            "result_source": "espn"
+            "result_source": "ufcstats"
           },
           "event": {
-            "id": "4da5492f-1192-402d-9760-0647a385d392",
+            "id": "174319b9-65c2-4349-8022-6f0734ef82c7",
             "city": "Sydney",
-            "name": "UFC 312: Du Plessis vs. Strickland 2",
-            "venue": "Qudos Bank Arena",
+            "name": "UFC 293: Adesanya vs. Strickland",
+            "venue": null,
             "is_ppv": null,
             "region": "New South Wales",
             "country": "Australia",
             "commission": null,
-            "event_date": "2025-02-08",
-            "updated_at": "2026-09-06T13:54:46.369281+00:00",
+            "event_date": "2023-09-09",
+            "updated_at": "2026-09-06T00:19:51.70622+00:00",
             "card_status": "complete",
-            "ufcstats_id": "e6015889f50075d2",
-            "espn_event_id": "600050481"
+            "ufcstats_id": "ece280745f8727b8",
+            "espn_event_id": null
           },
-          "is_fighter_a": false,
+          "is_fighter_a": true,
           "opponent": {
-            "id": "9a3b2a15-27d8-4554-9217-42ef2dd5d25c",
-            "name": "Dricus Du Plessis",
-            "nickname": "Stilknocks",
-            "ufcstats_id": "0d7b51c9d2649a6e",
-            "espn_athlete_id": "3166126",
-            "slug_id": "3166126",
+            "id": "b24ade25-45e1-4393-9a53-c59094236403",
+            "name": "Israel Adesanya",
+            "nickname": "The Last Stylebender",
+            "ufcstats_id": "1338e2c7480bdf9e",
+            "espn_athlete_id": "4285679",
+            "slug_id": "4285679",
             "record_w": 24,
-            "record_l": 3,
+            "record_l": 6,
             "record_d": 0,
             "record_nc": 0,
             "primary_image": null
           },
-          "outcome": "L"
+          "outcome": "W"
         }
       ]
     },
     "meta": {
       "api": "PropSports UFC",
-      "version": "2026-09-06.3",
-      "request_id": "98c04fc9-7b5a-4f46-8c7e-da46c844adba",
+      "version": "2026-09-11.1",
+      "request_id": "723d308f-eb7f-4560-8bdd-cde9d0bc9045",
       "access_tier": "public"
     }
   }

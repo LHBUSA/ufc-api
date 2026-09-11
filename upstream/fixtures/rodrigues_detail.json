@@ -1,9 +1,9 @@
 {
-  "captured_at": "2026-09-07T15:18:22.761Z",
+  "captured_at": "2026-09-11T21:47:17.890Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/fighters/2d93f8f3-ccaa-420c-b8d5-f446da57bec5?include=ranking,next",
   "status": 200,
-  "api_version": "2026-09-06.3",
+  "api_version": "2026-09-11.1",
   "body": {
     "ok": true,
     "data": {
@@ -68,8 +68,8 @@
       "ranking": {
         "source": "ufc.com official rankings",
         "source_url": "https://www.ufc.com/rankings",
-        "snapshot_date": "2026-09-06",
-        "captured_at": "2026-09-06T16:10:07.916+00:00",
+        "snapshot_date": "2026-09-10",
+        "captured_at": "2026-09-10T12:15:02.152+00:00",
         "positions": [
           {
             "division": "MIDDLEWEIGHT",
@@ -87,8 +87,8 @@
     },
     "meta": {
       "api": "PropSports UFC",
-      "version": "2026-09-06.3",
-      "request_id": "aae7740d-26e9-4f37-9b41-4756eb4b6308",
+      "version": "2026-09-11.1",
+      "request_id": "2dba11ea-df59-43d4-b788-eafdadbea7f8",
       "include": [
         "ranking",
         "next"

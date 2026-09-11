@@ -11,6 +11,8 @@ export const EXAMPLES = {
   results: "results", rankings: "rankings_middleweight", news: "news", search: "search_strickland", counts: "counts", videos: "videos",
   dna_metrics: "dna_metrics", dna_query: "dna_query", fighter_dna: "fighter_dna", fighter_splits: "fighter_splits", fighter_round_profile: "fighter_round_profile",
   fighter_finish_profile: "fighter_finish_profile", fighter_position_profile: "fighter_position_profile", matchup_dna: "matchup_dna", event_card: "noche_card", event: "noche_event",
+  event_weigh_ins: "noche_weigh_ins", weigh_ins: "weigh_ins_missed", injuries: "injuries_active", event_card_changes: "noche_card_changes", fighter_status: "silva_status",
+  event_intelligence: "noche_intelligence",
 };
 
 export function fixture(name) {
@@ -45,6 +47,20 @@ export function trimExample(name, body) {
   if (name === "fighter_splits" || name === "silva_splits") clone.data.splits = (clone.data.splits || []).slice(0, 2);
   if (name.startsWith("rankings_")) clone.data.divisions = (clone.data.divisions || []).map((d) => ({ ...d, entries: (d.entries || []).slice(0, 3) }));
   if (name === "fighter_detail" || name === "silva_detail" || name === "delgado_detail" || name === "fiorot_detail" || name === "grasso_detail" || name === "gaethje_detail" || name === "rodrigues_detail") { clone.data.images = (clone.data.images || []).slice(0, 1); if (clone.data.history) clone.data.history = clone.data.history.slice(0, 1); }
+  if (name === "noche_weigh_ins") {
+    const nr = (clone.data.results || []).length, nh = (clone.data.history || []).length;
+    clone.data.results = (clone.data.results || []).slice(0, 2);
+    /* keep one superseded reading and the current reading that superseded it, so the confirmation chain is visible */
+    const cur = clone.data.results.find((r) => r.supersedes_id);
+    const prior = cur ? (clone.data.history || []).find((h) => h.id === cur.supersedes_id) : null;
+    clone.data.history = [cur ? (clone.data.history || []).find((h) => h.id === cur.id) : null, prior].filter(Boolean);
+    clone.data["…"] = `${nr - clone.data.results.length} more current readings and ${nh - clone.data.history.length} more history rows omitted from this example`;
+  }
+  if (name === "noche_intelligence") {
+    const n = (clone.data.bouts || []).length;
+    clone.data.bouts = (clone.data.bouts || []).slice(0, 1).map((b) => ({ ...b, bout: { ...b.bout, fighter_a: { id: b.bout.fighter_a?.id, name: b.bout.fighter_a?.name }, fighter_b: { id: b.bout.fighter_b?.id, name: b.bout.fighter_b?.name } }, fighters: { "…": "ledger fighter state omitted from this example" } }));
+    if (n > 1) clone.data["…"] = `${n - 1} more bouts omitted from this example`;
+  }
   if (name === "noche_card") clone.data.bouts = clone.data.bouts.slice(0, 2).map((b) => ({ ...b, fighter_a: { ...b.fighter_a, images: undefined }, fighter_b: { ...b.fighter_b, images: undefined } }));
   return clone;
 }
@@ -76,7 +92,7 @@ function showcase(name, detailName, dnaName, statsName, historyName) {
 /** Everything the portal needs, keyed by fixture name. */
 export function portalExamples() {
   const out = {};
-  for (const name of [...new Set(Object.values(EXAMPLES)), "fighter_dna_asof_404", "unknown_fighter_404", "counts", "index", "health", "silva_dna", "matchup_noche", "silva_detail", "rankings_featherweight", "rankings_flyweight", "matchup_comain", "fiorot_detail", "fiorot_dna", "grasso_detail", "rankings_womens_flyweight", "matchup_mw", "gaethje_detail", "gaethje_dna", "rodrigues_detail", "rankings_middleweight"]) {
+  for (const name of [...new Set(Object.values(EXAMPLES)), "fighter_dna_asof_404", "unknown_fighter_404", "counts", "index", "health", "silva_dna", "matchup_noche", "silva_detail", "rankings_featherweight", "rankings_flyweight", "matchup_comain", "fiorot_detail", "fiorot_dna", "grasso_detail", "rankings_womens_flyweight", "matchup_mw", "gaethje_detail", "gaethje_dna", "rodrigues_detail", "rankings_middleweight", "noche_weigh_ins", "weigh_ins_missed", "injuries_active", "noche_card_changes", "silva_status", "noche_intelligence"]) {
     const f = fixture(name);
     if (!f) continue;
     out[name] = { captured_at: f.captured_at, path: f.path, status: f.status, api_version: f.api_version, body: trimExample(name, f.body) };

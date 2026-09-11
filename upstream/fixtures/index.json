@@ -1,14 +1,14 @@
 {
-  "captured_at": "2026-09-07T15:18:22.761Z",
+  "captured_at": "2026-09-11T21:47:17.890Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc",
   "status": 200,
-  "api_version": "2026-09-06.3",
+  "api_version": "2026-09-11.1",
   "body": {
     "ok": true,
     "data": {
       "name": "PropSports UFC API",
-      "version": "2026-09-06.3",
+      "version": "2026-09-11.1",
       "status": "beta",
       "principles": [
         "read-only contract",
@@ -32,6 +32,11 @@
         "bout_stats": "/v1/ufc/bouts/{id}/stats",
         "results": "/v1/ufc/results",
         "rankings": "/v1/ufc/rankings?division=MIDDLEWEIGHT",
+        "weigh_ins": "/v1/ufc/weigh-ins?event_id={id}&status=missed",
+        "event_weigh_ins": "/v1/ufc/events/{id}/weigh-ins?include=history",
+        "injuries": "/v1/ufc/injuries?active=true",
+        "event_card_changes": "/v1/ufc/events/{id}/card-changes",
+        "fighter_status": "/v1/ufc/fighters/{id}/status",
         "news": "/v1/ufc/news",
         "wire": "/v1/ufc/wire?limit=20",
         "article": "/v1/ufc/articles/{slug}",
@@ -55,8 +60,8 @@
     },
     "meta": {
       "api": "PropSports UFC",
-      "version": "2026-09-06.3",
-      "request_id": "ae64b06b-d635-47f1-b07d-48b3dc66b823",
+      "version": "2026-09-11.1",
+      "request_id": "19a49319-7d55-4bac-9e74-5483f302d364",
       "access_tier": "public"
     }
   }

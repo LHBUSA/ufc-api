@@ -2,7 +2,7 @@
 
 Generated from `config/plans.json` + `config/entitlements.json` by `scripts/build-entitlements-doc.mjs`. **Do not edit by hand**; change the config and re-run `npm run entitlements:doc`.
 
-Upstream contract: LHBUSA/UFC@ufc-fight-dna-v1 `1f43e64658`, API version `2026-09-06.3`, Fight DNA definition version 1.
+Upstream contract: LHBUSA/UFC@main `c2eaa8f571`, API version `2026-09-11.1`, Fight DNA definition version 1.
 
 ## Rules
 
@@ -28,7 +28,7 @@ Upstream contract: LHBUSA/UFC@ufc-fight-dna-v1 `1f43e64658`, API version `2026-0
 
 | Feature | Meaning | Minimum plan |
 | --- | --- | --- |
-| `core` | Core UFC data | Developer |
+| `core` | Core UFC data: normalized, source-backed facts (events, cards, fighters, bouts, results, rankings, official weigh-ins, sourced availability and card changes) | Developer |
 | `editorial` | PropBetEdge editorial | Developer |
 | `media_metadata` | Fighter image metadata with license and attribution | Developer |
 | `video_metadata` | Official video metadata: ids, official URLs, channel, links (no rehosting) | Developer |
@@ -38,7 +38,7 @@ Upstream contract: LHBUSA/UFC@ufc-fight-dna-v1 `1f43e64658`, API version `2026-0
 | `dna_as_of` | As-of reconstruction of fighter snapshots (?as_of=) | Pro |
 | `dna_matchup` | Matchup DNA: fighter-vs-fighter comparisons, stance context, threshold-gated insights | Ultra |
 | `dna_query` | Cross-fighter Fight DNA query | Ultra |
-| `fight_week` | Fight State Ledger and event intelligence | Ultra |
+| `fight_week` | Fight State Ledger and event intelligence (proprietary derived state) | Ultra |
 | `bulk_media_lookup` | Bulk media lookups at Scale volumes | Scale |
 | `wire` | Third-party headline wire (REVIEW REQUIRED; not on self-serve plans) | Enterprise |
 | `priority_support` | Priority support (not an endpoint) | Scale |
@@ -74,6 +74,11 @@ Upstream contract: LHBUSA/UFC@ufc-fight-dna-v1 `1f43e64658`, API version `2026-0
 | `GET /v1/ufc/matchups/{fighterA}/{fighterB}/dna` | PBE_DERIVED | dna_matchup | — | — | ✔ | ✔ | ✔ | ✔ | Ultra |
 | `GET /v1/ufc/results` | SOURCE_FACT | core | ✔ | ✔ | ✔ | ✔ | ✔ | ✔ | Developer |
 | `GET /v1/ufc/rankings` | SOURCE_FACT | core | ✔ | ✔ | ✔ | ✔ | ✔ | ✔ | Developer |
+| `GET /v1/ufc/weigh-ins` | SOURCE_FACT | core | ✔ | ✔ | ✔ | ✔ | ✔ | ✔ | Developer |
+| `GET /v1/ufc/events/{id}/weigh-ins` | SOURCE_FACT | core | ✔ | ✔ | ✔ | ✔ | ✔ | ✔ | Developer |
+| `GET /v1/ufc/injuries` | SOURCE_FACT | core | ✔ | ✔ | ✔ | ✔ | ✔ | ✔ | Developer |
+| `GET /v1/ufc/events/{id}/card-changes` | SOURCE_FACT | core | ✔ | ✔ | ✔ | ✔ | ✔ | ✔ | Developer |
+| `GET /v1/ufc/fighters/{id}/status` | SOURCE_FACT | core | ✔ | ✔ | ✔ | ✔ | ✔ | ✔ | Developer |
 | `GET /v1/ufc/news` | EDITORIAL | editorial | ✔ | ✔ | ✔ | ✔ | ✔ | ✔ | Developer |
 | `GET /v1/ufc/articles/{slug}` | EDITORIAL | editorial | ✔ | ✔ | ✔ | ✔ | ✔ | ✔ | Developer |
 | `GET /v1/ufc/wire` | THIRD_PARTY_LINK | wire | — | — | — | — | ✔ | ✔ | Enterprise |

@@ -1,9 +1,9 @@
 {
-  "captured_at": "2026-09-07T15:18:22.761Z",
+  "captured_at": "2026-09-11T21:47:17.890Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/fighters/2c9c2a88-aec1-4bf0-9b16-3ce58adf6fd6?include=ranking,next,history&history_limit=5",
   "status": 200,
-  "api_version": "2026-09-06.3",
+  "api_version": "2026-09-11.1",
   "body": {
     "ok": true,
     "data": {
@@ -68,8 +68,8 @@
       "ranking": {
         "source": "ufc.com official rankings",
         "source_url": "https://www.ufc.com/rankings",
-        "snapshot_date": "2026-09-06",
-        "captured_at": "2026-09-06T16:10:07.916+00:00",
+        "snapshot_date": "2026-09-10",
+        "captured_at": "2026-09-10T12:15:02.152+00:00",
         "positions": [
           {
             "division": "P4P",
@@ -153,7 +153,7 @@
           "country": "USA",
           "commission": null,
           "event_date": "2026-09-12",
-          "updated_at": "2026-09-07T06:03:41.716+00:00",
+          "updated_at": "2026-09-11T06:02:29.394+00:00",
           "card_status": "announced",
           "ufcstats_id": "638cfec7ec559d6e",
           "espn_event_id": "600060772"
@@ -246,7 +246,7 @@
             "country": "USA",
             "commission": null,
             "event_date": "2026-09-12",
-            "updated_at": "2026-09-07T06:03:41.716+00:00",
+            "updated_at": "2026-09-11T06:02:29.394+00:00",
             "card_status": "announced",
             "ufcstats_id": "638cfec7ec559d6e",
             "espn_event_id": "600060772"
@@ -508,19 +508,252 @@
             }
           },
           "outcome": "L"
+        },
+        {
+          "id": "d5995c97-83ea-4fda-a469-d1534dcebf6b",
+          "ufcstats_id": "e6d4fdad2b3422d1",
+          "espn_competition_id": null,
+          "event_id": "1247efb5-4fd1-410d-9679-12784d347119",
+          "weight_class": "FLYWEIGHT",
+          "weight_class_raw": "Women's Flyweight",
+          "is_womens": true,
+          "is_title": false,
+          "scheduled_rounds": 5,
+          "card_position": null,
+          "bout_order": 13,
+          "status": "complete",
+          "replaced_bout_id": null,
+          "short_notice_days": null,
+          "fighter_a": {
+            "id": "2c9c2a88-aec1-4bf0-9b16-3ce58adf6fd6",
+            "dob": "1990-02-17",
+            "name": "Manon Fiorot",
+            "stance": "ORTHODOX",
+            "nickname": "The Beast",
+            "reach_in": 65,
+            "record_d": 0,
+            "record_l": 2,
+            "record_w": 13,
+            "height_in": 67,
+            "is_active": true,
+            "record_nc": 0,
+            "weight_lbs": 125,
+            "ufcstats_id": "34ff304266360297",
+            "espn_athlete_id": "4608674"
+          },
+          "fighter_b": {
+            "id": "6c613851-d11b-4ee6-97d2-bdde0a467d32",
+            "dob": "1999-05-04",
+            "name": "Erin Blanchfield",
+            "stance": "ORTHODOX",
+            "nickname": "Cold Blooded",
+            "reach_in": 66,
+            "record_d": 0,
+            "record_l": 2,
+            "record_w": 14,
+            "height_in": 64,
+            "is_active": true,
+            "record_nc": 0,
+            "weight_lbs": 126,
+            "ufcstats_id": "669970f7feba8ecd",
+            "espn_athlete_id": "4350796"
+          },
+          "result": {
+            "round": 5,
+            "method": "DEC_U",
+            "bout_id": "d5995c97-83ea-4fda-a469-d1534dcebf6b",
+            "judge_1": "Eric Colon",
+            "judge_2": "Sal D'amato",
+            "judge_3": "Chris Lee",
+            "referee": "Vitor Ribeiro",
+            "time_sec": 300,
+            "has_stats": true,
+            "winner_id": "2c9c2a88-aec1-4bf0-9b16-3ce58adf6fd6",
+            "method_raw": "Decision - Unanimous",
+            "scorecards": [
+              {
+                "judge": "Eric Colon",
+                "score": "45-50"
+              },
+              {
+                "judge": "Sal D'amato",
+                "score": "45-50"
+              },
+              {
+                "judge": "Chris Lee",
+                "score": "45-50"
+              }
+            ],
+            "captured_at": "2026-09-07T16:21:20.798762+00:00",
+            "time_format": "5 Rnd (5-5-5-5-5)",
+            "finish_detail": null,
+            "result_source": "ufcstats"
+          },
+          "event": {
+            "id": "1247efb5-4fd1-410d-9679-12784d347119",
+            "city": "Atlantic City",
+            "name": "UFC Fight Night: Blanchfield vs. Fiorot",
+            "venue": null,
+            "is_ppv": null,
+            "region": "New Jersey",
+            "country": "USA",
+            "commission": null,
+            "event_date": "2024-03-30",
+            "updated_at": "2026-09-06T00:19:51.706095+00:00",
+            "card_status": "complete",
+            "ufcstats_id": "dba230fe33011201",
+            "espn_event_id": null
+          },
+          "is_fighter_a": true,
+          "opponent": {
+            "id": "6c613851-d11b-4ee6-97d2-bdde0a467d32",
+            "name": "Erin Blanchfield",
+            "nickname": "Cold Blooded",
+            "ufcstats_id": "669970f7feba8ecd",
+            "espn_athlete_id": "4350796",
+            "slug_id": "4350796",
+            "record_w": 14,
+            "record_l": 2,
+            "record_d": 0,
+            "record_nc": 0,
+            "primary_image": null
+          },
+          "outcome": "W"
+        },
+        {
+          "id": "3e433d02-2f5e-4028-8901-26d38966bb38",
+          "ufcstats_id": "4eaf54ad3c82b6fa",
+          "espn_competition_id": null,
+          "event_id": "db0a3697-dcd7-482b-aa67-396fc2362816",
+          "weight_class": "FLYWEIGHT",
+          "weight_class_raw": "Women's Flyweight",
+          "is_womens": true,
+          "is_title": false,
+          "scheduled_rounds": 3,
+          "card_position": null,
+          "bout_order": 10,
+          "status": "complete",
+          "replaced_bout_id": null,
+          "short_notice_days": null,
+          "fighter_a": {
+            "id": "2c9c2a88-aec1-4bf0-9b16-3ce58adf6fd6",
+            "dob": "1990-02-17",
+            "name": "Manon Fiorot",
+            "stance": "ORTHODOX",
+            "nickname": "The Beast",
+            "reach_in": 65,
+            "record_d": 0,
+            "record_l": 2,
+            "record_w": 13,
+            "height_in": 67,
+            "is_active": true,
+            "record_nc": 0,
+            "weight_lbs": 125,
+            "ufcstats_id": "34ff304266360297",
+            "espn_athlete_id": "4608674"
+          },
+          "fighter_b": {
+            "id": "fc84c7be-0db5-44a6-88da-c4f74af0e86c",
+            "dob": "1992-06-29",
+            "name": "Rose Namajunas",
+            "stance": "ORTHODOX",
+            "nickname": "Thug",
+            "reach_in": 65,
+            "record_d": 0,
+            "record_l": 8,
+            "record_w": 15,
+            "height_in": 65,
+            "is_active": true,
+            "record_nc": 0,
+            "weight_lbs": 125,
+            "ufcstats_id": "47b63240018d5d86",
+            "espn_athlete_id": "3032973"
+          },
+          "result": {
+            "round": 3,
+            "method": "DEC_U",
+            "bout_id": "3e433d02-2f5e-4028-8901-26d38966bb38",
+            "judge_1": "Darryl Ransom",
+            "judge_2": "Sal D'amato",
+            "judge_3": "Anders Ohlsson",
+            "referee": "Rich Mitchell",
+            "time_sec": 300,
+            "has_stats": true,
+            "winner_id": "2c9c2a88-aec1-4bf0-9b16-3ce58adf6fd6",
+            "method_raw": "Decision - Unanimous",
+            "scorecards": [
+              {
+                "judge": "Darryl Ransom",
+                "score": "27-30"
+              },
+              {
+                "judge": "Sal D'amato",
+                "score": "28-29"
+              },
+              {
+                "judge": "Anders Ohlsson",
+                "score": "28-29"
+              }
+            ],
+            "captured_at": "2026-09-07T15:40:15.75129+00:00",
+            "time_format": "3 Rnd (5-5-5)",
+            "finish_detail": null,
+            "result_source": "ufcstats"
+          },
+          "event": {
+            "id": "db0a3697-dcd7-482b-aa67-396fc2362816",
+            "city": "Paris",
+            "name": "UFC Fight Night: Gane vs. Spivac",
+            "venue": null,
+            "is_ppv": null,
+            "region": "Ile-de-France",
+            "country": "France",
+            "commission": null,
+            "event_date": "2023-09-02",
+            "updated_at": "2026-09-06T00:19:51.706226+00:00",
+            "card_status": "complete",
+            "ufcstats_id": "ef61d9f5176b3200",
+            "espn_event_id": null
+          },
+          "is_fighter_a": true,
+          "opponent": {
+            "id": "fc84c7be-0db5-44a6-88da-c4f74af0e86c",
+            "name": "Rose Namajunas",
+            "nickname": "Thug",
+            "ufcstats_id": "47b63240018d5d86",
+            "espn_athlete_id": "3032973",
+            "slug_id": "3032973",
+            "record_w": 15,
+            "record_l": 8,
+            "record_d": 0,
+            "record_nc": 0,
+            "primary_image": {
+              "id": "680ade17-abcf-4d55-89b4-e76a40fcc3d7",
+              "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/fc84c7be-0db5-44a6-88da-c4f74af0e86c/portrait.jpg",
+              "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/fc84c7be-0db5-44a6-88da-c4f74af0e86c/card.jpg",
+              "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/fc84c7be-0db5-44a6-88da-c4f74af0e86c/thumb.jpg",
+              "author": "Andy Grahn",
+              "license": "CC BY-SA 4.0",
+              "source_url": "https://commons.wikimedia.org/wiki/File:Rose_Namajunas.jpg",
+              "kind": "wikimedia",
+              "attribution_text": "Andy Grahn, CC BY-SA 4.0, via Wikimedia Commons",
+              "rights_label": "CC BY-SA 4.0"
+            }
+          },
+          "outcome": "W"
         }
       ]
     },
     "meta": {
       "api": "PropSports UFC",
-      "version": "2026-09-06.3",
-      "request_id": "ea40960e-eaf1-4048-ad39-c4c2b09c271c",
+      "version": "2026-09-11.1",
+      "request_id": "bfccf4b1-2efc-4058-829d-07e1993bb1eb",
       "include": [
         "ranking",
         "next",
         "history"
       ],
-      "history_count": 3,
+      "history_count": 5,
       "access_tier": "public"
     }
   }

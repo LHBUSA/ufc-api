@@ -1,6 +1,6 @@
 # PropTechUSA UFC Intelligence API
 
-**UFC data built for developers.** Normalized events, fighters, cards, results and round-level statistics, plus proprietary **PropBetEdge Fight DNA** and **Matchup DNA**, delivered through one commercial developer API at **https://ufc.proptechusa.ai**.
+**UFC data infrastructure for developers — not another odds feed.** Normalized events, fighters, cards, results, rankings and round-level statistics; official weigh-ins, sourced availability and card changes; plus proprietary **PropBetEdge Fight DNA**, **Matchup DNA** and the **Fight State Ledger**, delivered through one commercial developer API at **https://ufc.proptechusa.ai**.
 
 This repository is the **commercial product**: the gateway, developer portal, pricing, entitlements, metering, RapidAPI packaging and commercial documentation. It is **not** a UFC data repository. It consumes the canonical UFC intelligence system and never recomputes it.
 
@@ -9,13 +9,13 @@ This repository is the **commercial product**: the gateway, developer portal, pr
 | Commercial host | `https://ufc.proptechusa.ai` (portal + gateway) |
 | Canonical / first-party API | `https://ufc-api.propbetedge.ai` (unchanged, keeps working) |
 | Consumer demonstration | `https://ufc.propbetedge.ai` (PropBetEdge UFC) |
-| Upstream authority | [LHBUSA/UFC](https://github.com/LHBUSA/UFC) branch `ufc-fight-dna-v1` — see [`upstream/ufc-contract.json`](upstream/ufc-contract.json) |
-| Data contract targeted | `2026-09-06.3`, Fight DNA definition version `1` |
+| Upstream authority | [LHBUSA/UFC](https://github.com/LHBUSA/UFC) `main` @ `c2eaa8f` — see [`upstream/ufc-contract.json`](upstream/ufc-contract.json) |
+| Data contract targeted | `2026-09-11.1`, Fight DNA definition version `1` |
 
 ## Architecture
 
 ```
-                 LHBUSA/UFC  (ufc-fight-dna-v1)
+                 LHBUSA/UFC  (main)
         ingest · ufc_* data model · identity · UFC Stats normalization
         rankings · Fight DNA builder + definitions · media provenance
                               │
@@ -46,9 +46,9 @@ Layers stay separate on purpose: Fight DNA computes intelligence (upstream), the
 
 | Plan | Price | Requests / month | Requests / minute | Unlocks |
 | --- | --- | --- | --- | --- |
-| Developer | $79 | 25,000 | 60 | Core UFC data: events, cards, fighters, results, rankings, search, history, bout round stats, media + video metadata, editorial, Fight DNA registry |
+| Developer | $79 | 25,000 | 60 | Core UFC data: events, cards, fighters, results, rankings, search, history, bout round stats, official weigh-ins (with source history), sourced injuries / availability, card changes, fighter status, media + video metadata, editorial, Fight DNA registry |
 | Pro | $199 | 100,000 | 180 | + Fighter Fight DNA (stance, striking, grappling, finish, round, context), as-of snapshots, computed career rates, `include=stats` |
-| Ultra | $499 | 500,000 | 600 | + Matchup DNA, cross-fighter DNA query, Fight State Ledger, event intelligence |
+| Ultra | $499 | 500,000 | 600 | + Matchup DNA, cross-fighter DNA query, Fight State Ledger, event intelligence (derived fight-week state) |
 | Scale | $1,499 | 2,000,000 (soft) | 1,200 | + production terms, priority support, bulk/custom review |
 | Enterprise | custom | custom | custom | dedicated infrastructure, custom endpoints, licensing, partnerships, wire |
 

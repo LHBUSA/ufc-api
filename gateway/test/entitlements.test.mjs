@@ -34,6 +34,33 @@ test("developer: core data yes, Fight DNA no, Matchup DNA no, wire no", () => {
   assert.equal(w.allowed, false); assert.equal(w.required_plan, "enterprise");
 });
 
+/* 2026-09-11.1: official weigh-ins, sourced availability, card changes and fighter status are normalized
+   source facts, so they sit in `core`; the ledger and event intelligence stay in `fight_week` (derived state). */
+const FIGHT_WEEK_FACTS = [
+  ["/v1/ufc/weigh-ins", "status=missed", "weigh_ins"],
+  ["/v1/ufc/events/x/weigh-ins", "include=history", "event_weigh_ins"],
+  ["/v1/ufc/injuries", "active=true", "injuries"],
+  ["/v1/ufc/events/x/card-changes", "", "event_card_changes"],
+  ["/v1/ufc/fighters/x/status", "", "fighter_status"],
+];
+
+test("fight-week facts: five source-backed routes are core and open on every public plan", () => {
+  for (const [path, query, key] of FIGHT_WEEK_FACTS) {
+    const m = matchEndpoint(path);
+    assert.equal(m?.endpoint.key, key, path);
+    assert.equal(m.endpoint.feature, "core", `${key} must stay in core`);
+    assert.equal(m.endpoint.origin, "SOURCE_FACT", `${key} is a source fact`);
+    for (const plan of [...PLANS.plan_order, "first_party"]) assert.equal(authorizeRoute(plan, path, q(query)).allowed, true, `${plan} ${path}`);
+  }
+  /* the derived fight-week state is unchanged: Ultra and above */
+  for (const path of ["/v1/ufc/bouts/x/ledger", "/v1/ufc/events/x/intelligence"]) {
+    assert.equal(matchEndpoint(path).endpoint.feature, "fight_week", path);
+    for (const plan of ["developer", "pro"]) { const d = authorizeRoute(plan, path, q()); assert.equal(d.allowed, false, `${plan} ${path}`); assert.equal(d.required_plan, "ultra"); }
+  }
+  /* the non-/ufc alias the canonical API also serves is not part of the commercial contract */
+  assert.equal(matchEndpoint("/v1/weigh-ins"), null);
+});
+
 test("param gates: include=stats and as_of need higher plans", () => {
   const dev = authorizeRoute("developer", "/v1/ufc/events/x/card", q("include=media,stats"));
   assert.equal(dev.allowed, false); assert.equal(dev.required_feature, "round_stats_deep"); assert.equal(dev.required_plan, "pro");

@@ -53,7 +53,7 @@ const successHeaders = Object.fromEntries(Object.keys(headers).map((h) => [h, { 
 
 const planRows = plans.plan_order.map((k) => { const p = plans.plans[k]; return `| **${p.name}** | ${p.price_usd_month === null ? p.price_label : `$${p.price_usd_month}/mo`} | ${p.included_requests === null ? "custom" : p.included_requests.toLocaleString("en-US")} | ${p.rate_limit_per_min === null ? "custom" : p.rate_limit_per_min} | ${p.tagline} |`; }).join("\n");
 
-const description = `**UFC data built for developers.** Normalized events, fighters, cards, results and round-level statistics, plus proprietary PropBetEdge Fight DNA and Matchup DNA.
+const description = `**UFC data infrastructure for developers — not another odds feed.** Normalized events, fighters, cards, results, rankings and round-level statistics; official weigh-ins, sourced availability and card changes; plus proprietary PropBetEdge Fight DNA, Matchup DNA and the Fight State Ledger.
 
 This is the commercial distribution contract for the PropTechUSA UFC Intelligence API. It exposes a plan-gated subset of the canonical PropBetEdge UFC API (data-contract version \`${contract.api_version}\`, Fight DNA definition version ${contract.fight_dna_definition_version}). Response bodies are identical to the canonical API; the gateway adds authentication, entitlement, quota and rate-limit headers only.
 
@@ -68,13 +68,16 @@ ${planRows}
 Every operation below carries \`x-plan\` (minimum plan) and \`x-origin\` (SOURCE_FACT, PBE_DERIVED, LICENSED, EDITORIAL, MEDIA, THIRD_PARTY_LINK).
 
 ### Origin labels
-- **SOURCE_FACT** — normalized facts from ESPN / UFC Stats / ufc.com (events, results, strike counts, official rankings snapshot).
+- **SOURCE_FACT** — normalized facts from ESPN / UFC Stats / ufc.com (events, results, strike counts, official rankings snapshot), official weigh-in readings, and individually sourced availability events and card changes. Weigh-in and availability rows carry \`source_url\`, \`source_name\` and \`source_kind\` (\`official\` outranks a news report).
 - **PBE_DERIVED** — computed by the PropBetEdge Fight DNA builder from normalized fight history. Every derived value is a \`MetricObject\` carrying sample size, provenance, confidence, as-of date and definition version. Not official UFC statistics.
 - **LICENSED** — reserved for licensed enrichment (position profiles); explicitly unavailable until a licensed source exists.
 - **EDITORIAL** — PropBetEdge newsroom content. **MEDIA** — image metadata with license and attribution (render the credit). **THIRD_PARTY_LINK** — ids and official URLs only; nothing is rehosted.
 
 ### Truthful nulls
-Missing data is \`null\` or an explicit \`404 dna_not_available\` / \`503 *_not_available\`. The API never returns fabricated zeroes, odds, picks or probabilities.
+Missing data is \`null\` or an explicit \`404 dna_not_available\` / \`503 *_not_available\`. The API never returns fabricated zeroes, odds, picks or probabilities. An unpublished contracted weight limit is \`null\` (never the division default), an unnamed injury is \`injury_type: null\` (never an inferred diagnosis), and a fighter with no availability event on file has \`current: null\`, which is not a fitness claim.
+
+### History is kept
+Weigh-in readings are superseded, never overwritten: \`is_confirmation\` marks an official source verifying the same weight, \`is_correction\` marks a source that changed it, and \`/events/{id}/weigh-ins?include=history\` returns every stored reading. Availability events resolve or expire rather than disappear. The Fight State Ledger is append-only with deterministic diffs between checkpoints.
 
 PropTechUSA and PropBetEdge are independent products and are not affiliated with, endorsed by, or sponsored by UFC, Zuffa LLC, TKO Group, ESPN or any sportsbook.`;
 
@@ -96,9 +99,10 @@ const doc = {
   security: [{ BearerAuth: [] }, { ApiKeyAuth: [] }],
   tags: [
     { name: "Core", description: "Events, cards, fighters, bouts, results, rankings, search, counts (SOURCE_FACT)." },
+    { name: "Weigh-ins & Availability", description: "Official weigh-ins with confirmation vs correction and full source history, sourced injuries and availability, card changes and fighter status (SOURCE_FACT, every row sourced). Developer and above." },
     { name: "Fight DNA", description: "Proprietary PropBetEdge fighter intelligence (PBE_DERIVED). Pro and above." },
     { name: "Matchup DNA", description: "Fighter-vs-fighter intelligence with threshold-gated insights (PBE_DERIVED). Ultra and above." },
-    { name: "Fight Week", description: "Fight State Ledger and event intelligence. Ultra and above." },
+    { name: "Fight Week", description: "Fight State Ledger and event intelligence: proprietary, append-only derived fight state (PBE_DERIVED). Ultra and above." },
     { name: "Media", description: "Image metadata with license + attribution; official video metadata (no rehosting)." },
     { name: "Editorial", description: "PropBetEdge newsroom content (EDITORIAL)." },
   ],
@@ -108,7 +112,9 @@ const doc = {
   "x-entitlements": ent.endpoints.map((e) => ({ key: e.key, path: e.path, feature: e.feature, minimum_plan: minPlan(e.feature), origin: e.origin })),
 };
 
+const FIGHT_WEEK_FACTS = new Set(["weigh_ins", "event_weigh_ins", "injuries", "event_card_changes", "fighter_status"]);
 const tagFor = (e) => {
+  if (FIGHT_WEEK_FACTS.has(e.key)) return "Weigh-ins & Availability";
   if (e.feature === "dna_matchup") return "Matchup DNA";
   if (e.feature === "dna_fighter" || e.feature === "dna_registry" || e.feature === "dna_query") return "Fight DNA";
   if (e.feature === "fight_week") return "Fight Week";

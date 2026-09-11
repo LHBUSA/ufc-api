@@ -1,9 +1,9 @@
 {
-  "captured_at": "2026-09-07T15:18:22.761Z",
+  "captured_at": "2026-09-11T21:47:17.890Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/fighters/eed368a5-484b-412f-9d2c-a4fd6d24d019?include=ranking,next,history&history_limit=5",
   "status": 200,
-  "api_version": "2026-09-06.3",
+  "api_version": "2026-09-11.1",
   "body": {
     "ok": true,
     "data": {
@@ -68,8 +68,8 @@
       "ranking": {
         "source": "ufc.com official rankings",
         "source_url": "https://www.ufc.com/rankings",
-        "snapshot_date": "2026-09-06",
-        "captured_at": "2026-09-06T16:10:07.916+00:00",
+        "snapshot_date": "2026-09-10",
+        "captured_at": "2026-09-10T12:15:02.152+00:00",
         "positions": [
           {
             "division": "FEATHERWEIGHT",
@@ -143,7 +143,7 @@
           "country": "USA",
           "commission": null,
           "event_date": "2026-09-12",
-          "updated_at": "2026-09-07T06:03:41.716+00:00",
+          "updated_at": "2026-09-11T06:02:29.394+00:00",
           "card_status": "announced",
           "ufcstats_id": "638cfec7ec559d6e",
           "espn_event_id": "600060772"
@@ -225,7 +225,7 @@
             "country": "USA",
             "commission": null,
             "event_date": "2026-09-12",
-            "updated_at": "2026-09-07T06:03:41.716+00:00",
+            "updated_at": "2026-09-11T06:02:29.394+00:00",
             "card_status": "announced",
             "ufcstats_id": "638cfec7ec559d6e",
             "espn_event_id": "600060772"
@@ -248,7 +248,7 @@
         },
         {
           "id": "5e0510e3-cbb6-4011-bedc-dea2dd18e6c7",
-          "ufcstats_id": null,
+          "ufcstats_id": "836a188a90e479a5",
           "espn_competition_id": "401836547",
           "event_id": "9e702f2e-368c-4ab2-b9c3-a64c99221ba4",
           "weight_class": "FEATHERWEIGHT",
@@ -299,15 +299,28 @@
             "round": 3,
             "method": "DEC_U",
             "bout_id": "5e0510e3-cbb6-4011-bedc-dea2dd18e6c7",
-            "judge_1": null,
-            "judge_2": null,
-            "judge_3": null,
+            "judge_1": "Ron McCarthy",
+            "judge_2": "Chris Lee",
+            "judge_3": "Mike Bell",
             "referee": "Chris Tognoni",
             "time_sec": 300,
-            "has_stats": false,
+            "has_stats": true,
             "winner_id": "eed368a5-484b-412f-9d2c-a4fd6d24d019",
             "method_raw": "Decision - Unanimous",
-            "scorecards": null,
+            "scorecards": [
+              {
+                "judge": "Ron McCarthy",
+                "score": "27-30"
+              },
+              {
+                "judge": "Chris Lee",
+                "score": "28-29"
+              },
+              {
+                "judge": "Mike Bell",
+                "score": "28-29"
+              }
+            ],
             "captured_at": "2026-09-06T13:26:22.91+00:00",
             "time_format": "3 Rnd (5-5-5)",
             "finish_detail": null,
@@ -323,7 +336,7 @@
             "country": "USA",
             "commission": null,
             "event_date": "2026-01-24",
-            "updated_at": "2026-09-07T06:01:06.76+00:00",
+            "updated_at": "2026-09-11T06:01:29.314+00:00",
             "card_status": "complete",
             "ufcstats_id": "00e11b5c8b7bfeeb",
             "espn_event_id": "600057024"
@@ -564,7 +577,7 @@
         },
         {
           "id": "6f1eaa4d-4fb8-4330-a791-de789f835e52",
-          "ufcstats_id": null,
+          "ufcstats_id": "8ef7723b6a8b45e1",
           "espn_competition_id": "401741552",
           "event_id": "d85ab520-a35a-425a-ba5f-df7842fef019",
           "weight_class": "FEATHERWEIGHT",
@@ -620,7 +633,7 @@
             "judge_3": null,
             "referee": "Kevin MacDonald",
             "time_sec": 255,
-            "has_stats": false,
+            "has_stats": true,
             "winner_id": "eed368a5-484b-412f-9d2c-a4fd6d24d019",
             "method_raw": "KO/TKO",
             "scorecards": null,
@@ -664,8 +677,8 @@
     },
     "meta": {
       "api": "PropSports UFC",
-      "version": "2026-09-06.3",
-      "request_id": "511d2b6d-e0cb-495d-9aff-637a3bf52f94",
+      "version": "2026-09-11.1",
+      "request_id": "2840cb0a-eec9-46d6-91c9-f33ce665434e",
       "include": [
         "ranking",
         "next",

@@ -1,9 +1,9 @@
 {
-  "captured_at": "2026-09-07T15:18:22.761Z",
+  "captured_at": "2026-09-11T21:47:17.890Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/fighters/1d296292-4969-43a8-9948-cd0a76a642ce?include=ranking,next,history&history_limit=5",
   "status": 200,
-  "api_version": "2026-09-06.3",
+  "api_version": "2026-09-11.1",
   "body": {
     "ok": true,
     "data": {
@@ -68,8 +68,8 @@
       "ranking": {
         "source": "ufc.com official rankings",
         "source_url": "https://www.ufc.com/rankings",
-        "snapshot_date": "2026-09-06",
-        "captured_at": "2026-09-06T16:10:07.916+00:00",
+        "snapshot_date": "2026-09-10",
+        "captured_at": "2026-09-10T12:15:02.152+00:00",
         "positions": [
           {
             "division": "P4P",
@@ -153,7 +153,7 @@
           "country": "USA",
           "commission": null,
           "event_date": "2026-09-12",
-          "updated_at": "2026-09-07T06:03:41.716+00:00",
+          "updated_at": "2026-09-11T06:02:29.394+00:00",
           "card_status": "announced",
           "ufcstats_id": "638cfec7ec559d6e",
           "espn_event_id": "600060772"
@@ -246,7 +246,7 @@
             "country": "USA",
             "commission": null,
             "event_date": "2026-09-12",
-            "updated_at": "2026-09-07T06:03:41.716+00:00",
+            "updated_at": "2026-09-11T06:02:29.394+00:00",
             "card_status": "announced",
             "ufcstats_id": "638cfec7ec559d6e",
             "espn_event_id": "600060772"
@@ -355,7 +355,7 @@
             "country": "USA",
             "commission": null,
             "event_date": "2026-03-28",
-            "updated_at": "2026-09-07T06:01:22.792+00:00",
+            "updated_at": "2026-09-11T06:01:35.711+00:00",
             "card_status": "complete",
             "ufcstats_id": "5c38639f860a5542",
             "espn_event_id": "600057366"
@@ -497,19 +497,263 @@
             }
           },
           "outcome": "L"
+        },
+        {
+          "id": "9d6796e6-e4e0-4909-b61c-81b4d812fe12",
+          "ufcstats_id": "6f83cfae0c800ef8",
+          "espn_competition_id": null,
+          "event_id": "cf0db0fe-65fa-4d11-91cd-2e14bfa060f9",
+          "weight_class": "FLYWEIGHT",
+          "weight_class_raw": "Women's Flyweight",
+          "is_womens": true,
+          "is_title": true,
+          "scheduled_rounds": 5,
+          "card_position": null,
+          "bout_order": 9,
+          "status": "complete",
+          "replaced_bout_id": null,
+          "short_notice_days": null,
+          "fighter_a": {
+            "id": "4008721e-66c0-429e-b904-51d0d0a7e0d0",
+            "dob": "1988-03-07",
+            "name": "Valentina Shevchenko",
+            "stance": "SOUTHPAW",
+            "nickname": "Bullet",
+            "reach_in": 66.5,
+            "record_d": 1,
+            "record_l": 4,
+            "record_w": 26,
+            "height_in": 65,
+            "is_active": true,
+            "record_nc": 0,
+            "weight_lbs": 125,
+            "ufcstats_id": "132deb59abae64b1",
+            "espn_athlete_id": "2554705"
+          },
+          "fighter_b": {
+            "id": "1d296292-4969-43a8-9948-cd0a76a642ce",
+            "dob": "1993-08-09",
+            "name": "Alexa Grasso",
+            "stance": "ORTHODOX",
+            "nickname": null,
+            "reach_in": 66,
+            "record_d": 1,
+            "record_l": 5,
+            "record_w": 17,
+            "height_in": 65,
+            "is_active": true,
+            "record_nc": 0,
+            "weight_lbs": 126,
+            "ufcstats_id": "e8b731feff72294b",
+            "espn_athlete_id": "3136287"
+          },
+          "result": {
+            "round": 5,
+            "method": "DEC_U",
+            "bout_id": "9d6796e6-e4e0-4909-b61c-81b4d812fe12",
+            "judge_1": "Ben Cartlidge",
+            "judge_2": "Eric Colon",
+            "judge_3": "Ron McCarthy",
+            "referee": "Mark Smith",
+            "time_sec": 300,
+            "has_stats": true,
+            "winner_id": "4008721e-66c0-429e-b904-51d0d0a7e0d0",
+            "method_raw": "Decision - Unanimous",
+            "scorecards": [
+              {
+                "judge": "Ben Cartlidge",
+                "score": "45-50"
+              },
+              {
+                "judge": "Eric Colon",
+                "score": "45-50"
+              },
+              {
+                "judge": "Ron McCarthy",
+                "score": "45-50"
+              }
+            ],
+            "captured_at": "2026-09-07T16:08:36.647535+00:00",
+            "time_format": "5 Rnd (5-5-5-5-5)",
+            "finish_detail": null,
+            "result_source": "ufcstats"
+          },
+          "event": {
+            "id": "cf0db0fe-65fa-4d11-91cd-2e14bfa060f9",
+            "city": "Las Vegas",
+            "name": "UFC 306: Riyadh Season Noche UFC",
+            "venue": null,
+            "is_ppv": null,
+            "region": "Nevada",
+            "country": "USA",
+            "commission": null,
+            "event_date": "2024-09-14",
+            "updated_at": "2026-09-06T00:19:51.705983+00:00",
+            "card_status": "complete",
+            "ufcstats_id": "0c01568b1ac77bff",
+            "espn_event_id": null
+          },
+          "is_fighter_a": false,
+          "opponent": {
+            "id": "4008721e-66c0-429e-b904-51d0d0a7e0d0",
+            "name": "Valentina Shevchenko",
+            "nickname": "Bullet",
+            "ufcstats_id": "132deb59abae64b1",
+            "espn_athlete_id": "2554705",
+            "slug_id": "2554705",
+            "record_w": 26,
+            "record_l": 4,
+            "record_d": 1,
+            "record_nc": 0,
+            "primary_image": {
+              "id": "6c5c0cd9-5359-41fc-9d4b-fd8f2be1baaa",
+              "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/4008721e-66c0-429e-b904-51d0d0a7e0d0/portrait.jpg",
+              "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/4008721e-66c0-429e-b904-51d0d0a7e0d0/card.jpg",
+              "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/4008721e-66c0-429e-b904-51d0d0a7e0d0/thumb.jpg",
+              "author": "MMAnytt",
+              "license": "CC BY 3.0",
+              "source_url": "https://commons.wikimedia.org/wiki/File:Valentina_Shevchenko_2020.jpg",
+              "kind": "wikimedia",
+              "attribution_text": "MMAnytt, CC BY 3.0, via Wikimedia Commons",
+              "rights_label": "CC BY 3.0"
+            }
+          },
+          "outcome": "L"
+        },
+        {
+          "id": "b8486713-2d2e-4b61-b69e-595e062656a4",
+          "ufcstats_id": "b395c89e19a3fec4",
+          "espn_competition_id": null,
+          "event_id": "4b3aba41-a8fa-45de-bf8e-7fedf1b67fce",
+          "weight_class": "FLYWEIGHT",
+          "weight_class_raw": "Women's Flyweight",
+          "is_womens": true,
+          "is_title": true,
+          "scheduled_rounds": 5,
+          "card_position": null,
+          "bout_order": 11,
+          "status": "complete",
+          "replaced_bout_id": null,
+          "short_notice_days": null,
+          "fighter_a": {
+            "id": "1d296292-4969-43a8-9948-cd0a76a642ce",
+            "dob": "1993-08-09",
+            "name": "Alexa Grasso",
+            "stance": "ORTHODOX",
+            "nickname": null,
+            "reach_in": 66,
+            "record_d": 1,
+            "record_l": 5,
+            "record_w": 17,
+            "height_in": 65,
+            "is_active": true,
+            "record_nc": 0,
+            "weight_lbs": 126,
+            "ufcstats_id": "e8b731feff72294b",
+            "espn_athlete_id": "3136287"
+          },
+          "fighter_b": {
+            "id": "4008721e-66c0-429e-b904-51d0d0a7e0d0",
+            "dob": "1988-03-07",
+            "name": "Valentina Shevchenko",
+            "stance": "SOUTHPAW",
+            "nickname": "Bullet",
+            "reach_in": 66.5,
+            "record_d": 1,
+            "record_l": 4,
+            "record_w": 26,
+            "height_in": 65,
+            "is_active": true,
+            "record_nc": 0,
+            "weight_lbs": 125,
+            "ufcstats_id": "132deb59abae64b1",
+            "espn_athlete_id": "2554705"
+          },
+          "result": {
+            "round": 5,
+            "method": "DRAW",
+            "bout_id": "b8486713-2d2e-4b61-b69e-595e062656a4",
+            "judge_1": "Junichiro Kamijo",
+            "judge_2": "Sal D'amato",
+            "judge_3": "Mike Bell",
+            "referee": "Herb Dean",
+            "time_sec": 300,
+            "has_stats": true,
+            "winner_id": null,
+            "method_raw": "Decision - Split",
+            "scorecards": [
+              {
+                "judge": "Junichiro Kamijo",
+                "score": "47-48"
+              },
+              {
+                "judge": "Sal D'amato",
+                "score": "48-47"
+              },
+              {
+                "judge": "Mike Bell",
+                "score": "47-47"
+              }
+            ],
+            "captured_at": "2026-09-07T15:38:39.364691+00:00",
+            "time_format": "5 Rnd (5-5-5-5-5)",
+            "finish_detail": null,
+            "result_source": "ufcstats"
+          },
+          "event": {
+            "id": "4b3aba41-a8fa-45de-bf8e-7fedf1b67fce",
+            "city": "Las Vegas",
+            "name": "UFC Fight Night: Grasso vs. Shevchenko 2",
+            "venue": null,
+            "is_ppv": null,
+            "region": "Nevada",
+            "country": "USA",
+            "commission": null,
+            "event_date": "2023-09-16",
+            "updated_at": "2026-09-06T00:19:51.706215+00:00",
+            "card_status": "complete",
+            "ufcstats_id": "8fa2b06572365321",
+            "espn_event_id": null
+          },
+          "is_fighter_a": true,
+          "opponent": {
+            "id": "4008721e-66c0-429e-b904-51d0d0a7e0d0",
+            "name": "Valentina Shevchenko",
+            "nickname": "Bullet",
+            "ufcstats_id": "132deb59abae64b1",
+            "espn_athlete_id": "2554705",
+            "slug_id": "2554705",
+            "record_w": 26,
+            "record_l": 4,
+            "record_d": 1,
+            "record_nc": 0,
+            "primary_image": {
+              "id": "6c5c0cd9-5359-41fc-9d4b-fd8f2be1baaa",
+              "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/4008721e-66c0-429e-b904-51d0d0a7e0d0/portrait.jpg",
+              "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/4008721e-66c0-429e-b904-51d0d0a7e0d0/card.jpg",
+              "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/4008721e-66c0-429e-b904-51d0d0a7e0d0/thumb.jpg",
+              "author": "MMAnytt",
+              "license": "CC BY 3.0",
+              "source_url": "https://commons.wikimedia.org/wiki/File:Valentina_Shevchenko_2020.jpg",
+              "kind": "wikimedia",
+              "attribution_text": "MMAnytt, CC BY 3.0, via Wikimedia Commons",
+              "rights_label": "CC BY 3.0"
+            }
+          },
+          "outcome": "D"
         }
       ]
     },
     "meta": {
       "api": "PropSports UFC",
-      "version": "2026-09-06.3",
-      "request_id": "a407e970-c630-4522-94f6-dc3e08c4a64c",
+      "version": "2026-09-11.1",
+      "request_id": "1c77608b-d8fe-478c-a1b0-452616f54ed5",
       "include": [
         "ranking",
         "next",
         "history"
       ],
-      "history_count": 3,
+      "history_count": 5,
       "access_tier": "public"
     }
   }

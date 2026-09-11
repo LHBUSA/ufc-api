@@ -1,9 +1,9 @@
 {
-  "captured_at": "2026-09-07T15:18:22.761Z",
+  "captured_at": "2026-09-11T21:47:17.890Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/fighters/eed368a5-484b-412f-9d2c-a4fd6d24d019/splits",
   "status": 200,
-  "api_version": "2026-09-06.3",
+  "api_version": "2026-09-11.1",
   "body": {
     "ok": true,
     "data": {
@@ -33,14 +33,14 @@
         "stance": "ORTHODOX",
         "is_active": true
       },
-      "as_of_date": "2026-09-06",
+      "as_of_date": "2026-09-10",
       "definition_version": 1,
       "origin": "pbe_derived",
       "opponent_stance": null,
       "splits": [
         {
           "fighter_id": "eed368a5-484b-412f-9d2c-a4fd6d24d019",
-          "as_of_date": "2026-09-06",
+          "as_of_date": "2026-09-10",
           "opponent_stance": "ORTHODOX",
           "definition_version": 1,
           "appearances": 1,
@@ -51,22 +51,22 @@
           "ko_tko_wins": 0,
           "submission_wins": 0,
           "decision_wins": 0,
-          "stat_bouts": 0,
-          "stat_rounds": 0,
-          "observed_seconds": 0,
+          "stat_bouts": 1,
+          "stat_rounds": 2,
+          "observed_seconds": 588,
           "metrics": {
             "ko_rate": {
               "unit": "ratio",
               "value": 0,
               "origin": "pbe_derived",
               "numerator": 0,
-              "as_of_date": "2026-09-06",
+              "as_of_date": "2026-09-10",
               "confidence": "low",
               "metric_key": "stance_ko_rate",
               "denominator": 1,
               "sample_bouts": 1,
-              "sample_rounds": 0,
-              "sample_seconds": 0,
+              "sample_rounds": 2,
+              "sample_seconds": 588,
               "coverage_status": "high",
               "source_families": [
                 "espn",
@@ -79,13 +79,13 @@
               "value": 0,
               "origin": "pbe_derived",
               "numerator": 0,
-              "as_of_date": "2026-09-06",
+              "as_of_date": "2026-09-10",
               "confidence": "low",
               "metric_key": "stance_sub_rate",
               "denominator": 1,
               "sample_bouts": 1,
-              "sample_rounds": 0,
-              "sample_seconds": 0,
+              "sample_rounds": 2,
+              "sample_seconds": 588,
               "coverage_status": "high",
               "source_families": [
                 "espn",
@@ -95,17 +95,17 @@
             },
             "kd_per_15": {
               "unit": "per_15",
-              "value": null,
+              "value": 0,
               "origin": "pbe_derived",
-              "numerator": null,
-              "as_of_date": "2026-09-06",
-              "confidence": "insufficient",
+              "numerator": 0,
+              "as_of_date": "2026-09-10",
+              "confidence": "low",
               "metric_key": "stance_kd_rate_15",
-              "denominator": null,
-              "sample_bouts": 0,
-              "sample_rounds": 0,
-              "sample_seconds": 0,
-              "coverage_status": "insufficient",
+              "denominator": 588,
+              "sample_bouts": 1,
+              "sample_rounds": 2,
+              "sample_seconds": 588,
+              "coverage_status": "low",
               "source_families": [
                 "ufcstats"
               ],
@@ -116,13 +116,13 @@
               "value": null,
               "origin": "pbe_derived",
               "numerator": 0,
-              "as_of_date": "2026-09-06",
+              "as_of_date": "2026-09-10",
               "confidence": "insufficient",
               "metric_key": "stance_finish_rate",
               "denominator": 0,
               "sample_bouts": 0,
-              "sample_rounds": 0,
-              "sample_seconds": 0,
+              "sample_rounds": 2,
+              "sample_seconds": 588,
               "coverage_status": "high",
               "source_families": [
                 "espn",
@@ -132,17 +132,17 @@
             },
             "sig_diff_per_min": {
               "unit": "per_min",
-              "value": null,
+              "value": -3.1633,
               "origin": "pbe_derived",
-              "numerator": null,
-              "as_of_date": "2026-09-06",
-              "confidence": "insufficient",
+              "numerator": -31,
+              "as_of_date": "2026-09-10",
+              "confidence": "low",
               "metric_key": "stance_sig_diff_per_min",
-              "denominator": null,
-              "sample_bouts": 0,
-              "sample_rounds": 0,
-              "sample_seconds": 0,
-              "coverage_status": "insufficient",
+              "denominator": 588,
+              "sample_bouts": 1,
+              "sample_rounds": 2,
+              "sample_seconds": 588,
+              "coverage_status": "low",
               "source_families": [
                 "ufcstats"
               ],
@@ -150,17 +150,17 @@
             },
             "td_landed_per_15": {
               "unit": "per_15",
-              "value": null,
+              "value": 0,
               "origin": "pbe_derived",
-              "numerator": null,
-              "as_of_date": "2026-09-06",
-              "confidence": "insufficient",
+              "numerator": 0,
+              "as_of_date": "2026-09-10",
+              "confidence": "low",
               "metric_key": "stance_td_rate_15",
-              "denominator": null,
-              "sample_bouts": 0,
-              "sample_rounds": 0,
-              "sample_seconds": 0,
-              "coverage_status": "insufficient",
+              "denominator": 588,
+              "sample_bouts": 1,
+              "sample_rounds": 2,
+              "sample_seconds": 588,
+              "coverage_status": "low",
               "source_families": [
                 "ufcstats"
               ],
@@ -169,11 +169,11 @@
           },
           "confidence": "low",
           "provenance": {
-            "builder": "scripts/dna/build_fight_dna.mjs@v1.1",
-            "as_of_date": "2026-09-06",
-            "build_run_id": "38e9445a-e7c9-4a23-bcc4-8d2c70e4a832"
+            "builder": "ufc-intelligence/build_fight_dna@v1.1",
+            "as_of_date": "2026-09-10",
+            "build_run_id": "229bc001-57dc-4a83-b575-888929042581"
           },
-          "generated_at": "2026-09-06T18:27:53.444+00:00",
+          "generated_at": "2026-09-10T14:07:27.425+00:00",
           "record": {
             "w": 0,
             "l": 1,
@@ -185,33 +185,33 @@
         },
         {
           "fighter_id": "eed368a5-484b-412f-9d2c-a4fd6d24d019",
-          "as_of_date": "2026-09-06",
+          "as_of_date": "2026-09-10",
           "opponent_stance": "SOUTHPAW",
           "definition_version": 1,
-          "appearances": 3,
-          "wins": 3,
+          "appearances": 5,
+          "wins": 5,
           "losses": 0,
           "draws": 0,
           "no_contests": 0,
-          "ko_tko_wins": 1,
+          "ko_tko_wins": 3,
           "submission_wins": 1,
           "decision_wins": 1,
-          "stat_bouts": 0,
-          "stat_rounds": 0,
-          "observed_seconds": 0,
+          "stat_bouts": 4,
+          "stat_rounds": 7,
+          "observed_seconds": 1727,
           "metrics": {
             "ko_rate": {
               "unit": "ratio",
-              "value": 0.3333,
+              "value": 0.6,
               "origin": "pbe_derived",
-              "numerator": 1,
-              "as_of_date": "2026-09-06",
-              "confidence": "low",
+              "numerator": 3,
+              "as_of_date": "2026-09-10",
+              "confidence": "medium",
               "metric_key": "stance_ko_rate",
-              "denominator": 3,
-              "sample_bouts": 3,
-              "sample_rounds": 0,
-              "sample_seconds": 0,
+              "denominator": 5,
+              "sample_bouts": 5,
+              "sample_rounds": 7,
+              "sample_seconds": 1727,
               "coverage_status": "high",
               "source_families": [
                 "espn",
@@ -221,16 +221,16 @@
             },
             "sub_rate": {
               "unit": "ratio",
-              "value": 0.3333,
+              "value": 0.2,
               "origin": "pbe_derived",
               "numerator": 1,
-              "as_of_date": "2026-09-06",
-              "confidence": "low",
+              "as_of_date": "2026-09-10",
+              "confidence": "medium",
               "metric_key": "stance_sub_rate",
-              "denominator": 3,
-              "sample_bouts": 3,
-              "sample_rounds": 0,
-              "sample_seconds": 0,
+              "denominator": 5,
+              "sample_bouts": 5,
+              "sample_rounds": 7,
+              "sample_seconds": 1727,
               "coverage_status": "high",
               "source_families": [
                 "espn",
@@ -240,17 +240,17 @@
             },
             "kd_per_15": {
               "unit": "per_15",
-              "value": null,
+              "value": 1.5634,
               "origin": "pbe_derived",
-              "numerator": null,
-              "as_of_date": "2026-09-06",
-              "confidence": "insufficient",
+              "numerator": 3,
+              "as_of_date": "2026-09-10",
+              "confidence": "medium",
               "metric_key": "stance_kd_rate_15",
-              "denominator": null,
-              "sample_bouts": 0,
-              "sample_rounds": 0,
-              "sample_seconds": 0,
-              "coverage_status": "insufficient",
+              "denominator": 1727,
+              "sample_bouts": 4,
+              "sample_rounds": 7,
+              "sample_seconds": 1727,
+              "coverage_status": "low",
               "source_families": [
                 "ufcstats"
               ],
@@ -258,16 +258,16 @@
             },
             "finish_rate": {
               "unit": "ratio",
-              "value": 0.6667,
+              "value": 0.8,
               "origin": "pbe_derived",
-              "numerator": 2,
-              "as_of_date": "2026-09-06",
-              "confidence": "low",
+              "numerator": 4,
+              "as_of_date": "2026-09-10",
+              "confidence": "medium",
               "metric_key": "stance_finish_rate",
-              "denominator": 3,
-              "sample_bouts": 3,
-              "sample_rounds": 0,
-              "sample_seconds": 0,
+              "denominator": 5,
+              "sample_bouts": 5,
+              "sample_rounds": 7,
+              "sample_seconds": 1727,
               "coverage_status": "high",
               "source_families": [
                 "espn",
@@ -277,17 +277,17 @@
             },
             "sig_diff_per_min": {
               "unit": "per_min",
-              "value": null,
+              "value": 0.3474,
               "origin": "pbe_derived",
-              "numerator": null,
-              "as_of_date": "2026-09-06",
-              "confidence": "insufficient",
+              "numerator": 10,
+              "as_of_date": "2026-09-10",
+              "confidence": "medium",
               "metric_key": "stance_sig_diff_per_min",
-              "denominator": null,
-              "sample_bouts": 0,
-              "sample_rounds": 0,
-              "sample_seconds": 0,
-              "coverage_status": "insufficient",
+              "denominator": 1727,
+              "sample_bouts": 4,
+              "sample_rounds": 7,
+              "sample_seconds": 1727,
+              "coverage_status": "low",
               "source_families": [
                 "ufcstats"
               ],
@@ -295,17 +295,162 @@
             },
             "td_landed_per_15": {
               "unit": "per_15",
-              "value": null,
+              "value": 0.5211,
               "origin": "pbe_derived",
-              "numerator": null,
-              "as_of_date": "2026-09-06",
-              "confidence": "insufficient",
+              "numerator": 1,
+              "as_of_date": "2026-09-10",
+              "confidence": "medium",
               "metric_key": "stance_td_rate_15",
-              "denominator": null,
-              "sample_bouts": 0,
-              "sample_rounds": 0,
-              "sample_seconds": 0,
-              "coverage_status": "insufficient",
+              "denominator": 1727,
+              "sample_bouts": 4,
+              "sample_rounds": 7,
+              "sample_seconds": 1727,
+              "coverage_status": "low",
+              "source_families": [
+                "ufcstats"
+              ],
+              "definition_version": 1
+            }
+          },
+          "confidence": "medium",
+          "provenance": {
+            "builder": "ufc-intelligence/build_fight_dna@v1.1",
+            "as_of_date": "2026-09-10",
+            "build_run_id": "229bc001-57dc-4a83-b575-888929042581"
+          },
+          "generated_at": "2026-09-10T14:07:27.425+00:00",
+          "record": {
+            "w": 5,
+            "l": 0,
+            "d": 0,
+            "nc": 0,
+            "appearances": 5
+          },
+          "origin": "pbe_derived"
+        },
+        {
+          "fighter_id": "eed368a5-484b-412f-9d2c-a4fd6d24d019",
+          "as_of_date": "2026-09-10",
+          "opponent_stance": "SWITCH",
+          "definition_version": 1,
+          "appearances": 2,
+          "wins": 2,
+          "losses": 0,
+          "draws": 0,
+          "no_contests": 0,
+          "ko_tko_wins": 1,
+          "submission_wins": 0,
+          "decision_wins": 1,
+          "stat_bouts": 1,
+          "stat_rounds": 2,
+          "observed_seconds": 382,
+          "metrics": {
+            "ko_rate": {
+              "unit": "ratio",
+              "value": 0.5,
+              "origin": "pbe_derived",
+              "numerator": 1,
+              "as_of_date": "2026-09-10",
+              "confidence": "low",
+              "metric_key": "stance_ko_rate",
+              "denominator": 2,
+              "sample_bouts": 2,
+              "sample_rounds": 2,
+              "sample_seconds": 382,
+              "coverage_status": "high",
+              "source_families": [
+                "espn",
+                "ufcstats"
+              ],
+              "definition_version": 1
+            },
+            "sub_rate": {
+              "unit": "ratio",
+              "value": 0,
+              "origin": "pbe_derived",
+              "numerator": 0,
+              "as_of_date": "2026-09-10",
+              "confidence": "low",
+              "metric_key": "stance_sub_rate",
+              "denominator": 2,
+              "sample_bouts": 2,
+              "sample_rounds": 2,
+              "sample_seconds": 382,
+              "coverage_status": "high",
+              "source_families": [
+                "espn",
+                "ufcstats"
+              ],
+              "definition_version": 1
+            },
+            "kd_per_15": {
+              "unit": "per_15",
+              "value": 4.712,
+              "origin": "pbe_derived",
+              "numerator": 2,
+              "as_of_date": "2026-09-10",
+              "confidence": "low",
+              "metric_key": "stance_kd_rate_15",
+              "denominator": 382,
+              "sample_bouts": 1,
+              "sample_rounds": 2,
+              "sample_seconds": 382,
+              "coverage_status": "low",
+              "source_families": [
+                "ufcstats"
+              ],
+              "definition_version": 1
+            },
+            "finish_rate": {
+              "unit": "ratio",
+              "value": 0.5,
+              "origin": "pbe_derived",
+              "numerator": 1,
+              "as_of_date": "2026-09-10",
+              "confidence": "low",
+              "metric_key": "stance_finish_rate",
+              "denominator": 2,
+              "sample_bouts": 2,
+              "sample_rounds": 2,
+              "sample_seconds": 382,
+              "coverage_status": "high",
+              "source_families": [
+                "espn",
+                "ufcstats"
+              ],
+              "definition_version": 1
+            },
+            "sig_diff_per_min": {
+              "unit": "per_min",
+              "value": 1.7277,
+              "origin": "pbe_derived",
+              "numerator": 11,
+              "as_of_date": "2026-09-10",
+              "confidence": "low",
+              "metric_key": "stance_sig_diff_per_min",
+              "denominator": 382,
+              "sample_bouts": 1,
+              "sample_rounds": 2,
+              "sample_seconds": 382,
+              "coverage_status": "low",
+              "source_families": [
+                "ufcstats"
+              ],
+              "definition_version": 1
+            },
+            "td_landed_per_15": {
+              "unit": "per_15",
+              "value": 0,
+              "origin": "pbe_derived",
+              "numerator": 0,
+              "as_of_date": "2026-09-10",
+              "confidence": "low",
+              "metric_key": "stance_td_rate_15",
+              "denominator": 382,
+              "sample_bouts": 1,
+              "sample_rounds": 2,
+              "sample_seconds": 382,
+              "coverage_status": "low",
               "source_families": [
                 "ufcstats"
               ],
@@ -314,621 +459,17 @@
           },
           "confidence": "low",
           "provenance": {
-            "builder": "scripts/dna/build_fight_dna.mjs@v1.1",
-            "as_of_date": "2026-09-06",
-            "build_run_id": "38e9445a-e7c9-4a23-bcc4-8d2c70e4a832"
+            "builder": "ufc-intelligence/build_fight_dna@v1.1",
+            "as_of_date": "2026-09-10",
+            "build_run_id": "229bc001-57dc-4a83-b575-888929042581"
           },
-          "generated_at": "2026-09-06T18:27:53.444+00:00",
+          "generated_at": "2026-09-10T14:07:27.425+00:00",
           "record": {
-            "w": 3,
+            "w": 2,
             "l": 0,
             "d": 0,
             "nc": 0,
-            "appearances": 3
-          },
-          "origin": "pbe_derived"
-        },
-        {
-          "fighter_id": "eed368a5-484b-412f-9d2c-a4fd6d24d019",
-          "as_of_date": "2026-09-06",
-          "opponent_stance": "SWITCH",
-          "definition_version": 1,
-          "appearances": 0,
-          "wins": 0,
-          "losses": 0,
-          "draws": 0,
-          "no_contests": 0,
-          "ko_tko_wins": 0,
-          "submission_wins": 0,
-          "decision_wins": 0,
-          "stat_bouts": 0,
-          "stat_rounds": 0,
-          "observed_seconds": 0,
-          "metrics": {
-            "ko_rate": {
-              "unit": "ratio",
-              "value": null,
-              "origin": "pbe_derived",
-              "numerator": 0,
-              "as_of_date": "2026-09-06",
-              "confidence": "insufficient",
-              "metric_key": "stance_ko_rate",
-              "denominator": 0,
-              "sample_bouts": 0,
-              "sample_rounds": 0,
-              "sample_seconds": 0,
-              "coverage_status": "insufficient",
-              "source_families": [
-                "espn",
-                "ufcstats"
-              ],
-              "definition_version": 1
-            },
-            "sub_rate": {
-              "unit": "ratio",
-              "value": null,
-              "origin": "pbe_derived",
-              "numerator": 0,
-              "as_of_date": "2026-09-06",
-              "confidence": "insufficient",
-              "metric_key": "stance_sub_rate",
-              "denominator": 0,
-              "sample_bouts": 0,
-              "sample_rounds": 0,
-              "sample_seconds": 0,
-              "coverage_status": "insufficient",
-              "source_families": [
-                "espn",
-                "ufcstats"
-              ],
-              "definition_version": 1
-            },
-            "kd_per_15": {
-              "unit": "per_15",
-              "value": null,
-              "origin": "pbe_derived",
-              "numerator": null,
-              "as_of_date": "2026-09-06",
-              "confidence": "insufficient",
-              "metric_key": "stance_kd_rate_15",
-              "denominator": null,
-              "sample_bouts": 0,
-              "sample_rounds": 0,
-              "sample_seconds": 0,
-              "coverage_status": "insufficient",
-              "source_families": [
-                "ufcstats"
-              ],
-              "definition_version": 1
-            },
-            "finish_rate": {
-              "unit": "ratio",
-              "value": null,
-              "origin": "pbe_derived",
-              "numerator": 0,
-              "as_of_date": "2026-09-06",
-              "confidence": "insufficient",
-              "metric_key": "stance_finish_rate",
-              "denominator": 0,
-              "sample_bouts": 0,
-              "sample_rounds": 0,
-              "sample_seconds": 0,
-              "coverage_status": "insufficient",
-              "source_families": [
-                "espn",
-                "ufcstats"
-              ],
-              "definition_version": 1
-            },
-            "sig_diff_per_min": {
-              "unit": "per_min",
-              "value": null,
-              "origin": "pbe_derived",
-              "numerator": null,
-              "as_of_date": "2026-09-06",
-              "confidence": "insufficient",
-              "metric_key": "stance_sig_diff_per_min",
-              "denominator": null,
-              "sample_bouts": 0,
-              "sample_rounds": 0,
-              "sample_seconds": 0,
-              "coverage_status": "insufficient",
-              "source_families": [
-                "ufcstats"
-              ],
-              "definition_version": 1
-            },
-            "td_landed_per_15": {
-              "unit": "per_15",
-              "value": null,
-              "origin": "pbe_derived",
-              "numerator": null,
-              "as_of_date": "2026-09-06",
-              "confidence": "insufficient",
-              "metric_key": "stance_td_rate_15",
-              "denominator": null,
-              "sample_bouts": 0,
-              "sample_rounds": 0,
-              "sample_seconds": 0,
-              "coverage_status": "insufficient",
-              "source_families": [
-                "ufcstats"
-              ],
-              "definition_version": 1
-            }
-          },
-          "confidence": "insufficient",
-          "provenance": {
-            "bouts": [],
-            "builder": "scripts/dna/build_fight_dna.mjs@6e9cbfa",
-            "watermark": {
-              "bouts": 4,
-              "stats_captured_at": null,
-              "results_captured_at": "2026-09-06T13:48:02.81+00:00",
-              "round_stats_captured_at": null
-            },
-            "build_run_id": "507ffd4c-2e92-4f4b-825f-b7e9952b9181"
-          },
-          "generated_at": "2026-09-06T16:35:55.552+00:00",
-          "record": {
-            "w": 0,
-            "l": 0,
-            "d": 0,
-            "nc": 0,
-            "appearances": 0
-          },
-          "origin": "pbe_derived"
-        },
-        {
-          "fighter_id": "eed368a5-484b-412f-9d2c-a4fd6d24d019",
-          "as_of_date": "2026-09-06",
-          "opponent_stance": "OPEN_STANCE",
-          "definition_version": 1,
-          "appearances": 0,
-          "wins": 0,
-          "losses": 0,
-          "draws": 0,
-          "no_contests": 0,
-          "ko_tko_wins": 0,
-          "submission_wins": 0,
-          "decision_wins": 0,
-          "stat_bouts": 0,
-          "stat_rounds": 0,
-          "observed_seconds": 0,
-          "metrics": {
-            "ko_rate": {
-              "unit": "ratio",
-              "value": null,
-              "origin": "pbe_derived",
-              "numerator": 0,
-              "as_of_date": "2026-09-06",
-              "confidence": "insufficient",
-              "metric_key": "stance_ko_rate",
-              "denominator": 0,
-              "sample_bouts": 0,
-              "sample_rounds": 0,
-              "sample_seconds": 0,
-              "coverage_status": "insufficient",
-              "source_families": [
-                "espn",
-                "ufcstats"
-              ],
-              "definition_version": 1
-            },
-            "sub_rate": {
-              "unit": "ratio",
-              "value": null,
-              "origin": "pbe_derived",
-              "numerator": 0,
-              "as_of_date": "2026-09-06",
-              "confidence": "insufficient",
-              "metric_key": "stance_sub_rate",
-              "denominator": 0,
-              "sample_bouts": 0,
-              "sample_rounds": 0,
-              "sample_seconds": 0,
-              "coverage_status": "insufficient",
-              "source_families": [
-                "espn",
-                "ufcstats"
-              ],
-              "definition_version": 1
-            },
-            "kd_per_15": {
-              "unit": "per_15",
-              "value": null,
-              "origin": "pbe_derived",
-              "numerator": null,
-              "as_of_date": "2026-09-06",
-              "confidence": "insufficient",
-              "metric_key": "stance_kd_rate_15",
-              "denominator": null,
-              "sample_bouts": 0,
-              "sample_rounds": 0,
-              "sample_seconds": 0,
-              "coverage_status": "insufficient",
-              "source_families": [
-                "ufcstats"
-              ],
-              "definition_version": 1
-            },
-            "finish_rate": {
-              "unit": "ratio",
-              "value": null,
-              "origin": "pbe_derived",
-              "numerator": 0,
-              "as_of_date": "2026-09-06",
-              "confidence": "insufficient",
-              "metric_key": "stance_finish_rate",
-              "denominator": 0,
-              "sample_bouts": 0,
-              "sample_rounds": 0,
-              "sample_seconds": 0,
-              "coverage_status": "insufficient",
-              "source_families": [
-                "espn",
-                "ufcstats"
-              ],
-              "definition_version": 1
-            },
-            "sig_diff_per_min": {
-              "unit": "per_min",
-              "value": null,
-              "origin": "pbe_derived",
-              "numerator": null,
-              "as_of_date": "2026-09-06",
-              "confidence": "insufficient",
-              "metric_key": "stance_sig_diff_per_min",
-              "denominator": null,
-              "sample_bouts": 0,
-              "sample_rounds": 0,
-              "sample_seconds": 0,
-              "coverage_status": "insufficient",
-              "source_families": [
-                "ufcstats"
-              ],
-              "definition_version": 1
-            },
-            "td_landed_per_15": {
-              "unit": "per_15",
-              "value": null,
-              "origin": "pbe_derived",
-              "numerator": null,
-              "as_of_date": "2026-09-06",
-              "confidence": "insufficient",
-              "metric_key": "stance_td_rate_15",
-              "denominator": null,
-              "sample_bouts": 0,
-              "sample_rounds": 0,
-              "sample_seconds": 0,
-              "coverage_status": "insufficient",
-              "source_families": [
-                "ufcstats"
-              ],
-              "definition_version": 1
-            }
-          },
-          "confidence": "insufficient",
-          "provenance": {
-            "bouts": [],
-            "builder": "scripts/dna/build_fight_dna.mjs@6e9cbfa",
-            "watermark": {
-              "bouts": 4,
-              "stats_captured_at": null,
-              "results_captured_at": "2026-09-06T13:48:02.81+00:00",
-              "round_stats_captured_at": null
-            },
-            "build_run_id": "507ffd4c-2e92-4f4b-825f-b7e9952b9181"
-          },
-          "generated_at": "2026-09-06T16:35:55.552+00:00",
-          "record": {
-            "w": 0,
-            "l": 0,
-            "d": 0,
-            "nc": 0,
-            "appearances": 0
-          },
-          "origin": "pbe_derived"
-        },
-        {
-          "fighter_id": "eed368a5-484b-412f-9d2c-a4fd6d24d019",
-          "as_of_date": "2026-09-06",
-          "opponent_stance": "SIDEWAYS",
-          "definition_version": 1,
-          "appearances": 0,
-          "wins": 0,
-          "losses": 0,
-          "draws": 0,
-          "no_contests": 0,
-          "ko_tko_wins": 0,
-          "submission_wins": 0,
-          "decision_wins": 0,
-          "stat_bouts": 0,
-          "stat_rounds": 0,
-          "observed_seconds": 0,
-          "metrics": {
-            "ko_rate": {
-              "unit": "ratio",
-              "value": null,
-              "origin": "pbe_derived",
-              "numerator": 0,
-              "as_of_date": "2026-09-06",
-              "confidence": "insufficient",
-              "metric_key": "stance_ko_rate",
-              "denominator": 0,
-              "sample_bouts": 0,
-              "sample_rounds": 0,
-              "sample_seconds": 0,
-              "coverage_status": "insufficient",
-              "source_families": [
-                "espn",
-                "ufcstats"
-              ],
-              "definition_version": 1
-            },
-            "sub_rate": {
-              "unit": "ratio",
-              "value": null,
-              "origin": "pbe_derived",
-              "numerator": 0,
-              "as_of_date": "2026-09-06",
-              "confidence": "insufficient",
-              "metric_key": "stance_sub_rate",
-              "denominator": 0,
-              "sample_bouts": 0,
-              "sample_rounds": 0,
-              "sample_seconds": 0,
-              "coverage_status": "insufficient",
-              "source_families": [
-                "espn",
-                "ufcstats"
-              ],
-              "definition_version": 1
-            },
-            "kd_per_15": {
-              "unit": "per_15",
-              "value": null,
-              "origin": "pbe_derived",
-              "numerator": null,
-              "as_of_date": "2026-09-06",
-              "confidence": "insufficient",
-              "metric_key": "stance_kd_rate_15",
-              "denominator": null,
-              "sample_bouts": 0,
-              "sample_rounds": 0,
-              "sample_seconds": 0,
-              "coverage_status": "insufficient",
-              "source_families": [
-                "ufcstats"
-              ],
-              "definition_version": 1
-            },
-            "finish_rate": {
-              "unit": "ratio",
-              "value": null,
-              "origin": "pbe_derived",
-              "numerator": 0,
-              "as_of_date": "2026-09-06",
-              "confidence": "insufficient",
-              "metric_key": "stance_finish_rate",
-              "denominator": 0,
-              "sample_bouts": 0,
-              "sample_rounds": 0,
-              "sample_seconds": 0,
-              "coverage_status": "insufficient",
-              "source_families": [
-                "espn",
-                "ufcstats"
-              ],
-              "definition_version": 1
-            },
-            "sig_diff_per_min": {
-              "unit": "per_min",
-              "value": null,
-              "origin": "pbe_derived",
-              "numerator": null,
-              "as_of_date": "2026-09-06",
-              "confidence": "insufficient",
-              "metric_key": "stance_sig_diff_per_min",
-              "denominator": null,
-              "sample_bouts": 0,
-              "sample_rounds": 0,
-              "sample_seconds": 0,
-              "coverage_status": "insufficient",
-              "source_families": [
-                "ufcstats"
-              ],
-              "definition_version": 1
-            },
-            "td_landed_per_15": {
-              "unit": "per_15",
-              "value": null,
-              "origin": "pbe_derived",
-              "numerator": null,
-              "as_of_date": "2026-09-06",
-              "confidence": "insufficient",
-              "metric_key": "stance_td_rate_15",
-              "denominator": null,
-              "sample_bouts": 0,
-              "sample_rounds": 0,
-              "sample_seconds": 0,
-              "coverage_status": "insufficient",
-              "source_families": [
-                "ufcstats"
-              ],
-              "definition_version": 1
-            }
-          },
-          "confidence": "insufficient",
-          "provenance": {
-            "bouts": [],
-            "builder": "scripts/dna/build_fight_dna.mjs@6e9cbfa",
-            "watermark": {
-              "bouts": 4,
-              "stats_captured_at": null,
-              "results_captured_at": "2026-09-06T13:48:02.81+00:00",
-              "round_stats_captured_at": null
-            },
-            "build_run_id": "507ffd4c-2e92-4f4b-825f-b7e9952b9181"
-          },
-          "generated_at": "2026-09-06T16:35:55.552+00:00",
-          "record": {
-            "w": 0,
-            "l": 0,
-            "d": 0,
-            "nc": 0,
-            "appearances": 0
-          },
-          "origin": "pbe_derived"
-        },
-        {
-          "fighter_id": "eed368a5-484b-412f-9d2c-a4fd6d24d019",
-          "as_of_date": "2026-09-06",
-          "opponent_stance": "UNKNOWN",
-          "definition_version": 1,
-          "appearances": 0,
-          "wins": 0,
-          "losses": 0,
-          "draws": 0,
-          "no_contests": 0,
-          "ko_tko_wins": 0,
-          "submission_wins": 0,
-          "decision_wins": 0,
-          "stat_bouts": 0,
-          "stat_rounds": 0,
-          "observed_seconds": 0,
-          "metrics": {
-            "ko_rate": {
-              "unit": "ratio",
-              "value": null,
-              "origin": "pbe_derived",
-              "numerator": 0,
-              "as_of_date": "2026-09-06",
-              "confidence": "insufficient",
-              "metric_key": "stance_ko_rate",
-              "denominator": 0,
-              "sample_bouts": 0,
-              "sample_rounds": 0,
-              "sample_seconds": 0,
-              "coverage_status": "insufficient",
-              "source_families": [
-                "espn",
-                "ufcstats"
-              ],
-              "definition_version": 1
-            },
-            "sub_rate": {
-              "unit": "ratio",
-              "value": null,
-              "origin": "pbe_derived",
-              "numerator": 0,
-              "as_of_date": "2026-09-06",
-              "confidence": "insufficient",
-              "metric_key": "stance_sub_rate",
-              "denominator": 0,
-              "sample_bouts": 0,
-              "sample_rounds": 0,
-              "sample_seconds": 0,
-              "coverage_status": "insufficient",
-              "source_families": [
-                "espn",
-                "ufcstats"
-              ],
-              "definition_version": 1
-            },
-            "kd_per_15": {
-              "unit": "per_15",
-              "value": null,
-              "origin": "pbe_derived",
-              "numerator": null,
-              "as_of_date": "2026-09-06",
-              "confidence": "insufficient",
-              "metric_key": "stance_kd_rate_15",
-              "denominator": null,
-              "sample_bouts": 0,
-              "sample_rounds": 0,
-              "sample_seconds": 0,
-              "coverage_status": "insufficient",
-              "source_families": [
-                "ufcstats"
-              ],
-              "definition_version": 1
-            },
-            "finish_rate": {
-              "unit": "ratio",
-              "value": null,
-              "origin": "pbe_derived",
-              "numerator": 0,
-              "as_of_date": "2026-09-06",
-              "confidence": "insufficient",
-              "metric_key": "stance_finish_rate",
-              "denominator": 0,
-              "sample_bouts": 0,
-              "sample_rounds": 0,
-              "sample_seconds": 0,
-              "coverage_status": "insufficient",
-              "source_families": [
-                "espn",
-                "ufcstats"
-              ],
-              "definition_version": 1
-            },
-            "sig_diff_per_min": {
-              "unit": "per_min",
-              "value": null,
-              "origin": "pbe_derived",
-              "numerator": null,
-              "as_of_date": "2026-09-06",
-              "confidence": "insufficient",
-              "metric_key": "stance_sig_diff_per_min",
-              "denominator": null,
-              "sample_bouts": 0,
-              "sample_rounds": 0,
-              "sample_seconds": 0,
-              "coverage_status": "insufficient",
-              "source_families": [
-                "ufcstats"
-              ],
-              "definition_version": 1
-            },
-            "td_landed_per_15": {
-              "unit": "per_15",
-              "value": null,
-              "origin": "pbe_derived",
-              "numerator": null,
-              "as_of_date": "2026-09-06",
-              "confidence": "insufficient",
-              "metric_key": "stance_td_rate_15",
-              "denominator": null,
-              "sample_bouts": 0,
-              "sample_rounds": 0,
-              "sample_seconds": 0,
-              "coverage_status": "insufficient",
-              "source_families": [
-                "ufcstats"
-              ],
-              "definition_version": 1
-            }
-          },
-          "confidence": "insufficient",
-          "provenance": {
-            "bouts": [],
-            "builder": "scripts/dna/build_fight_dna.mjs@6e9cbfa",
-            "watermark": {
-              "bouts": 4,
-              "stats_captured_at": null,
-              "results_captured_at": "2026-09-06T13:48:02.81+00:00",
-              "round_stats_captured_at": null
-            },
-            "build_run_id": "507ffd4c-2e92-4f4b-825f-b7e9952b9181"
-          },
-          "generated_at": "2026-09-06T16:35:55.552+00:00",
-          "record": {
-            "w": 0,
-            "l": 0,
-            "d": 0,
-            "nc": 0,
-            "appearances": 0
+            "appearances": 2
           },
           "origin": "pbe_derived"
         }
@@ -936,13 +477,13 @@
     },
     "meta": {
       "api": "PropSports UFC",
-      "version": "2026-09-06.3",
-      "request_id": "93c6388a-56ff-48e9-baba-12553e3b9d76",
+      "version": "2026-09-11.1",
+      "request_id": "906782eb-a4e1-4c0a-a350-63ded7fec016",
       "requested_as_of": null,
-      "resolved_as_of": "2026-09-06",
+      "resolved_as_of": "2026-09-10",
       "definition_version": 1,
       "opponent_stance": null,
-      "count": 6,
+      "count": 3,
       "as_of_semantics": "as_of_date is exclusive: the snapshot dated D contains bouts with event_date < D, so a bout fought on D is excluded by the snapshot dated D. ?as_of=D resolves to the latest stored snapshot with as_of_date <= D, which therefore never contains a bout fought on or after D.",
       "origin": "pbe_derived",
       "origin_label": "PBE DERIVED",

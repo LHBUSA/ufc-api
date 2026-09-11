@@ -1,35 +1,35 @@
 {
-  "captured_at": "2026-09-07T15:18:22.761Z",
+  "captured_at": "2026-09-11T21:47:17.890Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/dna/query?metric=sig_landed_per_min&min_confidence=medium&limit=3",
   "status": 200,
-  "api_version": "2026-09-06.3",
+  "api_version": "2026-09-11.1",
   "body": {
     "ok": true,
     "data": [
       {
         "fighter": {
-          "id": "b5bceb9a-635e-4b9f-8426-ca8ea0339ddf",
-          "name": "Tommy McMillen",
-          "nickname": "Gun",
-          "slug_id": "5212849",
+          "id": "0a5ce3c3-0281-4158-be84-1b50fa7bb9c1",
+          "name": "Jeff Molina",
+          "nickname": "El Jefe",
+          "slug_id": "4684238",
           "stance": "ORTHODOX",
-          "is_active": true
+          "is_active": false
         },
-        "as_of_date": "2026-09-06",
+        "as_of_date": "2026-09-10",
         "metric_key": "sig_landed_per_min",
         "metric": {
           "unit": "per_min",
-          "value": 18.6998,
+          "value": 8.164,
           "origin": "pbe_derived",
-          "numerator": 326,
-          "as_of_date": "2026-09-06",
+          "numerator": 292,
+          "as_of_date": "2026-09-10",
           "confidence": "medium",
           "metric_key": "sig_landed_per_min",
-          "denominator": 1046,
-          "sample_bouts": 2,
-          "sample_rounds": 4,
-          "sample_seconds": 1046,
+          "denominator": 2146,
+          "sample_bouts": 3,
+          "sample_rounds": 8,
+          "sample_seconds": 2146,
           "coverage_status": "low",
           "source_families": [
             "ufcstats"
@@ -38,97 +38,97 @@
         },
         "origin": "pbe_derived",
         "sample": {
-          "sample_bouts": 3,
-          "sample_completed_bouts": 3,
-          "sample_stat_bouts": 2,
-          "sample_rounds": 4,
-          "sample_seconds": 1046,
-          "coverage_status": "low"
-        }
-      },
-      {
-        "fighter": {
-          "id": "8e9fb2a2-f378-48c5-88a1-88fa791c59ba",
-          "name": "Ty Miller",
-          "nickname": "Thriller",
-          "slug_id": "5290957",
-          "stance": "ORTHODOX",
-          "is_active": true
-        },
-        "as_of_date": "2026-09-06",
-        "metric_key": "sig_landed_per_min",
-        "metric": {
-          "unit": "per_min",
-          "value": 12.6039,
-          "origin": "pbe_derived",
-          "numerator": 192,
-          "as_of_date": "2026-09-06",
-          "confidence": "medium",
-          "metric_key": "sig_landed_per_min",
-          "denominator": 914,
-          "sample_bouts": 2,
-          "sample_rounds": 4,
-          "sample_seconds": 914,
-          "coverage_status": "low",
-          "source_families": [
-            "ufcstats"
-          ],
-          "definition_version": 1
-        },
-        "origin": "pbe_derived",
-        "sample": {
-          "sample_bouts": 3,
-          "sample_completed_bouts": 3,
-          "sample_stat_bouts": 2,
-          "sample_rounds": 4,
-          "sample_seconds": 914,
-          "coverage_status": "low"
-        }
-      },
-      {
-        "fighter": {
-          "id": "d917e808-4a1e-4c3d-8957-aa2effba265a",
-          "name": "Brando Peričić",
-          "nickname": "The Balkan Bear",
-          "slug_id": "5293988",
-          "stance": "ORTHODOX",
-          "is_active": true
-        },
-        "as_of_date": "2026-09-06",
-        "metric_key": "sig_landed_per_min",
-        "metric": {
-          "unit": "per_min",
-          "value": 11.004,
-          "origin": "pbe_derived",
-          "numerator": 137,
-          "as_of_date": "2026-09-06",
-          "confidence": "medium",
-          "metric_key": "sig_landed_per_min",
-          "denominator": 747,
-          "sample_bouts": 3,
-          "sample_rounds": 4,
-          "sample_seconds": 747,
-          "coverage_status": "low",
-          "source_families": [
-            "ufcstats"
-          ],
-          "definition_version": 1
-        },
-        "origin": "pbe_derived",
-        "sample": {
-          "sample_bouts": 3,
-          "sample_completed_bouts": 3,
+          "sample_bouts": 4,
+          "sample_completed_bouts": 4,
           "sample_stat_bouts": 3,
-          "sample_rounds": 4,
-          "sample_seconds": 747,
+          "sample_rounds": 8,
+          "sample_seconds": 2146,
           "coverage_status": "low"
+        }
+      },
+      {
+        "fighter": {
+          "id": "048de54b-3268-49e8-b2b5-4fec0b93da0d",
+          "name": "Alice Ardelean",
+          "nickname": null,
+          "slug_id": "3977988",
+          "stance": "ORTHODOX",
+          "is_active": true
+        },
+        "as_of_date": "2026-09-11",
+        "metric_key": "sig_landed_per_min",
+        "metric": {
+          "unit": "per_min",
+          "value": 6.9971,
+          "origin": "pbe_derived",
+          "numerator": 487,
+          "as_of_date": "2026-09-11",
+          "confidence": "medium",
+          "metric_key": "sig_landed_per_min",
+          "denominator": 4176,
+          "sample_bouts": 5,
+          "sample_rounds": 14,
+          "sample_seconds": 4176,
+          "coverage_status": "medium",
+          "source_families": [
+            "ufcstats"
+          ],
+          "definition_version": 1
+        },
+        "origin": "pbe_derived",
+        "sample": {
+          "sample_bouts": 5,
+          "sample_completed_bouts": 5,
+          "sample_stat_bouts": 5,
+          "sample_rounds": 14,
+          "sample_seconds": 4176,
+          "coverage_status": "medium"
+        }
+      },
+      {
+        "fighter": {
+          "id": "0e077613-4a48-45f9-93e6-955ed69a26a1",
+          "name": "Parker Porter",
+          "nickname": null,
+          "slug_id": "ac40f7e3cbecdda4",
+          "stance": "ORTHODOX",
+          "is_active": null
+        },
+        "as_of_date": "2026-09-10",
+        "metric_key": "sig_landed_per_min",
+        "metric": {
+          "unit": "per_min",
+          "value": 6.2844,
+          "origin": "pbe_derived",
+          "numerator": 369,
+          "as_of_date": "2026-09-10",
+          "confidence": "medium",
+          "metric_key": "sig_landed_per_min",
+          "denominator": 3523,
+          "sample_bouts": 8,
+          "sample_rounds": 14,
+          "sample_seconds": 3523,
+          "coverage_status": "medium",
+          "source_families": [
+            "ufcstats"
+          ],
+          "definition_version": 1
+        },
+        "origin": "pbe_derived",
+        "sample": {
+          "sample_bouts": 8,
+          "sample_completed_bouts": 8,
+          "sample_stat_bouts": 8,
+          "sample_rounds": 14,
+          "sample_seconds": 3523,
+          "coverage_status": "medium"
         }
       }
     ],
     "meta": {
       "api": "PropSports UFC",
-      "version": "2026-09-06.3",
-      "request_id": "458fa56c-a4cb-4e3c-a3fb-8205d6887a38",
+      "version": "2026-09-11.1",
+      "request_id": "e6c81125-d446-4721-84dc-2a267a04dc31",
       "mode": "snapshot",
       "metric": "sig_landed_per_min",
       "metric_requested": "sig_landed_per_min",
@@ -141,10 +141,10 @@
       "order": "desc",
       "requested_as_of": null,
       "definition_version": 1,
-      "candidates": 289,
-      "candidates_total": 289,
-      "truncated": false,
-      "matched": 285,
+      "candidates": 1000,
+      "candidates_total": 19187,
+      "truncated": true,
+      "matched": 120,
       "count": 3,
       "limit": 3,
       "filter": {

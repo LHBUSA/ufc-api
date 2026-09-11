@@ -1,9 +1,9 @@
 {
-  "captured_at": "2026-09-07T15:18:22.761Z",
+  "captured_at": "2026-09-11T21:47:17.890Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/search?q=strickland&limit=3",
   "status": 200,
-  "api_version": "2026-09-06.3",
+  "api_version": "2026-09-11.1",
   "body": {
     "ok": true,
     "data": {
@@ -54,7 +54,7 @@
           "commission": null,
           "is_ppv": null,
           "card_status": "complete",
-          "updated_at": "2026-09-07T06:01:34.903+00:00"
+          "updated_at": "2026-09-11T06:01:40.402+00:00"
         },
         {
           "id": "ce387df8-d8fc-4a1f-b644-3628e803cb16",
@@ -69,7 +69,7 @@
           "commission": null,
           "is_ppv": null,
           "card_status": "complete",
-          "updated_at": "2026-09-07T06:01:12.886+00:00"
+          "updated_at": "2026-09-11T06:01:31.717+00:00"
         },
         {
           "id": "4da5492f-1192-402d-9760-0647a385d392",
@@ -91,8 +91,8 @@
     },
     "meta": {
       "api": "PropSports UFC",
-      "version": "2026-09-06.3",
-      "request_id": "ed59255d-df96-4784-8665-ffac80262cf9",
+      "version": "2026-09-11.1",
+      "request_id": "5f80d9d7-cafa-4772-a280-be6b307a47db",
       "access_tier": "public"
     }
   }

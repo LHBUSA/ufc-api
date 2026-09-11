@@ -1,9 +1,9 @@
 {
-  "captured_at": "2026-09-07T15:18:22.761Z",
+  "captured_at": "2026-09-11T21:47:17.890Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/fighters/eed368a5-484b-412f-9d2c-a4fd6d24d019/round-profile",
   "status": 200,
-  "api_version": "2026-09-06.3",
+  "api_version": "2026-09-11.1",
   "body": {
     "ok": true,
     "data": {
@@ -33,35 +33,210 @@
         "stance": "ORTHODOX",
         "is_active": true
       },
-      "as_of_date": "2026-09-06",
+      "as_of_date": "2026-09-10",
       "definition_version": 1,
       "origin": "pbe_derived",
       "sample": {
-        "sample_bouts": 4,
-        "sample_completed_bouts": 4,
-        "sample_stat_bouts": 0,
-        "sample_rounds": 0,
-        "sample_seconds": 0,
-        "sample_minutes": 0,
-        "coverage_status": "insufficient"
+        "sample_bouts": 8,
+        "sample_completed_bouts": 8,
+        "sample_stat_bouts": 6,
+        "sample_rounds": 11,
+        "sample_seconds": 2697,
+        "sample_minutes": 45,
+        "coverage_status": "low"
       },
-      "available": false,
-      "status": "insufficient_coverage",
+      "available": true,
+      "status": "ok",
       "round_profile": {
-        "rounds": {},
+        "rounds": {
+          "1": {
+            "rounds": 6,
+            "seconds": 1707,
+            "sig_att_per_min": {
+              "unit": "per_min",
+              "value": 6.9947,
+              "origin": "pbe_derived",
+              "numerator": 199,
+              "as_of_date": "2026-09-10",
+              "confidence": "medium",
+              "metric_key": "r1_sig_attempts_per_min",
+              "denominator": 1707,
+              "sample_bouts": 6,
+              "sample_rounds": 6,
+              "sample_seconds": 1707,
+              "coverage_status": "low",
+              "source_families": [
+                "ufcstats"
+              ],
+              "definition_version": 1
+            },
+            "absorbed_per_min": {
+              "unit": "per_min",
+              "value": 4.3234,
+              "origin": "pbe_derived",
+              "numerator": 123,
+              "as_of_date": "2026-09-10",
+              "confidence": "medium",
+              "metric_key": "r1_sig_absorbed_per_min",
+              "denominator": 1707,
+              "sample_bouts": 6,
+              "sample_rounds": 6,
+              "sample_seconds": 1707,
+              "coverage_status": "low",
+              "source_families": [
+                "ufcstats"
+              ],
+              "definition_version": 1
+            },
+            "sig_landed_per_min": {
+              "unit": "per_min",
+              "value": 3.6204,
+              "origin": "pbe_derived",
+              "numerator": 103,
+              "as_of_date": "2026-09-10",
+              "confidence": "medium",
+              "metric_key": "r1_sig_landed_per_min",
+              "denominator": 1707,
+              "sample_bouts": 6,
+              "sample_rounds": 6,
+              "sample_seconds": 1707,
+              "coverage_status": "low",
+              "source_families": [
+                "ufcstats"
+              ],
+              "definition_version": 1
+            }
+          },
+          "2": {
+            "rounds": 4,
+            "seconds": 902,
+            "sig_att_per_min": {
+              "unit": "per_min",
+              "value": 11.3082,
+              "origin": "pbe_derived",
+              "numerator": 170,
+              "as_of_date": "2026-09-10",
+              "confidence": "medium",
+              "metric_key": "r2_sig_attempts_per_min",
+              "denominator": 902,
+              "sample_bouts": 4,
+              "sample_rounds": 4,
+              "sample_seconds": 902,
+              "coverage_status": "low",
+              "source_families": [
+                "ufcstats"
+              ],
+              "definition_version": 1
+            },
+            "absorbed_per_min": {
+              "unit": "per_min",
+              "value": 5.1885,
+              "origin": "pbe_derived",
+              "numerator": 78,
+              "as_of_date": "2026-09-10",
+              "confidence": "medium",
+              "metric_key": "r2_sig_absorbed_per_min",
+              "denominator": 902,
+              "sample_bouts": 4,
+              "sample_rounds": 4,
+              "sample_seconds": 902,
+              "coverage_status": "low",
+              "source_families": [
+                "ufcstats"
+              ],
+              "definition_version": 1
+            },
+            "sig_landed_per_min": {
+              "unit": "per_min",
+              "value": 6.0532,
+              "origin": "pbe_derived",
+              "numerator": 91,
+              "as_of_date": "2026-09-10",
+              "confidence": "medium",
+              "metric_key": "r2_sig_landed_per_min",
+              "denominator": 902,
+              "sample_bouts": 4,
+              "sample_rounds": 4,
+              "sample_seconds": 902,
+              "coverage_status": "low",
+              "source_families": [
+                "ufcstats"
+              ],
+              "definition_version": 1
+            }
+          },
+          "3": {
+            "rounds": 1,
+            "seconds": 88,
+            "sig_att_per_min": {
+              "unit": "per_min",
+              "value": 8.1818,
+              "origin": "pbe_derived",
+              "numerator": 12,
+              "as_of_date": "2026-09-10",
+              "confidence": "low",
+              "metric_key": "r3_sig_attempts_per_min",
+              "denominator": 88,
+              "sample_bouts": 1,
+              "sample_rounds": 1,
+              "sample_seconds": 88,
+              "coverage_status": "low",
+              "source_families": [
+                "ufcstats"
+              ],
+              "definition_version": 1
+            },
+            "absorbed_per_min": {
+              "unit": "per_min",
+              "value": 6.1364,
+              "origin": "pbe_derived",
+              "numerator": 9,
+              "as_of_date": "2026-09-10",
+              "confidence": "low",
+              "metric_key": "r3_sig_absorbed_per_min",
+              "denominator": 88,
+              "sample_bouts": 1,
+              "sample_rounds": 1,
+              "sample_seconds": 88,
+              "coverage_status": "low",
+              "source_families": [
+                "ufcstats"
+              ],
+              "definition_version": 1
+            },
+            "sig_landed_per_min": {
+              "unit": "per_min",
+              "value": 4.0909,
+              "origin": "pbe_derived",
+              "numerator": 6,
+              "as_of_date": "2026-09-10",
+              "confidence": "low",
+              "metric_key": "r3_sig_landed_per_min",
+              "denominator": 88,
+              "sample_bouts": 1,
+              "sample_rounds": 1,
+              "sample_seconds": 88,
+              "coverage_status": "low",
+              "source_families": [
+                "ufcstats"
+              ],
+              "definition_version": 1
+            }
+          }
+        },
         "pace_retention_r2_vs_r1": {
           "unit": "ratio",
-          "value": null,
+          "value": 1.6167,
           "origin": "pbe_derived",
-          "numerator": null,
-          "as_of_date": "2026-09-06",
-          "confidence": "insufficient",
+          "numerator": 11.3082,
+          "as_of_date": "2026-09-10",
+          "confidence": "medium",
           "metric_key": "pace_retention_r2_vs_r1",
-          "denominator": null,
-          "sample_bouts": 0,
-          "sample_rounds": 0,
-          "sample_seconds": 0,
-          "coverage_status": "insufficient",
+          "denominator": 6.9947,
+          "sample_bouts": 6,
+          "sample_rounds": 10,
+          "sample_seconds": 2609,
+          "coverage_status": "low",
           "source_families": [
             "ufcstats"
           ],
@@ -69,17 +244,17 @@
         },
         "pace_retention_r3_vs_r1": {
           "unit": "ratio",
-          "value": null,
+          "value": 1.1697,
           "origin": "pbe_derived",
-          "numerator": null,
-          "as_of_date": "2026-09-06",
-          "confidence": "insufficient",
+          "numerator": 8.1818,
+          "as_of_date": "2026-09-10",
+          "confidence": "medium",
           "metric_key": "pace_retention_r3_vs_r1",
-          "denominator": null,
-          "sample_bouts": 0,
-          "sample_rounds": 0,
-          "sample_seconds": 0,
-          "coverage_status": "insufficient",
+          "denominator": 6.9947,
+          "sample_bouts": 6,
+          "sample_rounds": 7,
+          "sample_seconds": 1795,
+          "coverage_status": "low",
           "source_families": [
             "ufcstats"
           ],
@@ -90,14 +265,14 @@
           "value": null,
           "origin": "pbe_derived",
           "numerator": null,
-          "as_of_date": "2026-09-06",
+          "as_of_date": "2026-09-10",
           "confidence": "insufficient",
           "metric_key": "championship_round_delta",
-          "denominator": null,
-          "sample_bouts": 0,
-          "sample_rounds": 0,
-          "sample_seconds": 0,
-          "coverage_status": "insufficient",
+          "denominator": 8.4761,
+          "sample_bouts": 6,
+          "sample_rounds": 11,
+          "sample_seconds": 2697,
+          "coverage_status": "low",
           "source_families": [
             "ufcstats"
           ],
@@ -105,38 +280,37 @@
         },
         "defensive_drift_r3_vs_r1": {
           "unit": "per_min",
-          "value": null,
+          "value": 1.813,
           "origin": "pbe_derived",
-          "numerator": null,
-          "as_of_date": "2026-09-06",
-          "confidence": "insufficient",
+          "numerator": 6.1364,
+          "as_of_date": "2026-09-10",
+          "confidence": "medium",
           "metric_key": "defensive_drift_r3_vs_r1",
-          "denominator": null,
-          "sample_bouts": 0,
-          "sample_rounds": 0,
-          "sample_seconds": 0,
-          "coverage_status": "insufficient",
+          "denominator": 4.3234,
+          "sample_bouts": 6,
+          "sample_rounds": 7,
+          "sample_seconds": 1795,
+          "coverage_status": "low",
           "source_families": [
             "ufcstats"
           ],
           "definition_version": 1
         }
-      },
-      "note": "No round profile metric has a value for this snapshot: 0 stat-covered bouts across 4 bouts. Nothing is synthesized."
+      }
     },
     "meta": {
       "api": "PropSports UFC",
-      "version": "2026-09-06.3",
-      "request_id": "9b18080a-fdd8-4f39-a031-aade6ebddde1",
+      "version": "2026-09-11.1",
+      "request_id": "88e6ba75-d582-4eba-9a3f-fad4333482ca",
       "requested_as_of": null,
-      "resolved_as_of": "2026-09-06",
+      "resolved_as_of": "2026-09-10",
       "definition_version": 1,
       "as_of_semantics": "as_of_date is exclusive: the snapshot dated D contains bouts with event_date < D, so a bout fought on D is excluded by the snapshot dated D. ?as_of=D resolves to the latest stored snapshot with as_of_date <= D, which therefore never contains a bout fought on or after D.",
       "origin": "pbe_derived",
       "origin_label": "PBE DERIVED",
       "family": "round_profile",
-      "available": false,
-      "status": "insufficient_coverage",
+      "available": true,
+      "status": "ok",
       "access_tier": "public"
     }
   }

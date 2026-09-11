@@ -50,9 +50,10 @@ Direct plans include more requests (25k / 100k / 500k / 2M) so direct customers 
 
 Plan names in the console must match `subscription_to_plan` keys (case-insensitive). If RapidAPI's default names (BASIC / PRO / ULTRA / MEGA) are used instead, they are already mapped.
 
-## Endpoint inventory (34 operations, all GET)
+## Endpoint inventory (39 operations, all GET; the generated source of truth is `docs/UFC_API_ENTITLEMENTS.md`)
 
 Core (DEVELOPER+): `/v1/ufc`, `/v1/ufc/events`, `/v1/ufc/events/{id}`, `/v1/ufc/events/{id}/card`, `/v1/ufc/fighters`, `/v1/ufc/fighters/{id}`, `/v1/ufc/fighters/{id}/history`, `/v1/ufc/bouts/{id}`, `/v1/ufc/bouts/{id}/stats`, `/v1/ufc/results`, `/v1/ufc/rankings`, `/v1/ufc/search`, `/v1/ufc/counts`, `/v1/ufc/dna/metrics`
+Weigh-ins & availability (DEVELOPER+, since API 2026-09-11.1): `/v1/ufc/weigh-ins`, `/v1/ufc/events/{id}/weigh-ins`, `/v1/ufc/injuries`, `/v1/ufc/events/{id}/card-changes`, `/v1/ufc/fighters/{id}/status`
 Media / video metadata (DEVELOPER+): `/v1/ufc/fighters/media`, `/v1/ufc/videos`, `/v1/ufc/fighters/{id}/videos`, `/v1/ufc/events/{id}/videos`, `/v1/ufc/bouts/{id}/videos`
 Editorial (DEVELOPER+): `/v1/ufc/news`, `/v1/ufc/articles/{slug}`, `/v1/ufc/events/{id}/articles`, `/v1/ufc/fighters/{id}/articles`
 Fight DNA (PRO+): `/v1/ufc/fighters/{id}/stats`, `/v1/ufc/fighters/{id}/dna`, `/v1/ufc/fighters/{id}/splits`, `/v1/ufc/fighters/{id}/round-profile`, `/v1/ufc/fighters/{id}/finish-profile`, `/v1/ufc/fighters/{id}/position-profile`
@@ -114,7 +115,7 @@ Headers: `X-Request-Id`, `X-Upstream-Request-Id`, `X-API-Version`, `X-Gateway-Ve
 
 1. Create the API in the RapidAPI Provider Dashboard (Hub listing): name, category Sports, tags, logo (PropTechUSA), website, docs and terms links above.
 2. Base URL `https://ufc.proptechusa.ai`. Copy the **Proxy Secret** from Settings and set it on the gateway: `cd gateway && npx wrangler secret put RAPIDAPI_PROXY_SECRET --env production` (and on preview for testing).
-3. Import `openapi/ufc-intelligence-api.yaml`; remove `/v1/ufc/wire` from the listing; group endpoints by tag (Core, Media, Editorial, Fight DNA, Matchup DNA, Fight Week).
+3. Import `openapi/ufc-intelligence-api.yaml`; remove `/v1/ufc/wire` from the listing; group endpoints by tag (Core, Weigh-ins & Availability, Media, Editorial, Fight DNA, Matchup DNA, Fight Week).
 4. Create plans **DEVELOPER $79 / PRO $199 / ULTRA $499 / SCALE $1,499** with the monthly quotas and per-minute limits in the table above; leave overage off; mark plan objects as "Endpoints available per plan" using the `x-plan` values (Fight DNA endpoints hidden below PRO, Matchup below ULTRA).
 5. Set "Request/response transformation": none. Do not enable RapidAPI-side caching.
 6. Health check endpoint: `/health`.

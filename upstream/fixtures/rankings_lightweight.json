@@ -1,16 +1,16 @@
 {
-  "captured_at": "2026-09-07T15:18:22.761Z",
+  "captured_at": "2026-09-11T21:47:17.890Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/rankings?division=LIGHTWEIGHT",
   "status": 200,
-  "api_version": "2026-09-06.3",
+  "api_version": "2026-09-11.1",
   "body": {
     "ok": true,
     "data": {
       "source": "ufc.com official rankings",
       "source_url": "https://www.ufc.com/rankings",
-      "snapshot_date": "2026-09-06",
-      "captured_at": "2026-09-06T16:10:07.916+00:00",
+      "snapshot_date": "2026-09-10",
+      "captured_at": "2026-09-10T12:15:02.152+00:00",
       "divisions": [
         {
           "key": "LIGHTWEIGHT",
@@ -134,28 +134,41 @@
             },
             {
               "rank": 9,
+              "name": "Salahdine Parnasse",
+              "ufc_slug": "salahdine-parnasse",
+              "fighter_id": "ebc1b218-f1fb-4f18-bd29-a1690910499f",
+              "change": null,
+              "is_new": true,
+              "fighter": {
+                "id": "ebc1b218-f1fb-4f18-bd29-a1690910499f",
+                "name": "Salahdine Parnasse",
+                "slug_id": "4312859"
+              }
+            },
+            {
+              "rank": 10,
+              "name": "Rafael Fiziev",
+              "ufc_slug": "rafael-fiziev",
+              "fighter_id": "17563ab2-dbac-4366-861f-917628a0a4b1",
+              "change": 2,
+              "is_new": false,
+              "fighter": {
+                "id": "17563ab2-dbac-4366-861f-917628a0a4b1",
+                "name": "Rafael Fiziev",
+                "slug_id": "4339488"
+              }
+            },
+            {
+              "rank": 11,
               "name": "Mateusz Gamrot",
               "ufc_slug": "mateusz-gamrot",
               "fighter_id": "dec5c1ae-15a8-4fcd-97d9-0e94d0f6201a",
-              "change": 0,
+              "change": -2,
               "is_new": false,
               "fighter": {
                 "id": "dec5c1ae-15a8-4fcd-97d9-0e94d0f6201a",
                 "name": "Mateusz Gamrot",
                 "slug_id": "3068125"
-              }
-            },
-            {
-              "rank": 10,
-              "name": "Dan Hooker",
-              "ufc_slug": "dan-hooker",
-              "fighter_id": "5c8d6aaf-28fb-49ad-8ffd-4f161c508728",
-              "change": 0,
-              "is_new": false,
-              "fighter": {
-                "id": "5c8d6aaf-28fb-49ad-8ffd-4f161c508728",
-                "name": "Dan Hooker",
-                "slug_id": "3109135"
               }
             },
             {
@@ -172,24 +185,24 @@
               }
             },
             {
-              "rank": 12,
-              "name": "Rafael Fiziev",
-              "ufc_slug": "rafael-fiziev",
-              "fighter_id": "17563ab2-dbac-4366-861f-917628a0a4b1",
-              "change": 0,
+              "rank": 13,
+              "name": "Dan Hooker",
+              "ufc_slug": "dan-hooker",
+              "fighter_id": "5c8d6aaf-28fb-49ad-8ffd-4f161c508728",
+              "change": -3,
               "is_new": false,
               "fighter": {
-                "id": "17563ab2-dbac-4366-861f-917628a0a4b1",
-                "name": "Rafael Fiziev",
-                "slug_id": "4339488"
+                "id": "5c8d6aaf-28fb-49ad-8ffd-4f161c508728",
+                "name": "Dan Hooker",
+                "slug_id": "3109135"
               }
             },
             {
-              "rank": 13,
+              "rank": 14,
               "name": "Tom Nolan",
               "ufc_slug": "tom-nolan",
               "fighter_id": "7217b6c6-54f7-4406-8d46-1feace582fcc",
-              "change": 0,
+              "change": -1,
               "is_new": false,
               "fighter": {
                 "id": "7217b6c6-54f7-4406-8d46-1feace582fcc",
@@ -198,29 +211,16 @@
               }
             },
             {
-              "rank": 14,
+              "rank": 15,
               "name": "Beneil Dariush",
               "ufc_slug": "beneil-dariush",
               "fighter_id": "38a41e2d-6a12-41c2-9bc3-c9e48484018b",
-              "change": 0,
+              "change": -1,
               "is_new": false,
               "fighter": {
                 "id": "38a41e2d-6a12-41c2-9bc3-c9e48484018b",
                 "name": "Beneil Dariush",
                 "slug_id": "3085551"
-              }
-            },
-            {
-              "rank": 15,
-              "name": "Manuel Torres",
-              "ufc_slug": "manuel-torres",
-              "fighter_id": "5c693f77-4858-4e0c-966c-773e802d2202",
-              "change": 0,
-              "is_new": false,
-              "fighter": {
-                "id": "5c693f77-4858-4e0c-966c-773e802d2202",
-                "name": "Manuel Torres",
-                "slug_id": "4896616"
               }
             }
           ]
@@ -229,8 +229,8 @@
     },
     "meta": {
       "api": "PropSports UFC",
-      "version": "2026-09-06.3",
-      "request_id": "fedb9948-4bf7-437f-a15f-9c52c8e3b87d",
+      "version": "2026-09-11.1",
+      "request_id": "e6939955-6009-46aa-b23f-063e2b5d9f1c",
       "store": "table",
       "divisions": 1,
       "division": "LIGHTWEIGHT",
