@@ -57,6 +57,7 @@ cross-links are ordinary crawlable anchors with no `target`, no `download`, and 
 | key | resolution |
 | --- | --- |
 | `rankings`, `fight_week`, `fighters_index`, `events_index` | fixed routes on the consumer site |
+| `weigh_ins`, `injuries` | consumer sections confirmed live at refresh time (one request each, outside the deep-link probe budget); null when they do not answer 200 |
 | `fighter` | `/fighters/<name>-<slug_id>`, using the `slug_id` the canonical API itself returns |
 | `matchup`, `hero_fight` | `/fights/<a>-vs-<b>-<event-slug>-<date>`, where the event slug comes from the resolved event URL |
 | `event`, `event_pregame` | `/events/…` and `/pregame/…` matched on the event date |

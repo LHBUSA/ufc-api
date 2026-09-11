@@ -1,0 +1,24 @@
+---
+/* One weigh-in supersession, rendered from the stored rows: the earlier reading is kept, the newer one
+   says whether it CONFIRMED the same weight or CORRECTED it. Values are copied, never recomputed. */
+export interface Props { chain: { current: any; current_history_row?: any; prior: any } | null; fighter?: string }
+const { chain } = Astro.props;
+const kind = chain ? (chain.current.is_correction ? "correction" : chain.current.is_confirmation ? "confirmation" : null) : null;
+const t = (iso: string | null | undefined) => (iso ? iso.replace("T", " ").slice(0, 16) + " UTC" : "time not published");
+---
+{chain && (
+  <div class="chain">
+    <div class="chain-row">
+      <span class="k">Reading kept · {chain.prior.source_kind}</span>
+      <div class="chain-main"><b>{chain.prior.official_weight_lbs ?? "—"}<small> lb</small></b><span>{chain.prior.source_name}<br /><small>{t(chain.prior.source_published_at)}</small></span></div>
+      <code>superseded, not deleted</code>
+    </div>
+    <div class="chain-arrow" aria-hidden="true"><span>higher-authority source</span></div>
+    <div class="chain-row current">
+      <span class="k">Current reading · {chain.current.source_kind}</span>
+      <div class="chain-main"><b>{chain.current.official_weight_lbs ?? "—"}<small> lb</small></b><span>{chain.current.source_name}<br /><small>{t(chain.current.source_published_at)}</small></span></div>
+      <code>is_confirmation: {String(!!chain.current.is_confirmation)} · is_correction: {String(!!chain.current.is_correction)}</code>
+    </div>
+    <p class="chain-note">{chain.current.fighter_name}: {kind === "confirmation" ? `the official source verified the same ${chain.current.official_weight_lbs} lb, so this is a confirmation. Nothing was corrected.` : kind === "correction" ? `the official source changed ${chain.current.superseded_weight_lbs} lb to ${chain.current.official_weight_lbs} lb, so this is a correction.` : "original reading."}</p>
+  </div>
+)}

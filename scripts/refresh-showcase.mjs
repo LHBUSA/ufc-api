@@ -362,6 +362,17 @@ const eventLink = await eventUrl(ev, "events");
 const eventSlug = eventLink ? eventLink.split("/").pop() : null;
 const champDetail = rankPick.dv.champion?.fighter_id ? await get(`/v1/ufc/fighters/${rankPick.dv.champion.fighter_id}`) : null;
 
+/* Newer consumer sections are confirmed live before they are linked (outside the deep-link probe budget:
+   two fixed pages, one request each). A section that does not answer 200 is null and the UI falls back. */
+const liveSection = async (url) => {
+  try {
+    const ac = new AbortController();
+    const t = setTimeout(() => ac.abort(), 8000);
+    const r = await fetch(url, { method: "GET", redirect: "follow", headers: { "user-agent": headers["user-agent"] }, signal: ac.signal });
+    clearTimeout(t);
+    return r.ok ? url : null;
+  } catch { return null; }
+};
 const product_links = {
   captured_at,
   site: PBE,
@@ -371,6 +382,8 @@ const product_links = {
   fight_week: `${PBE}/fight-week`,
   fighters_index: `${PBE}/fighters`,
   events_index: `${PBE}/events`,
+  weigh_ins: await liveSection(`${PBE}/weigh-ins`),
+  injuries: await liveSection(`${PBE}/injuries`),
   /* deep links: null when the consumer site has no such page, so the UI falls back instead of 404ing */
   fighter: await fighterUrl(fighterPick.fighter),
   matchup: await fightUrl(matchupPick.m.data.fighters[0], matchupPick.m.data.fighters[1], ev.event_date, eventSlug),
@@ -405,6 +418,78 @@ try {
   note(`videos: ${picked.selected.length} selected of ${picked.counts.total} (${picked.counts.current_event} on the current card) · phase ${picked.phase} · lead ${picked.featured ? picked.featured.video_type : "none"}`);
 } catch (e) {
   note(`videos: feed unavailable (${String(e.message).slice(0, 60)}); the previous snapshot's videos are kept`);
+}
+
+/* ---------- 7.7 fight-week state (API 2026-09-11.1) ----------
+   The moving parts of fight week for the same event the card demo renders: official weigh-ins with their
+   source history, sourced card changes and availability, one fighter's status, and the derived ledger /
+   intelligence view. Every value is copied from the response; nothing is inferred. A block that the API
+   cannot serve stays null (the site then says so) rather than failing the refresh. */
+const WI_FIELDS = ["fighter_id", "fighter_name", "bout_id", "bout_order", "card_position", "weight_class", "is_womens", "is_title", "official_weight_lbs", "contracted_limit_lbs", "allowance_lbs", "applicable_limit_lbs", "limit_basis", "catchweight_lbs", "over_by_lbs", "result", "is_confirmation", "is_correction", "superseded_weight_lbs", "superseded_source_kind", "superseded_source_name", "source_name", "source_kind", "source_url", "source_published_at", "raw_text"];
+const HIST_FIELDS = ["id", "fighter_name", "official_weight_lbs", "result", "source_name", "source_kind", "source_url", "source_published_at", "supersession_kind", "superseded_weight_lbs", "supersedes_id", "raw_text"];
+const AV_FIELDS = ["fighter_id", "fighter_name", "status_type", "status_detail", "state", "event_name", "event_date", "replacement_fighter_name", "replaced_fighter_name", "injury_type", "body_part", "clinical_quote", "source_name", "source_kind", "source_url", "occurred_at"];
+const pickFields = (o, keys) => (o ? Object.fromEntries(keys.map((k) => [k, o[k] ?? null])) : null);
+const fwEvent = card.data.event;
+let fight_week = null;
+try {
+  const wi = await get(`/v1/ufc/events/${fwEvent.id}/weigh-ins?include=history`);
+  const cc = await get(`/v1/ufc/events/${fwEvent.id}/card-changes`);
+  const av = await get("/v1/ufc/injuries?active=true&limit=50");
+  const mainBout = bouts[0];
+  const statusFighter = mainBout?.fighter_a || null;
+  const st = statusFighter ? await get(`/v1/ufc/fighters/${statusFighter.id}/status`) : null;
+  const intel = await get(`/v1/ufc/events/${fwEvent.id}/intelligence`);
+  const led = mainBout ? await get(`/v1/ufc/bouts/${mainBout.id}/ledger?limit=10`) : null;
+
+  let weigh_ins = null;
+  if (wi.ok) {
+    const results = [...(wi.data.results || [])].sort((a, b) => (b.bout_order ?? 0) - (a.bout_order ?? 0) || String(a.fighter_name).localeCompare(String(b.fighter_name)));
+    const history = wi.data.history || [];
+    /* the chain the site shows: the main-event reading that superseded an earlier one, and that earlier one */
+    const cur = results.find((r) => r.supersedes_id) || null;
+    const curHist = cur ? history.find((h) => h.id === cur.id) || null : null;
+    const prior = cur ? history.find((h) => h.id === cur.supersedes_id) || null : null;
+    const nullLimit = results.find((r) => r.contracted_limit_lbs === null) || null;
+    weigh_ins = {
+      ...wrap(wi),
+      coverage: wi.data.coverage || null,
+      contract_note: wi.meta?.contract || null,
+      current_count: results.length,
+      history_count: history.length,
+      readings: results.slice(0, 8).map((r) => pickFields(r, WI_FIELDS)),
+      chain: cur && prior ? { current: pickFields(cur, WI_FIELDS), current_history_row: pickFields(curHist, HIST_FIELDS), prior: pickFields(prior, HIST_FIELDS) } : null,
+      null_limit_example: pickFields(nullLimit, WI_FIELDS),
+      raw: { ok: true, data: { coverage: wi.data.coverage, results: results.slice(0, 1), history: [curHist, prior].filter(Boolean), "…": `${Math.max(0, results.length - 1)} more current readings and ${Math.max(0, history.length - 2)} more history rows omitted from this example` }, meta: wi.meta },
+    };
+  }
+  const changes = cc.ok ? (cc.data.changes || []) : null;
+  const avRows = av.ok ? (Array.isArray(av.data) ? av.data : []) : null;
+  const ledgerDiffs = led?.ok ? (led.data.diffs || []) : null;
+  fight_week = {
+    captured_at,
+    event: { id: fwEvent.id, name: fwEvent.name, event_date: fwEvent.event_date },
+    weigh_ins,
+    card_changes: cc.ok ? { ...wrap(cc), count: changes.length, changes: changes.slice(0, 4).map((r) => pickFields(r, AV_FIELDS)), raw: { ok: true, data: { event: cc.data.event, changes: changes.slice(0, 2) }, meta: cc.meta } } : null,
+    availability: av.ok ? {
+      ...wrap(av), total: av.meta?.total ?? avRows.length,
+      by_type: avRows.reduce((m, r) => ({ ...m, [r.status_type]: (m[r.status_type] || 0) + 1 }), {}),
+      with_named_injury: avRows.filter((r) => r.injury_type).length,
+      rows: avRows.slice(0, 4).map((r) => pickFields(r, AV_FIELDS)),
+      raw: { ok: true, data: avRows.slice(0, 1), meta: av.meta },
+    } : null,
+    fighter_status: st?.ok ? { ...wrap(st), fighter: st.data.fighter, current: st.data.current, current_note: st.data.current_note ?? null, history_count: (st.data.history || []).length, raw: { ok: true, data: { ...st.data, history: (st.data.history || []).slice(0, 2) }, meta: st.meta } } : null,
+    intelligence: intel.ok ? { ...wrap(intel), bouts: intel.meta?.bouts ?? (intel.data.bouts || []).length, bouts_with_ledger: intel.meta?.bouts_with_ledger ?? null, snapshots: intel.meta?.snapshots ?? null, checkpoints: intel.meta?.checkpoints ?? null, latest_captured_at: intel.meta?.latest_captured_at ?? null, unavailable_sources: intel.meta?.unavailable_sources ?? [], card_shock: intel.data.card_shock ?? null, dna_ready: (intel.data.bouts || []).filter((b) => b.dna?.a?.status === "ok" && b.dna?.b?.status === "ok").length } : null,
+    ledger: led?.ok ? {
+      ...wrap(led),
+      bout: { id: mainBout.id, fighter_a: mainBout.fighter_a?.name ?? null, fighter_b: mainBout.fighter_b?.name ?? null },
+      total: led.meta?.total ?? (led.data.snapshots || []).length, append_only: led.meta?.append_only ?? null, checkpoints: led.meta?.checkpoints ?? null,
+      diffs: ledgerDiffs.slice(0, 3).map((d) => ({ newer: d.newer?.checkpoint ?? null, older: d.older?.checkpoint ?? null, newer_at: d.newer?.captured_at ?? null, hours_between: d.hours_between ?? null, changed_count: (d.changed || []).length, changes: (d.changes || []).filter((c) => typeof c.to !== "object" || c.to === null).slice(0, 3).map((c) => ({ path: c.path, from: c.from, to: c.to })) })),
+    } : null,
+  };
+  const n = (x) => (x === null || x === undefined ? "n/a" : x);
+  note(`fight week: weigh-ins ${weigh_ins ? `${weigh_ins.coverage?.state} ${n(weigh_ins.coverage?.weighed)}/${n(weigh_ins.coverage?.expected)} · ${n(weigh_ins.coverage?.confirmations)} confirmations · ${n(weigh_ins.coverage?.corrections)} corrections · ${weigh_ins.history_count} history rows` : "unavailable"} · card changes ${changes ? changes.length : "unavailable"} · availability ${avRows ? avRows.length : "unavailable"} active · ledger ${fight_week.ledger ? fight_week.ledger.total + " snapshots" : "unavailable"}`);
+} catch (e) {
+  note(`fight week: unavailable (${String(e.message).slice(0, 80)})`);
 }
 
 const showcase = {
@@ -472,6 +557,7 @@ const showcase = {
   },
   product_links,
   videos,
+  fight_week,
   provenance: prov ? { ...prov, captured_at, upstream_base: BASE } : null,
   registry: { definition_version: reg.data.definition_version, origin_labels: reg.data.origin_labels, confidence_tiers: reg.data.confidence_tiers, as_of_semantics: reg.data.as_of_semantics, families: Object.fromEntries(Object.entries(reg.data.families || {}).map(([k, v]) => [k, v.map((m) => ({ metric_key: m.metric_key, display_name: m.display_name, description: m.description, unit: m.unit, formula: m.formula, min_bouts: m.min_bouts, min_rounds: m.min_rounds, min_seconds: m.min_seconds }))])) },
   upstream_calls: calls,
@@ -504,6 +590,21 @@ const c = showcase.counts;
 /* Never publish an empty video desk because one refresh failed: keep the last good block and let the
    captured_at on it show its age. */
 if (!showcase.videos && prev?.videos) { showcase.videos = { ...prev.videos, carried_forward_from: prev.videos.captured_at }; note("videos: carried the previous snapshot forward"); }
+/* Same for fight-week state, but only for the SAME event: another card's weigh-ins must never be shown
+   against this one. Block by block, so one failing route does not blank the others. */
+if (prev?.fight_week && prev.fight_week.event?.id === showcase.event.event.id) {
+  showcase.fight_week = showcase.fight_week || { captured_at, event: prev.fight_week.event };
+  for (const k of ["weigh_ins", "card_changes", "availability", "fighter_status", "intelligence", "ledger"]) {
+    if (!showcase.fight_week[k] && prev.fight_week[k]) { showcase.fight_week[k] = { ...prev.fight_week[k], carried_forward_from: prev.fight_week[k].captured_at }; note(`fight week: carried ${k} forward`); }
+  }
+}
+const fw = showcase.fight_week;
+if (fw?.weigh_ins) {
+  if (!["live", "final", "no_data"].includes(fw.weigh_ins.coverage?.state)) problems.push(`weigh_ins.coverage.state is not live|final|no_data (${fw.weigh_ins.coverage?.state})`);
+  for (const r of fw.weigh_ins.readings) if (r.is_confirmation && r.is_correction) problems.push(`weigh-in ${r.fighter_name}: a reading cannot be both a confirmation and a correction`);
+  if (fw.weigh_ins.chain && fw.weigh_ins.chain.current.is_confirmation && fw.weigh_ins.chain.current.official_weight_lbs !== fw.weigh_ins.chain.prior.official_weight_lbs) problems.push("weigh-in chain: a confirmation must carry the same weight as the reading it supersedes");
+}
+if (fw?.fighter_status && fw.fighter_status.current === undefined) problems.push("fighter_status.current must be an object or null");
 
 
 for (const k of ["fighters", "events", "bouts", "results", "round_stat_rows"]) {

@@ -15,6 +15,8 @@ Legend — origin: `PBE_DERIVED` computed by PropBetEdge from normalized data ·
 | `/results` | SOURCE_FACT | ESPN | yes | facts | none | as above | **REVIEW REQUIRED** |
 | `/bouts/{id}`, `/bouts/{id}/stats` (round-level strike/takedown/control counts) | SOURCE_FACT | UFC Stats | yes (partial coverage) | facts; per-round counts are the most sensitive source field family | none by API; recommend "Statistics via UFC Stats" | ufcstats.com terms; bulk republication of round stats is the highest-risk source field | **REVIEW REQUIRED** — do not offer bulk export of round rows until cleared |
 | `/rankings` (official rankings snapshot) | SOURCE_FACT | ufc.com | yes | facts with explicit `source` / `source_url` | render `source` ("ufc.com official rankings") | ufc.com terms; rankings are UFC editorial output | **REVIEW REQUIRED** — attribution mandatory |
+| `/weigh-ins`, `/events/{id}/weigh-ins` (official weight readings, limits, `limit_basis`, supersession flags, `raw_text`, `source_url`) | SOURCE_FACT | ufc.com official weigh-in results, athletic commissions, MMA news publishers | yes | facts with a per-row source; every row carries `source_name`, `source_kind`, `source_url` | render the source on the reading shown | `raw_text` is a verbatim line from the source page (e.g. "Jean Silva (145)"); news-sourced rows are publisher content | **REVIEW REQUIRED** — short verbatim `raw_text` excerpts from ufc.com and news publishers, resold through a metadata feed |
+| `/injuries`, `/events/{id}/card-changes`, `/fighters/{id}/status` (availability events, `status_detail`, `clinical_quote`, `source_url`) | SOURCE_FACT | ufc.com, MMA news publishers | yes | facts with a per-row source; nothing is inferred (`injury_type` null unless the source names it) | source name + URL on every row | `status_detail` and `clinical_quote` are short verbatim or near-verbatim excerpts of publisher reporting about a named athlete's health | **REVIEW REQUIRED** — publisher terms for excerpts, plus health-related personal data about named individuals (no diagnosis is ever inferred, which is the mitigating control) |
 | `/search`, `/counts`, `/v1/ufc` index | SOURCE_FACT | derived from the above | yes | same as underlying | none | — | inherits above |
 | `/fighters/{id}/stats` → `computed.*` (career rates, totals) | PBE_DERIVED | computed from UFC Stats rows | yes | PBE-derived; sellable as PropBetEdge analytics | label "PBE derived"; show sample/provenance | derived from source counts (see round stats row) | review only if round-stat redistribution is restricted at the *derived* level |
 | `/dna/metrics` (registry definitions) | PBE_DERIVED | PropBetEdge | yes | PropBetEdge IP; sellable | label "PBE derived" | none | none |
@@ -36,6 +38,7 @@ Legend — origin: `PBE_DERIVED` computed by PropBetEdge from normalized data ·
 3. Media: the API is a metadata and reference service. Image files carry their own license; the customer inherits the attribution obligation. No language implying relicensing.
 4. Video: identifiers and official links only. No rehosting, no implied ownership.
 5. Editorial: PropBetEdge editorial is clearly separated from third-party headlines and from PBE-derived analysis.
+6. Weigh-ins and availability: reported as sourced facts with the source attached. Never "official UFC weigh-in data"; never an injury or diagnosis the source did not state; an unpublished limit is never replaced with a division default, and no availability report is presented as a medical clearance.
 
 ## Items needing rights / legal review before launch
 
@@ -44,5 +47,6 @@ Legend — origin: `PBE_DERIVED` computed by PropBetEdge from normalized data ·
 - YouTube API Services Terms for a resold video-metadata feed (including thumbnail URLs and caching limits).
 - Media `kind = licensed_editorial` / `official_press` contract scope (redistribution to API customers).
 - Wire feed publisher terms (currently excluded from self-serve plans).
+- Weigh-in `raw_text` and availability `status_detail` / `clinical_quote`: verbatim source excerpts resold on self-serve plans. Decide whether these fields stay in the commercial response or become Enterprise-only. Health-related statements about named athletes are only ever repeated from a cited source, never inferred.
 - Formal terms of service / data licence for direct customers (portal `/legal` states this is pending).
 - RapidAPI listing terms and marketplace attribution requirements.

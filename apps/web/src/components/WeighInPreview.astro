@@ -1,0 +1,43 @@
+---
+/* Official weigh-ins rendered from /v1/ufc/events/{id}/weigh-ins: coverage, current readings, and the
+   supersession flags exactly as returned. A null limit renders as "unpublished", never a division default. */
+export interface Props { coverage: any; readings: any[]; limit?: number; source?: string | null }
+const { coverage, readings = [], limit = 6, source = null } = Astro.props;
+const state = coverage?.state || "no_data";
+const lb = (v: number | null | undefined) => (v === null || v === undefined ? null : `${v}`);
+const tc = (s: string | null | undefined) => (s ? s.toLowerCase().replace(/_/g, " ") : "");
+const cells = state === "no_data" ? [] : [
+  ["Weighed", `${coverage.weighed ?? 0}/${coverage.expected ?? 0}`, ""],
+  ["Made", coverage.made ?? 0, ""],
+  ["Missed", coverage.missed ?? 0, coverage.missed ? "miss" : ""],
+  ["Confirmed", coverage.confirmations ?? 0, ""],
+  ["Corrected", coverage.corrections ?? 0, ""],
+  ["Catchweights", coverage.catchweights ?? 0, ""],
+];
+---
+<div class="wi">
+  <div class="wi-head">
+    <p class="eyebrow">Official weigh-ins <span class="chip source">Source</span></p>
+    <span class:list={["wi-state", state]}>coverage.state · {state}</span>
+  </div>
+  {state === "no_data" ? (
+    <p class="wi-empty">No readings on file for this card yet. <code>coverage.state: "no_data"</code> means not covered yet, which the API keeps distinct from "nobody has weighed in".</p>
+  ) : (
+    <>
+      <div class="wi-cov">{cells.map(([l, v, cls]) => <div class={cls as string}><b>{v}</b><span>{l}</span></div>)}</div>
+      <ul class="wi-list">
+        {readings.slice(0, limit).map((r: any) => (
+          <li>
+            <span class="wi-who"><b>{r.fighter_name}</b><small>{tc(r.weight_class)}{r.limit_basis ? ` · ${r.limit_basis}` : ""}</small></span>
+            <span class="wi-w"><b>{lb(r.official_weight_lbs) ?? "—"}</b><small>{lb(r.applicable_limit_lbs) ? `limit ${r.applicable_limit_lbs}` : "limit unpublished"}</small></span>
+            <span class="wi-flags">
+              <span class:list={["chip", r.result === "made" ? "live" : r.result === "missed" ? "miss" : ""]}>{r.result}</span>
+              {r.is_correction ? <span class="chip corr">corrected</span> : r.is_confirmation ? <span class="chip conf-chip">confirmed</span> : <span class="chip">original</span>}
+            </span>
+          </li>
+        ))}
+      </ul>
+      {source && <p class="wi-src">Current readings from <b>{source}</b>. Earlier readings stay in <code>?include=history</code>.</p>}
+    </>
+  )}
+</div>

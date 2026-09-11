@@ -2,9 +2,9 @@
 
 ## Two repositories, two jobs
 
-| | LHBUSA/UFC (`ufc-fight-dna-v1`) | LHBUSA/ufc-api (this repo) |
+| | LHBUSA/UFC (`main`) | LHBUSA/ufc-api (this repo) |
 | --- | --- | --- |
-| Owns | ingest, `ufc_*` data model, identity resolution, UFC Stats normalization, rankings ingest, Fight DNA builder and definitions, Matchup DNA, media provenance, canonical Worker API, consumer site | commercial gateway, portal, docs, pricing, entitlements, API keys, metering, telemetry, RapidAPI adapter, commercial OpenAPI, rights matrix |
+| Owns | ingest, `ufc_*` data model, identity resolution, UFC Stats normalization, rankings ingest, weigh-in and availability collection, Fight DNA builder and definitions, Matchup DNA, Fight State Ledger, media provenance, canonical Worker API, consumer site | commercial gateway, portal, docs, pricing, entitlements, API keys, metering, telemetry, RapidAPI adapter, commercial OpenAPI, rights matrix |
 | Computes UFC intelligence | yes | **never** |
 | Reads Supabase | yes (service role, server-side) | **never** |
 | Hosts | `ufc-api.propbetedge.ai`, `ufc.propbetedge.ai` | `ufc.proptechusa.ai` |
@@ -42,7 +42,7 @@ client ─► Worker fetch()
 ## Configuration (no scattered constants)
 
 - `config/plans.json` — prices, quotas, rate limits, limit modes, features per plan, key prefix, channels.
-- `config/entitlements.json` — every commercial endpoint → feature + origin; parameter gates.
+- `config/entitlements.json` — every commercial endpoint → feature + origin; parameter gates. `core` is normalized, source-backed fact (including official weigh-ins, availability and card changes); `fight_week` is the proprietary derived state (Fight State Ledger, event intelligence).
 - `config/rapidapi.json` — subscription → plan map, marketplace quotas, enforcement switches.
 - `config/gateway.json` — hosts, timeouts, header policy, CORS.
 

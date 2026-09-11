@@ -10,10 +10,10 @@ const matrix = gen.matrix;
 const gates = gen.entitlements.param_gates;
 const rapid = gen.rapidapi;
 const cards: Record<string, { head: string; items: string[]; endpoints: string[] }> = {
-  developer: { head: "Core UFC data", items: ["Events and full fight cards", "Fighter profiles and history", "Bout results and round stats", "Official rankings snapshot", "Fighter media with license + attribution", "Official video metadata", "Fight DNA metric registry"], endpoints: ["/events/{id}/card", "/fighters/{id}", "/bouts/{id}/stats", "/rankings"] },
+  developer: { head: "Core UFC data", items: ["Events and full fight cards", "Fighter profiles and history", "Bout results and round stats", "Official rankings snapshot", "Official weigh-ins with source history", "Injuries, availability and card changes", "Fighter media with license + attribution", "Official video metadata", "Fight DNA metric registry"], endpoints: ["/events/{id}/card", "/events/{id}/weigh-ins", "/injuries", "/fighters/{id}", "/bouts/{id}/stats", "/rankings"] },
   pro: { head: "Fighter Fight DNA", items: ["Everything in Developer", "Stance DNA · Striking DNA", "Grappling DNA · Finish DNA", "Round profiles and pace retention", "Context splits", "As-of historical snapshots", "Computed career rates"], endpoints: ["/fighters/{id}/dna", "/fighters/{id}/splits", "/fighters/{id}/round-profile", "/fighters/{id}/stats"] },
-  ultra: { head: "Matchup DNA", items: ["Everything in Pro", "Matchup DNA with threshold-gated insights", "Cross-fighter Fight DNA query", "Fight State Ledger", "Event intelligence", "Higher quotas and burst"], endpoints: ["/matchups/{a}/{b}/dna", "/dna/query", "/events/{id}/intelligence", "/bouts/{id}/ledger"] },
-  scale: { head: "Production infrastructure", items: ["Everything in Ultra", "2M requests / month, soft limit", "1,200 requests / minute", "Priority support", "Direct integration support", "Commercial production terms", "Bulk and custom options where rights permit"], endpoints: ["all 34 endpoints", "higher concurrency", "soft quota, reviewed"] },
+  ultra: { head: "Matchup DNA", items: ["Everything in Pro", "Matchup DNA with threshold-gated insights", "Cross-fighter Fight DNA query", "Fight State Ledger (append-only, with diffs)", "Event intelligence across the card", "Higher quotas and burst"], endpoints: ["/matchups/{a}/{b}/dna", "/dna/query", "/events/{id}/intelligence", "/bouts/{id}/ledger"] },
+  scale: { head: "Production infrastructure", items: ["Everything in Ultra", "2M requests / month, soft limit", "1,200 requests / minute", "Priority support", "Direct integration support", "Commercial production terms", "Bulk and custom options where rights permit"], endpoints: [`all ${gen.matrix.length} endpoints`, "higher concurrency", "soft quota, reviewed"] },
   enterprise: { head: "Custom", items: ["Dedicated infrastructure", "Custom endpoints", "Large datasets and bulk delivery", "SLAs", "Custom licensing", "Third-party wire feed after rights review", "Partnerships"], endpoints: ["custom contract"] },
 };
 const billing = gen.billing;
@@ -21,19 +21,25 @@ const billing = gen.billing;
 const mailto = (plan: string) => { const b = billing.plans[plan as keyof typeof billing.plans] as any; return billing.self_serve_checkout && b?.payment_link ? b.payment_link : (b?.contact || `mailto:sales@proptechusa.ai?subject=${encodeURIComponent(`UFC Intelligence API — ${plans[plan as keyof typeof plans].name} plan access`)}`); };
 const groups = [
   { t: "Core data", keys: ["index", "events", "event", "event_card", "fighters", "fighter", "fighter_history", "bout", "bout_stats", "results", "rankings", "search", "counts"] },
+  { t: "Weigh-ins + availability", keys: ["weigh_ins", "event_weigh_ins", "injuries", "event_card_changes", "fighter_status"] },
   { t: "Media + video metadata", keys: ["fighters_media", "videos", "fighter_videos", "event_videos", "bout_videos"] },
   { t: "Editorial", keys: ["news", "article", "event_articles", "fighter_articles", "wire"] },
   { t: "Fight DNA", keys: ["dna_metrics", "fighter_stats", "fighter_dna", "fighter_splits", "fighter_round_profile", "fighter_finish_profile", "fighter_position_profile"] },
   { t: "Matchup + Fight Week", keys: ["matchup_dna", "dna_query", "bout_ledger", "event_intelligence"] },
 ];
+/* The matrix is generated from config; a new endpoint must never be able to vanish from this page
+   because nobody remembered to add it to a group above. */
+const grouped = new Set(groups.flatMap((g) => g.keys));
+const ungrouped = matrix.filter((m) => !grouped.has(m.key)).map((m) => m.key);
+if (ungrouped.length) groups.push({ t: "Other endpoints", keys: ungrouped });
 const jsonLd = [{ "@context": "https://schema.org", "@type": "Product", name: "PropTechUSA UFC Intelligence API", description: "Developer-ready UFC data with proprietary PropBetEdge Fight DNA.", brand: { "@type": "Brand", name: "PropTechUSA" }, offers: order.filter((k) => plans[k as keyof typeof plans].price_usd_month !== null).map((k) => ({ "@type": "Offer", name: plans[k as keyof typeof plans].name, price: plans[k as keyof typeof plans].price_usd_month, priceCurrency: "USD", availability: "https://schema.org/InStock", url: "https://ufc.proptechusa.ai/pricing" })) }];
 ---
-<Base title="UFC Intelligence API Pricing | PropTechUSA.ai" description="Developer $79, Pro $199, Ultra $499, Scale $1,499, Enterprise custom. Every plan starts with normalized UFC fight records; Pro and above unlock PropBetEdge Fight DNA." path="/pricing" jsonLd={jsonLd} breadcrumbs={[{ name: "Pricing", path: "/pricing" }]}>
+<Base title="UFC Intelligence API Pricing | PropTechUSA.ai" description="Developer $79, Pro $199, Ultra $499, Scale $1,499, Enterprise custom. Every plan starts with normalized UFC fight records, official weigh-ins and sourced availability; Pro and above unlock PropBetEdge Fight DNA." path="/pricing" jsonLd={jsonLd} breadcrumbs={[{ name: "Pricing", path: "/pricing" }]}>
   <section class="section">
     <div class="wrap">
       <p class="eyebrow">Pricing</p>
       <h1>Not just UFC data.<br /><span class="gold-em">Fight intelligence.</span></h1>
-      <p class="lede">Every plan starts with normalized fight records. Pro unlocks fighter Fight DNA. Ultra unlocks Matchup DNA. Scale is production infrastructure.</p>
+      <p class="lede">Every plan starts with normalized fight records, official weigh-ins and sourced availability. Pro unlocks fighter Fight DNA. Ultra unlocks Matchup DNA and the Fight State Ledger. Scale is production infrastructure.</p>
       <div class="pricing-grid" style="margin-top:36px">
         {order.filter((k) => k !== "enterprise").map((k) => { const p = plans[k as keyof typeof plans] as any; const c = cards[k]; return (
           <div class:list={["plan", { recommended: p.recommended }]} id={`plan-${k}`}>
@@ -124,6 +130,8 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "Product", name: "P
       <p>Developer, Pro and Ultra are hard limits: <code>429 quota_exceeded</code> with <code>Retry-After</code>. Scale is a soft limit: requests continue and the response carries <code>X-Quota-Status: over-quota-soft</code> while we talk. Per-minute limits always return <code>429 rate_limited</code>.</p>
       <h3>Is Fight DNA a prediction?</h3>
       <p>No. Fight DNA is deterministic, PBE-derived analytics over normalized fight history. It is not a pick, price or probability, and it is not an official UFC statistic. Every value carries its sample and confidence so you can decide what to do with it.</p>
+      <h3>Why are weigh-ins and injuries on every plan?</h3>
+      <p>They are normalized, source-backed UFC facts, like results and rankings, so they sit in <code>core</code> with the rest of the fight graph. What Ultra buys is the proprietary derived layer: Matchup DNA, the cross-fighter DNA query, the Fight State Ledger and event intelligence.</p>
       <h3>Can I redistribute the data?</h3>
       <p>Source facts and PBE-derived metrics are licensed for use in your product under the commercial terms. Image files carry their own licenses and attribution requirements; video metadata links to official channels and must not be rehosted. Third-party headlines are not sold on self-serve plans. See <a href="/legal">rights and attribution</a>.</p>
       <h3>Do PropBetEdge properties use this gateway?</h3>

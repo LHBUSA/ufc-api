@@ -32,6 +32,8 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "WebApplication", n
       <button data-tool="fighter">Fighters</button>
       <button data-tool="events">Events</button>
       <button data-tool="rankings">Rankings</button>
+      <button data-tool="weighins">Weigh-ins</button>
+      <button data-tool="availability">Availability</button>
       <button data-tool="videos">Videos</button>
       <h5>Intelligence</h5>
       <button data-tool="dna">Fight DNA</button>
@@ -49,7 +51,7 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "WebApplication", n
         <p class="small muted" id="ws-note" hidden style="flex:1 1 100%;margin:4px 0 0"></p>
       </div>
       <select class="ws-rail-select" id="rail-select" aria-label="Workspace tool">
-        <option value="home">Workspace home</option><option value="card">Current Fight Week</option><option value="fighter">Fighters</option><option value="events">Events</option><option value="rankings">Rankings</option><option value="videos">Videos</option><option value="dna">Fight DNA</option><option value="matchup">Matchup DNA</option><option value="custom">Request builder</option>
+        <option value="home">Workspace home</option><option value="card">Current Fight Week</option><option value="fighter">Fighters</option><option value="events">Events</option><option value="rankings">Rankings</option><option value="weighins">Weigh-ins</option><option value="availability">Availability</option><option value="videos">Videos</option><option value="dna">Fight DNA</option><option value="matchup">Matchup DNA</option><option value="custom">Request builder</option>
       </select>
       <div class="ws-tool" id="ws-tool"></div>
       <div class="ws-result" id="ws-result" hidden>
@@ -160,6 +162,8 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "WebApplication", n
       const d = l && l.body && l.body.data;
       let href = null, label = "View live product →";
       if (tool === "card" || tool === "events" || tool === "videos") { href = PRODUCT.fight_week; label = "View Fight Week →"; }
+      else if (tool === "weighins") { href = PRODUCT.weigh_ins || PRODUCT.fight_week; label = PRODUCT.weigh_ins ? "View the weigh-in desk →" : "View Fight Week →"; }
+      else if (tool === "availability") { href = PRODUCT.injuries || PRODUCT.fight_week; label = PRODUCT.injuries ? "View injuries →" : "View Fight Week →"; }
       else if (tool === "rankings") { href = PRODUCT.rankings; label = "View rankings →"; }
       else if (tool === "fighter" || tool === "dna") {
         const f = d && (d.fighter || d);
@@ -206,6 +210,38 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "WebApplication", n
       const side = (f, right) => `<div class="vs-fighter${right ? " right" : ""}"><figure class="fighter-figure">${imgTag(f, 800, 1000)}${credit(f)}</figure><div><div class="fighter-name">${esc(f.name)}</div><div class="fighter-sub">${rec(f)} · ${esc(rankOf(f) || "Unranked")}</div></div></div>`;
       const show = (s, u) => mval(s, u);
       return `<div class="vs"><div class="vs-head">${side(A, false)}<div class="vs-badge">VS</div>${side(B, true)}</div><table class="tape"><tbody><tr><td>${inch(A.reach_in)}</td><th>Reach</th><td>${inch(B.reach_in)}</td></tr><tr><td>${esc(tc(A.stance))}</td><th>Stance</th><td>${esc(tc(B.stance))}</td></tr>${rows.map(([k, l, u]) => { const c = cmp[k]; return `<tr><td class="${c?.direction === "a" ? "win" : ""}">${show(c?.a, u)}</td><th>${esc(l)}<small class="muted">${esc(c?.a?.confidence || "—")} / ${esc(c?.b?.confidence || "—")}</small></th><td class="${c?.direction === "b" ? "win" : ""}">${show(c?.b, u)}</td></tr>`; }).join("")}</tbody></table><div class="vs-meta small muted">Stance context: <b>${esc(m.stance_context?.context?.replace(/_/g, " "))}</b>. “—” = no stat-covered rounds for that fighter. Reach, stance and rank composed from <code>/fighters/{id}</code>.</div>${m.insights?.length ? `<div class="reads"><div class="eyebrow gold" style="margin:0 0 6px">Matchup read <span class="chip derived">PBE derived</span></div><ul>${m.insights.map((i) => `<li><b>${esc(i.label)}.</b> ${esc(i.explanation)} <span class="conf conf-${esc(i.confidence)}">${esc(i.confidence)}</span></li>`).join("")}</ul></div>` : ""}${m.warnings?.length ? `<details class="small muted" style="margin-top:8px"><summary>${m.warnings.length} thresholds not met (warnings[])</summary><ul>${m.warnings.map((w) => `<li>${esc(w)}</li>`).join("")}</ul></details>` : ""}<div class="small muted" style="margin-top:8px">${esc(m.note || "")}</div></div>`;
+    }
+    /* Weigh-ins: coverage, current readings and (optionally) the stored history behind them. A null limit is
+       rendered as "unpublished", never as a division default, and a confirmation is never labelled a correction. */
+    function weighInsView(d) {
+      const cov = d.coverage || null, rows = d.results || d || [];
+      const state = cov ? cov.state : null;
+      if (cov && state === "no_data") return `<div class="ws-empty">No readings on file for this card. <code>coverage.state: "no_data"</code> — not covered yet, which the API keeps distinct from "nobody has weighed in".</div>`;
+      const covCells = cov ? [["Weighed", `${cov.weighed ?? 0}/${cov.expected ?? 0}`], ["Made", cov.made ?? 0], ["Missed", cov.missed ?? 0], ["Confirmed", cov.confirmations ?? 0], ["Corrected", cov.corrections ?? 0], ["Catchweights", cov.catchweights ?? 0]] : [];
+      const lim = (r) => (r.applicable_limit_lbs === null || r.applicable_limit_lbs === undefined ? `<span class="muted">limit unpublished</span>` : `≤ ${r.applicable_limit_lbs}`);
+      const flag = (r) => (r.is_correction ? `<span class="chip corr">corrected</span>` : r.is_confirmation ? `<span class="chip conf-chip">confirmed</span>` : `<span class="chip">original</span>`);
+      const list = Array.isArray(rows) ? rows : [];
+      const hist = d.history || [];
+      return `${cov ? `<div class="wi-head"><div class="eyebrow" style="margin:0">${esc(cov.event_name || "Weigh-ins")} <span class="chip source">Source</span></div><span class="wi-state ${esc(state || "")}">coverage.state · ${esc(state || "—")}</span></div><div class="wi-cov">${covCells.map(([l, v]) => `<div class="${l === "Missed" && v ? "miss" : ""}"><b>${esc(v)}</b><span>${esc(l)}</span></div>`).join("")}</div>` : ""}
+        <div class="table-wrap" style="margin-top:12px"><table class="ws-table"><thead><tr><th>Fighter</th><th>Weight</th><th>Limit</th><th>Basis</th><th>Result</th><th>Supersession</th><th>Source</th></tr></thead><tbody>
+        ${list.map((r) => `<tr><td><b>${esc(r.fighter_name)}</b><div class="small muted">${esc(tc(r.weight_class))}${r.card_position ? " · " + esc(r.card_position) : ""}</div></td><td class="mono">${r.official_weight_lbs ?? "—"}</td><td class="mono">${lim(r)}</td><td class="small">${esc(r.limit_basis || "—")}</td><td>${esc(r.result || "—")}${r.over_by_lbs ? ` <span class="chip miss">+${r.over_by_lbs}</span>` : ""}</td><td>${flag(r)}${r.superseded_source_name ? `<div class="small muted">was ${r.superseded_weight_lbs ?? "—"} · ${esc(r.superseded_source_name)}</div>` : ""}</td><td class="small">${r.source_url ? `<a href="${esc(r.source_url)}" rel="noopener nofollow">${esc(r.source_name || "source")}</a>` : esc(r.source_name || "—")}<div class="muted">${esc(r.source_kind || "")}</div></td></tr>`).join("")}
+        </tbody></table></div>
+        ${hist.length ? `<details style="margin-top:10px"><summary class="small">${hist.length} stored readings (include=history) — nothing is overwritten</summary><div class="table-wrap" style="margin-top:8px"><table class="ws-table"><thead><tr><th>Fighter</th><th>Weight</th><th>Kind</th><th>Was</th><th>Source</th><th>Published</th></tr></thead><tbody>${hist.map((h) => `<tr><td>${esc(h.fighter_name)}</td><td class="mono">${h.official_weight_lbs ?? "—"}</td><td>${esc(h.supersession_kind || "original")}</td><td class="mono">${h.superseded_weight_lbs ?? "—"}</td><td class="small">${esc(h.source_name || "")} <span class="muted">${esc(h.source_kind || "")}</span></td><td class="small mono">${esc((h.source_published_at || "").slice(0, 16).replace("T", " "))}</td></tr>`).join("")}</tbody></table></div></details>` : ""}
+        <p class="small muted" style="margin-top:10px">A null limit means the contracted figure was never published — never a division default. <code>is_confirmation</code> is an official source verifying the same weight; only a changed weight is <code>is_correction</code>.</p>`;
+    }
+    /* Availability: one row per individually sourced event. An unnamed cause stays unnamed. */
+    function availabilityView(rows) {
+      const list = Array.isArray(rows) ? rows : (rows.changes || []);
+      if (!list.length) return `<div class="ws-empty">No matching availability events. For a card, an empty <code>changes[]</code> is the normal state, not an error.</div>`;
+      return `<div class="table-wrap"><table class="ws-table"><thead><tr><th>Fighter</th><th>Type</th><th>State</th><th>What the source said</th><th>Cause named</th><th>Event</th><th>Source</th></tr></thead><tbody>
+        ${list.map((r) => `<tr><td><b>${esc(r.fighter_name)}</b></td><td><span class="chip">${esc(tc(r.status_type))}</span></td><td class="small">${esc(r.state || "")}</td><td class="small">${esc(r.status_detail || "")}${r.replacement_fighter_name ? `<div class="muted">replaced by ${esc(r.replacement_fighter_name)}</div>` : ""}</td><td class="small mono">${r.injury_type ? esc(r.injury_type) : `<span class="muted">null</span>`}${r.clinical_quote ? `<div class="muted small">“${esc(r.clinical_quote)}”</div>` : ""}</td><td class="small">${esc(r.event_name || "—")}</td><td class="small">${r.source_url ? `<a href="${esc(r.source_url)}" rel="noopener nofollow">${esc(r.source_name || "source")}</a>` : esc(r.source_name || "—")}<div class="muted">${esc(r.source_kind || "")}</div></td></tr>`).join("")}
+        </tbody></table></div><p class="small muted" style="margin-top:10px">A null cause is the source not naming one. Filling it in would be a medical claim about a named person that nobody made.</p>`;
+    }
+    function statusView(d) {
+      const c = d.current;
+      return `${fighterCard(d.fighter || { name: d.fighter?.name || "" }, "mini")}<div class="dna-panel" style="margin-top:12px"><div class="dna-head"><div class="eyebrow" style="margin:0">Availability <span class="chip source">Source</span></div><div class="mono small muted">${(d.history || []).length} sourced events</div></div>
+        ${c ? `<div class="ws-kv"><dt>current</dt><dd><b>${esc(tc(c.status_type))}</b> — ${esc(c.status_detail || "")}</dd><dt>state</dt><dd>${esc(c.state || "")}</dd><dt>cause named</dt><dd>${c.injury_type ? esc(c.injury_type) : "null"}</dd><dt>source</dt><dd>${c.source_url ? `<a href="${esc(c.source_url)}" rel="noopener nofollow">${esc(c.source_name)}</a>` : esc(c.source_name || "—")} (${esc(c.source_kind || "")})</dd></div>` : `<div class="ws-empty"><b>current: null</b><div class="small muted" style="margin-top:4px">${esc(d.current_note || "No availability event on file. That is the absence of a report, not a confirmation of fitness.")}</div></div>`}
+        </div>${(d.history || []).length ? `<div class="table-wrap" style="margin-top:12px"><table class="ws-table"><thead><tr><th>Type</th><th>State</th><th>Detail</th><th>Source</th><th>When</th></tr></thead><tbody>${d.history.map((h) => `<tr><td>${esc(tc(h.status_type))}</td><td class="small">${esc(h.state || "")}</td><td class="small">${esc(h.status_detail || "")}</td><td class="small">${esc(h.source_name || "")}</td><td class="small mono">${esc((h.occurred_at || "").slice(0, 10))}</td></tr>`).join("")}</tbody></table></div>` : ""}`;
     }
     function eventCard(d) {
       const bouts = [...d.bouts].sort((a, b) => b.bout_order - a.bout_order); const main = bouts[0];
@@ -289,7 +325,7 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "WebApplication", n
         const card = (tool, title, sub, arts, plan) => `<button class="ws-card" data-go="${tool}"><div class="art${arts.length > 1 ? " two" : ""}">${arts.map((a) => a ? `<img src="${esc(a)}" alt="" loading="lazy">` : `<img src="${SIL}" alt="" loading="lazy">`).join("")}</div><div class="body"><b>${esc(title)}</b><span>${esc(sub)}</span>${plan ? chip(plan) : ""}</div></button>`;
         root.innerHTML = `<div class="section-head" style="margin:0"><div><h3>Run the API on real fights.</h3><p class="small muted" style="margin:6px 0 0">${KEY ? "Pick a starting point. Every panel renders the product first; JSON stays one tab away." : "Connect your API key above, then pick a starting point."}</p></div></div>
           <div class="ws-home">
-            ${card("card", "Current Fight Week", `${ART.event.name} · ${ART.event.date} · ${ART.event.bouts} bouts`, [ART.event.a, ART.event.b], "developer")}
+            ${card("card", "Current Fight Week", `${ART.event.name} · ${ART.event.date} · ${ART.event.bouts} bouts · card, weigh-ins, card changes`, [ART.event.a, ART.event.b], "developer")}
             ${card("fighter", "Explore a fighter", "Search by name → overview, history, stats, Fight DNA, media", [ART.a.img], "developer")}
             ${card("matchup", "Compare fighters", "Full matchup card with stance context and threshold-gated reads", [ART.a.img, ART.b.img], "ultra")}
             ${card("rankings", "View rankings", `Champion and top 15 · ${ART.champ.name}`, [ART.champ.img], "developer")}
@@ -298,9 +334,22 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "WebApplication", n
           </div>`;
         root.querySelectorAll("[data-go]").forEach((b) => b.addEventListener("click", () => { history.replaceState(null, "", `/workspace?tool=${b.dataset.go}`); open(b.dataset.go); window.scrollTo({ top: 0, behavior: "smooth" }); }));
       } },
-      card: { title: "Current card", desc: "Zero-configuration first test: the next upcoming event and its full card.", render(root) {
-        root.innerHTML = `<h3>Current card</h3><p class="small muted">GET /v1/ufc/events?status=upcoming&limit=1 → GET /v1/ufc/events/{id}/card</p><div class="actions-row"><button class="btn primary" id="run-card" type="button">Run current card</button></div>`;
-        $("run-card").addEventListener("click", async () => { const e = await api("/v1/ufc/events?status=upcoming&limit=1"); if (!e.body?.ok || !e.body.data?.length) return out(handle(e, () => `<div class="ws-empty">No upcoming events.</div>`)); const id = e.body.data[0].id; const c = await api(`/v1/ufc/events/${id}/card?include=media,results`); out(handle(c, eventCard)); });
+      card: { title: "Current Fight Week", desc: "Zero-configuration first test: the next upcoming event, its full card, official weigh-ins and card changes.", render(root) {
+        root.innerHTML = `<h3>Current Fight Week</h3><p class="small muted">GET /v1/ufc/events?status=upcoming&limit=1 → /events/{id}/card → /events/{id}/weigh-ins?include=history → /events/{id}/card-changes</p><div class="actions-row"><button class="btn primary" id="run-card" type="button">Run current Fight Week</button></div>`;
+        $("run-card").addEventListener("click", async () => {
+          const e = await api("/v1/ufc/events?status=upcoming&limit=1");
+          if (!e.body?.ok || !e.body.data?.length) return out(handle(e, () => `<div class="ws-empty">No upcoming events.</div>`));
+          const id = e.body.data[0].id;
+          const c = await api(`/v1/ufc/events/${id}/card?include=media,results`);
+          if (!c.body?.ok) return out(handle(c, eventCard));
+          /* the same card, then its fight-week state; each block reports its own failure rather than blanking the page */
+          const w = await api(`/v1/ufc/events/${id}/weigh-ins?include=history`);
+          const ch = await api(`/v1/ufc/events/${id}/card-changes`);
+          inspect(c);
+          out(`${eventCard(c.body.data)}
+            <div style="height:18px"></div><div class="eyebrow">Official weigh-ins <span class="chip plan-developer">Developer+</span></div>${w.status === 403 ? gate(w.body) : w.body?.ok ? weighInsView(w.body.data) : errBox(w.body, w.status)}
+            <div style="height:18px"></div><div class="eyebrow">Card changes <span class="chip plan-developer">Developer+</span></div>${ch.status === 403 ? gate(ch.body) : ch.body?.ok ? availabilityView(ch.body.data) : errBox(ch.body, ch.status)}`);
+        });
         if (new URLSearchParams(location.search).get("tool") === "card") setTimeout(() => KEY && $("run-card").click(), 300);
       } },
       events: { title: "Events", render(root) {
@@ -308,12 +357,13 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "WebApplication", n
         $("run-ev").addEventListener("click", async () => { const l = await api(`/v1/ufc/events?status=${$("ev-status").value}&limit=${encodeURIComponent($("ev-limit").value || 10)}`); out(handle(l, (d) => `<div class="table-wrap"><table class="ws-table"><thead><tr><th>Date</th><th>Event</th><th>Venue</th><th>Status</th><th></th></tr></thead><tbody>${d.map((e) => `<tr><td class="mono small">${esc(e.event_date)}</td><td><b>${esc(e.name)}</b></td><td class="small">${esc(e.venue || "")}${e.city ? ", " + esc(e.city) : ""}</td><td><span class="chip">${esc(e.card_status || "")}</span></td><td><button class="btn ghost" type="button" data-card="${esc(e.id)}">Card →</button></td></tr>`).join("")}</tbody></table></div>`)); $("ws-preview").querySelectorAll("[data-card]").forEach((b) => b.addEventListener("click", async () => { const c = await api(`/v1/ufc/events/${b.dataset.card}/card?include=media,results`); out(handle(c, eventCard)); })); });
       } },
       fighter: { title: "Fighters", render(root) {
-        root.innerHTML = `<h3>Fighter explorer</h3><p class="small muted">Search by name; no UUIDs needed. Tabs run the relevant endpoint.</p><div class="ws-form"><div id="f-search"></div><div id="f-pick"></div><div class="ws-tabs" id="f-tabs" hidden><button data-ft="overview" aria-selected="true">Overview</button><button data-ft="history">History</button><button data-ft="stats">Stats ${chip("pro")}</button><button data-ft="dna">Fight DNA ${chip("pro")}</button><button data-ft="media">Media</button></div></div>`;
+        root.innerHTML = `<h3>Fighter explorer</h3><p class="small muted">Search by name; no UUIDs needed. Tabs run the relevant endpoint.</p><div class="ws-form"><div id="f-search"></div><div id="f-pick"></div><div class="ws-tabs" id="f-tabs" hidden><button data-ft="overview" aria-selected="true">Overview</button><button data-ft="history">History</button><button data-ft="stats">Stats ${chip("pro")}</button><button data-ft="dna">Fight DNA ${chip("pro")}</button><button data-ft="status">Status</button><button data-ft="media">Media</button></div></div>`;
         const run = async (ft) => { const f = pick.f; if (!f) return; $("f-tabs").querySelectorAll("[data-ft]").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.ft === ft)));
           if (ft === "overview") { const l = await api(`/v1/ufc/fighters/${f.id}?include=ranking,next`); out(handle(l, (d) => fighterCard(d, "hero", d.career_slpm !== null && d.career_slpm !== undefined ? `<div class="career"><div class="eyebrow" style="margin:0 0 6px;font-size:.64rem">Career stats <span class="chip source">Source</span></div><div class="career-grid"><div><b>${d.career_slpm}</b><span>SLpM</span></div><div><b>${d.career_str_acc}%</b><span>Str acc</span></div><div><b>${d.career_sapm}</b><span>SApM</span></div><div><b>${d.career_str_def}%</b><span>Str def</span></div><div><b>${d.career_td_avg}</b><span>TD avg</span></div><div><b>${d.career_td_acc}%</b><span>TD acc</span></div><div><b>${d.career_td_def}%</b><span>TD def</span></div><div><b>${d.career_sub_avg}</b><span>Sub avg</span></div></div></div>` : ""))); }
           if (ft === "history") { const l = await api(`/v1/ufc/fighters/${f.id}/history?limit=25`); out(handle(l, historyView)); }
           if (ft === "stats") { const l = await api(`/v1/ufc/fighters/${f.id}/stats`); out(handle(l, statsView)); }
           if (ft === "dna") { const l = await api(`/v1/ufc/fighters/${f.id}/dna`); out(handle(l, (d) => `${fighterCard(d.fighter, "mini")}<div style="height:12px"></div>${dnaPanel(d.snapshot)}`)); }
+          if (ft === "status") { const l = await api(`/v1/ufc/fighters/${f.id}/status`); out(handle(l, (d) => statusView({ ...d, fighter: { ...f, ...(d.fighter || {}) } }))); }
           if (ft === "media") { const l = await api(`/v1/ufc/fighters/${f.id}?include=media,videos`); let vids = l.body?.data?.videos; if (l.body?.ok && vids === undefined) { const v = await api(`/v1/ufc/fighters/${f.id}/videos?limit=6`); vids = v.body?.ok ? v.body.data.videos : []; inspect(l); } out(handle(l, (d) => mediaView(d, vids))); } };
         $("f-search").appendChild(searchBox("f", "Search fighters, e.g. Manon Fiorot", (f) => { pick.f = f; $("f-pick").innerHTML = pickHtml(f); $("f-tabs").hidden = false; run("overview"); }));
         $("f-tabs").querySelectorAll("[data-ft]").forEach((b) => b.addEventListener("click", () => run(b.dataset.ft)));
@@ -344,6 +394,26 @@ const jsonLd = [{ "@context": "https://schema.org", "@type": "WebApplication", n
         root.innerHTML = `<h3>Rankings</h3><div class="ws-form"><div class="ws-two"><select id="r-div"><option value="">All divisions</option>${divs.map((d) => `<option value="${d}">${tc(d)}</option>`).join("")}</select><select id="r-w"><option value="">Men + women</option><option value="false">Men</option><option value="true">Women</option></select></div><div class="actions-row"><button class="btn primary" id="run-r" type="button">Load rankings</button></div></div>`;
         $("run-r").addEventListener("click", async () => { const q = []; if ($("r-div").value) q.push("division=" + $("r-div").value); if ($("r-w").value) q.push("womens=" + $("r-w").value); const l = await api(`/v1/ufc/rankings${q.length ? "?" + q.join("&") : ""}`); out(handle(l, rankingsView)); $("ws-preview").querySelectorAll("[data-open-fighter]").forEach((a) => a.addEventListener("click", (e) => { e.preventDefault(); location.href = `/workspace?tool=fighter&id=${a.dataset.openFighter}`; })); });
         const d = new URLSearchParams(location.search).get("division"); if (d) { $("r-div").value = d; if (KEY) setTimeout(() => $("run-r").click(), 300); }
+      } },
+      weighins: { title: "Weigh-ins", render(root) {
+        root.innerHTML = `<h3>Weigh-ins ${chip("developer")}</h3><p class="small muted">Official readings with their source history. <code>coverage.state</code> is live, final or no_data; a null limit means the contracted figure was never published.</p><div class="ws-form"><div class="ws-two"><select id="w-mode"><option value="event">Current card (with history)</option><option value="missed">Missed weight, across cards</option></select><input type="text" id="w-limit" value="20" aria-label="limit"></div><div class="actions-row"><button class="btn primary" id="run-w" type="button">Run</button></div></div>`;
+        let eventId = null;
+        const run = async () => {
+          if ($("w-mode").value === "missed") { const l = await api(`/v1/ufc/weigh-ins?status=missed&limit=${encodeURIComponent($("w-limit").value || 20)}`); return out(handle(l, weighInsView)); }
+          if (!eventId) { const ev = await api("/v1/ufc/events?status=upcoming&limit=6"); const row = (ev.body?.data || []).find((e) => !/contender series|road to ufc|dwcs/i.test(e.name)) || (ev.body?.data || [])[0]; eventId = row ? row.id : null; }
+          if (!eventId) return out(`<div class="ws-empty">No upcoming event to weigh in.</div>`);
+          const l = await api(`/v1/ufc/events/${eventId}/weigh-ins?include=history`);
+          out(handle(l, weighInsView));
+        };
+        $("run-w").addEventListener("click", run);
+        if (KEY) setTimeout(run, 300);
+      } },
+      availability: { title: "Availability", render(root) {
+        const types = ["", "injury", "illness", "withdrawal", "replacement", "suspension", "visa_travel", "weight_miss", "return", "cleared", "other"];
+        root.innerHTML = `<h3>Availability ${chip("developer")}</h3><p class="small muted">Individually sourced injuries, withdrawals, replacements and returns. A cause the source did not name stays <code>null</code>.</p><div class="ws-form"><div class="ws-two"><select id="a-state"><option value="active">Active</option><option value="resolved">Resolved</option><option value="expired">Expired</option><option value="all">All</option></select><select id="a-type">${types.map((t) => `<option value="${t}">${t ? esc(tc(t)) : "Any type"}</option>`).join("")}</select></div><div class="actions-row"><button class="btn primary" id="run-a" type="button">List availability events</button></div></div>`;
+        const run = async () => { const q = [`state=${$("a-state").value}`, "limit=50"]; if ($("a-type").value) q.push("status_type=" + $("a-type").value); const l = await api(`/v1/ufc/injuries?${q.join("&")}`); out(handle(l, availabilityView)); };
+        $("run-a").addEventListener("click", run);
+        if (KEY) setTimeout(run, 300);
       } },
       videos: { title: "Videos", render(root) {
         const types = ["", "embedded_episode", "countdown", "press_conference", "weigh_in", "faceoff", "media_day", "fight_preview", "interview", "highlights", "analysis", "post_fight", "full_fight", "other"];
