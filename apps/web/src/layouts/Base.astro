@@ -4,6 +4,8 @@ import gen from "../generated/entitlements.json";
 import show from "../generated/showcase.json";
 import { freshness } from "../lib/freshness";
 const API_FALLBACK = gen.gateway?.api_base_url || "";
+/* /health is served by the commercial gateway, not by the static portal host. */
+const apiHealthUrl = API_FALLBACK ? `${API_FALLBACK.replace(/\/$/, "")}/health` : "/health";
 
 export interface Props {
   title: string;
@@ -209,7 +211,7 @@ const fmt = (n: number) => n.toLocaleString("en-US");
             <ul>
               <li><a href="/openapi.json">OpenAPI</a></li>
               <li><a href="/docs/reference">API reference</a></li>
-              <li><a href="/health">API status</a></li>
+              <li><a href={apiHealthUrl}>API status</a></li>
               <li><a href="/docs#errors">Errors</a></li>
               <li><a href="https://github.com/LHBUSA/ufc-api" rel="noopener">Source</a></li>
             </ul>
