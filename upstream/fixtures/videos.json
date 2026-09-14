@@ -1,21 +1,21 @@
 {
-  "captured_at": "2026-09-11T21:47:17.890Z",
+  "captured_at": "2026-09-14T13:16:32.763Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/videos?limit=2",
   "status": 200,
-  "api_version": "2026-09-11.1",
+  "api_version": "2026-09-14.1",
   "body": {
     "ok": true,
     "data": [
       {
-        "id": "b228a5ba-110d-4696-9faf-7b5167ce1886",
+        "id": "805f5e5a-2a0a-422d-a472-78eb3e5032d1",
         "provider": "youtube",
-        "provider_video_id": "8k1sWuNhjnY",
-        "url": "https://www.youtube.com/watch?v=8k1sWuNhjnY",
-        "embed_url": "https://www.youtube-nocookie.com/embed/8k1sWuNhjnY",
-        "thumbnail_url": "https://i1.ytimg.com/vi/8k1sWuNhjnY/hqdefault.jpg",
-        "title": "Um dia, dois eventos grandiosos! Jean Silva e Djorden Santos falam sobre o #NocheUFC e #GarciaBenn!",
-        "published_at": "2026-09-11T21:00:21+00:00",
+        "provider_video_id": "jo-34zrxHUE",
+        "url": "https://www.youtube.com/watch?v=jo-34zrxHUE",
+        "embed_url": "https://www.youtube-nocookie.com/embed/jo-34zrxHUE",
+        "thumbnail_url": "https://i3.ytimg.com/vi/jo-34zrxHUE/hqdefault.jpg",
+        "title": "Essa revanche entre Joshua Van e Alexandre Pantoja promete ser ELETRIZANTE 👊 #UFC331",
+        "published_at": "2026-09-14T13:00:34+00:00",
         "duration_sec": null,
         "embeddable": true,
         "live_broadcast_state": null,
@@ -27,59 +27,58 @@
           "verified": true
         },
         "links": {
-          "event_id": "1d0b22df-81e7-4e5b-8fa5-8e5d03c24c52",
-          "bout_id": null,
-          "article_id": null,
+          "event_id": "221ca353-f623-4b66-98aa-3a504a418236",
+          "bout_id": "a351a64c-d409-4e9b-9280-2f0f18143eb5",
+          "article_id": "70686d92-e61d-49dc-ace0-1261a0b229cf",
           "fighter_ids": [
-            "8096c960-3c6a-4c43-a003-8d0b610fea9a",
-            "eed368a5-484b-412f-9d2c-a4fd6d24d019"
+            "13eebfea-dbd0-4110-a41a-200b8a73051d",
+            "e204408f-aee9-4987-83ca-8a43e8802e3f"
           ]
         },
-        "resolver_confidence": "medium",
+        "resolver_confidence": "high",
         "attribution": "YouTube · UFC Brasil",
-        "captured_at": "2026-09-11T21:13:06.658339+00:00",
-        "updated_at": "2026-09-11T21:13:02.277+00:00"
+        "captured_at": "2026-09-14T13:13:24.396846+00:00",
+        "updated_at": "2026-09-14T13:13:16.096+00:00"
       },
       {
-        "id": "d04d5599-6c14-4807-b444-0c1583e6c46a",
+        "id": "fd5e1ad9-d4c3-47dc-9d37-bb8ddbcdb522",
         "provider": "youtube",
-        "provider_video_id": "Hh9icPderiM",
-        "url": "https://www.youtube.com/watch?v=Hh9icPderiM",
-        "embed_url": "https://www.youtube-nocookie.com/embed/Hh9icPderiM",
-        "thumbnail_url": "https://i1.ytimg.com/vi/Hh9icPderiM/hqdefault.jpg",
-        "title": "Silva vs Delgado Weigh-Ins | Noche UFC",
-        "published_at": "2026-09-11T19:18:39+00:00",
+        "provider_video_id": "PASMVbFS_zo",
+        "url": "https://www.youtube.com/watch?v=PASMVbFS_zo",
+        "embed_url": "https://www.youtube-nocookie.com/embed/PASMVbFS_zo",
+        "thumbnail_url": "https://i1.ytimg.com/vi/PASMVbFS_zo/hqdefault.jpg",
+        "title": "This 24 Year Old Is UFC's Most Entertaining Fighter 👊",
+        "published_at": "2026-09-14T11:45:04+00:00",
         "duration_sec": null,
         "embeddable": true,
         "live_broadcast_state": null,
-        "video_type": "weigh_in",
-        "video_type_label": "Weigh-in",
+        "video_type": "full_fight",
+        "video_type_label": "Full fight",
         "channel": {
           "id": "UCvgfXK4nTYKudb0rFR6noLA",
           "name": "UFC",
           "verified": true
         },
         "links": {
-          "event_id": "1d0b22df-81e7-4e5b-8fa5-8e5d03c24c52",
-          "bout_id": "89e38074-f431-4bc3-b51e-fe42058e60d0",
+          "event_id": "221ca353-f623-4b66-98aa-3a504a418236",
+          "bout_id": null,
           "article_id": null,
           "fighter_ids": [
-            "55ef67ad-88fe-4f7a-b4cb-dc9a10c12feb",
-            "eed368a5-484b-412f-9d2c-a4fd6d24d019"
+            "e204408f-aee9-4987-83ca-8a43e8802e3f"
           ]
         },
-        "resolver_confidence": "high",
+        "resolver_confidence": "medium",
         "attribution": "YouTube · UFC",
-        "captured_at": "2026-09-11T19:43:20.544594+00:00",
-        "updated_at": "2026-09-11T19:43:15.476+00:00"
+        "captured_at": "2026-09-14T12:13:23.331066+00:00",
+        "updated_at": "2026-09-14T12:13:16.584+00:00"
       }
     ],
     "meta": {
       "api": "PropSports UFC",
-      "version": "2026-09-11.1",
-      "request_id": "9dae76c2-eb6c-4c4e-95c0-cfa3c39e23de",
+      "version": "2026-09-14.1",
+      "request_id": "853a8b6d-5d92-4c65-9bb2-102eba6d95c9",
       "count": 2,
-      "total": 172,
+      "total": 271,
       "limit": 2,
       "type": null,
       "fighter_id": null,

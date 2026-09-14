@@ -1,9 +1,9 @@
 {
-  "captured_at": "2026-09-11T21:47:17.890Z",
+  "captured_at": "2026-09-14T13:16:32.763Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/rankings?division=LIGHTWEIGHT",
   "status": 200,
-  "api_version": "2026-09-11.1",
+  "api_version": "2026-09-14.1",
   "body": {
     "ok": true,
     "data": {
@@ -229,8 +229,8 @@
     },
     "meta": {
       "api": "PropSports UFC",
-      "version": "2026-09-11.1",
-      "request_id": "e6939955-6009-46aa-b23f-063e2b5d9f1c",
+      "version": "2026-09-14.1",
+      "request_id": "99f61445-7cf4-4e01-a0ba-f44fe2f3900d",
       "store": "table",
       "divisions": 1,
       "division": "LIGHTWEIGHT",

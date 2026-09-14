@@ -1,10 +1,10 @@
 {
   "repository": "LHBUSA/UFC",
   "branch": "main",
-  "commit": "c2eaa8f571127ff3ebf2921afe9cf6edbd76e686",
-  "captured_at": "2026-09-11T21:47:17.890Z",
+  "commit": "1ce68fd352a00529f9b1264bdefc9def5242e500",
+  "captured_at": "2026-09-14T13:16:32.763Z",
   "upstream_base_url": "https://ufc-api.propbetedge.ai",
-  "api_version": "2026-09-11.1",
+  "api_version": "2026-09-14.1",
   "api_name": "PropSports UFC API",
   "fight_dna_definition_version": 1,
   "endpoints": {
@@ -135,7 +135,7 @@
     "value": 5.9757,
     "origin": "pbe_derived",
     "numerator": 2430,
-    "as_of_date": "2026-09-10",
+    "as_of_date": "2026-09-14",
     "confidence": "high",
     "metric_key": "sig_landed_per_min",
     "denominator": 24399,

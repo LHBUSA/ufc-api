@@ -1,9 +1,9 @@
 {
-  "captured_at": "2026-09-11T21:47:17.890Z",
+  "captured_at": "2026-09-14T13:16:32.763Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/fighters/eed368a5-484b-412f-9d2c-a4fd6d24d019/videos?limit=3",
   "status": 200,
-  "api_version": "2026-09-11.1",
+  "api_version": "2026-09-14.1",
   "body": {
     "ok": true,
     "data": {
@@ -33,14 +33,91 @@
       },
       "videos": [
         {
-          "id": "b228a5ba-110d-4696-9faf-7b5167ce1886",
+          "id": "5cdfa589-36bf-4d1e-9306-940157f67d48",
           "provider": "youtube",
-          "provider_video_id": "8k1sWuNhjnY",
-          "url": "https://www.youtube.com/watch?v=8k1sWuNhjnY",
-          "embed_url": "https://www.youtube-nocookie.com/embed/8k1sWuNhjnY",
-          "thumbnail_url": "https://i1.ytimg.com/vi/8k1sWuNhjnY/hqdefault.jpg",
-          "title": "Um dia, dois eventos grandiosos! Jean Silva e Djorden Santos falam sobre o #NocheUFC e #GarciaBenn!",
-          "published_at": "2026-09-11T21:00:21+00:00",
+          "provider_video_id": "S88T7mg1yZE",
+          "url": "https://www.youtube.com/watch?v=S88T7mg1yZE",
+          "embed_url": "https://www.youtube-nocookie.com/embed/S88T7mg1yZE",
+          "thumbnail_url": "https://i4.ytimg.com/vi/S88T7mg1yZE/hqdefault.jpg",
+          "title": "Melhores Momentos | Noche UFC: Silva x Delgado",
+          "published_at": "2026-09-13T17:00:23+00:00",
+          "duration_sec": null,
+          "embeddable": true,
+          "live_broadcast_state": null,
+          "video_type": "highlights",
+          "video_type_label": "Highlights",
+          "channel": {
+            "id": "UCk8XGxi7fsTqQQRVq9LSraw",
+            "name": "UFC Brasil",
+            "verified": true
+          },
+          "links": {
+            "event_id": "1d0b22df-81e7-4e5b-8fa5-8e5d03c24c52",
+            "bout_id": null,
+            "article_id": null,
+            "fighter_ids": [
+              "08e58845-4ba5-4fcf-982f-2b47171d4dce",
+              "147cb6f3-841b-4172-b209-54287cefe06d",
+              "1d296292-4969-43a8-9948-cd0a76a642ce",
+              "1fa71f4b-3f7d-4705-ba00-1f6bcf397b9a",
+              "2c9c2a88-aec1-4bf0-9b16-3ce58adf6fd6",
+              "456a7363-571c-42d0-887c-e36746063358",
+              "4b0dc10c-a942-4c20-8212-5afe70424dcb",
+              "55ef67ad-88fe-4f7a-b4cb-dc9a10c12feb",
+              "5be77aa0-2a5b-4a31-90b8-5f5b7513e0e7",
+              "8096c960-3c6a-4c43-a003-8d0b610fea9a",
+              "869107aa-7446-438a-992e-14699cdce495",
+              "b5bceb9a-635e-4b9f-8426-ca8ea0339ddf",
+              "b91270c0-d6e8-4021-b6b2-a96e2d542a51",
+              "eed368a5-484b-412f-9d2c-a4fd6d24d019"
+            ]
+          },
+          "resolver_confidence": "medium",
+          "attribution": "YouTube · UFC Brasil",
+          "captured_at": "2026-09-13T17:14:04.793431+00:00",
+          "updated_at": "2026-09-13T17:13:57.623+00:00"
+        },
+        {
+          "id": "a78f15b0-349f-4c07-8fc3-1ff73ebf1771",
+          "provider": "youtube",
+          "provider_video_id": "fw-amxZ3Bcw",
+          "url": "https://www.youtube.com/watch?v=fw-amxZ3Bcw",
+          "embed_url": "https://www.youtube-nocookie.com/embed/fw-amxZ3Bcw",
+          "thumbnail_url": "https://i3.ytimg.com/vi/fw-amxZ3Bcw/hqdefault.jpg",
+          "title": "O Jean Silva mandou um recadinho para o campeão em sua entrevista de Octógono no #NocheUFC!",
+          "published_at": "2026-09-13T15:00:21+00:00",
+          "duration_sec": null,
+          "embeddable": true,
+          "live_broadcast_state": null,
+          "video_type": "interview",
+          "video_type_label": "Interview",
+          "channel": {
+            "id": "UCk8XGxi7fsTqQQRVq9LSraw",
+            "name": "UFC Brasil",
+            "verified": true
+          },
+          "links": {
+            "event_id": "1d0b22df-81e7-4e5b-8fa5-8e5d03c24c52",
+            "bout_id": null,
+            "article_id": null,
+            "fighter_ids": [
+              "eed368a5-484b-412f-9d2c-a4fd6d24d019"
+            ]
+          },
+          "resolver_confidence": "medium",
+          "attribution": "YouTube · UFC Brasil",
+          "captured_at": "2026-09-13T15:14:04.700637+00:00",
+          "updated_at": "2026-09-13T15:13:57.601+00:00"
+        },
+        {
+          "id": "d95d4846-bfda-46ac-b021-825a8adcf637",
+          "provider": "youtube",
+          "provider_video_id": "jiCGU1sK0oA",
+          "url": "https://www.youtube.com/watch?v=jiCGU1sK0oA",
+          "embed_url": "https://www.youtube-nocookie.com/embed/jiCGU1sK0oA",
+          "thumbnail_url": "https://i3.ytimg.com/vi/jiCGU1sK0oA/hqdefault.jpg",
+          "title": "O Jean Silva conversou com a repórter Evelyn Rodrigues após finalizar no #NocheUFC!",
+          "published_at": "2026-09-13T12:00:27+00:00",
           "duration_sec": null,
           "embeddable": true,
           "live_broadcast_state": null,
@@ -56,88 +133,22 @@
             "bout_id": null,
             "article_id": null,
             "fighter_ids": [
-              "8096c960-3c6a-4c43-a003-8d0b610fea9a",
               "eed368a5-484b-412f-9d2c-a4fd6d24d019"
             ]
           },
           "resolver_confidence": "medium",
           "attribution": "YouTube · UFC Brasil",
-          "captured_at": "2026-09-11T21:13:06.658339+00:00",
-          "updated_at": "2026-09-11T21:13:02.277+00:00"
-        },
-        {
-          "id": "d04d5599-6c14-4807-b444-0c1583e6c46a",
-          "provider": "youtube",
-          "provider_video_id": "Hh9icPderiM",
-          "url": "https://www.youtube.com/watch?v=Hh9icPderiM",
-          "embed_url": "https://www.youtube-nocookie.com/embed/Hh9icPderiM",
-          "thumbnail_url": "https://i1.ytimg.com/vi/Hh9icPderiM/hqdefault.jpg",
-          "title": "Silva vs Delgado Weigh-Ins | Noche UFC",
-          "published_at": "2026-09-11T19:18:39+00:00",
-          "duration_sec": null,
-          "embeddable": true,
-          "live_broadcast_state": null,
-          "video_type": "weigh_in",
-          "video_type_label": "Weigh-in",
-          "channel": {
-            "id": "UCvgfXK4nTYKudb0rFR6noLA",
-            "name": "UFC",
-            "verified": true
-          },
-          "links": {
-            "event_id": "1d0b22df-81e7-4e5b-8fa5-8e5d03c24c52",
-            "bout_id": "89e38074-f431-4bc3-b51e-fe42058e60d0",
-            "article_id": null,
-            "fighter_ids": [
-              "55ef67ad-88fe-4f7a-b4cb-dc9a10c12feb",
-              "eed368a5-484b-412f-9d2c-a4fd6d24d019"
-            ]
-          },
-          "resolver_confidence": "high",
-          "attribution": "YouTube · UFC",
-          "captured_at": "2026-09-11T19:43:20.544594+00:00",
-          "updated_at": "2026-09-11T19:43:15.476+00:00"
-        },
-        {
-          "id": "ae644ccf-6555-4a43-9359-1beeb0f45da4",
-          "provider": "youtube",
-          "provider_video_id": "EvS1cIbvObg",
-          "url": "https://www.youtube.com/watch?v=EvS1cIbvObg",
-          "embed_url": "https://www.youtube-nocookie.com/embed/EvS1cIbvObg",
-          "thumbnail_url": "https://i2.ytimg.com/vi/EvS1cIbvObg/hqdefault.jpg",
-          "title": "#NocheUFC Evento Completo: Lopes vs. Silva",
-          "published_at": "2026-09-11T19:00:06+00:00",
-          "duration_sec": null,
-          "embeddable": true,
-          "live_broadcast_state": null,
-          "video_type": "full_fight",
-          "video_type_label": "Full fight",
-          "channel": {
-            "id": "UCYXJFtx4SUkrb2p_8mhLPzQ",
-            "name": "UFC Espanol",
-            "verified": true
-          },
-          "links": {
-            "event_id": "1d0b22df-81e7-4e5b-8fa5-8e5d03c24c52",
-            "bout_id": null,
-            "article_id": null,
-            "fighter_ids": [
-              "eed368a5-484b-412f-9d2c-a4fd6d24d019"
-            ]
-          },
-          "resolver_confidence": "medium",
-          "attribution": "YouTube · UFC Espanol",
-          "captured_at": "2026-09-06T16:50:23.798101+00:00",
-          "updated_at": "2026-09-11T19:13:15.511+00:00"
+          "captured_at": "2026-09-13T12:14:05.645555+00:00",
+          "updated_at": "2026-09-13T12:13:57.787+00:00"
         }
       ]
     },
     "meta": {
       "api": "PropSports UFC",
-      "version": "2026-09-11.1",
-      "request_id": "65f58cd9-5e6c-4c2e-9089-2ba753c2b8f9",
+      "version": "2026-09-14.1",
+      "request_id": "6e1c0761-193a-413f-8bf9-879912676e56",
       "count": 3,
-      "total": 38,
+      "total": 54,
       "limit": 3,
       "type": null,
       "published_only": true,

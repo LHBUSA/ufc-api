@@ -1,9 +1,9 @@
 {
-  "captured_at": "2026-09-11T21:47:17.890Z",
+  "captured_at": "2026-09-14T13:16:32.763Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/fighters/ec94d296-2db3-4e0d-be6a-46de4f480672/position-profile",
   "status": 200,
-  "api_version": "2026-09-11.1",
+  "api_version": "2026-09-14.1",
   "body": {
     "ok": true,
     "data": {
@@ -33,7 +33,7 @@
         "stance": "ORTHODOX",
         "is_active": true
       },
-      "as_of_date": "2026-09-10",
+      "as_of_date": "2026-09-14",
       "definition_version": 1,
       "origin": "pbe_derived",
       "sample": {
@@ -52,10 +52,10 @@
     },
     "meta": {
       "api": "PropSports UFC",
-      "version": "2026-09-11.1",
-      "request_id": "83fa1b47-0e6e-4436-bb7e-f40d443e8036",
+      "version": "2026-09-14.1",
+      "request_id": "04a9ba9b-4b0e-4ce4-854c-dc2ca0a0b9d9",
       "requested_as_of": null,
-      "resolved_as_of": "2026-09-10",
+      "resolved_as_of": "2026-09-14",
       "definition_version": 1,
       "as_of_semantics": "as_of_date is exclusive: the snapshot dated D contains bouts with event_date < D, so a bout fought on D is excluded by the snapshot dated D. ?as_of=D resolves to the latest stored snapshot with as_of_date <= D, which therefore never contains a bout fought on or after D.",
       "origin": "pbe_derived",

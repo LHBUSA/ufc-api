@@ -1,7 +1,7 @@
 {
   "$note": "Runtime gateway settings that are neither secrets nor plan-specific.",
   "product_name": "PropTechUSA UFC Intelligence API",
-  "gateway_version": "2026-09-11.1",
+  "gateway_version": "2026-09-14.1",
   "$hosts_note": "TWO HOSTS, TWO OWNERS. commercial_host is the marketing/docs site and is served by VERCEL (ufc.proptechusa.ai is a CNAME to vercel-dns); it does NOT serve /v1. api_base_url is the Cloudflare Worker that actually serves /v1, /health, /admin and /dashboard/api, and it is PRODUCTION infrastructure despite the historical `preview` label on its wrangler environment. Never attach ufc.proptechusa.ai to the Worker: that rewrites the Vercel DNS record and takes the site down.",
   "commercial_host": "https://ufc.proptechusa.ai",
   "upstream_base_url": "https://ufc-api.propbetedge.ai",

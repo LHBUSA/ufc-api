@@ -12,6 +12,9 @@ import weighInsMissed from "../../upstream/fixtures/weigh_ins_missed.json" with 
 import injuriesActive from "../../upstream/fixtures/injuries_active.json" with { type: "json" };
 import nocheCardChanges from "../../upstream/fixtures/noche_card_changes.json" with { type: "json" };
 import silvaStatus from "../../upstream/fixtures/silva_status.json" with { type: "json" };
+/* The version the gateway advertises is the pinned upstream contract, so the assertions read the pin
+   rather than repeating it (a contract sync must not need a hand edit here). */
+import upstreamContract from "../../upstream/ufc-contract.json" with { type: "json" };
 
 const S = "ec94d296-2db3-4e0d-be6a-46de4f480672";
 const D = "9a3b2a15-27d8-4554-9217-42ef2dd5d25c";
@@ -276,7 +279,7 @@ test("dashboard API: /me shows plan + usage without secrets; /rotate issues a ne
   const mb = await me.json();
   assert.equal(mb.data.key.plan, "pro"); assert.equal(mb.data.usage.used, 1); assert.equal(mb.data.usage.quota, 100000); assert.equal(mb.data.plan.limits.rate_limit_per_min, 180);
   assert.equal(JSON.stringify(mb).includes(pro.key), false, "raw key never echoed"); assert.equal(JSON.stringify(mb).includes("secret_hash"), false);
-  assert.equal(mb.data.api.version, "2026-09-11.1");
+  assert.equal(mb.data.api.version, upstreamContract.api_version);
   const rot = await worker.fetch(req("/dashboard/api/rotate", bearer(pro.key), "POST"), env, execCtx);
   const rb = await rot.json();
   assert.match(rb.data.key, /^pt_ufc_live_/); assert.notEqual(rb.data.key, pro.key); assert.equal(rb.data.record.plan, "pro"); assert.equal(rb.data.record.rotated_from, pro.record.id);
@@ -288,7 +291,7 @@ test("dashboard API: /me shows plan + usage without secrets; /rotate issues a ne
 test("health is public; OPTIONS preflight on /v1 returns CORS; non-API paths go to static assets; POST on /v1 is 405", async () => {
   const env = makeEnv();
   const h = await worker.fetch(req("/health"), env, execCtx);
-  assert.equal(h.status, 200); assert.equal((await h.json()).data.api_version_target, "2026-09-11.1");
+  assert.equal(h.status, 200); assert.equal((await h.json()).data.api_version_target, upstreamContract.api_version);
   const o = await worker.fetch(req("/v1/ufc/events", {}, "OPTIONS"), env, execCtx);
   assert.equal(o.status, 204); assert.equal(o.headers.get("access-control-allow-origin"), "*");
   const a = await worker.fetch(req("/pricing"), env, execCtx);

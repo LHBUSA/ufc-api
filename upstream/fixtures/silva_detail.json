@@ -1,9 +1,9 @@
 {
-  "captured_at": "2026-09-11T21:47:17.890Z",
+  "captured_at": "2026-09-14T13:16:32.763Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/fighters/eed368a5-484b-412f-9d2c-a4fd6d24d019?include=ranking,next,history&history_limit=5",
   "status": 200,
-  "api_version": "2026-09-11.1",
+  "api_version": "2026-09-14.1",
   "body": {
     "ok": true,
     "data": {
@@ -83,87 +83,7 @@
           }
         ]
       },
-      "next_bout": {
-        "id": "89e38074-f431-4bc3-b51e-fe42058e60d0",
-        "ufcstats_id": null,
-        "espn_competition_id": "401914462",
-        "event_id": "1d0b22df-81e7-4e5b-8fa5-8e5d03c24c52",
-        "weight_class": "FEATHERWEIGHT",
-        "weight_class_raw": "Featherweight",
-        "is_womens": false,
-        "is_title": false,
-        "scheduled_rounds": 5,
-        "card_position": "main",
-        "bout_order": 13,
-        "status": "announced",
-        "replaced_bout_id": null,
-        "short_notice_days": null,
-        "fighter_a": {
-          "id": "eed368a5-484b-412f-9d2c-a4fd6d24d019",
-          "dob": "1996-12-27",
-          "name": "Jean Silva",
-          "stance": "ORTHODOX",
-          "nickname": "Lord",
-          "reach_in": 69,
-          "record_d": 0,
-          "record_l": 3,
-          "record_w": 17,
-          "height_in": 67,
-          "is_active": true,
-          "record_nc": null,
-          "weight_lbs": 146,
-          "ufcstats_id": "52ef95b5860fb28c",
-          "espn_athlete_id": "5145766"
-        },
-        "fighter_b": {
-          "id": "55ef67ad-88fe-4f7a-b4cb-dc9a10c12feb",
-          "dob": "1998-04-21",
-          "name": "Jose Miguel Delgado",
-          "stance": "SWITCH",
-          "nickname": null,
-          "reach_in": 73,
-          "record_d": 0,
-          "record_l": 2,
-          "record_w": 12,
-          "height_in": 71,
-          "is_active": true,
-          "record_nc": 0,
-          "weight_lbs": 146,
-          "ufcstats_id": "7d6ceff6747f2de2",
-          "espn_athlete_id": "5223435"
-        },
-        "result": null,
-        "event": {
-          "id": "1d0b22df-81e7-4e5b-8fa5-8e5d03c24c52",
-          "city": "Glendale",
-          "name": "Noche UFC: Silva vs. Delgado",
-          "venue": "Desert Diamond Arena",
-          "is_ppv": null,
-          "region": "AZ",
-          "country": "USA",
-          "commission": null,
-          "event_date": "2026-09-12",
-          "updated_at": "2026-09-11T06:02:29.394+00:00",
-          "card_status": "announced",
-          "ufcstats_id": "638cfec7ec559d6e",
-          "espn_event_id": "600060772"
-        },
-        "is_fighter_a": true,
-        "opponent": {
-          "id": "55ef67ad-88fe-4f7a-b4cb-dc9a10c12feb",
-          "name": "Jose Miguel Delgado",
-          "nickname": null,
-          "ufcstats_id": "7d6ceff6747f2de2",
-          "espn_athlete_id": "5223435",
-          "slug_id": "5223435",
-          "record_w": 12,
-          "record_l": 2,
-          "record_d": 0,
-          "record_nc": 0,
-          "primary_image": null
-        },
-        "outcome": null
-      },
+      "next_bout": null,
       "history": [
         {
           "id": "89e38074-f431-4bc3-b51e-fe42058e60d0",
@@ -177,7 +97,7 @@
           "scheduled_rounds": 5,
           "card_position": "main",
           "bout_order": 13,
-          "status": "announced",
+          "status": "complete",
           "replaced_bout_id": null,
           "short_notice_days": null,
           "fighter_a": {
@@ -214,7 +134,24 @@
             "ufcstats_id": "7d6ceff6747f2de2",
             "espn_athlete_id": "5223435"
           },
-          "result": null,
+          "result": {
+            "round": 3,
+            "method": "SUB",
+            "bout_id": "89e38074-f431-4bc3-b51e-fe42058e60d0",
+            "judge_1": null,
+            "judge_2": null,
+            "judge_3": null,
+            "referee": "Dan Miragliotta",
+            "time_sec": 177,
+            "has_stats": false,
+            "winner_id": "eed368a5-484b-412f-9d2c-a4fd6d24d019",
+            "method_raw": "Submission",
+            "scorecards": null,
+            "captured_at": "2026-09-14T06:02:39.812+00:00",
+            "time_format": "5 Rnd (5-5-5-5-5)",
+            "finish_detail": "Rear Naked Choke",
+            "result_source": "espn"
+          },
           "event": {
             "id": "1d0b22df-81e7-4e5b-8fa5-8e5d03c24c52",
             "city": "Glendale",
@@ -225,8 +162,8 @@
             "country": "USA",
             "commission": null,
             "event_date": "2026-09-12",
-            "updated_at": "2026-09-11T06:02:29.394+00:00",
-            "card_status": "announced",
+            "updated_at": "2026-09-14T06:02:26.496+00:00",
+            "card_status": "complete",
             "ufcstats_id": "638cfec7ec559d6e",
             "espn_event_id": "600060772"
           },
@@ -244,7 +181,7 @@
             "record_nc": 0,
             "primary_image": null
           },
-          "outcome": null
+          "outcome": "W"
         },
         {
           "id": "5e0510e3-cbb6-4011-bedc-dea2dd18e6c7",
@@ -336,7 +273,7 @@
             "country": "USA",
             "commission": null,
             "event_date": "2026-01-24",
-            "updated_at": "2026-09-11T06:01:29.314+00:00",
+            "updated_at": "2026-09-14T06:01:31.15+00:00",
             "card_status": "complete",
             "ufcstats_id": "00e11b5c8b7bfeeb",
             "espn_event_id": "600057024"
@@ -677,8 +614,8 @@
     },
     "meta": {
       "api": "PropSports UFC",
-      "version": "2026-09-11.1",
-      "request_id": "2840cb0a-eec9-46d6-91c9-f33ce665434e",
+      "version": "2026-09-14.1",
+      "request_id": "cce043f2-61f4-4145-bc94-9f68c186ecc9",
       "include": [
         "ranking",
         "next",

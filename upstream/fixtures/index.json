@@ -1,14 +1,14 @@
 {
-  "captured_at": "2026-09-11T21:47:17.890Z",
+  "captured_at": "2026-09-14T13:16:32.763Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc",
   "status": 200,
-  "api_version": "2026-09-11.1",
+  "api_version": "2026-09-14.1",
   "body": {
     "ok": true,
     "data": {
       "name": "PropSports UFC API",
-      "version": "2026-09-11.1",
+      "version": "2026-09-14.1",
       "status": "beta",
       "principles": [
         "read-only contract",
@@ -60,8 +60,8 @@
     },
     "meta": {
       "api": "PropSports UFC",
-      "version": "2026-09-11.1",
-      "request_id": "19a49319-7d55-4bac-9e74-5483f302d364",
+      "version": "2026-09-14.1",
+      "request_id": "191d62ef-b4d7-4cd6-aa41-dbae046b6216",
       "access_tier": "public"
     }
   }

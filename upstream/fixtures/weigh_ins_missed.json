@@ -1,9 +1,9 @@
 {
-  "captured_at": "2026-09-11T21:47:17.890Z",
+  "captured_at": "2026-09-14T13:16:32.763Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/weigh-ins?status=missed&limit=3",
   "status": 200,
-  "api_version": "2026-09-11.1",
+  "api_version": "2026-09-14.1",
   "body": {
     "ok": true,
     "data": [
@@ -136,8 +136,8 @@
     ],
     "meta": {
       "api": "PropSports UFC",
-      "version": "2026-09-11.1",
-      "request_id": "79d0dbe2-1793-4360-832e-02f4043aa1cf",
+      "version": "2026-09-14.1",
+      "request_id": "66c6fe8d-da8a-4dcd-b913-2b1ba3a24578",
       "count": 3,
       "total": 4,
       "limit": 3,

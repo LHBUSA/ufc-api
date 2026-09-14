@@ -1,48 +1,48 @@
 {
-  "captured_at": "2026-09-11T21:47:17.890Z",
+  "captured_at": "2026-09-14T13:16:32.763Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/news?limit=2",
   "status": 200,
-  "api_version": "2026-09-11.1",
+  "api_version": "2026-09-14.1",
   "body": {
     "ok": true,
     "data": [
       {
-        "id": "622629a9-ba2e-45e9-9c0e-dcd69a5c0d21",
-        "slug": "niko-price-s-retirement-reversal-brings-a-finish-heavy-risk-profile-back-to-ufc",
-        "headline": "Niko Price’s Retirement Reversal Brings a Finish-Heavy Risk Profile Back to UFC Vegas 122",
-        "dek": "Price’s return creates immediate interest in distance and method markets, but the lack of verified opponent data makes any directional bet premature.",
+        "id": "3086bc9f-6abc-48a0-827c-0b1c54066170",
+        "slug": "tom-aspinall-vacates-ufc-heavyweight-title-as-eye-setback-freezes-his-betting-pr",
+        "headline": "Tom Aspinall Vacates UFC Heavyweight Title as Eye Setback Freezes His Betting Profile",
+        "dek": "Aspinall’s finishing record remains elite, but an indefinite medical absence makes his familiar early-stoppage angles impossible to carry forward without fresh evidence.",
         "story_type": "external",
         "status": "published",
         "hero_image_ref": null,
         "hero_credit": null,
         "fighter_ids": [
-          "c8e30df9-21f1-46a9-907f-087e8c3d7b63"
+          "37851d60-2afd-426c-970e-e32abe06e09d"
         ],
         "bout_id": null,
         "event_id": null,
-        "published_at": "2026-09-11T21:21:20.805+00:00",
-        "updated_at": "2026-09-11T21:21:20.805+00:00",
+        "published_at": "2026-09-14T08:55:42.569+00:00",
+        "updated_at": "2026-09-14T11:44:51.08+00:00",
         "hero_image_url": null,
         "hero_image": null,
         "analysis_summary": null
       },
       {
-        "id": "b7da0102-f8da-4209-b9d7-d510488ade51",
-        "slug": "islam-makhachev-s-early-2027-target-puts-recovery-ahead-of-his-next-title-matchu",
-        "headline": "Islam Makhachev’s Early-2027 Target Puts Recovery Ahead of His Next Title Matchup",
-        "dek": "Makhachev wants to return before February, but his recent five-round pattern and unresolved physical issues leave opponent-specific analysis on hold.",
+        "id": "2e62cb32-0df5-4442-9140-6b578d738a10",
+        "slug": "conor-mcgregor-s-acl-surgery-forces-bettors-to-reset-the-baseline",
+        "headline": "Conor McGregor’s ACL Surgery Forces Bettors to Reset the Baseline",
+        "dek": "A knee injury ended McGregor’s comeback before it produced usable evidence, leaving his historical finishing power intact but his current striking profile unresolved.",
         "story_type": "external",
         "status": "published",
         "hero_image_ref": null,
         "hero_credit": null,
         "fighter_ids": [
-          "45ef3e8d-571c-4dee-910b-3d8254f89689"
+          "8f4b27fb-34af-46cf-83a5-2cd3e5c1ffcc"
         ],
         "bout_id": null,
-        "event_id": "c6815652-eb66-4d7a-83b8-2a6141aba790",
-        "published_at": "2026-09-11T20:06:26.57+00:00",
-        "updated_at": "2026-09-11T20:06:26.57+00:00",
+        "event_id": null,
+        "published_at": "2026-09-14T06:29:47.375+00:00",
+        "updated_at": "2026-09-14T09:56:52.858+00:00",
         "hero_image_url": null,
         "hero_image": null,
         "analysis_summary": null
@@ -50,10 +50,10 @@
     ],
     "meta": {
       "api": "PropSports UFC",
-      "version": "2026-09-11.1",
-      "request_id": "c84dbeaf-0de5-452e-9604-dda5ca687df5",
+      "version": "2026-09-14.1",
+      "request_id": "144b98cb-d27f-4408-89f7-6ca455fd24b7",
       "count": 2,
-      "total": 54,
+      "total": 94,
       "offset": 0,
       "story_type": null,
       "story_class": null,

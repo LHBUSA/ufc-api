@@ -1,9 +1,9 @@
 {
-  "captured_at": "2026-09-11T21:47:17.890Z",
+  "captured_at": "2026-09-14T13:16:32.763Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/injuries?active=true&limit=5",
   "status": 200,
-  "api_version": "2026-09-11.1",
+  "api_version": "2026-09-14.1",
   "body": {
     "ok": true,
     "data": [
@@ -121,8 +121,8 @@
     ],
     "meta": {
       "api": "PropSports UFC",
-      "version": "2026-09-11.1",
-      "request_id": "e84ac15a-8860-41d6-aeca-62f7d7790323",
+      "version": "2026-09-14.1",
+      "request_id": "7518fdb3-29e8-46f7-ae60-ac50d41c70a5",
       "count": 3,
       "total": 3,
       "limit": 5,

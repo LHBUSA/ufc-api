@@ -1,9 +1,9 @@
 {
-  "captured_at": "2026-09-11T21:47:17.890Z",
+  "captured_at": "2026-09-14T13:16:32.763Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/events/1d0b22df-81e7-4e5b-8fa5-8e5d03c24c52",
   "status": 200,
-  "api_version": "2026-09-11.1",
+  "api_version": "2026-09-14.1",
   "body": {
     "ok": true,
     "data": {
@@ -18,13 +18,13 @@
       "country": "USA",
       "commission": null,
       "is_ppv": null,
-      "card_status": "announced",
-      "updated_at": "2026-09-11T06:02:29.394+00:00"
+      "card_status": "complete",
+      "updated_at": "2026-09-14T06:02:26.496+00:00"
     },
     "meta": {
       "api": "PropSports UFC",
-      "version": "2026-09-11.1",
-      "request_id": "f829afcc-0fc4-4eba-851c-1fafb6081dcb",
+      "version": "2026-09-14.1",
+      "request_id": "c269f228-7f33-4374-b696-d8168d102194",
       "access_tier": "public"
     }
   }

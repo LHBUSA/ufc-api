@@ -2,7 +2,7 @@
 
 Generated from `config/plans.json` + `config/entitlements.json` by `scripts/build-entitlements-doc.mjs`. **Do not edit by hand**; change the config and re-run `npm run entitlements:doc`.
 
-Upstream contract: LHBUSA/UFC@main `c2eaa8f571`, API version `2026-09-11.1`, Fight DNA definition version 1.
+Upstream contract: LHBUSA/UFC@main `1ce68fd352`, API version `2026-09-14.1`, Fight DNA definition version 1.
 
 ## Rules
 

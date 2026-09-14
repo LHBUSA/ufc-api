@@ -1,27 +1,12 @@
 {
-  "captured_at": "2026-09-11T21:47:17.890Z",
+  "captured_at": "2026-09-14T13:16:32.763Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/events?status=upcoming&limit=3",
   "status": 200,
-  "api_version": "2026-09-11.1",
+  "api_version": "2026-09-14.1",
   "body": {
     "ok": true,
     "data": [
-      {
-        "id": "1d0b22df-81e7-4e5b-8fa5-8e5d03c24c52",
-        "ufcstats_id": "638cfec7ec559d6e",
-        "espn_event_id": "600060772",
-        "name": "Noche UFC: Silva vs. Delgado",
-        "event_date": "2026-09-12",
-        "venue": "Desert Diamond Arena",
-        "city": "Glendale",
-        "region": "AZ",
-        "country": "USA",
-        "commission": null,
-        "is_ppv": null,
-        "card_status": "announced",
-        "updated_at": "2026-09-11T06:02:29.394+00:00"
-      },
       {
         "id": "64bfa864-454c-4d0a-92e3-408f25598d6c",
         "ufcstats_id": null,
@@ -35,7 +20,7 @@
         "commission": null,
         "is_ppv": null,
         "card_status": "announced",
-        "updated_at": "2026-09-11T06:02:35.996+00:00"
+        "updated_at": "2026-09-14T06:02:40.811+00:00"
       },
       {
         "id": "221ca353-f623-4b66-98aa-3a504a418236",
@@ -50,15 +35,30 @@
         "commission": null,
         "is_ppv": null,
         "card_status": "announced",
-        "updated_at": "2026-09-11T06:02:39.125+00:00"
+        "updated_at": "2026-09-14T06:02:44.256+00:00"
+      },
+      {
+        "id": "03f4db32-7b71-4eaf-866e-8b636e6c597a",
+        "ufcstats_id": null,
+        "espn_event_id": "600060738",
+        "name": "Dana White's Contender Series: Season 10, Week 7",
+        "event_date": "2026-09-22",
+        "venue": "Meta APEX",
+        "city": "Las Vegas",
+        "region": "NV",
+        "country": "USA",
+        "commission": null,
+        "is_ppv": null,
+        "card_status": "announced",
+        "updated_at": "2026-09-14T06:02:51.828+00:00"
       }
     ],
     "meta": {
       "api": "PropSports UFC",
-      "version": "2026-09-11.1",
-      "request_id": "7197e37f-5914-43d5-b26f-1d7c06ab602f",
+      "version": "2026-09-14.1",
+      "request_id": "68886fa7-9808-4b3a-9fb2-128721d9c514",
       "count": 3,
-      "total": 16,
+      "total": 15,
       "status": "upcoming",
       "date": null,
       "access_tier": "public"

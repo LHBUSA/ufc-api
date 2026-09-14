@@ -1,9 +1,9 @@
 {
-  "captured_at": "2026-09-11T21:47:17.890Z",
+  "captured_at": "2026-09-14T13:16:32.763Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/fighters/2c9c2a88-aec1-4bf0-9b16-3ce58adf6fd6?include=ranking,next,history&history_limit=5",
   "status": 200,
-  "api_version": "2026-09-11.1",
+  "api_version": "2026-09-14.1",
   "body": {
     "ok": true,
     "data": {
@@ -93,98 +93,7 @@
           }
         ]
       },
-      "next_bout": {
-        "id": "c5ab710f-9440-4142-b87f-d2de30c1780d",
-        "ufcstats_id": "d9712b45c094730e",
-        "espn_competition_id": "401897734",
-        "event_id": "1d0b22df-81e7-4e5b-8fa5-8e5d03c24c52",
-        "weight_class": "FLYWEIGHT",
-        "weight_class_raw": "Women's Flyweight",
-        "is_womens": true,
-        "is_title": false,
-        "scheduled_rounds": 3,
-        "card_position": "main",
-        "bout_order": 10,
-        "status": "announced",
-        "replaced_bout_id": null,
-        "short_notice_days": null,
-        "fighter_a": {
-          "id": "2c9c2a88-aec1-4bf0-9b16-3ce58adf6fd6",
-          "dob": "1990-02-17",
-          "name": "Manon Fiorot",
-          "stance": "ORTHODOX",
-          "nickname": "The Beast",
-          "reach_in": 65,
-          "record_d": 0,
-          "record_l": 2,
-          "record_w": 13,
-          "height_in": 67,
-          "is_active": true,
-          "record_nc": 0,
-          "weight_lbs": 125,
-          "ufcstats_id": "34ff304266360297",
-          "espn_athlete_id": "4608674"
-        },
-        "fighter_b": {
-          "id": "1d296292-4969-43a8-9948-cd0a76a642ce",
-          "dob": "1993-08-09",
-          "name": "Alexa Grasso",
-          "stance": "ORTHODOX",
-          "nickname": null,
-          "reach_in": 66,
-          "record_d": 1,
-          "record_l": 5,
-          "record_w": 17,
-          "height_in": 65,
-          "is_active": true,
-          "record_nc": 0,
-          "weight_lbs": 126,
-          "ufcstats_id": "e8b731feff72294b",
-          "espn_athlete_id": "3136287"
-        },
-        "result": null,
-        "event": {
-          "id": "1d0b22df-81e7-4e5b-8fa5-8e5d03c24c52",
-          "city": "Glendale",
-          "name": "Noche UFC: Silva vs. Delgado",
-          "venue": "Desert Diamond Arena",
-          "is_ppv": null,
-          "region": "AZ",
-          "country": "USA",
-          "commission": null,
-          "event_date": "2026-09-12",
-          "updated_at": "2026-09-11T06:02:29.394+00:00",
-          "card_status": "announced",
-          "ufcstats_id": "638cfec7ec559d6e",
-          "espn_event_id": "600060772"
-        },
-        "is_fighter_a": true,
-        "opponent": {
-          "id": "1d296292-4969-43a8-9948-cd0a76a642ce",
-          "name": "Alexa Grasso",
-          "nickname": null,
-          "ufcstats_id": "e8b731feff72294b",
-          "espn_athlete_id": "3136287",
-          "slug_id": "3136287",
-          "record_w": 17,
-          "record_l": 5,
-          "record_d": 1,
-          "record_nc": 0,
-          "primary_image": {
-            "id": "85e0a287-fae3-43d1-be20-0fa490c01fb8",
-            "image_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/1d296292-4969-43a8-9948-cd0a76a642ce/portrait.jpg",
-            "card_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/1d296292-4969-43a8-9948-cd0a76a642ce/card.jpg",
-            "thumb_url": "https://tkmlnhmylqnttmnsnief.supabase.co/storage/v1/object/public/ufc-media/fighters/1d296292-4969-43a8-9948-cd0a76a642ce/thumb.jpg",
-            "author": "Alexa Lopez Col",
-            "license": "CC BY 3.0",
-            "source_url": "https://commons.wikimedia.org/wiki/File:Alexa_Grasso_2023_03.png",
-            "kind": "wikimedia",
-            "attribution_text": "Alexa Lopez Col, CC BY 3.0, via Wikimedia Commons",
-            "rights_label": "CC BY 3.0"
-          }
-        },
-        "outcome": null
-      },
+      "next_bout": null,
       "history": [
         {
           "id": "c5ab710f-9440-4142-b87f-d2de30c1780d",
@@ -198,7 +107,7 @@
           "scheduled_rounds": 3,
           "card_position": "main",
           "bout_order": 10,
-          "status": "announced",
+          "status": "complete",
           "replaced_bout_id": null,
           "short_notice_days": null,
           "fighter_a": {
@@ -235,7 +144,37 @@
             "ufcstats_id": "e8b731feff72294b",
             "espn_athlete_id": "3136287"
           },
-          "result": null,
+          "result": {
+            "round": 3,
+            "method": "DEC_U",
+            "bout_id": "c5ab710f-9440-4142-b87f-d2de30c1780d",
+            "judge_1": "Ron McCarthy",
+            "judge_2": "Sal D'amato",
+            "judge_3": "Felicia Oh",
+            "referee": "Blake Grice",
+            "time_sec": 300,
+            "has_stats": false,
+            "winner_id": "1d296292-4969-43a8-9948-cd0a76a642ce",
+            "method_raw": "Decision - Unanimous",
+            "scorecards": [
+              {
+                "judge": "Ron McCarthy",
+                "score": "28-29"
+              },
+              {
+                "judge": "Sal D'amato",
+                "score": "28-29"
+              },
+              {
+                "judge": "Felicia Oh",
+                "score": "28-29"
+              }
+            ],
+            "captured_at": "2026-09-14T06:02:37.932+00:00",
+            "time_format": "3 Rnd (5-5-5)",
+            "finish_detail": null,
+            "result_source": "espn"
+          },
           "event": {
             "id": "1d0b22df-81e7-4e5b-8fa5-8e5d03c24c52",
             "city": "Glendale",
@@ -246,8 +185,8 @@
             "country": "USA",
             "commission": null,
             "event_date": "2026-09-12",
-            "updated_at": "2026-09-11T06:02:29.394+00:00",
-            "card_status": "announced",
+            "updated_at": "2026-09-14T06:02:26.496+00:00",
+            "card_status": "complete",
             "ufcstats_id": "638cfec7ec559d6e",
             "espn_event_id": "600060772"
           },
@@ -276,7 +215,7 @@
               "rights_label": "CC BY 3.0"
             }
           },
-          "outcome": null
+          "outcome": "L"
         },
         {
           "id": "317fdff6-2061-4d31-af9e-0906b6514541",
@@ -746,8 +685,8 @@
     },
     "meta": {
       "api": "PropSports UFC",
-      "version": "2026-09-11.1",
-      "request_id": "bfccf4b1-2efc-4058-829d-07e1993bb1eb",
+      "version": "2026-09-14.1",
+      "request_id": "83b742b9-6010-465c-8430-eb957809a502",
       "include": [
         "ranking",
         "next",

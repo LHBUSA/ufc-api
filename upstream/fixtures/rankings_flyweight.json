@@ -1,9 +1,9 @@
 {
-  "captured_at": "2026-09-11T21:47:17.890Z",
+  "captured_at": "2026-09-14T13:16:32.763Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/rankings?division=FLYWEIGHT",
   "status": 200,
-  "api_version": "2026-09-11.1",
+  "api_version": "2026-09-14.1",
   "body": {
     "ok": true,
     "data": {
@@ -442,8 +442,8 @@
     },
     "meta": {
       "api": "PropSports UFC",
-      "version": "2026-09-11.1",
-      "request_id": "aa942ccc-9a5e-4e3f-b434-7efe2833df55",
+      "version": "2026-09-14.1",
+      "request_id": "53ff6165-807d-469c-ae2e-ceb774de7dc0",
       "store": "table",
       "divisions": 2,
       "division": "FLYWEIGHT",

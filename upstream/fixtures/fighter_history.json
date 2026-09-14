@@ -1,9 +1,9 @@
 {
-  "captured_at": "2026-09-11T21:47:17.890Z",
+  "captured_at": "2026-09-14T13:16:32.763Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/fighters/ec94d296-2db3-4e0d-be6a-46de4f480672/history?limit=3",
   "status": 200,
-  "api_version": "2026-09-11.1",
+  "api_version": "2026-09-14.1",
   "body": {
     "ok": true,
     "data": {
@@ -125,7 +125,7 @@
             "country": "USA",
             "commission": null,
             "event_date": "2026-05-09",
-            "updated_at": "2026-09-11T06:01:40.402+00:00",
+            "updated_at": "2026-09-14T06:01:44.385+00:00",
             "card_status": "complete",
             "ufcstats_id": "9eedac48b497de5a",
             "espn_event_id": "600058947"
@@ -223,7 +223,7 @@
             "country": "USA",
             "commission": null,
             "event_date": "2026-02-21",
-            "updated_at": "2026-09-11T06:01:31.717+00:00",
+            "updated_at": "2026-09-14T06:01:34.174+00:00",
             "card_status": "complete",
             "ufcstats_id": "79ab17db3b40831a",
             "espn_event_id": "600057329"
@@ -359,8 +359,8 @@
     },
     "meta": {
       "api": "PropSports UFC",
-      "version": "2026-09-11.1",
-      "request_id": "723d308f-eb7f-4560-8bdd-cde9d0bc9045",
+      "version": "2026-09-14.1",
+      "request_id": "217fa068-3006-4ed4-9a77-b64982b5387a",
       "access_tier": "public"
     }
   }

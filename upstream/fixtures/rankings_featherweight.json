@@ -1,9 +1,9 @@
 {
-  "captured_at": "2026-09-11T21:47:17.890Z",
+  "captured_at": "2026-09-14T13:16:32.763Z",
   "base": "https://ufc-api.propbetedge.ai",
   "path": "/v1/ufc/rankings?division=FEATHERWEIGHT",
   "status": 200,
-  "api_version": "2026-09-11.1",
+  "api_version": "2026-09-14.1",
   "body": {
     "ok": true,
     "data": {
@@ -229,8 +229,8 @@
     },
     "meta": {
       "api": "PropSports UFC",
-      "version": "2026-09-11.1",
-      "request_id": "fb061489-6637-4887-a532-e13a8620ddba",
+      "version": "2026-09-14.1",
+      "request_id": "1240b6b7-a4ca-4dd7-942d-395369bca380",
       "store": "table",
       "divisions": 1,
       "division": "FEATHERWEIGHT",
