@@ -1,6 +1,6 @@
 {
   "$note": "GENERATED PUBLIC SHOWCASE SNAPSHOT — do not hand-edit. Written by scripts/refresh-showcase.mjs from the canonical API. Test fixtures live in upstream/fixtures/ and are a separate, deterministic set.",
-  "generated_at": "2026-09-16T17:31:19.126Z",
+  "generated_at": "2026-09-16T23:37:05.183Z",
   "upstream_base": "https://ufc-api.propbetedge.ai",
   "api_version": "2026-09-14.1",
   "fight_dna_definition_version": 1,
@@ -9,7 +9,7 @@
     "aging_hours": 6
   },
   "counts": {
-    "captured_at": "2026-09-16T17:31:19.126Z",
+    "captured_at": "2026-09-16T23:37:05.183Z",
     "upstream_base": "https://ufc-api.propbetedge.ai",
     "path": "/v1/ufc/counts",
     "status": 200,
@@ -25,7 +25,7 @@
     "rounds": 42114
   },
   "event": {
-    "captured_at": "2026-09-16T17:31:19.126Z",
+    "captured_at": "2026-09-16T23:37:05.183Z",
     "upstream_base": "https://ufc-api.propbetedge.ai",
     "path": "/v1/ufc/events/221ca353-f623-4b66-98aa-3a504a418236/card?include=media,results",
     "status": 200,
@@ -218,7 +218,7 @@
       "meta": {
         "api": "PropSports UFC",
         "version": "2026-09-14.1",
-        "request_id": "7da9c55e-b2bf-432c-8bf0-951314c5859e",
+        "request_id": "486173b3-063b-4c97-a09f-390660d1d3fb",
         "include": [
           "media",
           "results"
@@ -287,7 +287,7 @@
             "source_url": "https://commons.wikimedia.org/wiki/File:Joshua_Van_1.png",
             "license": "CC BY 4.0",
             "kind": "wikimedia",
-            "captured_at": "2026-09-16T17:31:19.126Z",
+            "captured_at": "2026-09-16T23:37:05.183Z",
             "media_status": "stored",
             "display_policy": "redistributable",
             "approved": true,
@@ -351,7 +351,7 @@
             "source_url": "https://commons.wikimedia.org/wiki/File:Alexandre_Pantoja.png",
             "license": "CC BY 3.0",
             "kind": "wikimedia",
-            "captured_at": "2026-09-16T17:31:19.126Z",
+            "captured_at": "2026-09-16T23:37:05.183Z",
             "media_status": "stored",
             "display_policy": "redistributable",
             "approved": true,
@@ -426,7 +426,7 @@
             "source_url": "https://commons.wikimedia.org/wiki/File:Arman_Tsarukyan_2024.png",
             "license": "CC BY 3.0",
             "kind": "wikimedia",
-            "captured_at": "2026-09-16T17:31:19.126Z",
+            "captured_at": "2026-09-16T23:37:05.183Z",
             "media_status": "stored",
             "display_policy": "redistributable",
             "approved": true,
@@ -490,7 +490,7 @@
             "source_url": "https://commons.wikimedia.org/wiki/File:UFC_Freedom_250_press_conference_at_the_Lincoln_Memorial_in_Washington,_D.C.,_Friday,_June_12,_2026_-_22(cropped).jpg",
             "license": "Public domain",
             "kind": "wikimedia",
-            "captured_at": "2026-09-16T17:31:19.126Z",
+            "captured_at": "2026-09-16T23:37:05.183Z",
             "media_status": "stored",
             "display_policy": "redistributable",
             "approved": true,
@@ -565,7 +565,7 @@
             "source_url": "https://commons.wikimedia.org/wiki/File:Renato_Moicano_2024.png",
             "license": "CC BY 3.0",
             "kind": "wikimedia",
-            "captured_at": "2026-09-16T17:31:19.126Z",
+            "captured_at": "2026-09-16T23:37:05.183Z",
             "media_status": "stored",
             "display_policy": "redistributable",
             "approved": true,
@@ -629,7 +629,7 @@
             "source_url": "https://commons.wikimedia.org/wiki/File:Brian_Ortega_on_MMAnytt.jpg",
             "license": "CC BY 3.0",
             "kind": "wikimedia",
-            "captured_at": "2026-09-16T17:31:19.126Z",
+            "captured_at": "2026-09-16T23:37:05.183Z",
             "media_status": "stored",
             "display_policy": "redistributable",
             "approved": true,
@@ -693,7 +693,7 @@
             "source_url": "https://www.espn.com/mma/fighter/_/id/2532870",
             "license": null,
             "kind": "espn_headshot",
-            "captured_at": "2026-09-16T17:31:19.126Z",
+            "captured_at": "2026-09-16T23:37:05.183Z",
             "media_status": "display_only",
             "display_policy": "display_only",
             "approved": true,
@@ -745,7 +745,7 @@
             "source_url": "https://www.espn.com/mma/fighter/_/id/3093026",
             "license": null,
             "kind": "espn_headshot",
-            "captured_at": "2026-09-16T17:31:19.126Z",
+            "captured_at": "2026-09-16T23:37:05.183Z",
             "media_status": "display_only",
             "display_policy": "display_only",
             "approved": true,
@@ -819,7 +819,7 @@
             "source_url": "https://commons.wikimedia.org/wiki/File:Gable_Steveson_(USA)_2018.jpg",
             "license": "CC BY-SA 2.0",
             "kind": "wikimedia",
-            "captured_at": "2026-09-16T17:31:19.126Z",
+            "captured_at": "2026-09-16T23:37:05.183Z",
             "media_status": "stored",
             "display_policy": "redistributable",
             "approved": true,
@@ -872,7 +872,7 @@
             "source_url": "https://www.espn.com/mma/fighter/_/id/5240957",
             "license": null,
             "kind": "espn_headshot",
-            "captured_at": "2026-09-16T17:31:19.126Z",
+            "captured_at": "2026-09-16T23:37:05.183Z",
             "media_status": "display_only",
             "display_policy": "display_only",
             "approved": true,
@@ -946,7 +946,7 @@
             "source_url": "https://commons.wikimedia.org/wiki/File:Alonzo_Menifield_Jan_20,_2019.jpg",
             "license": "CC BY 3.0",
             "kind": "wikimedia",
-            "captured_at": "2026-09-16T17:31:19.126Z",
+            "captured_at": "2026-09-16T23:37:05.183Z",
             "media_status": "stored",
             "display_policy": "redistributable",
             "approved": true,
@@ -999,7 +999,7 @@
             "source_url": "https://www.espn.com/mma/fighter/_/id/5307810",
             "license": null,
             "kind": "espn_headshot",
-            "captured_at": "2026-09-16T17:31:19.126Z",
+            "captured_at": "2026-09-16T23:37:05.183Z",
             "media_status": "display_only",
             "display_policy": "display_only",
             "approved": true,
@@ -1073,7 +1073,7 @@
             "source_url": "https://commons.wikimedia.org/wiki/File:Marlon_%22Chito%22_Vera_2019.jpg",
             "license": "CC BY-SA 2.0",
             "kind": "wikimedia",
-            "captured_at": "2026-09-16T17:31:19.126Z",
+            "captured_at": "2026-09-16T23:37:05.183Z",
             "media_status": "stored",
             "display_policy": "redistributable",
             "approved": true,
@@ -1126,7 +1126,7 @@
             "source_url": "https://www.espn.com/mma/fighter/_/id/4421978",
             "license": null,
             "kind": "espn_headshot",
-            "captured_at": "2026-09-16T17:31:19.126Z",
+            "captured_at": "2026-09-16T23:37:05.183Z",
             "media_status": "display_only",
             "display_policy": "display_only",
             "approved": true,
@@ -1200,7 +1200,7 @@
             "source_url": "https://commons.wikimedia.org/wiki/File:Tai_Tuivasa_at_UFC_234.jpg",
             "license": "CC BY 3.0",
             "kind": "wikimedia",
-            "captured_at": "2026-09-16T17:31:19.126Z",
+            "captured_at": "2026-09-16T23:37:05.183Z",
             "media_status": "stored",
             "display_policy": "redistributable",
             "approved": true,
@@ -1264,7 +1264,7 @@
             "source_url": "https://commons.wikimedia.org/wiki/File:RobelisDespaigne.jpg",
             "license": "CC BY 3.0",
             "kind": "wikimedia",
-            "captured_at": "2026-09-16T17:31:19.126Z",
+            "captured_at": "2026-09-16T23:37:05.183Z",
             "media_status": "stored",
             "display_policy": "redistributable",
             "approved": true,
@@ -1328,7 +1328,7 @@
             "source_url": "https://www.espn.com/mma/fighter/_/id/5212738",
             "license": null,
             "kind": "espn_headshot",
-            "captured_at": "2026-09-16T17:31:19.126Z",
+            "captured_at": "2026-09-16T23:37:05.183Z",
             "media_status": "display_only",
             "display_policy": "display_only",
             "approved": true,
@@ -1380,7 +1380,7 @@
             "source_url": "https://www.espn.com/mma/fighter/_/id/5282139",
             "license": null,
             "kind": "espn_headshot",
-            "captured_at": "2026-09-16T17:31:19.126Z",
+            "captured_at": "2026-09-16T23:37:05.183Z",
             "media_status": "display_only",
             "display_policy": "display_only",
             "approved": true,
@@ -1443,7 +1443,7 @@
             "source_url": "https://www.espn.com/mma/fighter/_/id/5291085",
             "license": null,
             "kind": "espn_headshot",
-            "captured_at": "2026-09-16T17:31:19.126Z",
+            "captured_at": "2026-09-16T23:37:05.183Z",
             "media_status": "display_only",
             "display_policy": "display_only",
             "approved": true,
@@ -1495,7 +1495,7 @@
             "source_url": "https://www.espn.com/mma/fighter/_/id/4944080",
             "license": null,
             "kind": "espn_headshot",
-            "captured_at": "2026-09-16T17:31:19.126Z",
+            "captured_at": "2026-09-16T23:37:05.183Z",
             "media_status": "display_only",
             "display_policy": "display_only",
             "approved": true,
@@ -1569,7 +1569,7 @@
             "source_url": "https://commons.wikimedia.org/wiki/File:Edmen_Shahbazyan.jpg",
             "license": "CC BY-SA 4.0",
             "kind": "wikimedia",
-            "captured_at": "2026-09-16T17:31:19.126Z",
+            "captured_at": "2026-09-16T23:37:05.183Z",
             "media_status": "stored",
             "display_policy": "redistributable",
             "approved": true,
@@ -1622,7 +1622,7 @@
             "source_url": "https://www.espn.com/mma/fighter/_/id/5077131",
             "license": null,
             "kind": "espn_headshot",
-            "captured_at": "2026-09-16T17:31:19.126Z",
+            "captured_at": "2026-09-16T23:37:05.183Z",
             "media_status": "display_only",
             "display_policy": "display_only",
             "approved": true,
@@ -1685,7 +1685,7 @@
             "source_url": "https://www.espn.com/mma/fighter/_/id/4699589",
             "license": null,
             "kind": "espn_headshot",
-            "captured_at": "2026-09-16T17:31:19.126Z",
+            "captured_at": "2026-09-16T23:37:05.183Z",
             "media_status": "display_only",
             "display_policy": "display_only",
             "approved": true,
@@ -1737,7 +1737,7 @@
             "source_url": "https://www.espn.com/mma/fighter/_/id/5143888",
             "license": null,
             "kind": "espn_headshot",
-            "captured_at": "2026-09-16T17:31:19.126Z",
+            "captured_at": "2026-09-16T23:37:05.183Z",
             "media_status": "display_only",
             "display_policy": "display_only",
             "approved": true,
@@ -1811,7 +1811,7 @@
             "source_url": "https://commons.wikimedia.org/wiki/File:Giga_Chikadze_post_fight_interview_at_UFC_Fight_Night_160_in_Copenhagen.jpg",
             "license": "CC BY 3.0",
             "kind": "wikimedia",
-            "captured_at": "2026-09-16T17:31:19.126Z",
+            "captured_at": "2026-09-16T23:37:05.183Z",
             "media_status": "stored",
             "display_policy": "redistributable",
             "approved": true,
@@ -1864,7 +1864,7 @@
             "source_url": "https://www.espn.com/mma/fighter/_/id/4422355",
             "license": null,
             "kind": "espn_headshot",
-            "captured_at": "2026-09-16T17:31:19.126Z",
+            "captured_at": "2026-09-16T23:37:05.183Z",
             "media_status": "display_only",
             "display_policy": "display_only",
             "approved": true,
@@ -1882,7 +1882,7 @@
     ]
   },
   "fighter": {
-    "captured_at": "2026-09-16T17:31:19.126Z",
+    "captured_at": "2026-09-16T23:37:05.183Z",
     "upstream_base": "https://ufc-api.propbetedge.ai",
     "path": "/v1/ufc/fighters/fd4763bb-e3a0-4fbe-8279-92e5b459920c?include=ranking,next,history&history_limit=6",
     "status": 200,
@@ -2252,7 +2252,7 @@
       "meta": {
         "api": "PropSports UFC",
         "version": "2026-09-14.1",
-        "request_id": "ce165c0a-1dd3-45a2-8ce9-14de3fcac912",
+        "request_id": "960e6889-7514-40b5-a6e4-8f46bbb435b5",
         "include": [
           "ranking",
           "next",
@@ -2953,7 +2953,7 @@
       "meta": {
         "api": "PropSports UFC",
         "version": "2026-09-14.1",
-        "request_id": "abb3c1e6-1d2d-4399-a767-4b1a166da5e9",
+        "request_id": "165b1345-d088-405b-83d4-7731cd41d848",
         "requested_as_of": null,
         "resolved_as_of": "2026-09-14",
         "definition_version": 1,
@@ -3038,7 +3038,7 @@
         "source_url": "https://commons.wikimedia.org/wiki/File:Marlon_%22Chito%22_Vera_2019.jpg",
         "license": "CC BY-SA 2.0",
         "kind": "wikimedia",
-        "captured_at": "2026-09-16T17:31:19.126Z",
+        "captured_at": "2026-09-16T23:37:05.183Z",
         "media_status": "stored",
         "display_policy": "redistributable",
         "approved": true,
@@ -3648,7 +3648,7 @@
     }
   },
   "matchup": {
-    "captured_at": "2026-09-16T17:31:19.126Z",
+    "captured_at": "2026-09-16T23:37:05.183Z",
     "upstream_base": "https://ufc-api.propbetedge.ai",
     "path": "/v1/ufc/matchups/e204408f-aee9-4987-83ca-8a43e8802e3f/13eebfea-dbd0-4110-a41a-200b8a73051d/dna",
     "status": 200,
@@ -4569,7 +4569,7 @@
       "meta": {
         "api": "PropSports UFC",
         "version": "2026-09-14.1",
-        "request_id": "3155b694-e2d3-4d9e-9e54-5ef87e8de82d",
+        "request_id": "0e4922cf-2fc4-4650-8d35-b79fdd0f2dbc",
         "requested_as_of": null,
         "resolved_as_of": {
           "a": "2026-09-14",
@@ -4718,7 +4718,7 @@
           "source_url": "https://commons.wikimedia.org/wiki/File:Joshua_Van_1.png",
           "license": "CC BY 4.0",
           "kind": "wikimedia",
-          "captured_at": "2026-09-16T17:31:19.126Z",
+          "captured_at": "2026-09-16T23:37:05.183Z",
           "media_status": "stored",
           "display_policy": "redistributable",
           "approved": true,
@@ -4808,7 +4808,7 @@
           "source_url": "https://commons.wikimedia.org/wiki/File:Alexandre_Pantoja.png",
           "license": "CC BY 3.0",
           "kind": "wikimedia",
-          "captured_at": "2026-09-16T17:31:19.126Z",
+          "captured_at": "2026-09-16T23:37:05.183Z",
           "media_status": "stored",
           "display_policy": "redistributable",
           "approved": true,
@@ -6242,7 +6242,7 @@
     }
   },
   "rankings": {
-    "captured_at": "2026-09-16T17:31:19.126Z",
+    "captured_at": "2026-09-16T23:37:05.183Z",
     "upstream_base": "https://ufc-api.propbetedge.ai",
     "path": "/v1/ufc/rankings?division=LIGHTWEIGHT&womens=false",
     "status": 200,
@@ -6319,7 +6319,7 @@
       "meta": {
         "api": "PropSports UFC",
         "version": "2026-09-14.1",
-        "request_id": "9ee830c6-0a78-43b6-bf2d-c7c61d48d41c",
+        "request_id": "d57b96df-4912-4b7c-828c-edbcde62d8c3",
         "store": "table",
         "divisions": 1,
         "division": "LIGHTWEIGHT",
@@ -6361,7 +6361,7 @@
           "source_url": "https://commons.wikimedia.org/wiki/File:Justin_Gaethje_in_the_Oval_Office_(while_President_Donald_J._Trump_is_holding_a_meeting_with_UFC_fighters).jpg",
           "license": "Public domain",
           "kind": "wikimedia",
-          "captured_at": "2026-09-16T17:31:19.126Z",
+          "captured_at": "2026-09-16T23:37:05.183Z",
           "media_status": "stored",
           "display_policy": "redistributable",
           "approved": true,
@@ -6406,7 +6406,7 @@
             "source_url": "https://commons.wikimedia.org/wiki/File:Ilia_Topuria_in_the_Oval_Office_(while_President_Donald_J._Trump_is_holding_a_meeting_with_UFC_fighters).jpg",
             "license": "Public domain",
             "kind": "wikimedia",
-            "captured_at": "2026-09-16T17:31:19.126Z",
+            "captured_at": "2026-09-16T23:37:05.183Z",
             "media_status": "stored",
             "display_policy": "redistributable",
             "approved": true,
@@ -6450,7 +6450,7 @@
             "source_url": "https://commons.wikimedia.org/wiki/File:Arman_Tsarukyan_2024.png",
             "license": "CC BY 3.0",
             "kind": "wikimedia",
-            "captured_at": "2026-09-16T17:31:19.126Z",
+            "captured_at": "2026-09-16T23:37:05.183Z",
             "media_status": "stored",
             "display_policy": "redistributable",
             "approved": true,
@@ -6494,7 +6494,7 @@
             "source_url": "https://commons.wikimedia.org/wiki/File:Charles_Oliveira_do_Bronxs.jpg",
             "license": "CC0",
             "kind": "wikimedia",
-            "captured_at": "2026-09-16T17:31:19.126Z",
+            "captured_at": "2026-09-16T23:37:05.183Z",
             "media_status": "stored",
             "display_policy": "redistributable",
             "approved": true,
@@ -6538,7 +6538,7 @@
             "source_url": "https://commons.wikimedia.org/wiki/File:Blue_Angels%27_VIP_Rider_Max_Holloway_(1)_(cropped).jpg",
             "license": "Public domain",
             "kind": "wikimedia",
-            "captured_at": "2026-09-16T17:31:19.126Z",
+            "captured_at": "2026-09-16T23:37:05.183Z",
             "media_status": "stored",
             "display_policy": "redistributable",
             "approved": true,
@@ -6582,7 +6582,7 @@
             "source_url": "https://commons.wikimedia.org/wiki/File:UFC_Star_Paddy_The_Baddy_Pimblett_tells_his_story_(cropped).jpg",
             "license": "CC BY 3.0",
             "kind": "wikimedia",
-            "captured_at": "2026-09-16T17:31:19.126Z",
+            "captured_at": "2026-09-16T23:37:05.183Z",
             "media_status": "stored",
             "display_policy": "redistributable",
             "approved": true,
@@ -6626,7 +6626,7 @@
             "source_url": "https://commons.wikimedia.org/wiki/File:Benoit_Saint_Denis_2023.png",
             "license": "CC BY 3.0",
             "kind": "wikimedia",
-            "captured_at": "2026-09-16T17:31:19.126Z",
+            "captured_at": "2026-09-16T23:37:05.183Z",
             "media_status": "stored",
             "display_policy": "redistributable",
             "approved": true,
@@ -6670,7 +6670,7 @@
             "source_url": "https://commons.wikimedia.org/wiki/File:UFC_Freedom_250_press_conference_at_the_Lincoln_Memorial_in_Washington,_D.C.,_Friday,_June_12,_2026_-_22(cropped).jpg",
             "license": "Public domain",
             "kind": "wikimedia",
-            "captured_at": "2026-09-16T17:31:19.126Z",
+            "captured_at": "2026-09-16T23:37:05.183Z",
             "media_status": "stored",
             "display_policy": "redistributable",
             "approved": true,
@@ -6703,7 +6703,7 @@
             "source_url": "https://www.espn.com/mma/fighter/_/id/5157667",
             "license": null,
             "kind": "espn_headshot",
-            "captured_at": "2026-09-16T17:31:19.126Z",
+            "captured_at": "2026-09-16T23:37:05.183Z",
             "media_status": "display_only",
             "display_policy": "display_only",
             "approved": true,
@@ -6746,7 +6746,7 @@
             "source_url": "https://commons.wikimedia.org/wiki/File:ParnasseMMA2023.png",
             "license": "CC BY 3.0",
             "kind": "wikimedia",
-            "captured_at": "2026-09-16T17:31:19.126Z",
+            "captured_at": "2026-09-16T23:37:05.183Z",
             "media_status": "stored",
             "display_policy": "redistributable",
             "approved": true,
@@ -6790,7 +6790,7 @@
             "source_url": "https://commons.wikimedia.org/wiki/File:Fiziev_2023.png",
             "license": "CC BY 3.0",
             "kind": "wikimedia",
-            "captured_at": "2026-09-16T17:31:19.126Z",
+            "captured_at": "2026-09-16T23:37:05.183Z",
             "media_status": "stored",
             "display_policy": "redistributable",
             "approved": true,
@@ -6834,7 +6834,7 @@
             "source_url": "https://commons.wikimedia.org/wiki/File:Mateusz_Gamrot.jpg",
             "license": "CC BY 3.0",
             "kind": "wikimedia",
-            "captured_at": "2026-09-16T17:31:19.126Z",
+            "captured_at": "2026-09-16T23:37:05.183Z",
             "media_status": "stored",
             "display_policy": "redistributable",
             "approved": true,
@@ -6878,7 +6878,7 @@
             "source_url": "https://commons.wikimedia.org/wiki/File:Renato_Moicano_2024.png",
             "license": "CC BY 3.0",
             "kind": "wikimedia",
-            "captured_at": "2026-09-16T17:31:19.126Z",
+            "captured_at": "2026-09-16T23:37:05.183Z",
             "media_status": "stored",
             "display_policy": "redistributable",
             "approved": true,
@@ -6922,7 +6922,7 @@
             "source_url": "https://commons.wikimedia.org/wiki/File:DanHooker2016.png",
             "license": "CC BY 3.0",
             "kind": "wikimedia",
-            "captured_at": "2026-09-16T17:31:19.126Z",
+            "captured_at": "2026-09-16T23:37:05.183Z",
             "media_status": "stored",
             "display_policy": "redistributable",
             "approved": true,
@@ -6955,7 +6955,7 @@
             "source_url": "https://www.espn.com/mma/fighter/_/id/5144007",
             "license": null,
             "kind": "espn_headshot",
-            "captured_at": "2026-09-16T17:31:19.126Z",
+            "captured_at": "2026-09-16T23:37:05.183Z",
             "media_status": "display_only",
             "display_policy": "display_only",
             "approved": true,
@@ -6998,7 +6998,7 @@
             "source_url": "https://commons.wikimedia.org/wiki/File:MMA_Holiday_Tour_at_Al_Asad_Air_Base_11_(cropped).jpg",
             "license": "CC BY-SA 4.0",
             "kind": "wikimedia",
-            "captured_at": "2026-09-16T17:31:19.126Z",
+            "captured_at": "2026-09-16T23:37:05.183Z",
             "media_status": "stored",
             "display_policy": "redistributable",
             "approved": true,
@@ -7017,7 +7017,7 @@
   },
   "womens": {
     "matchup": {
-      "captured_at": "2026-09-16T17:31:19.126Z",
+      "captured_at": "2026-09-16T23:37:05.183Z",
       "upstream_base": "https://ufc-api.propbetedge.ai",
       "path": "/v1/ufc/matchups/26f1a938-4948-4ceb-8bd3-7c4f4339ba13/21ee70b8-ce4e-43a0-8113-628b3a626753/dna",
       "status": 200,
@@ -7064,7 +7064,7 @@
             "source_url": "https://www.espn.com/mma/fighter/_/id/4699589",
             "license": null,
             "kind": "espn_headshot",
-            "captured_at": "2026-09-16T17:31:19.126Z",
+            "captured_at": "2026-09-16T23:37:05.183Z",
             "media_status": "display_only",
             "display_policy": "display_only",
             "approved": true,
@@ -7116,7 +7116,7 @@
             "source_url": "https://www.espn.com/mma/fighter/_/id/5143888",
             "license": null,
             "kind": "espn_headshot",
-            "captured_at": "2026-09-16T17:31:19.126Z",
+            "captured_at": "2026-09-16T23:37:05.183Z",
             "media_status": "display_only",
             "display_policy": "display_only",
             "approved": true,
@@ -7196,7 +7196,7 @@
       "comparisons": 18
     },
     "rankings": {
-      "captured_at": "2026-09-16T17:31:19.126Z",
+      "captured_at": "2026-09-16T23:37:05.183Z",
       "upstream_base": "https://ufc-api.propbetedge.ai",
       "path": "/v1/ufc/rankings?division=FLYWEIGHT&womens=true",
       "status": 200,
@@ -7235,7 +7235,7 @@
             "source_url": "https://commons.wikimedia.org/wiki/File:Valentina_Shevchenko_2020.jpg",
             "license": "CC BY 3.0",
             "kind": "wikimedia",
-            "captured_at": "2026-09-16T17:31:19.126Z",
+            "captured_at": "2026-09-16T23:37:05.183Z",
             "media_status": "stored",
             "display_policy": "redistributable",
             "approved": true,
@@ -7280,7 +7280,7 @@
               "source_url": "https://commons.wikimedia.org/wiki/File:Natalia_Silva_UFC.jpg",
               "license": "CC BY-SA 4.0",
               "kind": "wikimedia",
-              "captured_at": "2026-09-16T17:31:19.126Z",
+              "captured_at": "2026-09-16T23:37:05.183Z",
               "media_status": "stored",
               "display_policy": "redistributable",
               "approved": true,
@@ -7324,7 +7324,7 @@
               "source_url": "https://commons.wikimedia.org/wiki/File:MANON_FIOROT_ET_ALDRIC_CASSATA,_LE_COUPLE_GOAL_DU_MMA_-_MMA_EXTRA_ROUND_-22_-_YouTube_-_0-28-31_(cropped).jpg",
               "license": "CC BY 3.0",
               "kind": "wikimedia",
-              "captured_at": "2026-09-16T17:31:19.126Z",
+              "captured_at": "2026-09-16T23:37:05.183Z",
               "media_status": "stored",
               "display_policy": "redistributable",
               "approved": true,
@@ -7368,7 +7368,7 @@
               "source_url": "https://commons.wikimedia.org/wiki/File:Alexa_Grasso_2023_03.png",
               "license": "CC BY 3.0",
               "kind": "wikimedia",
-              "captured_at": "2026-09-16T17:31:19.126Z",
+              "captured_at": "2026-09-16T23:37:05.183Z",
               "media_status": "stored",
               "display_policy": "redistributable",
               "approved": true,
@@ -7401,7 +7401,7 @@
               "source_url": "https://www.espn.com/mma/fighter/_/id/4350796",
               "license": null,
               "kind": "espn_headshot",
-              "captured_at": "2026-09-16T17:31:19.126Z",
+              "captured_at": "2026-09-16T23:37:05.183Z",
               "media_status": "display_only",
               "display_policy": "display_only",
               "approved": true,
@@ -7444,7 +7444,7 @@
               "source_url": "https://commons.wikimedia.org/wiki/File:Rose_Namajunas.jpg",
               "license": "CC BY-SA 4.0",
               "kind": "wikimedia",
-              "captured_at": "2026-09-16T17:31:19.126Z",
+              "captured_at": "2026-09-16T23:37:05.183Z",
               "media_status": "stored",
               "display_policy": "redistributable",
               "approved": true,
@@ -7477,7 +7477,7 @@
               "source_url": "https://www.espn.com/mma/fighter/_/id/4246307",
               "license": null,
               "kind": "espn_headshot",
-              "captured_at": "2026-09-16T17:31:19.126Z",
+              "captured_at": "2026-09-16T23:37:05.183Z",
               "media_status": "display_only",
               "display_policy": "display_only",
               "approved": true,
@@ -7520,7 +7520,7 @@
               "source_url": "https://commons.wikimedia.org/wiki/File:Jasmine_Jasudavicius_in_2023_01.png",
               "license": "CC BY 3.0",
               "kind": "wikimedia",
-              "captured_at": "2026-09-16T17:31:19.126Z",
+              "captured_at": "2026-09-16T23:37:05.183Z",
               "media_status": "stored",
               "display_policy": "redistributable",
               "approved": true,
@@ -7553,7 +7553,7 @@
               "source_url": "https://www.espn.com/mma/fighter/_/id/4215200",
               "license": null,
               "kind": "espn_headshot",
-              "captured_at": "2026-09-16T17:31:19.126Z",
+              "captured_at": "2026-09-16T23:37:05.183Z",
               "media_status": "display_only",
               "display_policy": "display_only",
               "approved": true,
@@ -7585,7 +7585,7 @@
               "source_url": "https://www.espn.com/mma/fighter/_/id/4243624",
               "license": null,
               "kind": "espn_headshot",
-              "captured_at": "2026-09-16T17:31:19.126Z",
+              "captured_at": "2026-09-16T23:37:05.183Z",
               "media_status": "display_only",
               "display_policy": "display_only",
               "approved": true,
@@ -7617,7 +7617,7 @@
               "source_url": "https://www.espn.com/mma/fighter/_/id/4065598",
               "license": null,
               "kind": "espn_headshot",
-              "captured_at": "2026-09-16T17:31:19.126Z",
+              "captured_at": "2026-09-16T23:37:05.183Z",
               "media_status": "display_only",
               "display_policy": "display_only",
               "approved": true,
@@ -7649,7 +7649,7 @@
               "source_url": "https://www.espn.com/mma/fighter/_/id/3309918",
               "license": null,
               "kind": "espn_headshot",
-              "captured_at": "2026-09-16T17:31:19.126Z",
+              "captured_at": "2026-09-16T23:37:05.183Z",
               "media_status": "display_only",
               "display_policy": "display_only",
               "approved": true,
@@ -7681,7 +7681,7 @@
               "source_url": "https://www.espn.com/mma/fighter/_/id/4699589",
               "license": null,
               "kind": "espn_headshot",
-              "captured_at": "2026-09-16T17:31:19.126Z",
+              "captured_at": "2026-09-16T23:37:05.183Z",
               "media_status": "display_only",
               "display_policy": "display_only",
               "approved": true,
@@ -7713,7 +7713,7 @@
               "source_url": "https://www.espn.com/mma/fighter/_/id/5143888",
               "license": null,
               "kind": "espn_headshot",
-              "captured_at": "2026-09-16T17:31:19.126Z",
+              "captured_at": "2026-09-16T23:37:05.183Z",
               "media_status": "display_only",
               "display_policy": "display_only",
               "approved": true,
@@ -7745,7 +7745,7 @@
               "source_url": "https://www.espn.com/mma/fighter/_/id/4871203",
               "license": null,
               "kind": "espn_headshot",
-              "captured_at": "2026-09-16T17:31:19.126Z",
+              "captured_at": "2026-09-16T23:37:05.183Z",
               "media_status": "display_only",
               "display_policy": "display_only",
               "approved": true,
@@ -7777,7 +7777,7 @@
               "source_url": "https://www.espn.com/mma/fighter/_/id/3136289",
               "license": null,
               "kind": "espn_headshot",
-              "captured_at": "2026-09-16T17:31:19.126Z",
+              "captured_at": "2026-09-16T23:37:05.183Z",
               "media_status": "display_only",
               "display_policy": "display_only",
               "approved": true,
@@ -7795,7 +7795,7 @@
     }
   },
   "product_links": {
-    "captured_at": "2026-09-16T17:31:19.126Z",
+    "captured_at": "2026-09-16T23:37:05.183Z",
     "site": "https://ufc.propbetedge.ai",
     "sitemap_status": "ok (7 urls)",
     "rankings": "https://ufc.propbetedge.ai/rankings",
@@ -7812,7 +7812,7 @@
     "rankings_champion": "https://ufc.propbetedge.ai/fighters/justin-gaethje-3022345"
   },
   "videos": {
-    "captured_at": "2026-09-16T17:31:19.126Z",
+    "captured_at": "2026-09-16T23:37:05.183Z",
     "upstream_base": "https://ufc-api.propbetedge.ai",
     "path": "/v1/ufc/videos?event_id=221ca353-f623-4b66-98aa-3a504a418236",
     "event_id": "221ca353-f623-4b66-98aa-3a504a418236",
@@ -7858,7 +7858,7 @@
         ]
       },
       "resolver_confidence": "medium",
-      "captured_at": "2026-09-16T17:31:19.126Z"
+      "captured_at": "2026-09-16T23:37:05.183Z"
     },
     "selected": [
       {
@@ -7900,7 +7900,7 @@
           ]
         },
         "resolver_confidence": "medium",
-        "captured_at": "2026-09-16T17:31:19.126Z"
+        "captured_at": "2026-09-16T23:37:05.183Z"
       },
       {
         "id": "596aa24d-76a0-4693-88e3-8d1238739c56",
@@ -7939,7 +7939,7 @@
           ]
         },
         "resolver_confidence": "medium",
-        "captured_at": "2026-09-16T17:31:19.126Z"
+        "captured_at": "2026-09-16T23:37:05.183Z"
       },
       {
         "id": "912fa9eb-6fc0-4540-b6f5-fed55ce110b9",
@@ -7974,7 +7974,74 @@
           ]
         },
         "resolver_confidence": "medium",
-        "captured_at": "2026-09-16T17:31:19.126Z"
+        "captured_at": "2026-09-16T23:37:05.183Z"
+      },
+      {
+        "id": "98450c75-c3a9-4bdb-ae57-437bf9b8758e",
+        "provider": "youtube",
+        "provider_video_id": "QjbgcdT-dT4",
+        "url": "https://www.youtube.com/watch?v=QjbgcdT-dT4",
+        "embed_url": "https://www.youtube-nocookie.com/embed/QjbgcdT-dT4",
+        "thumbnail_url": "https://i2.ytimg.com/vi/QjbgcdT-dT4/hqdefault.jpg",
+        "title": "Gable Steveson's Interview after his Debut Win! #ufc331",
+        "channel": {
+          "id": "UCvgfXK4nTYKudb0rFR6noLA",
+          "name": "UFC",
+          "verified": true
+        },
+        "published_at": "2026-09-16T18:00:16+00:00",
+        "duration_sec": null,
+        "video_type": "interview",
+        "video_type_label": "Interview",
+        "language": "en",
+        "language_label": "English",
+        "language_short": "EN",
+        "embeddable": true,
+        "link_status": "published",
+        "viewable": true,
+        "attribution": "YouTube · UFC",
+        "links": {
+          "event_id": "221ca353-f623-4b66-98aa-3a504a418236",
+          "bout_id": null,
+          "fighter_ids": []
+        },
+        "resolver_confidence": "medium",
+        "captured_at": "2026-09-16T23:37:05.183Z"
+      },
+      {
+        "id": "a433549f-9b6a-4135-a0bc-700294456b03",
+        "provider": "youtube",
+        "provider_video_id": "QDua1pqG-fg",
+        "url": "https://www.youtube.com/watch?v=QDua1pqG-fg",
+        "embed_url": "https://www.youtube-nocookie.com/embed/QDua1pqG-fg",
+        "thumbnail_url": "https://i2.ytimg.com/vi/QDua1pqG-fg/hqdefault.jpg",
+        "title": "\"He's Not Getting The Belt Back!\" | Crypto.com UFC 331 Media Day",
+        "channel": {
+          "id": "UCvgfXK4nTYKudb0rFR6noLA",
+          "name": "UFC",
+          "verified": true
+        },
+        "published_at": "2026-09-16T22:50:01+00:00",
+        "duration_sec": null,
+        "video_type": "media_day",
+        "video_type_label": "Media day",
+        "language": "en",
+        "language_label": "English",
+        "language_short": "EN",
+        "embeddable": true,
+        "link_status": "published",
+        "viewable": true,
+        "attribution": "YouTube · UFC",
+        "links": {
+          "event_id": "221ca353-f623-4b66-98aa-3a504a418236",
+          "bout_id": null,
+          "fighter_ids": [
+            "13eebfea-dbd0-4110-a41a-200b8a73051d",
+            "e204408f-aee9-4987-83ca-8a43e8802e3f"
+          ]
+        },
+        "resolver_confidence": "medium",
+        "captured_at": "2026-09-16T23:37:05.183Z"
       },
       {
         "id": "c8dc7e00-7553-4270-bb30-1d0c097a659b",
@@ -8006,90 +8073,22 @@
           "fighter_ids": []
         },
         "resolver_confidence": "medium",
-        "captured_at": "2026-09-16T17:31:19.126Z"
+        "captured_at": "2026-09-16T23:37:05.183Z"
       },
       {
-        "id": "19cfc7a0-3d79-44f9-9359-f0c5a39e4a9e",
+        "id": "40775400-ec8a-446b-94c0-11934bea5653",
         "provider": "youtube",
-        "provider_video_id": "-u3Sf9zXXjE",
-        "url": "https://www.youtube.com/watch?v=-u3Sf9zXXjE",
-        "embed_url": "https://www.youtube-nocookie.com/embed/-u3Sf9zXXjE",
-        "thumbnail_url": "https://i2.ytimg.com/vi/-u3Sf9zXXjE/hqdefault.jpg",
-        "title": "Arman Tsarukyan put him to SLEEP #ufc331",
+        "provider_video_id": "xqDuup4L5Lc",
+        "url": "https://www.youtube.com/watch?v=xqDuup4L5Lc",
+        "embed_url": "https://www.youtube-nocookie.com/embed/xqDuup4L5Lc",
+        "thumbnail_url": "https://i1.ytimg.com/vi/xqDuup4L5Lc/hqdefault.jpg",
+        "title": "절치부심! 이를 갈은 듯한 유주상 🔥 #UFC331",
         "channel": {
           "id": "UCvgfXK4nTYKudb0rFR6noLA",
           "name": "UFC",
           "verified": true
         },
-        "published_at": "2026-09-16T16:45:25+00:00",
-        "duration_sec": null,
-        "video_type": "other",
-        "video_type_label": "Other",
-        "language": "en",
-        "language_label": "English",
-        "language_short": "EN",
-        "embeddable": true,
-        "link_status": "published",
-        "viewable": true,
-        "attribution": "YouTube · UFC",
-        "links": {
-          "event_id": "221ca353-f623-4b66-98aa-3a504a418236",
-          "bout_id": null,
-          "fighter_ids": [
-            "d74e3922-beb0-433d-bde9-412affc97ea8"
-          ]
-        },
-        "resolver_confidence": "medium",
-        "captured_at": "2026-09-16T17:31:19.126Z"
-      },
-      {
-        "id": "3379a01f-e20d-4a33-b127-45498705d93d",
-        "provider": "youtube",
-        "provider_video_id": "eO1MQ2r6JRw",
-        "url": "https://www.youtube.com/watch?v=eO1MQ2r6JRw",
-        "embed_url": "https://www.youtube-nocookie.com/embed/eO1MQ2r6JRw",
-        "thumbnail_url": "https://i2.ytimg.com/vi/eO1MQ2r6JRw/hqdefault.jpg",
-        "title": "Second Youngest Champion, Joshua Van | UFC Connected",
-        "channel": {
-          "id": "UCvgfXK4nTYKudb0rFR6noLA",
-          "name": "UFC",
-          "verified": true
-        },
-        "published_at": "2026-09-16T16:45:24+00:00",
-        "duration_sec": null,
-        "video_type": "other",
-        "video_type_label": "Other",
-        "language": "en",
-        "language_label": "English",
-        "language_short": "EN",
-        "embeddable": true,
-        "link_status": "published",
-        "viewable": true,
-        "attribution": "YouTube · UFC",
-        "links": {
-          "event_id": "221ca353-f623-4b66-98aa-3a504a418236",
-          "bout_id": null,
-          "fighter_ids": [
-            "e204408f-aee9-4987-83ca-8a43e8802e3f"
-          ]
-        },
-        "resolver_confidence": "medium",
-        "captured_at": "2026-09-16T17:31:19.126Z"
-      },
-      {
-        "id": "5946a79f-c7fd-4f94-95e3-63a5c7da8092",
-        "provider": "youtube",
-        "provider_video_id": "z7gt_ZR1vG4",
-        "url": "https://www.youtube.com/watch?v=z7gt_ZR1vG4",
-        "embed_url": "https://www.youtube-nocookie.com/embed/z7gt_ZR1vG4",
-        "thumbnail_url": "https://i3.ytimg.com/vi/z7gt_ZR1vG4/hqdefault.jpg",
-        "title": "최강임을 증명할 준비가 된 판토자 #UFC331",
-        "channel": {
-          "id": "UCvgfXK4nTYKudb0rFR6noLA",
-          "name": "UFC",
-          "verified": true
-        },
-        "published_at": "2026-09-16T16:19:11+00:00",
+        "published_at": "2026-09-16T22:00:16+00:00",
         "duration_sec": null,
         "video_type": "other",
         "video_type_label": "Other",
@@ -8106,69 +8105,36 @@
           "fighter_ids": []
         },
         "resolver_confidence": "medium",
-        "captured_at": "2026-09-16T17:31:19.126Z"
+        "captured_at": "2026-09-16T23:37:05.183Z"
       }
     ],
     "counts": {
-      "total": 62,
+      "total": 64,
       "current_event": 40,
-      "en": 31,
-      "es": 12,
-      "pt": 19,
+      "en": 37,
+      "es": 11,
+      "pt": 16,
       "unknown": 0,
-      "embeddable": 62,
+      "embeddable": 64,
       "non_embeddable": 0
     },
     "raw": {
       "ok": true,
       "data": [
         {
-          "id": "077efad9-65c4-491a-aa2b-ce0ed859d8ef",
+          "id": "a433549f-9b6a-4135-a0bc-700294456b03",
           "provider": "youtube",
-          "provider_video_id": "L5Z7FUCBhls",
-          "url": "https://www.youtube.com/watch?v=L5Z7FUCBhls",
-          "embed_url": "https://www.youtube-nocookie.com/embed/L5Z7FUCBhls",
-          "thumbnail_url": "https://i1.ytimg.com/vi/L5Z7FUCBhls/hqdefault.jpg",
-          "title": "Mauricio Ruffy | Atleta em Destaque | Crypto.com UFC 331",
-          "published_at": "2026-09-16T17:00:27+00:00",
+          "provider_video_id": "QDua1pqG-fg",
+          "url": "https://www.youtube.com/watch?v=QDua1pqG-fg",
+          "embed_url": "https://www.youtube-nocookie.com/embed/QDua1pqG-fg",
+          "thumbnail_url": "https://i2.ytimg.com/vi/QDua1pqG-fg/hqdefault.jpg",
+          "title": "\"He's Not Getting The Belt Back!\" | Crypto.com UFC 331 Media Day",
+          "published_at": "2026-09-16T22:50:01+00:00",
           "duration_sec": null,
           "embeddable": true,
           "live_broadcast_state": null,
-          "video_type": "other",
-          "video_type_label": "Other",
-          "channel": {
-            "id": "UCk8XGxi7fsTqQQRVq9LSraw",
-            "name": "UFC Brasil",
-            "verified": true
-          },
-          "links": {
-            "event_id": "221ca353-f623-4b66-98aa-3a504a418236",
-            "bout_id": null,
-            "article_id": null,
-            "fighter_ids": [
-              "38d76024-e211-4429-bb77-0f6e3c2016cc",
-              "d74e3922-beb0-433d-bde9-412affc97ea8"
-            ]
-          },
-          "resolver_confidence": "medium",
-          "attribution": "YouTube · UFC Brasil",
-          "captured_at": "2026-09-16T17:13:34.404903+00:00",
-          "updated_at": "2026-09-16T17:13:25.029+00:00"
-        },
-        {
-          "id": "19cfc7a0-3d79-44f9-9359-f0c5a39e4a9e",
-          "provider": "youtube",
-          "provider_video_id": "-u3Sf9zXXjE",
-          "url": "https://www.youtube.com/watch?v=-u3Sf9zXXjE",
-          "embed_url": "https://www.youtube-nocookie.com/embed/-u3Sf9zXXjE",
-          "thumbnail_url": "https://i2.ytimg.com/vi/-u3Sf9zXXjE/hqdefault.jpg",
-          "title": "Arman Tsarukyan put him to SLEEP #ufc331",
-          "published_at": "2026-09-16T16:45:25+00:00",
-          "duration_sec": null,
-          "embeddable": true,
-          "live_broadcast_state": null,
-          "video_type": "other",
-          "video_type_label": "Other",
+          "video_type": "media_day",
+          "video_type_label": "Media day",
           "channel": {
             "id": "UCvgfXK4nTYKudb0rFR6noLA",
             "name": "UFC",
@@ -8179,21 +8145,54 @@
             "bout_id": null,
             "article_id": null,
             "fighter_ids": [
-              "d74e3922-beb0-433d-bde9-412affc97ea8"
+              "13eebfea-dbd0-4110-a41a-200b8a73051d",
+              "e204408f-aee9-4987-83ca-8a43e8802e3f"
             ]
           },
           "resolver_confidence": "medium",
           "attribution": "YouTube · UFC",
-          "captured_at": "2026-09-16T17:13:32.370998+00:00",
-          "updated_at": "2026-09-16T17:13:25.029+00:00"
+          "captured_at": "2026-09-16T23:13:51.501103+00:00",
+          "updated_at": "2026-09-16T23:13:48.188+00:00"
+        },
+        {
+          "id": "75ce541d-004a-463c-a502-33130f70beb6",
+          "provider": "youtube",
+          "provider_video_id": "wyZTexvd0sU",
+          "url": "https://www.youtube.com/watch?v=wyZTexvd0sU",
+          "embed_url": "https://www.youtube-nocookie.com/embed/wyZTexvd0sU",
+          "thumbnail_url": "https://i4.ytimg.com/vi/wyZTexvd0sU/hqdefault.jpg",
+          "title": "#CryptoCom #UFC331 Alexandre Pantoja: A Recuperar Su Trono",
+          "published_at": "2026-09-16T22:07:06+00:00",
+          "duration_sec": null,
+          "embeddable": true,
+          "live_broadcast_state": null,
+          "video_type": "other",
+          "video_type_label": "Other",
+          "channel": {
+            "id": "UCYXJFtx4SUkrb2p_8mhLPzQ",
+            "name": "UFC Espanol",
+            "verified": true
+          },
+          "links": {
+            "event_id": "221ca353-f623-4b66-98aa-3a504a418236",
+            "bout_id": null,
+            "article_id": null,
+            "fighter_ids": [
+              "13eebfea-dbd0-4110-a41a-200b8a73051d"
+            ]
+          },
+          "resolver_confidence": "medium",
+          "attribution": "YouTube · UFC Espanol",
+          "captured_at": "2026-09-16T22:13:53.400198+00:00",
+          "updated_at": "2026-09-16T22:13:48.03+00:00"
         }
       ],
       "meta": {
         "api": "PropSports UFC",
         "version": "2026-09-14.1",
-        "request_id": "7c512e0a-49d3-4748-9e45-8e19f7bc9925",
+        "request_id": "f376601e-c65e-48cb-bd67-c0cd4751a353",
         "count": 40,
-        "total": 67,
+        "total": 75,
         "limit": 40,
         "type": null,
         "fighter_id": null,
@@ -8205,14 +8204,14 @@
     }
   },
   "fight_week": {
-    "captured_at": "2026-09-16T17:31:19.126Z",
+    "captured_at": "2026-09-16T23:37:05.183Z",
     "event": {
       "id": "221ca353-f623-4b66-98aa-3a504a418236",
       "name": "UFC 331: Van vs. Pantoja 2",
       "event_date": "2026-09-19"
     },
     "weigh_ins": {
-      "captured_at": "2026-09-16T17:31:19.126Z",
+      "captured_at": "2026-09-16T23:37:05.183Z",
       "upstream_base": "https://ufc-api.propbetedge.ai",
       "path": "/v1/ufc/events/221ca353-f623-4b66-98aa-3a504a418236/weigh-ins?include=history",
       "status": 200,
@@ -8241,7 +8240,7 @@
         "meta": {
           "api": "PropSports UFC",
           "version": "2026-09-14.1",
-          "request_id": "1e11ebc1-c851-4491-b99a-781c2fa2711f",
+          "request_id": "6493a5b1-25ba-443c-b940-ec8049d271fc",
           "count": 0,
           "contract": "latest corrected reading per fighter; supersedes_id chains the earlier ones",
           "access_tier": "public"
@@ -8249,7 +8248,7 @@
       }
     },
     "card_changes": {
-      "captured_at": "2026-09-16T17:31:19.126Z",
+      "captured_at": "2026-09-16T23:37:05.183Z",
       "upstream_base": "https://ufc-api.propbetedge.ai",
       "path": "/v1/ufc/events/221ca353-f623-4b66-98aa-3a504a418236/card-changes",
       "status": 200,
@@ -8389,14 +8388,14 @@
         "meta": {
           "api": "PropSports UFC",
           "version": "2026-09-14.1",
-          "request_id": "b0bb8c54-3d97-469a-ab1a-ff934ca39fbe",
+          "request_id": "0e504520-8416-49e5-a9df-1029f691047a",
           "count": 6,
           "access_tier": "public"
         }
       }
     },
     "availability": {
-      "captured_at": "2026-09-16T17:31:19.126Z",
+      "captured_at": "2026-09-16T23:37:05.183Z",
       "upstream_base": "https://ufc-api.propbetedge.ai",
       "path": "/v1/ufc/injuries?active=true&limit=50",
       "status": 200,
@@ -8525,7 +8524,7 @@
         "meta": {
           "api": "PropSports UFC",
           "version": "2026-09-14.1",
-          "request_id": "d9a3186c-525a-4630-82cb-ad360e1d7c9d",
+          "request_id": "ac2cd651-5121-43a9-8f91-ab45f3286074",
           "count": 13,
           "total": 13,
           "limit": 50,
@@ -8535,7 +8534,7 @@
       }
     },
     "fighter_status": {
-      "captured_at": "2026-09-16T17:31:19.126Z",
+      "captured_at": "2026-09-16T23:37:05.183Z",
       "upstream_base": "https://ufc-api.propbetedge.ai",
       "path": "/v1/ufc/fighters/e204408f-aee9-4987-83ca-8a43e8802e3f/status",
       "status": 200,
@@ -8561,25 +8560,26 @@
         "meta": {
           "api": "PropSports UFC",
           "version": "2026-09-14.1",
-          "request_id": "4b9eef42-3cb6-41c2-bac6-ba6e29331e18",
+          "request_id": "25c6f8e4-cb62-48a6-8c66-a159c00b553d",
           "count": 0,
           "access_tier": "public"
         }
       }
     },
     "intelligence": {
-      "captured_at": "2026-09-16T17:31:19.126Z",
+      "captured_at": "2026-09-16T23:37:05.183Z",
       "upstream_base": "https://ufc-api.propbetedge.ai",
       "path": "/v1/ufc/events/221ca353-f623-4b66-98aa-3a504a418236/intelligence",
       "status": 200,
       "api_version": "2026-09-14.1",
       "bouts": 13,
       "bouts_with_ledger": 13,
-      "snapshots": 13,
+      "snapshots": 26,
       "checkpoints": {
-        "t_minus_7d": 13
+        "t_minus_7d": 13,
+        "t_minus_72h": 13
       },
-      "latest_captured_at": "2026-09-12T21:23:43.484+00:00",
+      "latest_captured_at": "2026-09-16T21:23:48.031+00:00",
       "unavailable_sources": [
         "weigh_in",
         "odds",
@@ -8593,7 +8593,7 @@
       "dna_ready": 13
     },
     "ledger": {
-      "captured_at": "2026-09-16T17:31:19.126Z",
+      "captured_at": "2026-09-16T23:37:05.183Z",
       "upstream_base": "https://ufc-api.propbetedge.ai",
       "path": "/v1/ufc/bouts/a351a64c-d409-4e9b-9280-2f0f18143eb5/ledger?limit=10",
       "status": 200,
@@ -8603,12 +8603,38 @@
         "fighter_a": "Joshua Van",
         "fighter_b": "Alexandre Pantoja"
       },
-      "total": 1,
+      "total": 2,
       "append_only": true,
       "checkpoints": {
-        "t_minus_7d": 1
+        "t_minus_7d": 1,
+        "t_minus_72h": 1
       },
-      "diffs": []
+      "diffs": [
+        {
+          "newer": "t_minus_72h",
+          "older": "t_minus_7d",
+          "newer_at": "2026-09-16T21:23:48.031+00:00",
+          "hours_between": 96,
+          "changed_count": 7,
+          "changes": [
+            {
+              "path": "bout_state.bout_order",
+              "from": 13,
+              "to": 12
+            },
+            {
+              "path": "rankings.snapshot_date",
+              "from": "2026-09-10",
+              "to": "2026-09-15"
+            },
+            {
+              "path": "dna.a.as_of_date",
+              "from": "2026-09-10",
+              "to": "2026-09-14"
+            }
+          ]
+        }
+      ]
     }
   },
   "provenance": {
@@ -8641,7 +8667,7 @@
     },
     "path": "/v1/ufc/fighters/fd4763bb-e3a0-4fbe-8279-92e5b459920c/dna",
     "score": 98,
-    "captured_at": "2026-09-16T17:31:19.126Z",
+    "captured_at": "2026-09-16T23:37:05.183Z",
     "upstream_base": "https://ufc-api.propbetedge.ai"
   },
   "registry": {
@@ -9282,6 +9308,6 @@
     "blocked": 0,
     "unavailable": 0,
     "espn_probes": 23,
-    "resolved_at": "2026-09-16T17:31:19.126Z"
+    "resolved_at": "2026-09-16T23:37:05.183Z"
   }
 }
