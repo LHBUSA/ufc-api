@@ -97,14 +97,14 @@ const jsonLd = [
         </div>
         <p class="hero-sub-links"><a href="/docs">View docs →</a><span aria-hidden="true">·</span><a href={links.site} rel="noopener">PropBetEdge UFC is built on the same UFC intelligence layer</a></p>
         <div class="statstrip">
-          <div><b>{fmtNumber(counts.events)}</b><span>Events</span></div>
-          <div><b>{fmtNumber(counts.fighters)}</b><span>Fighters</span></div>
-          <div><b>{fmtNumber(counts.bouts)}</b><span>Bouts</span></div>
-          <div><b>{fmtNumber(counts.round_stat_rows)}</b><span>Rounds of stats</span></div>
+          <div><b data-live-count="events">{fmtNumber(counts.events)}</b><span>Events</span></div>
+          <div><b data-live-count="fighters">{fmtNumber(counts.fighters)}</b><span>Fighters</span></div>
+          <div><b data-live-count="bouts">{fmtNumber(counts.bouts)}</b><span>Bouts</span></div>
+          <div><b data-live-count="round_stat_rows">{fmtNumber(counts.round_stat_rows)}</b><span>Rounds of stats</span></div>
           <div class="accent"><b>Fight DNA v{contract.fight_dna_definition_version}</b><span>Derived intelligence</span></div>
         </div>
       </div>
-      <div>
+      <div data-live-hero-poster>
         <FightPoster a={HA} b={HB} eventName={event.event.name} eventDate={event.event.event_date} venue={event.event.venue} city={event.event.city} region={event.event.region} tall
           label={`Main event · ${mainBout.weight_class.replace(/_/g, " ").toLowerCase()} · ${mainBout.scheduled_rounds} rounds`} badge="Fight week" meta={`${event.bout_count} bouts · ${event.event.card_status}`}
           endpoints={[{ path: `/v1/ufc/events/${"{id}"}/card` }, { path: `/v1/ufc/fighters/${"{id}"}` }, { path: `/v1/ufc/matchups/${"{a}"}/${"{b}"}/dna` }]}
@@ -579,4 +579,39 @@ const jsonLd = [
       <p class="credit">{[fighterShow.fighter.primary_image?.attribution_text, FB.primary_image?.attribution_text].filter(Boolean).join(" · ")}</p>
     </div>
   </section>
+  <script is:inline>
+    window.addEventListener("ufc:portal-snapshot", function (ev) {
+      var s = ev.detail || {}, p = document.querySelector("[data-live-hero-poster]");
+      if (!p || !s.main_bout || !s.event || !s.event.event) return;
+      var mb = s.main_bout, a = mb.fighter_a || {}, b = mb.fighter_b || {}, e = s.event.event || {};
+      var names = p.querySelectorAll(".poster-names .n");
+      if (names[0] && a.name) names[0].textContent = a.name;
+      if (names[1] && b.name) names[1].textContent = b.name;
+      var rec = function (f) {
+        if (f.record_w == null || f.record_l == null) return "";
+        return String(f.record_w) + "–" + String(f.record_l) + (f.record_d ? "–" + String(f.record_d) : "");
+      };
+      var rs = p.querySelectorAll(".poster-names .r");
+      if (rs[0]) rs[0].textContent = rec(a);
+      if (rs[1]) rs[1].textContent = rec(b);
+      var title = p.querySelector(".poster-meta .t");
+      if (title && e.name) title.textContent = e.name;
+      var meta = p.querySelector(".poster-meta .d");
+      if (meta) {
+        var place = [e.venue, e.city, e.region].filter(Boolean).join(" · ");
+        var bits = [e.event_date, place].filter(Boolean).join(" · ");
+        var lower = [s.event.bout_count != null ? s.event.bout_count + " bouts" : null, e.card_status].filter(Boolean).join(" · ");
+        meta.innerHTML = bits + (lower ? "<br>" + lower : "");
+      }
+      var top = p.querySelector(".poster-top > span:first-child");
+      if (top) top.textContent = "Main event · " + String(mb.weight_class || "").replace(/_/g, " ").toLowerCase() + " · " + String(mb.scheduled_rounds || "") + " rounds";
+      var ia = p.querySelector(".poster-faces .face.a img");
+      var ib = p.querySelector(".poster-faces .face.b img");
+      var imageOf = function (f) {
+        return f && f.primary_image && (f.primary_image.card_url || f.primary_image.image_url || f.primary_image.thumb_url);
+      };
+      if (ia && imageOf(a)) ia.src = imageOf(a);
+      if (ib && imageOf(b)) ib.src = imageOf(b);
+    });
+  </script>
 </Base>
