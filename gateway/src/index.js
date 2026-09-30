@@ -124,4 +124,13 @@ export default {
       return fromError(ctx, err, isApi ? "public" : isDashboardApi ? "dashboard" : "private");
     }
   },
+
+  async scheduled(_controller, env, execCtx) {
+    execCtx.waitUntil(
+      refreshPortalSnapshot(env).catch((err) => {
+        console.error("[portal-refresh] scheduled refresh failed", err && err.stack ? err.stack : err);
+        throw err;
+      })
+    );
+  },
 };
