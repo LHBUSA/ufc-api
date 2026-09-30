@@ -42,10 +42,9 @@ function compactFighter(f) {
 
 export async function buildPortalSnapshot(env, { fetcher = fetch } = {}) {
   const generatedAt = new Date().toISOString();
-  const [counts, upcoming, registry, rankings] = await Promise.all([
+  const [counts, upcoming, rankings] = await Promise.all([
     getJson(env, "/v1/ufc/counts", fetcher),
     getJson(env, "/v1/ufc/events?status=upcoming&limit=12", fetcher),
-    getJson(env, "/v1/ufc/dna/metrics", fetcher),
     getJson(env, "/v1/ufc/rankings", fetcher).catch(() => null),
   ]);
 
@@ -58,29 +57,30 @@ export async function buildPortalSnapshot(env, { fetcher = fetch } = {}) {
   const main = mainBout(bouts);
   if (!card.data?.event?.id || !main?.fighter_a?.id || !main?.fighter_b?.id) throw new Error("portal_card_incomplete");
 
-  const aId = main.fighter_a.id;
-  const bId = main.fighter_b.id;
-  const [aDetail, bDetail, aDna, bDna, matchup, videos, weighIns, changes, intelligence] = await Promise.all([
-    getJson(env, `/v1/ufc/fighters/${encodeURIComponent(aId)}`, fetcher).catch(() => null),
-    getJson(env, `/v1/ufc/fighters/${encodeURIComponent(bId)}`, fetcher).catch(() => null),
-    getJson(env, `/v1/ufc/fighters/${encodeURIComponent(aId)}/dna`, fetcher).catch(() => null),
-    getJson(env, `/v1/ufc/fighters/${encodeURIComponent(bId)}/dna`, fetcher).catch(() => null),
-    getJson(env, `/v1/ufc/matchups/${encodeURIComponent(aId)}/${encodeURIComponent(bId)}/dna`, fetcher).catch(() => null),
-    getJson(env, `/v1/ufc/events/${encodeURIComponent(event.id)}/videos`, fetcher).catch(() => null),
-    getJson(env, `/v1/ufc/events/${encodeURIComponent(event.id)}/weigh-ins?include=history`, fetcher).catch(() => null),
-    getJson(env, `/v1/ufc/events/${encodeURIComponent(event.id)}/card-changes`, fetcher).catch(() => null),
-    getJson(env, `/v1/ufc/events/${encodeURIComponent(event.id)}/intelligence`, fetcher).catch(() => null),
-  ]);
-
+  // Public marketing snapshot only. Do not put paid Fight DNA, Matchup DNA, ledger,
+  // entitlement-only data or customer/account state into this unauthenticated feed.
   return {
     generated_at: generatedAt,
     api_version: counts.apiVersion || upcoming.apiVersion || null,
-    fight_dna_definition_version: registry.data?.definition_version ?? null,
-    counts: counts.data,
+    counts: {
+      fighters: counts.data?.fighters ?? null,
+      events: counts.data?.events ?? null,
+      bouts: counts.data?.bouts ?? null,
+      results: counts.data?.results ?? null,
+      round_stat_rows: counts.data?.round_stat_rows ?? counts.data?.rounds ?? null,
+    },
     event: {
-      event: card.data.event,
+      event: {
+        id: card.data.event.id,
+        name: card.data.event.name,
+        event_date: card.data.event.event_date,
+        venue: card.data.event.venue ?? null,
+        city: card.data.event.city ?? null,
+        region: card.data.event.region ?? null,
+        country: card.data.event.country ?? null,
+        card_status: card.data.event.card_status ?? null,
+      },
       bout_count: bouts.length,
-      bouts,
     },
     main_bout: {
       id: main.id ?? null,
@@ -89,19 +89,13 @@ export async function buildPortalSnapshot(env, { fetcher = fetch } = {}) {
       weight_class: main.weight_class ?? null,
       scheduled_rounds: main.scheduled_rounds ?? null,
       status: main.status ?? null,
-      fighter_a: compactFighter(aDetail?.data || main.fighter_a),
-      fighter_b: compactFighter(bDetail?.data || main.fighter_b),
+      fighter_a: compactFighter(main.fighter_a),
+      fighter_b: compactFighter(main.fighter_b),
     },
-    fighter_a_dna: aDna?.data ?? null,
-    fighter_b_dna: bDna?.data ?? null,
-    matchup: matchup?.data ?? null,
-    rankings: rankings?.data ?? null,
-    videos: videos?.data ?? null,
-    fight_week: {
-      weigh_ins: weighIns?.data ?? null,
-      card_changes: changes?.data ?? null,
-      intelligence: intelligence?.data ?? null,
-    },
+    rankings: rankings ? {
+      source: rankings.data?.source ?? null,
+      snapshot_date: rankings.data?.snapshot_date ?? null,
+    } : null,
     source: "cloudflare-worker",
   };
 }
