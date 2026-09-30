@@ -41,6 +41,20 @@ With the current `"preview"` value the live gateway still processes test-mode ev
 `"production"` is truthful but changes Stripe behaviour, so it is a deliberate change with its own
 verification, not a cleanup.
 
+## Portal data freshness
+
+The portal UI is static, but UFC data freshness is runtime-owned by the Cloudflare gateway Worker:
+
+- scheduled Worker refresh -> canonical UFC API -> `PORTAL_STATE` Durable Object
+- public runtime read: `GET /portal/snapshot`
+- Vercel/portal JavaScript hydrates current counts, next card, freshness and hero matchup from that endpoint
+- the compiled `apps/web/src/generated/showcase.json` remains only a no-JS/fail-closed fallback
+- GitHub `refresh-showcase.yml` is manual audit/fallback only; it no longer schedules or publishes production data
+
+The Worker cron is configured in `gateway/wrangler.toml`. If the stored snapshot is older than 72 hours, a request to `/portal/snapshot` also attempts an on-demand refresh and serves the last good snapshot if refresh fails.
+
+This keeps sports-data updates independent of frontend deployments: Vercel rebuilds only when UI/code changes.
+
 ## Gateway release
 
 ```bash
@@ -67,15 +81,9 @@ usage counters live with the Worker. Secrets (`ADMIN_TOKEN`, `RAPIDAPI_PROXY_SEC
 
 ## Portal release
 
-The portal is a separate deploy and must go **after** the gateway: it documents the routes the gateway
-serves, so publishing it first would advertise endpoints that still answer `404 route_not_found`.
+The Vercel portal is still the static UI host. Publish it only when UI/code changes. UFC data itself is not a Vercel deployment concern; the Cloudflare Worker runtime feed above owns freshness.
 
-1. Merge to `ufc-intelligence-v1`. Every push builds a Vercel preview.
-2. `refresh-showcase.yml` runs every other day, refreshes and validates the real showcase snapshot, commits the verified refresh heartbeat, and then requires a Production Vercel deploy hook via the `VERCEL_DEPLOY_HOOK_URL` GitHub Actions secret. A missing hook now fails the scheduled run instead of silently leaving production stale.
-3. The portal freshness badge is aligned to that cadence: fresh through 48 hours, aging through 72 hours, stale after 72 hours.
-4. Visual QA at 1440 and 390 on `/`, `/docs`, `/pricing`, `/workspace`, `/dashboard`: no broken images, no horizontal overflow.
-
-The Worker publish step remains optional for showcase-only refreshes because the public portal is Vercel-owned. Contract/gateway changes still require the separate gateway release process above.
+Visual QA at 1440 and 390 on `/`, `/docs`, `/pricing`, `/workspace`, `/dashboard`: no broken images, no horizontal overflow. Confirm `/portal/snapshot` is healthy on the Worker and that the public homepage hydrates its ticker and hero without a new Vercel build.
 
 ## Contract changes
 
