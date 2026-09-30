@@ -70,15 +70,12 @@ usage counters live with the Worker. Secrets (`ADMIN_TOKEN`, `RAPIDAPI_PROXY_SEC
 The portal is a separate deploy and must go **after** the gateway: it documents the routes the gateway
 serves, so publishing it first would advertise endpoints that still answer `404 route_not_found`.
 
-1. Merge to `ufc-intelligence-v1`. Every push builds a Vercel **preview** (protected by Vercel auth).
-2. Production is only updated by promotion: `refresh-showcase.yml` reports
-   `VERCEL_DEPLOY_HOOK_URL not set`, so no push promotes itself. Promote from the Vercel dashboard, or add
-   the deploy hook as that secret.
-3. Visual QA at 1440 and 390 on `/`, `/docs`, `/pricing`, `/workspace`, `/dashboard`: no broken images, no
-   horizontal overflow.
+1. Merge to `ufc-intelligence-v1`. Every push builds a Vercel preview.
+2. `refresh-showcase.yml` runs every other day, refreshes and validates the real showcase snapshot, commits the verified refresh heartbeat, and then requires a Production Vercel deploy hook via the `VERCEL_DEPLOY_HOOK_URL` GitHub Actions secret. A missing hook now fails the scheduled run instead of silently leaving production stale.
+3. The portal freshness badge is aligned to that cadence: fresh through 48 hours, aging through 72 hours, stale after 72 hours.
+4. Visual QA at 1440 and 390 on `/`, `/docs`, `/pricing`, `/workspace`, `/dashboard`: no broken images, no horizontal overflow.
 
-`refresh-showcase.yml` also reports `CLOUDFLARE_API_TOKEN not set`, so a showcase commit does not deploy the
-Worker either. Both publishing steps are manual today.
+The Worker publish step remains optional for showcase-only refreshes because the public portal is Vercel-owned. Contract/gateway changes still require the separate gateway release process above.
 
 ## Contract changes
 
