@@ -21,8 +21,10 @@ import { dashboardRouter } from "./dashboard.js";
 import { stripeWebhook } from "./stripe.js";
 import billing from "../../config/billing.json" with { type: "json" };
 import upstreamContract from "../../upstream/ufc-contract.json" with { type: "json" };
+import { PortalSnapshot, readPortalSnapshot, refreshPortalSnapshot } from "./portal.js";
 
 export { UsageCounter } from "./usage.js";
+export { PortalSnapshot };
 
 function newCtx(request) {
   return { requestId: crypto.randomUUID(), apiVersion: upstreamContract.api_version || null, started: Date.now(), colo: request.cf?.colo || null };
@@ -89,10 +91,17 @@ export default {
     const isDashboardApi = path.startsWith("/dashboard/api");
     const isAdmin = path === "/admin" || path.startsWith("/admin/");
     const isStripeWebhook = path === billing.webhook.path;
+    const isPortalSnapshot = path === "/portal/snapshot";
 
     if (request.method === "OPTIONS" && (isApi || isDashboardApi)) return new Response(null, { status: 204, headers: { ...corsHeaders(isDashboardApi ? "dashboard" : "public"), "X-Request-Id": ctx.requestId } });
 
     try {
+      if (isPortalSnapshot) {
+        if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: corsHeaders("public") });
+        if (request.method !== "GET" && request.method !== "HEAD") return fail(ctx, 405, "method_not_allowed", "Only GET, HEAD and OPTIONS are supported.");
+        const snapshot = await readPortalSnapshot(env, { refreshIfStale: true });
+        return ok(ctx, snapshot, { source: "cloudflare_worker_snapshot" }, { "Cache-Control": "public, max-age=300, s-maxage=900, stale-while-revalidate=3600" }, "public");
+      }
       if (path === "/health") {
         return ok(ctx, { status: "ok", service: GATEWAY.product_name, gateway_version: GATEWAY.gateway_version, env: env.GATEWAY_ENV || "unknown", upstream: env.UPSTREAM_BASE_URL || GATEWAY.upstream_base_url, api_version_target: upstreamContract.api_version, fight_dna_definition_version: upstreamContract.fight_dna_definition_version }, {}, {}, "private");
       }
@@ -114,5 +123,14 @@ export default {
     } catch (err) {
       return fromError(ctx, err, isApi ? "public" : isDashboardApi ? "dashboard" : "private");
     }
+  },
+
+  async scheduled(_controller, env, execCtx) {
+    execCtx.waitUntil(
+      refreshPortalSnapshot(env).catch((err) => {
+        console.error("[portal-refresh] scheduled refresh failed", err && err.stack ? err.stack : err);
+        throw err;
+      })
+    );
   },
 };

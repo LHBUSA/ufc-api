@@ -149,13 +149,13 @@ const fmt = (n: number) => n.toLocaleString("en-US");
         <div class="items">
           <span>Contract <b>{show.api_version}</b></span>
           <span>Fight DNA <b>v{show.fight_dna_definition_version}</b></span>
-          <span><b>{fmt(counts.fighters)}</b> fighters</span>
-          <span><b>{fmt(counts.events)}</b> events</span>
-          <span><b>{fmt(counts.bouts)}</b> bouts</span>
-          <span><b>{fmt(counts.round_stat_rows)}</b> rounds of stats</span>
-          <span>Next card <b>{nextEvent.event.name}</b> · {nextEvent.event.event_date}</span>
+          <span><b data-live-count="fighters">{fmt(counts.fighters)}</b> fighters</span>
+          <span><b data-live-count="events">{fmt(counts.events)}</b> events</span>
+          <span><b data-live-count="bouts">{fmt(counts.bouts)}</b> bouts</span>
+          <span><b data-live-count="round_stat_rows">{fmt(counts.round_stat_rows)}</b> rounds of stats</span>
+          <span>Next card <b data-live-next-card>{nextEvent.event.name}</b> · <span data-live-next-date>{nextEvent.event.event_date}</span></span>
         </div>
-        <span class="freshness" data-generated={show.generated_at} title={`Showcase snapshot captured ${fresh.capturedAt}`}>Updated <b>{fresh.label}</b></span>
+        <span class="freshness" data-generated={show.generated_at} data-live-freshness title={`Showcase snapshot captured ${fresh.capturedAt}`}>Updated <b>{fresh.label}</b></span>
         <a href="/docs">Docs →</a>
       </div>
     </div>
@@ -170,11 +170,47 @@ const fmt = (n: number) => n.toLocaleString("en-US");
         var label = mins < 1 ? "just now" : mins < 60 ? mins + " min ago" : mins < 1440 ? Math.floor(mins / 60) + " h ago" : Math.floor(mins / 1440) + " d ago";
         el.querySelector("b").textContent = label;
         var strip = el.closest(".ticker");
-        var state = mins <= 60 ? "fresh" : mins <= 360 ? "aging" : "stale";
+        var state = mins <= 2880 ? "fresh" : mins <= 4320 ? "aging" : "stale";
         strip.classList.remove("fresh-fresh", "fresh-aging", "fresh-stale");
         strip.classList.add("fresh-" + state);
         var lbl = strip.querySelector(".lbl");
         if (lbl) lbl.textContent = state === "stale" ? "Snapshot stale" : "API live";
+      })();
+    </script>
+    <script is:inline>
+      /* Runtime UFC state is owned by the Cloudflare gateway Worker. The compiled showcase is only
+         the no-JS/fail-closed fallback, so sports-data freshness never requires a Vercel rebuild. */
+      (async function () {
+        if (!window.__ufcApi) return;
+        try {
+          var out = await window.__ufcApi.call("/portal/snapshot");
+          if (!out.res.ok || !out.body || !out.body.ok || !out.body.data) return;
+          var s = out.body.data, counts = s.counts || {};
+          document.querySelectorAll("[data-live-count]").forEach(function (el) {
+            var k = el.getAttribute("data-live-count");
+            if (counts[k] !== undefined && counts[k] !== null) el.textContent = Number(counts[k]).toLocaleString("en-US");
+          });
+          var card = document.querySelector("[data-live-next-card]");
+          var date = document.querySelector("[data-live-next-date]");
+          if (card && s.event && s.event.event && s.event.event.name) card.textContent = s.event.event.name;
+          if (date && s.event && s.event.event && s.event.event.event_date) date.textContent = s.event.event.event_date;
+          var fresh = document.querySelector("[data-live-freshness]");
+          if (fresh && s.generated_at) {
+            fresh.setAttribute("data-generated", s.generated_at);
+            var mins = Math.max(0, Math.round((Date.now() - Date.parse(s.generated_at)) / 60000));
+            var label = mins < 1 ? "just now" : mins < 60 ? mins + " min ago" : mins < 1440 ? Math.floor(mins / 60) + " h ago" : Math.floor(mins / 1440) + " d ago";
+            var b = fresh.querySelector("b"); if (b) b.textContent = label;
+            var strip = fresh.closest(".ticker");
+            var state = mins <= 2880 ? "fresh" : mins <= 4320 ? "aging" : "stale";
+            if (strip) {
+              strip.classList.remove("fresh-fresh", "fresh-aging", "fresh-stale");
+              strip.classList.add("fresh-" + state);
+              var lbl = strip.querySelector(".lbl");
+              if (lbl) lbl.textContent = state === "stale" ? "Snapshot stale" : "API live";
+            }
+          }
+          window.dispatchEvent(new CustomEvent("ufc:portal-snapshot", { detail: s }));
+        } catch (_) {}
       })();
     </script>
     <main>
