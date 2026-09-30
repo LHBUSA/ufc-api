@@ -170,7 +170,7 @@ const fmt = (n: number) => n.toLocaleString("en-US");
         var label = mins < 1 ? "just now" : mins < 60 ? mins + " min ago" : mins < 1440 ? Math.floor(mins / 60) + " h ago" : Math.floor(mins / 1440) + " d ago";
         el.querySelector("b").textContent = label;
         var strip = el.closest(".ticker");
-        var state = mins <= 60 ? "fresh" : mins <= 360 ? "aging" : "stale";
+        var state = mins <= 2880 ? "fresh" : mins <= 4320 ? "aging" : "stale";
         strip.classList.remove("fresh-fresh", "fresh-aging", "fresh-stale");
         strip.classList.add("fresh-" + state);
         var lbl = strip.querySelector(".lbl");
