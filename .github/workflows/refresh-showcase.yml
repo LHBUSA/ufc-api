@@ -6,7 +6,8 @@ name: refresh-showcase
 
 on:
   schedule:
-    - cron: "*/30 * * * *"
+    # Baseline portal refresh: every other day at 10:17 America/Chicago during CDT.
+    - cron: "17 15 */2 * *"
   workflow_dispatch:
     inputs:
       reason:
@@ -55,19 +56,15 @@ jobs:
       - name: Audit fighter-media parity
         run: npm run media:audit:ci
 
-      - name: Commit only when the payload actually changed
+      - name: Commit the verified refresh heartbeat
         id: commit
         run: |
           git config user.name "propbetedge-bot"
           git config user.email "sales@localhomebuyersusa.com"
-          # generated_at moves every run; ignore a diff that is only timestamps.
+          # generated_at is the portal's verified-refresh heartbeat. Commit it even when the
+          # underlying counts/subjects did not change so production can prove it was rechecked.
           if git diff --quiet -- apps/web/src/generated/showcase.json; then
-            echo "changed=false" >> "$GITHUB_OUTPUT"; echo "no diff"; exit 0
-          fi
-          BEFORE=$(git show HEAD:apps/web/src/generated/showcase.json | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{const j=JSON.parse(s);delete j.generated_at;delete j.upstream_calls;console.log(JSON.stringify(j).replace(/"captured_at":"[^"]*"/g,""))})')
-          AFTER=$(node -e 'const j=require("./apps/web/src/generated/showcase.json");delete j.generated_at;delete j.upstream_calls;console.log(JSON.stringify(j).replace(/"captured_at":"[^"]*"/g,""))')
-          if [ "$BEFORE" = "$AFTER" ]; then
-            echo "changed=false" >> "$GITHUB_OUTPUT"; echo "only timestamps changed; skipping commit"; git checkout -- apps/web/src/generated/showcase.json; exit 0
+            echo "changed=false" >> "$GITHUB_OUTPUT"; echo "refresh produced no file diff"; exit 0
           fi
           echo "changed=true" >> "$GITHUB_OUTPUT"
           COUNTS=$(node -e 'const c=require("./apps/web/src/generated/showcase.json").counts;console.log(`${c.fighters} fighters, ${c.events} events, ${c.bouts} bouts, ${c.round_stat_rows} round rows`)')
@@ -83,8 +80,9 @@ jobs:
       #   - Cloudflare Worker: assets ship with a Worker deployment, so deploy when a token exists.
       #   - Vercel: every push to ufc-intelligence-v1 builds a PREVIEW. Production (ufc.proptechusa.ai)
       #     is only updated by promotion, so a deploy hook pointed at the production branch is required.
-      # Both are optional and skipped with a notice when the secret is absent, so the refresh itself
-      # never fails because publishing is not configured yet.
+      # The Worker publish remains optional because the public portal is Vercel-owned.
+      # Vercel production publishing is REQUIRED: a successful refresh that only creates a preview
+      # is not a successful portal refresh.
       - name: Publish the refreshed snapshot to the Worker host
         if: steps.commit.outputs.changed == 'true'
         env:
@@ -103,8 +101,9 @@ jobs:
           VERCEL_DEPLOY_HOOK_URL: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
         run: |
           if [ -z "$VERCEL_DEPLOY_HOOK_URL" ]; then
-            echo "::notice::VERCEL_DEPLOY_HOOK_URL not set; ufc.proptechusa.ai will keep serving the last promoted build. Set the project's production branch to ufc-intelligence-v1, or add a production deploy hook as this secret."
-            exit 0
+            echo "::error::VERCEL_DEPLOY_HOOK_URL is required. Preview-only deploys do not update ufc.proptechusa.ai."
+            echo "::error::Create a Production deploy hook for Vercel project ufc-api (branch ufc-intelligence-v1) and save it as this GitHub Actions secret."
+            exit 1
           fi
           code=$(curl -s -o /dev/null -w "%{http_code}" -X POST "$VERCEL_DEPLOY_HOOK_URL")
           echo "deploy hook responded $code"
