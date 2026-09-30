@@ -1,5 +1,6 @@
 /* Freshness of the generated public showcase snapshot.
-   fresh: <= 60 min · aging: <= 6 h · stale: beyond that. The site never invents current numbers to hide staleness;
+   The portal refreshes every other day, so the UI should not call a healthy scheduled snapshot stale after six hours.
+   fresh: <= 48 h · aging: <= 72 h · stale: beyond that. The site never invents current numbers to hide staleness;
    it labels the snapshot honestly and keeps showing the last good data. */
 export type FreshState = "fresh" | "aging" | "stale";
 export interface Freshness { state: FreshState; minutes: number; label: string; capturedAt: string; iso: string; }
@@ -7,7 +8,7 @@ export interface Freshness { state: FreshState; minutes: number; label: string; 
 export function freshness(generatedAt: string, now: Date = new Date()): Freshness {
   const t = Date.parse(generatedAt);
   const minutes = Math.max(0, Math.round((now.getTime() - t) / 60000));
-  const state: FreshState = minutes <= 60 ? "fresh" : minutes <= 360 ? "aging" : "stale";
+  const state: FreshState = minutes <= 2880 ? "fresh" : minutes <= 4320 ? "aging" : "stale";
   return { state, minutes, label: ago(minutes), capturedAt: fmtUtc(generatedAt), iso: generatedAt };
 }
 
