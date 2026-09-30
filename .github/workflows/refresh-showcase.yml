@@ -5,9 +5,8 @@ name: refresh-showcase
 # they stay deterministic for the gateway tests and the contract drift guard.
 
 on:
-  schedule:
-    # Baseline portal refresh: every other day at 10:17 America/Chicago during CDT.
-    - cron: "17 15 */2 * *"
+  # Manual audit/fallback only. Production portal freshness is owned by the Cloudflare gateway
+  # Worker's scheduled handler and /portal/snapshot runtime feed.
   workflow_dispatch:
     inputs:
       reason:
@@ -76,38 +75,8 @@ jobs:
           $SUBJECTS"
           git push origin ufc-intelligence-v1
 
-      # Publishing. A commit alone does not necessarily reach the public hosts:
-      #   - Cloudflare Worker: assets ship with a Worker deployment, so deploy when a token exists.
-      #   - Vercel: every push to ufc-intelligence-v1 builds a PREVIEW. Production (ufc.proptechusa.ai)
-      #     is only updated by promotion, so a deploy hook pointed at the production branch is required.
-      # The Worker publish remains optional because the public portal is Vercel-owned.
-      # Vercel production publishing is REQUIRED: a successful refresh that only creates a preview
-      # is not a successful portal refresh.
-      - name: Publish the refreshed snapshot to the Worker host
-        if: steps.commit.outputs.changed == 'true'
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: |
-          if [ -z "$CLOUDFLARE_API_TOKEN" ]; then
-            echo "::notice::CLOUDFLARE_API_TOKEN not set; skipping Worker deploy. The committed snapshot ships on the next manual deploy."
-            exit 0
-          fi
-          npx wrangler deploy --config gateway/wrangler.toml
-
-      - name: Publish the refreshed snapshot to the Vercel production host
-        if: steps.commit.outputs.changed == 'true'
-        env:
-          VERCEL_DEPLOY_HOOK_URL: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
-        run: |
-          if [ -z "$VERCEL_DEPLOY_HOOK_URL" ]; then
-            echo "::error::VERCEL_DEPLOY_HOOK_URL is required. Preview-only deploys do not update ufc.proptechusa.ai."
-            echo "::error::Create a Production deploy hook for Vercel project ufc-api (branch ufc-intelligence-v1) and save it as this GitHub Actions secret."
-            exit 1
-          fi
-          code=$(curl -s -o /dev/null -w "%{http_code}" -X POST "$VERCEL_DEPLOY_HOOK_URL")
-          echo "deploy hook responded $code"
-          [ "$code" -ge 200 ] && [ "$code" -lt 300 ]
+      # No production publish here. This workflow is now a manual snapshot audit only;
+      # Cloudflare Worker cron owns live portal data and Vercel builds only ship UI/code changes.
 
       - name: Summary
         run: |
