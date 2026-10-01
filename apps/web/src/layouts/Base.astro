@@ -183,7 +183,7 @@ const fmt = (n: number) => n.toLocaleString("en-US");
       (async function () {
         if (!window.__ufcApi) return;
         try {
-          var out = await window.__ufcApi.call("/portal/snapshot");
+          var out = await window.__ufcApi.call("/v1/portal/snapshot");
           if (!out.res.ok || !out.body || !out.body.ok || !out.body.data) return;
           var s = out.body.data, counts = s.counts || {};
           document.querySelectorAll("[data-live-count]").forEach(function (el) {
