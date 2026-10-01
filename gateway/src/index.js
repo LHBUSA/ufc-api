@@ -91,7 +91,7 @@ export default {
     const isDashboardApi = path.startsWith("/dashboard/api");
     const isAdmin = path === "/admin" || path.startsWith("/admin/");
     const isStripeWebhook = path === billing.webhook.path;
-    const isPortalSnapshot = path === "/portal/snapshot";
+    const isPortalSnapshot = path === "/v1/portal/snapshot";
 
     if (request.method === "OPTIONS" && (isApi || isDashboardApi)) return new Response(null, { status: 204, headers: { ...corsHeaders(isDashboardApi ? "dashboard" : "public"), "X-Request-Id": ctx.requestId } });
 
