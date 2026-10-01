@@ -32,9 +32,9 @@ const groups = [
 const grouped = new Set(groups.flatMap((g) => g.keys));
 const ungrouped = matrix.filter((m) => !grouped.has(m.key)).map((m) => m.key);
 if (ungrouped.length) groups.push({ t: "Other endpoints", keys: ungrouped });
-const jsonLd = [{ "@context": "https://schema.org", "@type": "Product", name: "PropTechUSA UFC Intelligence API", description: "Developer-ready UFC data with proprietary PropBetEdge Fight DNA.", brand: { "@type": "Brand", name: "PropTechUSA" }, offers: order.filter((k) => plans[k as keyof typeof plans].price_usd_month !== null).map((k) => ({ "@type": "Offer", name: plans[k as keyof typeof plans].name, price: plans[k as keyof typeof plans].price_usd_month, priceCurrency: "USD", availability: "https://schema.org/InStock", url: "https://ufc.proptechusa.ai/pricing" })) }];
+const jsonLd = [{ "@context": "https://schema.org", "@type": "Product", name: "PropTechUSA UFC Intelligence API", description: "39 commercial UFC Intelligence API endpoints with normalized fight data, Fight DNA, Matchup DNA and fight-week intelligence.", brand: { "@type": "Brand", name: "PropTechUSA" }, offers: order.filter((k) => plans[k as keyof typeof plans].price_usd_month !== null).map((k) => ({ "@type": "Offer", name: plans[k as keyof typeof plans].name, price: plans[k as keyof typeof plans].price_usd_month, priceCurrency: "USD", availability: "https://schema.org/InStock", url: "https://ufc.proptechusa.ai/pricing" })) }];
 ---
-<Base title="UFC Intelligence API Pricing | PropTechUSA.ai" description="Developer $79, Pro $199, Ultra $499, Scale $1,499, Enterprise custom. Every plan starts with normalized UFC fight records, official weigh-ins and sourced availability; Pro and above unlock PropBetEdge Fight DNA." path="/pricing" jsonLd={jsonLd} breadcrumbs={[{ name: "Pricing", path: "/pricing" }]}>
+<Base title="UFC Intelligence API Pricing — 39 Endpoints | PropTechUSA.ai" description="Plans for the 39-endpoint UFC Intelligence API. Developer includes core fight data; Pro adds Fight DNA; Ultra adds Matchup DNA and Fight State Ledger; Scale adds production capacity." path="/pricing" jsonLd={jsonLd} breadcrumbs={[{ name: "Pricing", path: "/pricing" }]}>
   <section class="section">
     <div class="wrap">
       <p class="eyebrow">Pricing</p>
