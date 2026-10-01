@@ -46,12 +46,12 @@ verification, not a cleanup.
 The portal UI is static, but UFC data freshness is runtime-owned by the Cloudflare gateway Worker:
 
 - scheduled Worker refresh -> canonical UFC API -> `PORTAL_STATE` Durable Object
-- public runtime read: `GET /portal/snapshot`
+- public runtime read: `GET /v1/portal/snapshot`
 - Vercel/portal JavaScript hydrates current counts, next card, freshness and hero matchup from that endpoint
 - the compiled `apps/web/src/generated/showcase.json` remains only a no-JS/fail-closed fallback
 - GitHub `refresh-showcase.yml` is manual audit/fallback only; it no longer schedules or publishes production data
 
-The Worker cron is configured in `gateway/wrangler.toml`. If the stored snapshot is older than 72 hours, a request to `/portal/snapshot` also attempts an on-demand refresh and serves the last good snapshot if refresh fails.
+The Worker cron is configured in `gateway/wrangler.toml`. If the stored snapshot is older than 72 hours, a request to `/v1/portal/snapshot` also attempts an on-demand refresh and serves the last good snapshot if refresh fails.
 
 This keeps sports-data updates independent of frontend deployments: Vercel rebuilds only when UI/code changes.
 
@@ -83,7 +83,7 @@ usage counters live with the Worker. Secrets (`ADMIN_TOKEN`, `RAPIDAPI_PROXY_SEC
 
 The Vercel portal is still the static UI host. Publish it only when UI/code changes. UFC data itself is not a Vercel deployment concern; the Cloudflare Worker runtime feed above owns freshness.
 
-Visual QA at 1440 and 390 on `/`, `/docs`, `/pricing`, `/workspace`, `/dashboard`: no broken images, no horizontal overflow. Confirm `/portal/snapshot` is healthy on the Worker and that the public homepage hydrates its ticker and hero without a new Vercel build.
+Visual QA at 1440 and 390 on `/`, `/docs`, `/pricing`, `/workspace`, `/dashboard`: no broken images, no horizontal overflow. Confirm `/v1/portal/snapshot` is healthy on the Worker and that the public homepage hydrates its ticker and hero without a new Vercel build.
 
 ## Contract changes
 
